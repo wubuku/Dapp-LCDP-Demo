@@ -11,6 +11,9 @@ Copy SMT code:
 cd move-contracts
 mkdir -p src/modules/smt
 cd src/modules/smt
-cp -r ../../../../../Elements-Studio/poly-stc-contracts/src/modules/smt/* .
+cp -r ../../../../../../Elements-Studio/poly-stc-contracts/src/modules/smt/* .
+cd ../../../
+pwd
+move check
 ```
 
