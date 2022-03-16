@@ -7,8 +7,9 @@ module DomainNameAggregate {
     use 0x1::BCS;
     use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
     use 0x18351d311d32201149a4df2a9fc2db8a::SMTProofs;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRegisterLogic;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRegisterLogic;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRenewLogic;
 
     const ERR_GENESIS_INITIALIZED: u64 = 101;
     const ERR_INVALID_SMT_ROOT: u64 = 102;
@@ -134,16 +135,22 @@ module DomainNameAggregate {
         let proof_ok = SMTProofs::verify_membership_proof(&store_smt_root, smt_side_nodes, &leaf_path, &leaf_value_hash);
         assert(proof_ok, Errors::invalid_state(ERR_INVALID_SMT_NON_MEMBERSHIP_PROOF));
 
-        //todo
-        //let updated_domain_name_state = DomainNameRenewLogic::mutate(&domain_name_id, e_account, e_renew_period);
+        // ///////////// Call business logic module start ///////////////
+        DomainNameRenewLogic::verify(account, &domain_name_state, renew_period);
 
+        let (e_account, e_renew_period) = DomainNameRenewLogic::to_event_properties(account, &domain_name_state, renew_period);
+
+        let updated_domain_name_state = DomainNameRenewLogic::mutate(&domain_name_state, e_account, e_renew_period);
+        // ///////////// Call business logic module end ///////////////
+
+        //todo
         //let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &domain_name_state, smt_non_membership_leaf_data, smt_side_nodes);
 
         let renewed = DomainName::new_renewed(
             &domain_name_id,
             Signer::address_of(account),
             renew_period,
-            &domain_name_state, // todo &updated_domain_name_state,
+            &updated_domain_name_state,
             &Vector::empty<u8>(), // todo &updated_smt_root,
             &store_smt_root, // previouse SMT root
         );

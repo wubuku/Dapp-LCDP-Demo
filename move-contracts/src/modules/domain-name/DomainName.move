@@ -38,6 +38,18 @@ module DomainName {
         }
     }
 
+    public fun get_domain_name_state_domain_name_id(domain_name_state: &DomainNameState): DomainNameId {
+        *&domain_name_state.domain_name_id
+    }
+
+    public fun get_domain_name_state_expiration_date(domain_name_state: &DomainNameState): u64 {
+        *&domain_name_state.expiration_date
+    }
+
+    public fun get_domain_name_state_owner(domain_name_state: &DomainNameState): address {
+        *&domain_name_state.owner
+    }
+
     struct Registerd has store, drop {
         domain_name_id: DomainNameId,
         owner: address,
