@@ -36,6 +36,7 @@ module DomainNameRenewLogic {
         account: address,
         renew_period: u64,
     ): DomainName::DomainNameState {
+        _ = domain_name_state;
         _ = account;
         _ = renew_period;
 
@@ -44,7 +45,7 @@ module DomainNameRenewLogic {
             DomainName::get_domain_name_state_expiration_date(domain_name_state) + renew_period,
             DomainName::get_domain_name_state_owner(domain_name_state),
         );
-        //*state
+
         updated_domain_name_state
     }
 

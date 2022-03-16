@@ -2,7 +2,7 @@ address 0x18351d311d32201149a4df2a9fc2db8a {
 module DomainNameAggregate {
     use 0x1::Event;
     use 0x1::Signer;
-    use 0x1::Vector;
+    //use 0x1::Vector;
     use 0x1::Errors;
     use 0x1::BCS;
     use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
@@ -10,6 +10,11 @@ module DomainNameAggregate {
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRegisterLogic;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRenewLogic;
+
+
+    //    fun not_used_modules_() {
+    //        _ = Vector::empty<u8>();
+    //    }
 
     const ERR_GENESIS_INITIALIZED: u64 = 101;
     const ERR_INVALID_SMT_ROOT: u64 = 102;
@@ -143,15 +148,14 @@ module DomainNameAggregate {
         let updated_domain_name_state = DomainNameRenewLogic::mutate(&domain_name_state, e_account, e_renew_period);
         // ///////////// Call business logic module end ///////////////
 
-        //todo
-        //let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &domain_name_state, smt_non_membership_leaf_data, smt_side_nodes);
+        let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &domain_name_state, smt_side_nodes);
 
         let renewed = DomainName::new_renewed(
             &domain_name_id,
             Signer::address_of(account),
             renew_period,
             &updated_domain_name_state,
-            &Vector::empty<u8>(), // todo &updated_smt_root,
+            &updated_smt_root,
             &store_smt_root, // previouse SMT root
         );
         _ = renewed;
@@ -177,6 +181,21 @@ module DomainNameAggregate {
             leaf_path,
             &leaf_value_hash,
             non_membership_leaf_data,
+            side_nodes
+        );
+        *&smt.root
+    }
+
+    fun update_smt_root_by_leaf_path_and_value(
+        leaf_path: &vector<u8>,
+        domain_name_state: &DomainName::DomainNameState,
+        side_nodes: &vector<vector<u8>>
+    ): vector<u8> acquires SMTStore {
+        let leaf_value_hash = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameState>(domain_name_state));
+        let smt = borrow_global_mut<SMTStore>(DomainName::genesis_account());
+        smt.root = SMTProofs::compute_root_hash_by_leaf(
+            leaf_path,
+            &leaf_value_hash,
             side_nodes
         );
         *&smt.root

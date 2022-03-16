@@ -42,7 +42,6 @@ module DomainNameRegisterLogic {
 
     public fun mutate(
         domain_name_id: &DomainName::DomainNameId,
-        //state: &DomainName::DomainNameState,
         owner: address,
         registration_period: u64,
     ): DomainName::DomainNameState {
@@ -51,7 +50,6 @@ module DomainNameRegisterLogic {
             registration_period,
             owner,
         );
-        //*state
         domain_name_state
     }
 }
