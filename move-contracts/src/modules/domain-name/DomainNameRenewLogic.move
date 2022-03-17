@@ -20,8 +20,8 @@ module DomainNameRenewLogic {
         domain_name_state: &DomainName::DomainNameState,
         renew_period: u64,
     ): (
-        address,
-        u64,
+        address, // Account
+        u64, // RenewPeriod
     ) {
         _ = account;
         _ = domain_name_state;
@@ -48,6 +48,5 @@ module DomainNameRenewLogic {
 
         updated_domain_name_state
     }
-
 }
 }

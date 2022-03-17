@@ -20,9 +20,8 @@ module DomainNameRegisterLogic {
         domain_name_id: &DomainName::DomainNameId,
         registration_period: u64,
     ): (
-        //        &DomainName::DomainNameId,
-        address,
-        u64,
+        address, // Owner
+        u64, // RegistrationPeriod
     ) {
         //        let new_domain_name_id = DomainName::new_domain_name_id(
         //            &Vector::empty<u8>(),

@@ -13,7 +13,7 @@ module DomainName {
     public fun new_domain_name_id(
         domain_name_id_top_level_domain: &vector<u8>,
         domain_name_id_second_level_domain: &vector<u8>,
-    ): DomainNameId{
+    ): DomainNameId {
         DomainNameId{
             top_level_domain: *domain_name_id_top_level_domain,
             second_level_domain: *domain_name_id_second_level_domain,
@@ -68,7 +68,7 @@ module DomainName {
         //smt_leaf_data: &vector<u8>,
         updated_smt_root: &vector<u8>,
         previous_smt_root: &vector<u8>,
-    ):Registerd {
+    ): Registerd {
         Registerd{
             domain_name_id: *domain_name_id,
             owner: owner,
@@ -99,7 +99,7 @@ module DomainName {
         updated_smt_root: &vector<u8>,
         previous_smt_root: &vector<u8>,
     ): Renewed {
-        Renewed {
+        Renewed{
             domain_name_id: *domain_name_id,
             account: account,
             renew_period: renew_period,
@@ -116,7 +116,7 @@ module DomainName {
         assert(address == genesis_account(), Errors::invalid_argument(ERR_INVALID_ACCOUNT));
     }
 
-    public fun genesis_account() : address {
+    public fun genesis_account(): address {
         @0x18351d311d32201149a4df2a9fc2db8a
     }
 }
