@@ -82,7 +82,7 @@ module DomainNameAggregate {
         let store_smt_root = get_smt_root();
         // Verify non-membership proof, because this is a CREATE command.
         assert(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
-        let leaf_path = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameId>(&domain_name_id));
+        let leaf_path = get_smt_leaf_path(&domain_name_id);
         let smt_proof_ok = SMTProofs::verify_non_membership_proof_by_leaf_path(&store_smt_root, smt_non_membership_leaf_data, smt_side_nodes, &leaf_path);
         assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_NON_MEMBERSHIP_PROOF));
 
@@ -140,7 +140,7 @@ module DomainNameAggregate {
         let store_smt_root = get_smt_root();
         // Verify membership proof, because this is a UPDATE command.
         assert(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
-        let leaf_path = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameId>(&domain_name_id));
+        let leaf_path = get_smt_leaf_path(&domain_name_id);
         let leaf_value_hash = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameState>(&domain_name_state));
         let smt_proof_ok = SMTProofs::verify_membership_proof(&store_smt_root, smt_side_nodes, &leaf_path, &leaf_value_hash);
         assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_MEMBERSHIP_PROOF));
@@ -170,6 +170,22 @@ module DomainNameAggregate {
     public fun get_smt_root(): vector<u8> acquires SMTStore {
         let smt = borrow_global<SMTStore>(DomainName::genesis_account());
         *&smt.root
+    }
+
+    public fun get_smt_leaf_path(domain_name_id: &DomainName::DomainNameId): vector<u8> {
+        let key = get_smt_key(domain_name_id);
+        let leaf_path = SMTreeHasher::digest(&key);
+        leaf_path
+    }
+
+    public fun get_smt_key(domain_name_id: &DomainName::DomainNameId): vector<u8> {
+        let key = BCS::to_bytes<DomainName::DomainNameId>(domain_name_id);
+        key
+    }
+
+    public fun get_smt_value(domain_name_state: &DomainName::DomainNameState): vector<u8> {
+        let value = BCS::to_bytes<DomainName::DomainNameState>(domain_name_state);
+        value
     }
 
     /// update SMT root

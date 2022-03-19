@@ -46,7 +46,7 @@ module DomainNameRegisterLogic {
     ): DomainName::DomainNameState {
         let domain_name_state = DomainName::new_domain_name_state(
             domain_name_id,
-            registration_period,
+            registration_period, //todo to expiration_date
             owner,
         );
         domain_name_state
