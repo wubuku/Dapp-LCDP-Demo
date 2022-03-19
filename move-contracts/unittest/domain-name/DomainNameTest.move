@@ -32,7 +32,7 @@ module DomainNameTest {
     }
 
     #[test]
-    public fun test_smt_a() {
+    public fun test_smt_verify_proofs_a() {
         let tld = b"stc";
         let sld = b"a";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -54,7 +54,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_b() {
+    public fun test_smt_verify_proofs_b() {
         let tld = b"stc";
         let sld = b"b";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -85,7 +85,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_c() {
+    public fun test_smt_verify_proofs_c() {
         let tld = b"stc";
         let sld = b"c";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -113,7 +113,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_d() {
+    public fun test_smt_verify_proofs_d() {
         let tld = b"stc";
         let sld = b"d";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -143,7 +143,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_e() {
+    public fun test_smt_verify_proofs_e() {
         let tld = b"stc";
         let sld = b"e";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -172,7 +172,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_f() {
+    public fun test_smt_verify_proofs_f() {
         let tld = b"stc";
         let sld = b"f";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
@@ -206,7 +206,7 @@ module DomainNameTest {
 
 
     #[test]
-    public fun test_smt_g() {
+    public fun test_smt_verify_proofs_g() {
         let tld = b"stc";
         let sld = b"g";
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);

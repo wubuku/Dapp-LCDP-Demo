@@ -113,7 +113,7 @@ func testSmtProofAndPrintMoveUnitTestFun(domainNameId *DomainNameId, key []byte,
 func testPrintMoveUnitTestFunStart(domainNameId *DomainNameId) {
 	fmt.Printf(`
     #[test]
-    public fun test_smt_%s() {
+    public fun test_smt_verify_proofs_%s() {
         let tld = b"%s";
         let sld = b"%s";	
         let domain_name_id = DomainName::new_domain_name_id(&tld, &sld);
