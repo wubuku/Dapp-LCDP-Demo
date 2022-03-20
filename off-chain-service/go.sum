@@ -1,4 +1,6 @@
+github.com/blocktree/go-owcrypt v1.1.10 h1:eQhxJnUt265LUHJYbPHn9Cw76THir7lv8cWeW2Mtl8s=
 github.com/blocktree/go-owcrypt v1.1.10/go.mod h1:n98+UALIX82e7jhNvfYcG9pz3cDGO026EjslMrqgNvc=
+github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/campoy/embedmd v1.0.0/go.mod h1:oxyr9RCiSXg0M3VJ3ks0UGfp98BpSSGr0kpiX3MzVl8=
 github.com/celestiaorg/smt v0.2.1-0.20210927133715-225e28d5599a h1:kRa46CqZ29LSjDGiB+7JKhK5rNxO1YQls9NPvI94JV0=
@@ -10,11 +12,13 @@ github.com/dlespiau/covertool v0.0.0-20180314162135-b0c4c6d0583a/go.mod h1:/eQMc
 github.com/drand/bls12-381 v0.3.2/go.mod h1:dtcLgPtYT38L3NO6mPDYH0nbpc5tjPassDqiniuAt4Y=
 github.com/drand/kyber v1.0.1-0.20200110225416-8de27ed8c0e2/go.mod h1:UpXoA0Upd1N9l4TvRPHr1qAUBBERj6JQ/mnKI3BPEmw=
 github.com/drand/kyber v1.0.2/go.mod h1:x6KOpK7avKj0GJ4emhXFP5n7M7W7ChAPmnQh/OL6vRw=
+github.com/drand/kyber v1.1.4 h1:YvKM03QWGvLrdTnYmxxP5iURAX+Gdb6qRDUOgg8i60Q=
 github.com/drand/kyber v1.1.4/go.mod h1:9+IgTq7kadePhZg7eRwSD7+bA+bmvqRK+8DtmoV5a3U=
 github.com/drand/kyber-bls12381 v0.2.0/go.mod h1:zQip/bHdeEB6HFZSU3v+d3cQE0GaBVQw9aR2E7AdoeI=
 github.com/go-sql-driver/mysql v1.6.0 h1:BCTh4TKNUYmOmMUcQ3IipzF5prigylS7XXjEkfCHuOE=
 github.com/go-sql-driver/mysql v1.6.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/google/pprof v0.0.0-20190309163659-77426154d546/go.mod h1:zfwlbNMJ+OItoe0UupaVj+oy1omPYYDuagoSzA8v9mc=
+github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/holiman/uint256 v1.2.0 h1:gpSYcPLWGv4sG43I2mVLiDZCNDh/EpGjSk8tmtxitHM=
 github.com/holiman/uint256 v1.2.0/go.mod h1:y4ga/t+u+Xwd7CpDgZESaRcWy0I7XMlTMA25ApIH5Jw=
@@ -34,6 +38,7 @@ github.com/mmcloughlin/avo v0.0.0-20190318053554-7a0eb66183da/go.mod h1:lf5GMZxA
 github.com/novifinancial/serde-reflection/serde-generate/runtime/golang v0.0.0-20210526181959-1694c58d103e/go.mod h1:NrRYJCFtaewjIRr4B9V2AyWsAEMW0Zqdjs8Bm+bACbM=
 github.com/novifinancial/serde-reflection/serde-generate/runtime/golang v0.0.0-20220114180008-bde96ef4a0a2 h1:8D9nmJ2V7D0fvRH2ygKCxR/GxPDjEd5nGaOoTW2ibXc=
 github.com/novifinancial/serde-reflection/serde-generate/runtime/golang v0.0.0-20220114180008-bde96ef4a0a2/go.mod h1:NrRYJCFtaewjIRr4B9V2AyWsAEMW0Zqdjs8Bm+bACbM=
+github.com/phoreproject/bls v0.0.0-20200525203911-a88a5ae26844 h1:Yflyn+XFLEu7RPzxovgEVLP6Es8JLJrHqdXunpm2ak4=
 github.com/phoreproject/bls v0.0.0-20200525203911-a88a5ae26844/go.mod h1:xHJKf2TLXUA39Dhv8k5QmQOxLsbrb1KeTS/3ERfLeqc=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
@@ -48,6 +53,7 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
+go.dedis.ch/fixbuf v1.0.3 h1:hGcV9Cd/znUxlusJ64eAlExS+5cJDIyTyEG+otu5wQs=
 go.dedis.ch/fixbuf v1.0.3/go.mod h1:yzJMt34Wa5xD37V5RTdmp38cz3QhMagdGoem9anUalw=
 go.dedis.ch/kyber/v3 v3.0.4/go.mod h1:OzvaEnPvKlyrWyp3kGXlFdp7ap1VC6RkZDTaPikqhsQ=
 go.dedis.ch/kyber/v3 v3.0.9/go.mod h1:rhNjUUg6ahf8HEg5HUvVBYoWY4boAafX8tYxX+PS+qg=
