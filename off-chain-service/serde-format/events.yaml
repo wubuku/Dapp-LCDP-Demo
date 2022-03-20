@@ -1,0 +1,36 @@
+DomainNameId:
+  STRUCT:
+    - top_level_domain: BYTES
+    - second_level_domain: BYTES
+
+DomainNameState:
+  STRUCT:
+    - domain_name_id:
+        TYPENAME: DomainNameId
+    - expiration_date: U64
+    - owner:
+        TYPENAME: AccountAddress
+
+DomainNameRegisterd:
+  STRUCT:
+    - domain_name_id:
+        TYPENAME: DomainNameId
+    - owner: 
+        TYPENAME: AccountAddress
+    - registration_period: U64
+    - updated_state:
+        TYPENAME: DomainNameState
+    - updated_smt_root: BYTES
+    - previous_smt_root: BYTES
+
+DomainNameRenewed:
+  STRUCT:
+    - domain_name_id: 
+        TYPENAME: DomainNameId
+    - account:
+        TYPENAME: AccountAddress
+    - renew_period: U64
+    - updated_state:
+        TYPENAME: DomainNameState
+    - updated_smt_root: BYTES
+    - previous_smt_root: BYTES
