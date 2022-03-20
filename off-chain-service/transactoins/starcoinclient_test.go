@@ -11,8 +11,10 @@ import (
 	"github.com/starcoinorg/starcoin-go/client"
 )
 
-const DEV_CONTRACT_ADDRESS = "0x18351d311d32201149a4df2a9fc2db8a"
-const ONE_YEAR_MILLS uint64 = 1000 * 60 * 60 * 24 * 365
+const (
+	DEV_CONTRACT_ADDRESS string = "0x18351d311d32201149a4df2a9fc2db8a"
+	ONE_YEAR_MILLS       uint64 = 1000 * 60 * 60 * 24 * 365
+)
 
 var SMT_PLACEHOLDER []byte
 
