@@ -28,6 +28,10 @@ module DomainNameRegisterLogic {
         owner: address,
         registration_period: u64,
     ): DomainName::DomainNameState {
+        //        Debug::print<vector<u8>>(&x"00000000000000000000000000000000000000000000");
+        //        Debug::print<u64>(&Timestamp::now_milliseconds());
+        //        Debug::print<u64>(&registration_period);
+        //        Debug::print<vector<u8>>(&x"00000000000000000000000000000000000000000000");
         let domain_name_state = DomainName::new_domain_name_state(
             domain_name_id,
             Timestamp::now_milliseconds() + registration_period, // to expiration_date

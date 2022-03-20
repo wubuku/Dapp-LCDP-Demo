@@ -203,3 +203,14 @@ func testUpdateDomainNameSmt(domainNameId *DomainNameId, smt *smt.SparseMerkleTr
 	fmt.Printf("        // -------- Domain name '%s.%s' added. --------\n", domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain)
 	return key, value
 }
+
+// func TestPrintHex(t *testing.T) {
+// 	//SMT root with only one leaf(DomainName):
+// 	//   TLD: stc
+// 	//   SLD: a
+// 	// 	 Expiration Date: 1679184000000
+// 	//   Owner: b6D69DD935EDf7f2054acF12eb884df8
+// 	bs := []byte{231, 117, 245, 136, 243, 248, 230, 152, 58, 124, 13, 77, 213, 189, 166, 95, 171, 1, 23, 108, 124, 61, 123, 110, 219, 137, 55, 98, 224, 21, 125, 253}
+// 	fmt.Println(hex.EncodeToString(bs))
+// 	fmt.Println("e775f588f3f8e6983a7c0d4dd5bda65fab01176c7c3d7b6edb893762e0157dfd")
+// }
