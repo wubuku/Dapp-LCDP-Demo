@@ -42,7 +42,7 @@ func TestDomainNameInitGenesis(t *testing.T) {
 
 func TestDomainNameRegisterFirstDomain(t *testing.T) {
 	starcoinClient := localDevStarcoinClient()
-	privateKeyConfig, err := localDevAdminPrivateKeyConfig()
+	privateKeyConfig, err := localDevAlicePrivateKeyConfig()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
