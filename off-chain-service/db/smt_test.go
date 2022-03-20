@@ -70,18 +70,22 @@ func TestSmtGetValue(t *testing.T) {
 
 func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
 	// Initialise two new key-value store to store the nodes and values of the tree
-	nodeStore := smt.NewSimpleMap()
-	// db, err := devNetDB()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	t.FailNow()
-	// }
-	// nodeStore, err := db.NewDomainNameSmtNodeMapStore()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	t.FailNow()
-	// }
-	valueStore := smt.NewSimpleMap()
+	// //////////// New MySQL node store /////////////////
+	//nodeStore := smt.NewSimpleMap()
+	db, err := devNetDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	// /////////////////////////////
+	//valueStore := smt.NewSimpleMap()
+	valueStore := db.NewDomainNameSmtValueMapStore()
+
 	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
 	var key []byte
 	var domainNameId *DomainNameId

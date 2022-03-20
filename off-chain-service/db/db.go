@@ -8,6 +8,14 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
+func digest(data []byte) []byte {
+	hasher := New256Hasher()
+	hasher.Write(data)
+	sum := hasher.Sum(nil)
+	hasher.Reset()
+	return sum
+}
+
 func New256Hasher() hash.Hash {
 	return sha3.New256() //sha256.New()
 }
