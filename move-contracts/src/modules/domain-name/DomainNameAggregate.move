@@ -87,10 +87,8 @@ module DomainNameAggregate {
         assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_NON_MEMBERSHIP_PROOF));
 
         // ///////////// Call business logic module start ///////////////
-        // Verify command arguments.
-        DomainNameRegisterLogic::verify(account, &domain_name_id, registration_period);
-        // Get event properties from command arguments.
-        let (e_owner, e_registration_period) = DomainNameRegisterLogic::to_event_properties(account, &domain_name_id, registration_period);
+        // Verify command arguments, and get event properties from command arguments.
+        let (e_owner, e_registration_period) = DomainNameRegisterLogic::verify(account, &domain_name_id, registration_period);
         // Mutate state(get updated state) by event properties.
         let updated_domain_name_state = DomainNameRegisterLogic::mutate(&domain_name_id, e_owner, e_registration_period);
         // ///////////// Call business logic module end ///////////////
@@ -146,10 +144,8 @@ module DomainNameAggregate {
         assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_MEMBERSHIP_PROOF));
 
         // ///////////// Call business logic module start ///////////////
-        // Verify command arguments.
-        DomainNameRenewLogic::verify(account, &domain_name_state, renew_period);
-        // Get event properties from command arguments.
-        let (e_account, e_renew_period) = DomainNameRenewLogic::to_event_properties(account, &domain_name_state, renew_period);
+        // Verify command arguments, and get event properties from command arguments.
+        let (e_account, e_renew_period) = DomainNameRenewLogic::verify(account, &domain_name_state, renew_period);
         // Mutate state(get updated state) by event properties.
         let updated_domain_name_state = DomainNameRenewLogic::mutate(&domain_name_state, e_account, e_renew_period);
         // ///////////// Call business logic module end ///////////////

@@ -10,33 +10,16 @@ module DomainNameRegisterLogic {
         account: &signer,
         domain_name_id: &DomainName::DomainNameId,
         registration_period: u64,
-    ) {
-        _ = account;
-        _ = domain_name_id;
-        _ = registration_period;
-    }
-
-    public fun to_event_properties(
-        account: &signer,
-        domain_name_id: &DomainName::DomainNameId,
-        registration_period: u64,
     ): (
         address, // Owner
         u64, // RegistrationPeriod
     ) {
-        //        let new_domain_name_id = DomainName::new_domain_name_id(
-        //            &Vector::empty<u8>(),
-        //            &Vector::empty<u8>(),
-        //            );
-        //(&new_domain_name_id, registration_period)// Invalid return. Local variable 'new_domain_name_id' is still being borrowed.
-        //Debug::print<DomainName::DomainNameId>(&domain_name_id);
-
         _ = account;
         _ = domain_name_id;
+        _ = registration_period;
 
         let e_owner = Signer::address_of(account);
         let e_registration_period = registration_period;
-
         (e_owner, e_registration_period)
     }
 

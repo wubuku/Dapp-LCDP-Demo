@@ -9,22 +9,13 @@ module DomainNameRenewLogic {
         account: &signer,
         domain_name_state: &DomainName::DomainNameState,
         renew_period: u64,
-    ) {
-        _ = account;
-        _ = domain_name_state;
-        _ = renew_period;
-    }
-
-    public fun to_event_properties(
-        account: &signer,
-        domain_name_state: &DomainName::DomainNameState,
-        renew_period: u64,
     ): (
         address, // Account
         u64, // RenewPeriod
     ) {
         _ = account;
         _ = domain_name_state;
+        _ = renew_period;
 
         let e_account = Signer::address_of(account);
         let e_renew_period = renew_period;
