@@ -67,6 +67,9 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 
 	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
 	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
+	_ = starcoinClient
+	_ = privateKeyConfig
+	_ = smTree
 
 	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "b", t)
 	// time.Sleep(time.Second * 5)
@@ -86,6 +89,8 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "i", t)
 	// time.Sleep(time.Second * 5)
 
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "j", t)
+	time.Sleep(time.Second * 5)
 }
 
 func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.SparseMerkleTree, privateKeyConfig map[string]string, tld string, sld string, t *testing.T) {
