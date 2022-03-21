@@ -72,7 +72,7 @@ func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
 	// Initialise two new key-value store to store the nodes and values of the tree
 	// //////////// New MySQL node MapStore /////////////////
 	//nodeStore := smt.NewSimpleMap()
-	db, err := devNetDB()
+	db, err := localDevDB()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

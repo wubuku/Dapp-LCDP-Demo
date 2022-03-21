@@ -16,9 +16,11 @@ const (
 
 func TestHandleNewBlock(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
-	ok := starcoinManager.handleNewBlock(6)
-
-	fmt.Println(ok)
+	err := starcoinManager.handleNewBlock(6)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
 }
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {

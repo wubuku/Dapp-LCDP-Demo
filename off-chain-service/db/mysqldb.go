@@ -41,7 +41,21 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 }
 
 func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
-	return w.db.Save(e).Error
+	err := w.db.Save(e).Error
+	var mysqlErr *gomysql.MySQLError
+	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
+		// oldData, err := m.Get(key)
+		// if err != nil {
+		// 	return err
+		// }
+		// if bytes.Equal(value, oldData) { // if it is really duplicate entry
+		// 	return nil
+		// } else {
+		// 	return fmt.Errorf("reset value is not allowed, key: %s, value: %s, old value: %s", h, d, hex.EncodeToString(oldData))
+		// }
+		return nil
+	}
+	return err
 }
 
 func (db *MySqlDB) NewDomainNameSmtNodeMapStore() (smt.MapStore, error) {

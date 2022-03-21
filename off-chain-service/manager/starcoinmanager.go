@@ -3,6 +3,7 @@ package manager
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"strconv"
 
 	"log"
@@ -13,11 +14,12 @@ import (
 	"starcoin-ns-demo/tools"
 
 	"github.com/celestiaorg/smt"
+	"github.com/pkg/errors"
 	stcclient "github.com/starcoinorg/starcoin-go/client"
 )
 
 const (
-	STARCOIN_USEFUL_BLOCK_NUM = 1
+	STARCOIN_USEFUL_BLOCK_NUM = 0
 )
 
 type StarcoinManager struct {
@@ -68,14 +70,18 @@ func (m *StarcoinManager) MonitorChain() {
 				if m.currentHeight%10 == 0 {
 					log.Printf("StarcoinManager.MonitorChain - handle confirmed starcoin block height: %d", m.currentHeight)
 				}
-				blockHandleResult = m.handleNewBlock(m.currentHeight + 1)
+				err = m.handleNewBlock(m.currentHeight + 1)
+				if err != nil {
+					log.Printf("StarcoinManager.MonitorChain - handle confirmed starcoin block error: %s,  height: %d", err.Error(), m.currentHeight)
+					blockHandleResult = false
+				}
 				if !blockHandleResult {
 					break
 				}
 				m.currentHeight++
 			}
 			if err = m.db.UpdateStarcoinHeight(m.currentHeight - 1); err != nil {
-				log.Printf("PolyManager.MonitorChain - failed to save height of poly: %v", err)
+				log.Printf("StarcoinManager.MonitorChain - failed to save height of Starcoin: %v", err)
 			}
 			// case <-this.exitChan:
 			// 	return
@@ -83,7 +89,7 @@ func (m *StarcoinManager) MonitorChain() {
 	}
 }
 
-func (m *StarcoinManager) handleNewBlock(height uint64) bool {
+func (m *StarcoinManager) handleNewBlock(height uint64) error {
 
 	starcoinClient := m.starcoinClient
 	address := m.contractAddress
@@ -99,67 +105,55 @@ func (m *StarcoinManager) handleNewBlock(height uint64) bool {
 
 	evts, err := starcoinClient.GetEvents(context.Background(), eventFilter)
 	if err != nil {
-		log.Printf("handleNewBlock - GetEvents error :%s", err.Error())
-		return false
+		return errors.Wrap(err, "handleNewBlock - GetEvents error")
 	}
 	if evts == nil {
-		log.Printf("handleNewBlock - GetEvents return nil.")
-		return true
+		return nil
 	}
 
 	for _, evt := range evts {
 		evtData, err := tools.HexToBytes(evt.Data)
 		if err != nil {
-			log.Printf("handleNewBlock - tools.HexToBytes error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - tools.HexToBytes error")
 		}
 		regEvt, err := events.BcsDeserializeDomainNameRegisterd(evtData)
 		if err != nil {
-			log.Printf("handleNewBlock - BcsDeserializeDomainNameRegisterd error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - BcsDeserializeDomainNameRegisterd error")
 		}
 		blockNumber, err := strconv.ParseUint(evt.BlockNumber, 10, 64)
 		if err != nil {
-			log.Printf("handleNewBlock - ParseUint error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - ParseUint error")
 		}
 		domainNameEvent := db.NewDomainNameEvent(regEvt.UpdatedSmtRoot, regEvt.PreviousSmtRoot, blockNumber, evt.TransactionHash, evtData)
 		err = m.db.SaveDomainNameEvent(domainNameEvent)
 		if err != nil {
-			log.Printf("handleNewBlock - SaveDomainNameEvent error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
 		}
 
 		// Update SMT
 		nodeStore, err := m.db.NewDomainNameSmtNodeMapStore()
 		if err != nil {
-			log.Printf("handleNewBlock - NewDomainNameSmtNodeMapStore error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - NewDomainNameSmtNodeMapStore error")
 		}
 		valueStore := m.db.NewDomainNameSmtValueMapStore()
-
 		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
 		domainNameId := db.NewDomainNameId(string(regEvt.DomainNameId.TopLevelDomain), string(regEvt.DomainNameId.SecondLevelDomain))
 		key, err := domainNameId.BcsSerialize()
 		if err != nil {
-			log.Printf("handleNewBlock - domainNameId.BcsSerialize error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
 		}
 		value, err := regEvt.UpdatedState.BcsSerialize()
 		if err != nil {
-			log.Printf("handleNewBlock - UpdatedState.BcsSerialize error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
 		}
 		offChainSmtRoot, err := smt.UpdateForRoot(key, value, regEvt.PreviousSmtRoot)
 		if err != nil {
-			log.Printf("handleNewBlock - UpdateForRoot error :%s", err.Error())
-			return false
+			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
 		}
 		if !bytes.Equal(offChainSmtRoot, regEvt.UpdatedSmtRoot) {
-			log.Printf("handleNewBlock - offChainSmtRoot != regEvt.UpdatedSmtRoot")
-			return false
+			return fmt.Errorf("handleNewBlock - offChainSmtRoot != regEvt.UpdatedSmtRoot")
 		}
 	}
 
-	return true
+	return nil
 }
