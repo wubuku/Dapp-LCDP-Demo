@@ -68,24 +68,32 @@ func TestSmtGetValue(t *testing.T) {
 	}
 }
 
-func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
-	// Initialise two new key-value store to store the nodes and values of the tree
+func testGetSmtSimpleMapStores() (smt.MapStore, smt.MapStore, error) {
+	nodeStore := smt.NewSimpleMap()
+	valueStore := smt.NewSimpleMap()
+	return nodeStore, valueStore, nil
+}
+
+func testGetDBDomainNameSmtMapStores() (smt.MapStore, smt.MapStore, error) {
 	// //////////// New MySQL node MapStore /////////////////
 	//nodeStore := smt.NewSimpleMap()
 	db, err := localDevDB()
 	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
+		return nil, nil, err
 	}
 	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
 	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
+		return nil, nil, err
 	}
 	// //////////// New MySQL value MapStore /////////////////
 	//valueStore := smt.NewSimpleMap()
 	valueStore := db.NewDomainNameSmtValueMapStore()
+	return nodeStore, valueStore, nil
+}
 
+func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
+	// Initialise two new key-value store to store the nodes and values of the tree
+	nodeStore, valueStore, _ := testGetSmtSimpleMapStores()
 	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
 	var key []byte
 	var domainNameId *DomainNameId
@@ -180,6 +188,7 @@ func testPrintMoveMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byte, 
 	for _, s := range proof.SideNodes {
 		fmt.Printf("        Vector::push_back(&mut member_side_nodes, x\"%s\");\n", hex.EncodeToString(s))
 	}
+	//fmt.Println("++++++++++ " + hex.EncodeToString(proof.NonMembershipLeafData) + " ++++++++++")
 }
 
 func testGetDomainNameIdAndKey(tld string, sld string, t *testing.T) (*DomainNameId, []byte) {

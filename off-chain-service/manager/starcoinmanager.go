@@ -51,10 +51,14 @@ func NewStarcoinManager(
 
 func (this *StarcoinManager) init() bool {
 	if this.currentHeight > 0 {
-		log.Println("PolyManager init - start height from flag: %d", this.currentHeight)
+		log.Println("StarcoinManager init - start height from flag: %d", this.currentHeight)
 		return true
 	}
-	this.currentHeight, _ = this.db.GetStarcoinHeight() // TODO: ignore db error???
+	heightFromDB, err := this.db.GetStarcoinHeight() // TODO: ignore db error???
+	if err != nil {
+		log.Printf("StarcoinManager init - Get height from DB error: %s", err.Error())
+	}
+	this.currentHeight = heightFromDB
 	return true
 }
 
@@ -88,7 +92,7 @@ func (m *StarcoinManager) MonitorChain() {
 				}
 				m.currentHeight++
 			}
-			if err = m.db.UpdateStarcoinHeight(m.currentHeight - 1); err != nil {
+			if err = m.db.UpdateStarcoinHeight(m.currentHeight); err != nil {
 				log.Printf("StarcoinManager.MonitorChain - failed to save height of Starcoin: %v", err)
 			}
 			// case <-this.exitChan:
