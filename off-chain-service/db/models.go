@@ -64,8 +64,17 @@ func (domainNameState *DomainNameState) GetDomainNameId() *DomainNameId {
 	return &domainNameId
 }
 
+func (domainNameState *DomainNameState) SetDomainNameId(domainNameId *DomainNameId) {
+	domainNameState.DomainNameIdTopLevelDomain = domainNameId.TopLevelDomain
+	domainNameState.DomainNameIdSecondLevelDomain = domainNameId.SecondLevelDomain
+}
+
 func (domainNameState *DomainNameState) GetOwner() ([16]uint8, error) {
 	return HexToAccountAddress(domainNameState.Owner)
+}
+
+func (domainNameState *DomainNameState) SetOwner(owner [16]uint8) {
+	domainNameState.Owner = hex.EncodeToString(owner[:])
 }
 
 type DomainNameStateHead struct {

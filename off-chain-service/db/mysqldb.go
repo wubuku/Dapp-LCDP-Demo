@@ -124,16 +124,32 @@ func (m *DomainNameSmtValueMapStore) Get(key []byte) ([]byte, error) {
 func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
 	path := hex.EncodeToString(key)
 	valueHash := hex.EncodeToString(digest(value))
-	//todo
+	domainNameState, err := BcsDeserializeDomainNameState(value)
+	if err != nil {
+		return err
+	}
 	domainNameSmtVal := DomainNameSmtValue{
 		Path:                          path,
 		ValueHash:                     valueHash,
-		DomainNameIdTopLevelDomain:    "todo",
-		DomainNameIdSecondLevelDomain: "todo",
-		ExpirationDate:                1,
-		Owner:                         "todo",
+		DomainNameIdTopLevelDomain:    domainNameState.DomainNameIdTopLevelDomain,
+		DomainNameIdSecondLevelDomain: domainNameState.DomainNameIdSecondLevelDomain,
+		ExpirationDate:                domainNameState.ExpirationDate,
+		Owner:                         domainNameState.Owner,
 	}
-	err := m.db.db.Save(domainNameSmtVal).Error
+	err = m.db.db.Save(domainNameSmtVal).Error
+	var mysqlErr *gomysql.MySQLError
+	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
+		// oldData, err := m.Get(key)
+		// if err != nil {
+		// 	return err
+		// }
+		// if bytes.Equal(value, oldData) { // if it is really duplicate entry
+		// 	return nil
+		// } else {
+		// 	return fmt.Errorf("reset value is not allowed, key: %s, value: %s, old value: %s", h, d, hex.EncodeToString(oldData))
+		// }
+		return nil
+	}
 	return err
 }
 

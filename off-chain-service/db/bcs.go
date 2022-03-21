@@ -40,6 +40,43 @@ func (obj *DomainNameState) BcsSerialize() ([]byte, error) {
 	return serializer.GetBytes(), nil
 }
 
+func DeserializeDomainNameState(deserializer serde.Deserializer) (DomainNameState, error) {
+	var obj DomainNameState
+	if err := deserializer.IncreaseContainerDepth(); err != nil {
+		return obj, err
+	}
+	if val, err := DeserializeDomainNameId(deserializer); err == nil {
+		obj.SetDomainNameId(&val)
+	} else {
+		return obj, err
+	}
+	if val, err := deserializer.DeserializeU64(); err == nil {
+		obj.ExpirationDate = val
+	} else {
+		return obj, err
+	}
+	if val, err := deserialize_array16_u8_array(deserializer); err == nil {
+		obj.SetOwner(val)
+	} else {
+		return obj, err
+	}
+	deserializer.DecreaseContainerDepth()
+	return obj, nil
+}
+
+func BcsDeserializeDomainNameState(input []byte) (DomainNameState, error) {
+	if input == nil {
+		var obj DomainNameState
+		return obj, fmt.Errorf("Cannot deserialize null array")
+	}
+	deserializer := bcs.NewDeserializer(input)
+	obj, err := DeserializeDomainNameState(deserializer)
+	if err == nil && deserializer.GetBufferOffset() < uint64(len(input)) {
+		return obj, fmt.Errorf("Some input bytes were not read")
+	}
+	return obj, err
+}
+
 func (obj *DomainNameId) Serialize(serializer serde.Serializer) error {
 	if err := serializer.IncreaseContainerDepth(); err != nil {
 		return err
