@@ -13,6 +13,10 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+const (
+	KEY_STARCOIN_HEIGHT string = "STARCOIN_HEIGHT"
+)
+
 type MySqlDB struct {
 	//rwlock   *sync.RWMutex
 	db *gorm.DB
@@ -29,11 +33,15 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 	}
 	// Migrate the schema
 	//db.AutoMigrate(&ChainHeight{})
-	db.Set("gorm:table_options", "CHARSET=latin1").AutoMigrate(&DomainNameSmtNode{}, &DomainNameSmtValue{}, &DomainNameEvent{}, &DomainNameState{}, &DomainNameStateHead{})
+	db.Set("gorm:table_options", "CHARSET=latin1").AutoMigrate(&ChainHeight{}, &DomainNameSmtNode{}, &DomainNameSmtValue{}, &DomainNameEvent{}, &DomainNameState{}, &DomainNameStateHead{})
 
 	w := new(MySqlDB)
 	w.db = db
 	return w, nil
+}
+
+func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
+	return w.db.Save(e).Error
 }
 
 func (db *MySqlDB) NewDomainNameSmtNodeMapStore() (smt.MapStore, error) {
@@ -156,4 +164,39 @@ func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
 // Delete deletes a key.
 func (m *DomainNameSmtValueMapStore) Delete(key []byte) error {
 	return fmt.Errorf("NOT IMPLEMENTED ERROR")
+}
+
+// Update Starcoin height handled
+func (w *MySqlDB) UpdateStarcoinHeight(h uint64) error {
+	ch := ChainHeight{
+		Key:    KEY_STARCOIN_HEIGHT,
+		Height: h,
+	}
+	return createOrUpdate(w.db, ch)
+}
+
+func (w *MySqlDB) GetStarcoinHeight() (uint64, error) {
+	ch := ChainHeight{}
+	if err := w.db.Where(&ChainHeight{
+		Key: KEY_STARCOIN_HEIGHT,
+	}).First(&ch).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return 0, err
+		} else {
+			//fmt.Println("errors.Is(err, gorm.ErrRecordNotFound)")
+			return 0, nil
+		}
+	}
+	return ch.Height, nil
+}
+
+func createOrUpdate(db *gorm.DB, dest interface{}) error {
+	if err := db.Save(dest).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		} else {
+			return db.Create(dest).Error
+		}
+	}
+	return nil
 }

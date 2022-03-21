@@ -28,17 +28,17 @@ func TestFetchDomainRegisterEvent(t *testing.T) {
 		ToBlock:   &toBlock,
 	}
 
-	events, err := starcoinClient.GetEvents(context.Background(), eventFilter)
+	evts, err := starcoinClient.GetEvents(context.Background(), eventFilter)
 	if err != nil {
 		fmt.Printf("TestFetchDomainRegisterEvent - GetEvents error :%s", err.Error())
 		t.FailNow()
 	}
-	if events == nil {
+	if evts == nil {
 		fmt.Printf("TestFetchDomainRegisterEvent - no events found.")
 		t.FailNow()
 	}
 
-	for _, evt := range events {
+	for _, evt := range evts {
 		evtData, err := tools.HexToBytes(evt.Data)
 		if err != nil {
 			fmt.Printf("TestFetchDomainRegisterEvent - hex.DecodeString error :%s", err.Error())

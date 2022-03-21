@@ -51,14 +51,54 @@ func TestDomainNameRegisterFirstDomain(t *testing.T) {
 	}
 	tld := "stc"
 	sld := "a"
-	register_tx_payload := EncodeDomainNameRegisterTxPaylaod(DEV_CONTRACT_ADDRESS, tld, sld, ONE_YEAR_MILLS, SMT_PLACEHOLDER, []byte{}, []byte{})
-	txHash, err := tools.SubmitStarcoinTransaction(&starcoinClient, privateKeyConfig, &register_tx_payload)
+	testRegisterDomainName(&starcoinClient, privateKeyConfig, tld, sld, SMT_PLACEHOLDER, []byte{}, []byte{}, t)
+}
+
+func TestDomainNameRegisterDomains(t *testing.T) {
+	// starcoinClient := localDevStarcoinClient()
+	// privateKeyConfig, err := localDevAlicePrivateKeyConfig()
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	t.FailNow()
+	// }
+	// var smtRoot string
+	//todo ...
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "b", testDecodeSmtRootHex(smtRoot, t), t)
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "c", testDecodeSmtRootHex(smtRoot, t), t)
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "d", testDecodeSmtRootHex(smtRoot, t), t)
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "e", testDecodeSmtRootHex(smtRoot, t), t)
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "f", testDecodeSmtRootHex(smtRoot, t), t)
+	// smtRoot, _ = contract.GetDomainNameSmtRoot(&starcoinClient, DEV_CONTRACT_ADDRESS)
+	// testRegisterDomainName(&starcoinClient, privateKeyConfig, "stc", "g", testDecodeSmtRootHex(smtRoot, t), t)
+}
+
+func testDecodeSmtRootHex(h string, t *testing.T) []byte {
+	bytes, err := tools.HexToBytes(h)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	ok, err := tools.WaitTransactionConfirm(&starcoinClient, txHash, time.Minute*2)
+	return bytes
+}
+
+func testRegisterDomainName(starcoinClient *client.StarcoinClient, privateKeyConfig map[string]string, tld string, sld string, smtRoot []byte, nonMemberLeaf []byte, sideNodes []byte, t *testing.T) { //(bool, error) {
+	register_tx_payload := EncodeDomainNameRegisterTxPaylaod(DEV_CONTRACT_ADDRESS, tld, sld, ONE_YEAR_MILLS, smtRoot, nonMemberLeaf, sideNodes)
+	txHash, err := tools.SubmitStarcoinTransaction(starcoinClient, privateKeyConfig, &register_tx_payload)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	ok, err := tools.WaitTransactionConfirm(starcoinClient, txHash, time.Minute*2)
 	fmt.Println(ok, err)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
 	if !ok {
 		t.FailNow()
 	}

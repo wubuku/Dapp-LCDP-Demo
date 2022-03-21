@@ -40,6 +40,16 @@ type DomainNameEvent struct {
 	CreatedAt       uint64 `gorm:"autoCreateTime:milli"`
 }
 
+func NewDomainNameEvent(smtRoot []byte, previousSmtRoot []byte, blockNumber uint64, transactionHash string, bcsData []byte) *DomainNameEvent {
+	return &DomainNameEvent{
+		SmtRoot:         hex.EncodeToString(smtRoot),
+		PreviousSmtRoot: hex.EncodeToString(previousSmtRoot),
+		BlockNumber:     blockNumber,
+		TransactionHash: transactionHash,
+		BcsData:         hex.EncodeToString(bcsData),
+	}
+}
+
 type DomainNameState struct {
 	DomainNameIdTopLevelDomain    string `gorm:"primaryKey;size:100"`
 	DomainNameIdSecondLevelDomain string `gorm:"primaryKey;size:100"`
@@ -81,4 +91,9 @@ type DomainNameStateHead struct {
 	HeadId    string `gorm:"primaryKey;size:100"`
 	SmtRoot   string `gorm:"size:66"`
 	TableName string `gorm:"size:100"`
+}
+
+type ChainHeight struct {
+	Key    string `gorm:"primaryKey;size:66"`
+	Height uint64
 }
