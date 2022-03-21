@@ -32,7 +32,6 @@ type StarcoinManager struct {
 }
 
 func NewStarcoinManager(
-	currentHeight uint64,
 	jsonRpcUrl string,
 	starcoinClient *stcclient.StarcoinClient,
 	restClient *tools.RestClient,
@@ -40,14 +39,23 @@ func NewStarcoinManager(
 	db *db.MySqlDB,
 ) (*StarcoinManager, error) {
 	m := StarcoinManager{
-		currentHeight:   currentHeight,
 		jsonRpcUrl:      jsonRpcUrl,
 		starcoinClient:  starcoinClient,
 		restClient:      restClient,
 		contractAddress: contractAddress,
 		db:              db,
 	}
+	m.init()
 	return &m, nil
+}
+
+func (this *StarcoinManager) init() bool {
+	if this.currentHeight > 0 {
+		log.Println("PolyManager init - start height from flag: %d", this.currentHeight)
+		return true
+	}
+	this.currentHeight, _ = this.db.GetStarcoinHeight() // TODO: ignore db error???
+	return true
 }
 
 func (m *StarcoinManager) MonitorChain() {
@@ -90,7 +98,6 @@ func (m *StarcoinManager) MonitorChain() {
 }
 
 func (m *StarcoinManager) handleNewBlock(height uint64) error {
-
 	starcoinClient := m.starcoinClient
 	address := m.contractAddress
 	typeTag := m.contractAddress + "::DomainName::Registerd"

@@ -25,6 +25,7 @@ func TestHandleNewBlock(t *testing.T) {
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
 	url := STARCOIN_LOCAL_DEV_NETWORK_URL
+	contractAddress := DEV_CONTRACT_ADDRESS
 	starcoinClient := client.NewStarcoinClient(url)
 	restClient := tools.NewRestClient()
 	db, err := localDevDB()
@@ -32,7 +33,7 @@ func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	starcoinManager, err := NewStarcoinManager(1, url, &starcoinClient, restClient, DEV_CONTRACT_ADDRESS, db)
+	starcoinManager, err := NewStarcoinManager(url, &starcoinClient, restClient, contractAddress, db)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
