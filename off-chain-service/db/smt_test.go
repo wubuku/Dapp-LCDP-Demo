@@ -30,16 +30,6 @@ func init() {
 
 func TestSmtGetValue(t *testing.T) {
 	nodeStore := smt.NewSimpleMap()
-	// db, err := devNetDB()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	t.FailNow()
-	// }
-	// nodeStore, err := db.NewDomainNameSmtNodeMapStore()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	t.FailNow()
-	// }
 	valueStore := smt.NewSimpleMap()
 	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
 	var key []byte
@@ -74,22 +64,22 @@ func testGetSmtSimpleMapStores() (smt.MapStore, smt.MapStore, error) {
 	return nodeStore, valueStore, nil
 }
 
-func testGetDBDomainNameSmtMapStores() (smt.MapStore, smt.MapStore, error) {
-	// //////////// New MySQL node MapStore /////////////////
-	//nodeStore := smt.NewSimpleMap()
-	db, err := localDevDB()
-	if err != nil {
-		return nil, nil, err
-	}
-	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
-	if err != nil {
-		return nil, nil, err
-	}
-	// //////////// New MySQL value MapStore /////////////////
-	//valueStore := smt.NewSimpleMap()
-	valueStore := db.NewDomainNameSmtValueMapStore()
-	return nodeStore, valueStore, nil
-}
+// func testGetDBDomainNameSmtMapStores() (smt.MapStore, smt.MapStore, error) {
+// 	// //////////// New MySQL node MapStore /////////////////
+// 	//nodeStore := smt.NewSimpleMap()
+// 	db, err := localDevDB()
+// 	if err != nil {
+// 		return nil, nil, err
+// 	}
+// 	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
+// 	if err != nil {
+// 		return nil, nil, err
+// 	}
+// 	// //////////// New MySQL value MapStore /////////////////
+// 	//valueStore := smt.NewSimpleMap()
+// 	valueStore := db.NewDomainNameSmtValueMapStore()
+// 	return nodeStore, valueStore, nil
+// }
 
 func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
 	// Initialise two new key-value store to store the nodes and values of the tree
@@ -128,7 +118,6 @@ func testSmtProofAndPrintMoveUnitTestFun(domainNameId *DomainNameId, key []byte,
 	testUpdateDomainNameSmt(domainNameId, smt, t)
 	testPrintMoveMembershipRootAndProof(smt, key, t)
 	testPrintMoveUnitTestFunEnd()
-
 }
 
 func testPrintMoveUnitTestFunStart(domainNameId *DomainNameId) {
