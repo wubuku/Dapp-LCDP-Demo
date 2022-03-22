@@ -11,7 +11,7 @@ DomainNameState:
     - owner:
         TYPENAME: AccountAddress
 
-DomainNameRegisterd:
+DomainNameRegistered:
   STRUCT:
     - domain_name_id:
         TYPENAME: DomainNameId

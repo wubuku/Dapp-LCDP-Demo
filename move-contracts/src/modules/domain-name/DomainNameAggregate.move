@@ -22,8 +22,8 @@ module DomainNameAggregate {
     const ERR_INVALID_SMT_MEMBERSHIP_PROOF: u64 = 104;
 
     struct EventStore has key, store {
-        registerd_event_handle: Event::EventHandle<DomainName::Registerd>,
-        renew_event_handle: Event::EventHandle<DomainName::Renewed>,
+        registered_event_handle: Event::EventHandle<DomainName::Registered>,
+        renewed_event_handle: Event::EventHandle<DomainName::Renewed>,
     }
 
     /// SMT
@@ -54,8 +54,8 @@ module DomainNameAggregate {
         DomainName::require_genesis_account(account_address);
         assert(!exists<EventStore>(Signer::address_of(account)), Errors::invalid_argument(ERR_GENESIS_INITIALIZED));
         move_to(account, EventStore{
-            registerd_event_handle: Event::new_event_handle<DomainName::Registerd>(account),
-            renew_event_handle: Event::new_event_handle<DomainName::Renewed>(account),
+            registered_event_handle: Event::new_event_handle<DomainName::Registered>(account),
+            renewed_event_handle: Event::new_event_handle<DomainName::Renewed>(account),
         });
     }
 
@@ -95,7 +95,7 @@ module DomainNameAggregate {
 
         // Create event and emit.
         let updated_smt_root = update_smt_root_by_new_leaf_path_and_value(&leaf_path, &updated_domain_name_state, smt_non_membership_leaf_data, smt_side_nodes);
-        let registered = DomainName::new_registerd(
+        let registered = DomainName::new_registered(
             &domain_name_id,
             Signer::address_of(account),
             registration_period,
@@ -105,7 +105,7 @@ module DomainNameAggregate {
         );
         let event_store = borrow_global_mut<EventStore>(DomainName::genesis_account());
         Event::emit_event(
-            &mut event_store.registerd_event_handle,
+            &mut event_store.registered_event_handle,
             registered,
         );
     }
@@ -119,7 +119,7 @@ module DomainNameAggregate {
         state_owner: address,
         smt_root: &vector<u8>,
         smt_side_nodes: &vector<vector<u8>>,
-    ) acquires SMTStore {
+    )  acquires EventStore, SMTStore {
         _ = account;
         _ = renew_period;
         _ = smt_root;
@@ -160,7 +160,11 @@ module DomainNameAggregate {
             &updated_smt_root,
             &store_smt_root, // previouse SMT root
         );
-        _ = renewed;
+        let event_store = borrow_global_mut<EventStore>(DomainName::genesis_account());
+        Event::emit_event(
+            &mut event_store.renewed_event_handle,
+            renewed,
+        );
     }
 
     public fun get_smt_root(): vector<u8> acquires SMTStore {

@@ -125,6 +125,16 @@ func encode_u8_argument(arg uint8) []byte {
 	panic("Unable to serialize argument of type u64")
 }
 
+func encode_array16_u8_argument(arg [16]uint8) []byte {
+	serializer := bcs.NewSerializer()
+	for _, item := range arg {
+		if err := serializer.SerializeU8(item); err != nil {
+			panic("Unable to serialize argument of type [16]uint8")
+		}
+	}
+	return serializer.GetBytes()
+}
+
 func ParseModuleId(str string) *diemtypes.ModuleId {
 	ss := strings.Split(str, "::")
 	if len(ss) < 2 {

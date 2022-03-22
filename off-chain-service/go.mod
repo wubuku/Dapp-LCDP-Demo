@@ -3,7 +3,7 @@ module starcoin-ns-demo
 go 1.16
 
 require (
-	github.com/celestiaorg/smt v0.2.1-0.20210927133715-225e28d5599a
+	github.com/celestiaorg/smt v0.2.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/novifinancial/serde-reflection/serde-generate/runtime/golang v0.0.0-20220114180008-bde96ef4a0a2
 	github.com/pkg/errors v0.9.1
@@ -13,4 +13,4 @@ require (
 	gorm.io/gorm v1.23.3
 )
 
-replace github.com/lazyledger/smt => github.com/celestiaorg/smt v0.2.1
+replace github.com/celestiaorg/smt v0.2.1 => github.com/wubuku/smt v0.2.1-0.20220322080945-128b37382127

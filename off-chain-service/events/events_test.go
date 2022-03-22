@@ -18,7 +18,7 @@ const (
 func TestFetchDomainRegisterEvent(t *testing.T) {
 	starcoinClient := stcclient.NewStarcoinClient(STARCOIN_LOCAL_DEV_NETWORK_URL)
 	address := DEV_CONTRACT_ADDRESS
-	typeTag := DEV_CONTRACT_ADDRESS + "::DomainName::Registerd"
+	typeTag := DEV_CONTRACT_ADDRESS + "::DomainName::Registered"
 	fromBlock := uint64(1)
 	toBlock := uint64(20)
 	eventFilter := &stcclient.EventFilter{
@@ -44,7 +44,7 @@ func TestFetchDomainRegisterEvent(t *testing.T) {
 			fmt.Printf("TestFetchDomainRegisterEvent - hex.DecodeString error :%s", err.Error())
 			t.FailNow()
 		}
-		regEvt, err := BcsDeserializeDomainNameRegisterd(evtData)
+		regEvt, err := BcsDeserializeDomainNameRegistered(evtData)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -73,4 +73,10 @@ func TestFetchDomainRegisterEvent(t *testing.T) {
 		fmt.Println(string(regEvt.UpdatedState.DomainNameId.SecondLevelDomain))
 
 	}
+}
+
+func TestTrimTypeTagContractAddress(t *testing.T) {
+	typeTag := "0X76A45FBF9631F68EB09812A21452E388::DomainName::Renewed"
+	r := trimTypeTagContractAddress(typeTag)
+	fmt.Println(r)
 }

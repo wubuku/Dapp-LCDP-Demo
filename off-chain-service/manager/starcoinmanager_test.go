@@ -16,7 +16,7 @@ const (
 
 func TestHandleNewBlock(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
-	err := starcoinManager.handleNewBlock(6)
+	err := starcoinManager.handleNewBlock(14)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

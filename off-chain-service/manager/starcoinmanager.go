@@ -3,6 +3,7 @@ package manager
 import (
 	"bytes"
 	"context"
+	"encoding/hex"
 	"fmt"
 	"strconv"
 
@@ -51,7 +52,7 @@ func NewStarcoinManager(
 
 func (this *StarcoinManager) init() bool {
 	if this.currentHeight > 0 {
-		log.Println("StarcoinManager init - start height from flag: %d", this.currentHeight)
+		log.Printf("StarcoinManager init - start height from flag: %d", this.currentHeight)
 		return true
 	}
 	heightFromDB, err := this.db.GetStarcoinHeight() // TODO: ignore db error???
@@ -104,12 +105,15 @@ func (m *StarcoinManager) MonitorChain() {
 func (m *StarcoinManager) handleNewBlock(height uint64) error {
 	starcoinClient := m.starcoinClient
 	address := m.contractAddress
-	typeTag := m.contractAddress + "::DomainName::Registerd"
-	fromBlock := uint64(1)
-	toBlock := uint64(20)
+	// ///////////////////////////////////////////////////////
+	typeTagRegistered := m.contractAddress + "::DomainName::Registered"
+	typeTagRenewed := m.contractAddress + "::DomainName::Renewed"
+	// ////////////////////////////////////////////////////////
+	fromBlock := height
+	toBlock := height
 	eventFilter := &stcclient.EventFilter{
 		Address:   []string{address},
-		TypeTags:  []string{typeTag},
+		TypeTags:  []string{typeTagRegistered, typeTagRenewed},
 		FromBlock: fromBlock,
 		ToBlock:   &toBlock,
 	}
@@ -127,15 +131,16 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - tools.HexToBytes error")
 		}
-		regEvt, err := events.BcsDeserializeDomainNameRegisterd(evtData)
+		// BCS deserialize on-chain Domain-Name-Event
+		domainNameEvt, err := events.BcsDeserializeDomainNameEvent(evt.TypeTag, evtData)
 		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - BcsDeserializeDomainNameRegisterd error")
+			return errors.Wrap(err, "handleNewBlock - BcsDeserializeDomainNameRegistered error")
 		}
 		blockNumber, err := strconv.ParseUint(evt.BlockNumber, 10, 64)
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - ParseUint error")
 		}
-		domainNameEvent := db.NewDomainNameEvent(regEvt.UpdatedSmtRoot, regEvt.PreviousSmtRoot, blockNumber, evt.TransactionHash, evtData)
+		domainNameEvent := db.NewDomainNameEvent(domainNameEvt.GetUpdatedSmtRoot(), domainNameEvt.GetPreviousSmtRoot(), blockNumber, evt.TransactionHash, evt.TypeTag, evtData)
 		err = m.db.SaveDomainNameEvent(domainNameEvent)
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
@@ -148,21 +153,21 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 		}
 		valueStore := m.db.NewDomainNameSmtValueMapStore()
 		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
-		domainNameId := db.NewDomainNameId(string(regEvt.DomainNameId.TopLevelDomain), string(regEvt.DomainNameId.SecondLevelDomain))
+		domainNameId := db.NewDomainNameId(string(domainNameEvt.GetDomainNameId().TopLevelDomain), string(domainNameEvt.GetDomainNameId().SecondLevelDomain))
 		key, err := domainNameId.BcsSerialize()
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
 		}
-		value, err := regEvt.UpdatedState.BcsSerialize()
+		value, err := domainNameEvt.GetUpdatedState().BcsSerialize()
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
 		}
-		offChainSmtRoot, err := smt.UpdateForRoot(key, value, regEvt.PreviousSmtRoot)
+		offChainSmtRoot, err := smt.UpdateForRoot(key, value, domainNameEvt.GetPreviousSmtRoot())
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
 		}
-		if !bytes.Equal(offChainSmtRoot, regEvt.UpdatedSmtRoot) {
-			return fmt.Errorf("handleNewBlock - offChainSmtRoot != regEvt.UpdatedSmtRoot")
+		if !bytes.Equal(offChainSmtRoot, domainNameEvt.GetUpdatedSmtRoot()) {
+			return fmt.Errorf("handleNewBlock - offChainSmtRoot(%s) != onChainEvent.UpdatedSmtRoot(%s)", hex.EncodeToString(offChainSmtRoot), hex.EncodeToString(domainNameEvt.GetUpdatedSmtRoot()))
 		}
 	}
 

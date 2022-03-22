@@ -33,12 +33,28 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 	}
 	// Migrate the schema
 	//db.AutoMigrate(&ChainHeight{})
-	db.Set("gorm:table_options", "CHARSET=latin1").AutoMigrate(&ChainHeight{}, &DomainNameSmtNode{}, &DomainNameSmtValue{}, &DomainNameEvent{}, &DomainNameState{}, &DomainNameStateHead{})
+	db.Set("gorm:table_options", "CHARSET=latin1").AutoMigrate(&ChainHeight{}, &DomainNameSmtNode{}, &DomainNameEvent{}, &DomainNameState{}, &DomainNameStateHead{})
 
 	w := new(MySqlDB)
 	w.db = db
 	return w, nil
 }
+
+// func (w *MySqlDB) GetDomainNameSmtValue(path string, valueHash string) (*DomainNameSmtValue, error) {
+// 	v := new(DomainNameSmtValue)
+// 	if err := w.db.Where(&DomainNameSmtValue{
+// 		Path:      path,
+// 		ValueHash: valueHash,
+// 	}).First(v).Error; err != nil {
+// 		//if !errors.Is(err, gorm.ErrRecordNotFound) {
+// 		return nil, err
+// 		// } else {
+// 		// 	//fmt.Println("errors.Is(err, gorm.ErrRecordNotFound)")
+// 		// 	return nil, nil
+// 		// }
+// 	}
+// 	return v, nil
+// }
 
 func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
 	err := w.db.Save(e).Error
@@ -139,45 +155,47 @@ func (db *MySqlDB) NewDomainNameSmtValueMapStore() smt.MapStore {
 // Get gets the value for a key.
 func (m *DomainNameSmtValueMapStore) Get(key []byte) ([]byte, error) {
 	//path := hex.EncodeToString(key)
-	return nil, fmt.Errorf("NOT IMPLEMENTED ERROR")
+	return nil, fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Get") //todo
 }
 
 // Set updates the value for a key.
 func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
-	path := hex.EncodeToString(key)
-	valueHash := hex.EncodeToString(digest(value))
-	domainNameState, err := BcsDeserializeDomainNameState(value)
-	if err != nil {
-		return err
-	}
-	domainNameSmtVal := DomainNameSmtValue{
-		Path:                          path,
-		ValueHash:                     valueHash,
-		DomainNameIdTopLevelDomain:    domainNameState.DomainNameIdTopLevelDomain,
-		DomainNameIdSecondLevelDomain: domainNameState.DomainNameIdSecondLevelDomain,
-		ExpirationDate:                domainNameState.ExpirationDate,
-		Owner:                         domainNameState.Owner,
-	}
-	err = m.db.db.Save(domainNameSmtVal).Error
-	var mysqlErr *gomysql.MySQLError
-	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
-		// oldData, err := m.Get(key)
-		// if err != nil {
-		// 	return err
-		// }
-		// if bytes.Equal(value, oldData) { // if it is really duplicate entry
-		// 	return nil
-		// } else {
-		// 	return fmt.Errorf("reset value is not allowed, key: %s, value: %s, old value: %s", h, d, hex.EncodeToString(oldData))
-		// }
-		return nil
-	}
-	return err
+	return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Set") //todo
+	// path := hex.EncodeToString(key)
+	// valueHash := hex.EncodeToString(digest(value))
+	// domainNameState, err := BcsDeserializeDomainNameState(value)
+	// if err != nil {
+	// 	return err
+	// }
+	// domainNameSmtVal := &DomainNameSmtValue{
+	// 	Path:                          path,
+	// 	ValueHash:                     valueHash,
+	// 	DomainNameIdTopLevelDomain:    domainNameState.DomainNameIdTopLevelDomain,
+	// 	DomainNameIdSecondLevelDomain: domainNameState.DomainNameIdSecondLevelDomain,
+	// 	ExpirationDate:                domainNameState.ExpirationDate,
+	// 	Owner:                         domainNameState.Owner,
+	// }
+	// err = m.db.db.Save(domainNameSmtVal).Error
+	// var mysqlErr *gomysql.MySQLError
+	// if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
+	// 	// oldData, err := m.Get(key)
+	// 	// if err != nil {
+	// 	// 	return err
+	// 	// }
+	// 	// if bytes.Equal(value, oldData) { // if it is really duplicate entry
+	// 	// 	return nil
+	// 	// } else {
+	// 	// 	return fmt.Errorf("reset value is not allowed, key: %s, value: %s, old value: %s", h, d, hex.EncodeToString(oldData))
+	// 	// }
+	// 	return nil
+	// }
+	// return err
 }
 
 // Delete deletes a key.
 func (m *DomainNameSmtValueMapStore) Delete(key []byte) error {
-	return fmt.Errorf("NOT IMPLEMENTED ERROR")
+	return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Delete") //todo
+	//return nil
 }
 
 // Update Starcoin height handled

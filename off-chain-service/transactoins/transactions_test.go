@@ -1,6 +1,7 @@
 package transactoins
 
 import (
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"os"
@@ -71,25 +72,50 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 	_ = privateKeyConfig
 	_ = smTree
 
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "b", t)
-	// time.Sleep(time.Second * 5)
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "c", t)
-	// time.Sleep(time.Second * 5)
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "d", t)
-	// time.Sleep(time.Second * 5)
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "e", t)
-	// time.Sleep(time.Second * 5)
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "f", t)
-	// time.Sleep(time.Second * 5)
-	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "g", t)
-	// time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "b", t)
+	time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "c", t)
+	time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "d", t)
+	time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "e", t)
+	time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "f", t)
+	time.Sleep(time.Second * 5)
+	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "g", t)
+	time.Sleep(time.Second * 5)
 
 	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "h", t)
 	// time.Sleep(time.Second * 5)
 	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "i", t)
 	// time.Sleep(time.Second * 5)
+	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "j", t)
+	// time.Sleep(time.Second * 5)
+}
 
-	testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "j", t)
+func TestDomainNameRenewDomains(t *testing.T) {
+	starcoinClient := localDevStarcoinClient()
+	privateKeyConfig, err := localDevAlicePrivateKeyConfig()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+
+	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
+	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
+	_ = starcoinClient
+	_ = privateKeyConfig
+	_ = smTree
+
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+
+	testRenewDomainName(&starcoinClient, database, smTree, privateKeyConfig, "stc", "b", t)
+	time.Sleep(time.Second * 5)
+	testRenewDomainName(&starcoinClient, database, smTree, privateKeyConfig, "stc", "c", t)
 	time.Sleep(time.Second * 5)
 }
 
@@ -118,7 +144,46 @@ func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.S
 		t.FailNow()
 	}
 	testSubmitDomainNameRegisterTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, smtRoot, proof.NonMembershipLeafData, concatSideNodes(proof.SideNodes), t)
+}
 
+func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MySqlDB, smTree *smt.SparseMerkleTree, privateKeyConfig map[string]string, tld string, sld string, t *testing.T) {
+	var err error
+	var domainNameId *db.DomainNameId
+	var smtRoot []byte
+	var key []byte
+	var proof smt.SparseMerkleProof
+
+	domainNameId = db.NewDomainNameId(tld, sld)
+	key, err = domainNameId.BcsSerialize()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	smtRootStr, err := contract.GetDomainNameSmtRoot(starcoinClient, DEV_CONTRACT_ADDRESS)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	smtRoot = testDecodeSmtRootHex(smtRootStr, t)
+	proof, leafData, err := smTree.ProveForRootAndGetLeafData(key, smtRoot)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	leafPath, leafValueHash := ParseSmtLeaf(leafData)
+	domainNameSmtValue, err := database.GetDomainNameSmtValue(hex.EncodeToString(leafPath), hex.EncodeToString(leafValueHash))
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	var stateExpirationDate uint64 = domainNameSmtValue.ExpirationDate
+	var stateOwner [16]uint8
+	stateOwner, err = db.HexToAccountAddress(domainNameSmtValue.Owner)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	testSubmitDomainNameRenewTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, stateExpirationDate, stateOwner, smtRoot, concatSideNodes(proof.SideNodes), t)
 }
 
 func concatSideNodes(nodes [][]byte) []byte {
@@ -145,6 +210,26 @@ func testSubmitDomainNameRegisterTransaction(starcoinClient *client.StarcoinClie
 		fmt.Println(err)
 		t.FailNow()
 	}
+	fmt.Printf("Wating transaction(%s) to be confirmed...\n", txHash)
+	ok, err := tools.WaitTransactionConfirm(starcoinClient, txHash, time.Minute*2)
+	fmt.Println(ok, err)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	if !ok {
+		t.FailNow()
+	}
+}
+
+func testSubmitDomainNameRenewTransaction(starcoinClient *client.StarcoinClient, privateKeyConfig map[string]string, tld string, sld string, stateExpirationDate uint64, stateOwner [16]uint8, smtRoot []byte, sideNodes []byte, t *testing.T) { //(bool, error) {
+	renew_tx_payload := EncodeDomainNameRenewTxPaylaod(DEV_CONTRACT_ADDRESS, tld, sld, ONE_YEAR_MILLS, stateExpirationDate, stateOwner, smtRoot, sideNodes)
+	txHash, err := tools.SubmitStarcoinTransaction(starcoinClient, privateKeyConfig, &renew_tx_payload)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Printf("Wating transaction(%s) to be confirmed...\n", txHash)
 	ok, err := tools.WaitTransactionConfirm(starcoinClient, txHash, time.Minute*2)
 	fmt.Println(ok, err)
 	if err != nil {

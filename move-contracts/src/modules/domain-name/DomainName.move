@@ -50,7 +50,7 @@ module DomainName {
         *&domain_name_state.owner
     }
 
-    struct Registerd has store, drop {
+    struct Registered has store, drop {
         domain_name_id: DomainNameId,
         owner: address,
         registration_period: u64,
@@ -60,7 +60,7 @@ module DomainName {
         previous_smt_root: vector<u8>,
     }
 
-    public fun new_registerd(
+    public fun new_registered(
         domain_name_id: &DomainNameId,
         owner: address,
         registration_period: u64,
@@ -68,8 +68,8 @@ module DomainName {
         //smt_leaf_data: &vector<u8>,
         updated_smt_root: &vector<u8>,
         previous_smt_root: &vector<u8>,
-    ): Registerd {
-        Registerd{
+    ): Registered {
+        Registered{
             domain_name_id: *domain_name_id,
             owner: owner,
             registration_period: registration_period,

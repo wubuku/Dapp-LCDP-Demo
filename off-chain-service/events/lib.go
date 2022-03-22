@@ -120,7 +120,7 @@ func BcsDeserializeDomainNameId(input []byte) (DomainNameId, error) {
 	return obj, err
 }
 
-type DomainNameRegisterd struct {
+type DomainNameRegistered struct {
 	DomainNameId       DomainNameId
 	Owner              AccountAddress
 	RegistrationPeriod uint64
@@ -129,7 +129,7 @@ type DomainNameRegisterd struct {
 	PreviousSmtRoot    []byte
 }
 
-func (obj *DomainNameRegisterd) Serialize(serializer serde.Serializer) error {
+func (obj *DomainNameRegistered) Serialize(serializer serde.Serializer) error {
 	if err := serializer.IncreaseContainerDepth(); err != nil {
 		return err
 	}
@@ -155,7 +155,7 @@ func (obj *DomainNameRegisterd) Serialize(serializer serde.Serializer) error {
 	return nil
 }
 
-func (obj *DomainNameRegisterd) BcsSerialize() ([]byte, error) {
+func (obj *DomainNameRegistered) BcsSerialize() ([]byte, error) {
 	if obj == nil {
 		return nil, fmt.Errorf("Cannot serialize null object")
 	}
@@ -166,8 +166,8 @@ func (obj *DomainNameRegisterd) BcsSerialize() ([]byte, error) {
 	return serializer.GetBytes(), nil
 }
 
-func DeserializeDomainNameRegisterd(deserializer serde.Deserializer) (DomainNameRegisterd, error) {
-	var obj DomainNameRegisterd
+func DeserializeDomainNameRegistered(deserializer serde.Deserializer) (DomainNameRegistered, error) {
+	var obj DomainNameRegistered
 	if err := deserializer.IncreaseContainerDepth(); err != nil {
 		return obj, err
 	}
@@ -205,13 +205,13 @@ func DeserializeDomainNameRegisterd(deserializer serde.Deserializer) (DomainName
 	return obj, nil
 }
 
-func BcsDeserializeDomainNameRegisterd(input []byte) (DomainNameRegisterd, error) {
+func BcsDeserializeDomainNameRegistered(input []byte) (DomainNameRegistered, error) {
 	if input == nil {
-		var obj DomainNameRegisterd
+		var obj DomainNameRegistered
 		return obj, fmt.Errorf("Cannot deserialize null array")
 	}
 	deserializer := bcs.NewDeserializer(input)
-	obj, err := DeserializeDomainNameRegisterd(deserializer)
+	obj, err := DeserializeDomainNameRegistered(deserializer)
 	if err == nil && deserializer.GetBufferOffset() < uint64(len(input)) {
 		return obj, fmt.Errorf("Some input bytes were not read")
 	}

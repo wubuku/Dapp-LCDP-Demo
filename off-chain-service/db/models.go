@@ -9,14 +9,15 @@ type DomainNameSmtNode struct {
 	Data string `gorm:"size:132"`
 }
 
-type DomainNameSmtValue struct {
-	Path                          string `gorm:"primaryKey;size:66"`
-	ValueHash                     string `gorm:"primaryKey;size:66"`
-	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
-	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
-	ExpirationDate                uint64
-	Owner                         string `gorm:"size:66"`
-}
+// type DomainNameSmtValue struct {
+// 	Id                            uint64 `gorm:"primaryKey;autoIncrement:true"`
+// 	Path                          string `gorm:"size:66;uniqueIndex:uni_smt_leaf_path_vhash"`
+// 	ValueHash                     string `gorm:"size:66;uniqueIndex:uni_smt_leaf_path_vhash"`
+// 	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
+// 	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
+// 	ExpirationDate                uint64
+// 	Owner                         string `gorm:"size:66"`
+// }
 
 type DomainNameId struct {
 	TopLevelDomain    string
@@ -32,21 +33,38 @@ func NewDomainNameId(tld string, sld string) *DomainNameId {
 
 type DomainNameEvent struct {
 	Id              uint64 `gorm:"primaryKey;autoIncrement:true"`
-	SmtRoot         string `gorm:"size:66;uniqueIndex"`
-	PreviousSmtRoot string `gorm:"size:66;uniqueIndex"`
 	BlockNumber     uint64
 	TransactionHash string `gorm:"size:66"`
+	EventType       string `gorm:"size:500"`
 	BcsData         string `gorm:"size:36000"`
-	CreatedAt       uint64 `gorm:"autoCreateTime:milli"`
+	// //////////// On-Chain DomainNameEvent properties ////////////
+	//   DomainNameId       DomainNameId
+	//   ...
+	//   UpdatedState       DomainNameState
+	// 	 UpdatedSmtRoot     []byte
+	// 	 PreviousSmtRoot    []byte
+	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
+	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
+	UpdatedStateExpirationDate    uint64 // state property
+	UpdatedStateOwner             string `gorm:"size:66"` // state property
+	// SMT info.
+	SmtDomainNameIdHash string `gorm:"size:66"` // SMT leaf path
+	SmtUpdatedStateHash string `gorm:"size:66"` // SMT leaf value hash
+	UpdatedSmtRoot      string `gorm:"size:66;index"`
+	PreviousSmtRoot     string `gorm:"size:66;index"`
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 }
 
-func NewDomainNameEvent(smtRoot []byte, previousSmtRoot []byte, blockNumber uint64, transactionHash string, bcsData []byte) *DomainNameEvent {
+func NewDomainNameEvent(smtRoot []byte, previousSmtRoot []byte, blockNumber uint64, transactionHash string, eventType string, bcsData []byte) *DomainNameEvent {
 	return &DomainNameEvent{
-		SmtRoot:         hex.EncodeToString(smtRoot),
-		PreviousSmtRoot: hex.EncodeToString(previousSmtRoot),
 		BlockNumber:     blockNumber,
+		EventType:       eventType,
 		TransactionHash: transactionHash,
 		BcsData:         hex.EncodeToString(bcsData),
+
+		UpdatedSmtRoot:  hex.EncodeToString(smtRoot),
+		PreviousSmtRoot: hex.EncodeToString(previousSmtRoot),
 	}
 }
 
