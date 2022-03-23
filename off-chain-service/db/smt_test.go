@@ -11,12 +11,46 @@ import (
 
 // CONST var for test
 var (
-	testDomainNameExpirationDate uint64 = 1679184000000 // uint64(time.Date(2023, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
-	testDomainNameOwner          []byte
+	testBlockTime                    uint64 = 1647648000000
+	testDomainNameRegistrationPeriod uint64 = 1000 * 60 * 60 * 24 * 365 // One year
+	testDomainNameExpirationDate     uint64 = 1679184000000             // uint64(time.Date(2023, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
+	testDomainNameOwner              []byte
 )
 
 func init() {
 	testDomainNameOwner, _ = hex.DecodeString("b6D69DD935EDf7f2054acF12eb884df8")
+}
+
+func TestPrintMoveDomainNameFunctionalTestFileStart(t *testing.T) {
+	fmt.Printf(`
+//! account: admin, 0x18351d311d32201149a4df2a9fc2db8a, 10000000000 0x1::STC::STC
+//! account: alice, 0xb6D69DD935EDf7f2054acF12eb884df8, 10000000000 0x1::STC::STC
+
+
+//! block-prologue
+//! author: genesis
+//! block-number: 1
+//! block-time: %d
+
+`, testBlockTime)
+}
+
+func testUpdateDomainNameSmtByTestExpirationDate(domainNameId *DomainNameId, smt *smt.SparseMerkleTree, t *testing.T) ([]byte, []byte) {
+	key, value := testUpdateDomainNameSmt(domainNameId, testDomainNameExpirationDate, smt, t)
+	//fmt.Printf("        // -------- Domain name '%s.%s' added. --------\n", domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain)
+	return key, value
+}
+
+func testUpdateDomainNameSmt(domainNameId *DomainNameId, expirationDate uint64, smt *smt.SparseMerkleTree, t *testing.T) ([]byte, []byte) {
+	key := testGetDomainNameKey(domainNameId, t)
+	domainNameState := NewDomainNameState(domainNameId, expirationDate, testDomainNameOwner)
+	value, err := domainNameState.BcsSerialize()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	smt.Update(key, value)
+	return key, value
 }
 
 // func TestPrintDate(t *testing.T) {
@@ -38,7 +72,7 @@ func TestSmtGetValue(t *testing.T) {
 	var domainNameId *DomainNameId
 	// ///////////////////////
 	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
-	testUpdateDomainNameSmt(domainNameId, smt, t)
+	testUpdateDomainNameSmtByTestExpirationDate(domainNameId, smt, t)
 
 	// ////////// Get SMT get value by key /////////////
 	fmt.Println(smt.Root())
@@ -115,7 +149,7 @@ func testSmtProofAndPrintMoveUnitTestFun(domainNameId *DomainNameId, key []byte,
 	testPrintMoveUnitTestFunStart(domainNameId)
 	testPrintMoveNonMembershipRootAndProof(smt, key, t)
 	testPrintMoveUnitTestFunVerifyNonMembership()
-	testUpdateDomainNameSmt(domainNameId, smt, t)
+	testUpdateDomainNameSmtByTestExpirationDate(domainNameId, smt, t)
 	testPrintMoveMembershipRootAndProof(smt, key, t)
 	testPrintMoveUnitTestFunEnd()
 }
@@ -197,24 +231,6 @@ func testGetDomainNameKey(domainNameId *DomainNameId, t *testing.T) []byte {
 	return key
 }
 
-func testUpdateDomainNameSmt(domainNameId *DomainNameId, smt *smt.SparseMerkleTree, t *testing.T) ([]byte, []byte) {
-	key := testGetDomainNameKey(domainNameId, t)
-	var value []byte
-	var err error
-	domainNameState := NewDomainNameState(domainNameId, testDomainNameExpirationDate, testDomainNameOwner)
-	value, err = domainNameState.BcsSerialize()
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-	//fmt.Println("value:")
-	//fmt.Println(value)
-	smt.Update(key, value)
-
-	fmt.Printf("        // -------- Domain name '%s.%s' added. --------\n", domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain)
-	return key, value
-}
-
 // func TestPrintHex(t *testing.T) {
 // 	//SMT root with only one leaf(DomainName):
 // 	//   TLD: stc
@@ -227,6 +243,8 @@ func testUpdateDomainNameSmt(domainNameId *DomainNameId, smt *smt.SparseMerkleTr
 // }
 
 func TestSmtProveAndPrintMoveRegisterFunctionalTest(t *testing.T) {
+	TestPrintMoveDomainNameFunctionalTestFileStart(t)
+
 	nodeStore := smt.NewSimpleMap()
 	valueStore := smt.NewSimpleMap()
 	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
@@ -256,7 +274,6 @@ func TestSmtProveAndPrintMoveRegisterFunctionalTest(t *testing.T) {
 	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
 }
 
-//
 //! account: alice, 0xb6D69DD935EDf7f2054acF12eb884df8, 10000000000 0x1::STC::STC
 //
 //
@@ -264,14 +281,13 @@ func TestSmtProveAndPrintMoveRegisterFunctionalTest(t *testing.T) {
 // ! author: genesis
 // ! block-number: 1
 // ! block-time: 1647648000000
-//
 
 func testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId *DomainNameId, key []byte, smt *smt.SparseMerkleTree, t *testing.T) {
 	testPrintMoveRegisterFunctionalTestScriptStart()
 	testPrintMoveRegisterFunctionalTestFunStart(domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, t)
 	testPrintMoveNonMembershipRootAndProof(smt, key, t)
 	testPrintMoveRegisterFunctionalTestFunDoRegisterAndGetSmtRoot()
-	testUpdateDomainNameSmt(domainNameId, smt, t)
+	testUpdateDomainNameSmtByTestExpirationDate(domainNameId, smt, t)
 	testPrintMoveRegisterFunctionalTestFunEnd(smt, key, t)
 	testPrintMoveRegisterFunctionalTestScriptEnd()
 }
@@ -282,11 +298,11 @@ func testPrintMoveRegisterFunctionalTestScriptStart() {
 //! sender: alice
 address alice = {{alice}};
 script {
-	use 0x1::Debug;
-	use 0x1::Vector;
-	//use 0x1::Timestamp;
-	use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
-	`)
+    use 0x1::Debug;
+    use 0x1::Vector;
+    //use 0x1::Timestamp;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    `)
 }
 
 func testPrintMoveRegisterFunctionalTestScriptEnd() {
@@ -301,9 +317,10 @@ func testPrintMoveRegisterFunctionalTestFunStart(tld string, sld string, t *test
     fun test_register_%s(signer: signer) {
         let domain_name_id_top_level_domain = b"%s";
         let domain_name_id_second_level_domain = b"%s";
-        let registration_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
-        // Debug::print<u64>(&(Timestamp::now_milliseconds() + registration_period));	
-	`, sld, tld, sld)
+        let registration_period: u64 = 1000 * 60 * 60 * 24 * 365;
+        // Debug::print<u64>(&(Timestamp::now_milliseconds() + registration_period));
+        // to register one year(mills): %d
+    `, sld, tld, sld, testDomainNameRegistrationPeriod)
 	fmt.Println()
 }
 
@@ -319,7 +336,7 @@ func testPrintMoveRegisterFunctionalTestFunDoRegisterAndGetSmtRoot() {
             &non_member_side_nodes,
         );
         let smt_root = DomainNameAggregate::get_smt_root();
-	`)
+    `)
 }
 
 func testPrintMoveRegisterFunctionalTestFunEnd(smt *smt.SparseMerkleTree, key []byte, t *testing.T) {
@@ -335,6 +352,6 @@ func testPrintMoveRegisterFunctionalTestFunEnd(smt *smt.SparseMerkleTree, key []
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-	`, expected_smt_root)
+    `, expected_smt_root)
 	fmt.Println()
 }
