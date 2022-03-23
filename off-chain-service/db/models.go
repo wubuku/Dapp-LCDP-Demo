@@ -7,17 +7,22 @@ import (
 type DomainNameSmtNode struct {
 	Hash string `gorm:"primaryKey;size:66"`
 	Data string `gorm:"size:132"`
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 }
 
-// type DomainNameSmtValue struct {
-// 	Id                            uint64 `gorm:"primaryKey;autoIncrement:true"`
-// 	Path                          string `gorm:"size:66;uniqueIndex:uni_smt_leaf_path_vhash"`
-// 	ValueHash                     string `gorm:"size:66;uniqueIndex:uni_smt_leaf_path_vhash"`
-// 	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
-// 	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
-// 	ExpirationDate                uint64
-// 	Owner                         string `gorm:"size:66"`
-// }
+type DomainNameSmtValue struct {
+	Path    string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_root
+	SmtRoot string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_root
+	Value   string `gorm:"size:36000"`
+	// //////////////////// decoded DomainNameState /////////////////////
+	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
+	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
+	ExpirationDate                uint64
+	Owner                         string `gorm:"size:66"`
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+}
 
 type DomainNameId struct {
 	TopLevelDomain    string
@@ -33,6 +38,8 @@ func NewDomainNameId(tld string, sld string) *DomainNameId {
 
 type DomainNameEvent struct {
 	Id              uint64 `gorm:"primaryKey;autoIncrement:true"`
+	BlockHash       string `gorm:"size:66;uniqueIndex:uni_block_hash_evt_key"`
+	EventKey        string `gorm:"size:100;uniqueIndex:uni_block_hash_evt_key"`
 	BlockNumber     uint64
 	TransactionHash string `gorm:"size:66"`
 	EventType       string `gorm:"size:500"`
@@ -48,23 +55,45 @@ type DomainNameEvent struct {
 	UpdatedStateExpirationDate    uint64 // state property
 	UpdatedStateOwner             string `gorm:"size:66"` // state property
 	// SMT info.
-	SmtDomainNameIdHash string `gorm:"size:66"` // SMT leaf path
-	SmtUpdatedStateHash string `gorm:"size:66"` // SMT leaf value hash
+	DomainNameIdSmtHash string `gorm:"size:66"` // SMT leaf path
+	UpdatedStateSmtHash string `gorm:"size:66"` // SMT leaf value hash
 	UpdatedSmtRoot      string `gorm:"size:66;index"`
 	PreviousSmtRoot     string `gorm:"size:66;index"`
 
 	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 }
 
-func NewDomainNameEvent(smtRoot []byte, previousSmtRoot []byte, blockNumber uint64, transactionHash string, eventType string, bcsData []byte) *DomainNameEvent {
+func NewDomainNameEvent(
+	blockHash string,
+	eventKey string,
+	blockNumber uint64,
+	transactionHash string,
+	eventType string,
+	bcsData []byte,
+	domainNameIdTopLevelDomain string,
+	domainNameIdSecondLevelDomain string,
+	updatedStateExpirationDate uint64,
+	updatedStateOwner [16]uint8,
+	domainNameIdSmtHash []byte,
+	updatedStateSmtHash []byte,
+	smtRoot []byte,
+	previousSmtRoot []byte,
+) *DomainNameEvent {
 	return &DomainNameEvent{
-		BlockNumber:     blockNumber,
-		EventType:       eventType,
-		TransactionHash: transactionHash,
-		BcsData:         hex.EncodeToString(bcsData),
-
-		UpdatedSmtRoot:  hex.EncodeToString(smtRoot),
-		PreviousSmtRoot: hex.EncodeToString(previousSmtRoot),
+		BlockHash:                     blockHash,
+		EventKey:                      eventKey,
+		BlockNumber:                   blockNumber,
+		TransactionHash:               transactionHash,
+		EventType:                     eventType,
+		BcsData:                       hex.EncodeToString(bcsData),
+		DomainNameIdTopLevelDomain:    domainNameIdSecondLevelDomain,
+		DomainNameIdSecondLevelDomain: domainNameIdSecondLevelDomain,
+		UpdatedStateExpirationDate:    updatedStateExpirationDate,
+		UpdatedStateOwner:             hex.EncodeToString(updatedStateOwner[:]),
+		DomainNameIdSmtHash:           hex.EncodeToString(domainNameIdSmtHash),
+		UpdatedStateSmtHash:           hex.EncodeToString(updatedStateSmtHash),
+		UpdatedSmtRoot:                hex.EncodeToString(smtRoot),
+		PreviousSmtRoot:               hex.EncodeToString(previousSmtRoot),
 	}
 }
 
@@ -73,6 +102,9 @@ type DomainNameState struct {
 	DomainNameIdSecondLevelDomain string `gorm:"primaryKey;size:100"`
 	ExpirationDate                uint64
 	Owner                         string `gorm:"size:66"`
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+	UpdatedAt int64  `gorm:"autoUpdateTime:milli;index"`
 }
 
 func NewDomainNameState(domainNameId *DomainNameId, expirationDate uint64, owner []byte) *DomainNameState {
@@ -109,9 +141,15 @@ type DomainNameStateHead struct {
 	HeadId    string `gorm:"primaryKey;size:100"`
 	SmtRoot   string `gorm:"size:66"`
 	TableName string `gorm:"size:100"`
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+	UpdatedAt int64  `gorm:"autoUpdateTime:milli;index"`
 }
 
 type ChainHeight struct {
 	Key    string `gorm:"primaryKey;size:66"`
 	Height uint64
+
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+	UpdatedAt int64  `gorm:"autoUpdateTime:milli;index"`
 }

@@ -140,7 +140,33 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - ParseUint error")
 		}
-		domainNameEvent := db.NewDomainNameEvent(domainNameEvt.GetUpdatedSmtRoot(), domainNameEvt.GetPreviousSmtRoot(), blockNumber, evt.TransactionHash, evt.TypeTag, evtData)
+
+		domainNameId := db.NewDomainNameId(string(domainNameEvt.GetDomainNameId().TopLevelDomain), string(domainNameEvt.GetDomainNameId().SecondLevelDomain))
+		smtKey, err := domainNameId.BcsSerialize()
+		if err != nil {
+			return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
+		}
+		updatedSmtValue, err := domainNameEvt.GetUpdatedState().BcsSerialize()
+		if err != nil {
+			return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
+		}
+
+		domainNameEvent := db.NewDomainNameEvent(
+			evt.BlockHash,
+			evt.EventKey,
+			blockNumber,
+			evt.TransactionHash,
+			evt.TypeTag,
+			evtData,
+			string(domainNameEvt.GetDomainNameId().TopLevelDomain),
+			string(domainNameEvt.GetDomainNameId().SecondLevelDomain),
+			domainNameEvt.GetUpdatedState().ExpirationDate,
+			domainNameEvt.GetUpdatedState().Owner,
+			db.SmtDigest(smtKey),
+			db.SmtDigest(updatedSmtValue),
+			domainNameEvt.GetUpdatedSmtRoot(),
+			domainNameEvt.GetPreviousSmtRoot(),
+		)
 		err = m.db.SaveDomainNameEvent(domainNameEvent)
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
@@ -153,16 +179,7 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 		}
 		valueStore := m.db.NewDomainNameSmtValueMapStore()
 		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
-		domainNameId := db.NewDomainNameId(string(domainNameEvt.GetDomainNameId().TopLevelDomain), string(domainNameEvt.GetDomainNameId().SecondLevelDomain))
-		key, err := domainNameId.BcsSerialize()
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
-		}
-		value, err := domainNameEvt.GetUpdatedState().BcsSerialize()
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
-		}
-		offChainSmtRoot, err := smt.UpdateForRoot(key, value, domainNameEvt.GetPreviousSmtRoot())
+		offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
 		}

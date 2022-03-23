@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-func digest(data []byte) []byte {
+func SmtDigest(data []byte) []byte {
 	hasher := New256Hasher()
 	hasher.Write(data)
 	sum := hasher.Sum(nil)
