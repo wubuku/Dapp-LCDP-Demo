@@ -105,8 +105,6 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-
-
 }
 // check: EXECUTED
 
@@ -151,8 +149,6 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-
-
 }
 // check: EXECUTED
 
@@ -197,8 +193,6 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-
-
 }
 // check: EXECUTED
 
@@ -242,8 +236,6 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-
-
 }
 // check: EXECUTED
 
@@ -288,8 +280,6 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
-
-
 }
 // check: EXECUTED
 
@@ -335,7 +325,193 @@ script {
         assert(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
+}
+// check: EXECUTED
 
 
+
+//! new-transaction
+//! sender: alice
+address alice = {{alice}};
+script {
+    use 0x1::Debug;
+    use 0x1::Vector;
+    //use 0x1::Timestamp;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+
+
+    fun test_renew_a(signer: signer) {
+        let domain_name_id_top_level_domain = b"stc";
+        let domain_name_id_second_level_domain = b"a";
+        let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
+        let state_expiration_date: u64 = 1679184000000;
+        let state_owner: address = @0xb6d69dd935edf7f2054acf12eb884df8;
+
+        // -------------------------------------------------------
+        let member_root = x"57f0d0786736ee370a8718c54e0cf87e3709b91ef618c9f1d444d208420e16dd";
+        let member_side_nodes = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut member_side_nodes, x"4aff52d81907e3ffc71e6523ce2cb4059c631ab4c0a93f486add6061d420241c");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"3879bc88ee3eb90df3b2ec5e9fe00082f3392fe2f429e9ec0011eaee8de42e78");
+        Vector::push_back(&mut member_side_nodes, x"e0431ca32d842482ad438aa9e5ba8a2ba39725f53c8bd097a9910b7bb2437b07");
+        Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
+
+        DomainNameAggregate::renew(
+            &signer,
+            &domain_name_id_top_level_domain,
+            &domain_name_id_second_level_domain,
+            renew_period,
+            state_expiration_date,
+            state_owner,
+            &member_root,
+            &member_side_nodes,
+        );
+        let smt_root = DomainNameAggregate::get_smt_root();
+
+
+        let expected_smt_root = x"d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde";
+        assert(expected_smt_root == *&smt_root, 1001);
+        Debug::print<vector<u8>>(&smt_root);
+    }
+}
+// check: EXECUTED
+
+
+
+//! new-transaction
+//! sender: alice
+address alice = {{alice}};
+script {
+    use 0x1::Debug;
+    use 0x1::Vector;
+    //use 0x1::Timestamp;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+
+
+    fun test_renew_b(signer: signer) {
+        let domain_name_id_top_level_domain = b"stc";
+        let domain_name_id_second_level_domain = b"b";
+        let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
+        let state_expiration_date: u64 = 1679184000000;
+        let state_owner: address = @0xb6d69dd935edf7f2054acf12eb884df8;
+
+        // -------------------------------------------------------
+        let member_root = x"d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde";
+        let member_side_nodes = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut member_side_nodes, x"bac017ea373e5ac14c059cd221ebb6724a4f6ca5430500c8aec66a709a758ac5");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"3879bc88ee3eb90df3b2ec5e9fe00082f3392fe2f429e9ec0011eaee8de42e78");
+        Vector::push_back(&mut member_side_nodes, x"e0431ca32d842482ad438aa9e5ba8a2ba39725f53c8bd097a9910b7bb2437b07");
+        Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
+
+        DomainNameAggregate::renew(
+            &signer,
+            &domain_name_id_top_level_domain,
+            &domain_name_id_second_level_domain,
+            renew_period,
+            state_expiration_date,
+            state_owner,
+            &member_root,
+            &member_side_nodes,
+        );
+        let smt_root = DomainNameAggregate::get_smt_root();
+
+
+        let expected_smt_root = x"673ea6675cd99b5c0360202ea9397e906da784b6443145c2ef1d3cce8c4d8e7c";
+        assert(expected_smt_root == *&smt_root, 1001);
+        Debug::print<vector<u8>>(&smt_root);
+    }
+}
+// check: EXECUTED
+
+
+//! new-transaction
+//! sender: alice
+address alice = {{alice}};
+script {
+    use 0x1::Debug;
+    use 0x1::Vector;
+    //use 0x1::Timestamp;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+
+
+    fun test_renew_c(signer: signer) {
+        let domain_name_id_top_level_domain = b"stc";
+        let domain_name_id_second_level_domain = b"c";
+        let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
+        let state_expiration_date: u64 = 1679184000000;
+        let state_owner: address = @0xb6d69dd935edf7f2054acf12eb884df8;
+
+        // -------------------------------------------------------
+        let member_root = x"673ea6675cd99b5c0360202ea9397e906da784b6443145c2ef1d3cce8c4d8e7c";
+        let member_side_nodes = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut member_side_nodes, x"e67eac0b9fb429f9c9f4bd98925f1b93c0e7152b1a991e6ef813dffdbc3f94f1");
+        Vector::push_back(&mut member_side_nodes, x"cce64e778827e64a0063c0b99893ed7bfade5f908b6016489919be04a0b653f3");
+
+        DomainNameAggregate::renew(
+            &signer,
+            &domain_name_id_top_level_domain,
+            &domain_name_id_second_level_domain,
+            renew_period,
+            state_expiration_date,
+            state_owner,
+            &member_root,
+            &member_side_nodes,
+        );
+        let smt_root = DomainNameAggregate::get_smt_root();
+
+
+        let expected_smt_root = x"fc70e205742a40e8c22a2a2eeaf749b8d2f8669330d343adc9c29f74c4fe06da";
+        assert(expected_smt_root == *&smt_root, 1001);
+        Debug::print<vector<u8>>(&smt_root);
+    }
+}
+// check: EXECUTED
+
+
+//! new-transaction
+//! sender: alice
+address alice = {{alice}};
+script {
+    use 0x1::Debug;
+    use 0x1::Vector;
+    //use 0x1::Timestamp;
+    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+
+
+    fun test_renew_d(signer: signer) {
+        let domain_name_id_top_level_domain = b"stc";
+        let domain_name_id_second_level_domain = b"d";
+        let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
+        let state_expiration_date: u64 = 1679184000000;
+        let state_owner: address = @0xb6d69dd935edf7f2054acf12eb884df8;
+
+        // -------------------------------------------------------
+        let member_root = x"fc70e205742a40e8c22a2a2eeaf749b8d2f8669330d343adc9c29f74c4fe06da";
+        let member_side_nodes = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut member_side_nodes, x"2c99017f825686b8f0fc93eb6c1099b417f0f68bfd4cd18ef17850a437768d42");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"671c672fe3397a5b44ce78e48f41aafe895dc082aa7187d2f04b351b162c3175");
+        Vector::push_back(&mut member_side_nodes, x"5029c28b782a2834232ed6d1cdb0b5f22225fd7ef7911a69dc1ba0e668aca360");
+
+        DomainNameAggregate::renew(
+            &signer,
+            &domain_name_id_top_level_domain,
+            &domain_name_id_second_level_domain,
+            renew_period,
+            state_expiration_date,
+            state_owner,
+            &member_root,
+            &member_side_nodes,
+        );
+        let smt_root = DomainNameAggregate::get_smt_root();
+
+
+        let expected_smt_root = x"b3a524e7922ebd177cde9fc54ca257fbfb02e03541e3e7c3de75e79ab50ad198";
+        assert(expected_smt_root == *&smt_root, 1001);
+        Debug::print<vector<u8>>(&smt_root);
+    }
 }
 // check: EXECUTED
