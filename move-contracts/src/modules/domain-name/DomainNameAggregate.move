@@ -151,7 +151,7 @@ module DomainNameAggregate {
         // ///////////// Call business logic module end ///////////////
 
         // Create event and emit.
-        let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &domain_name_state, smt_side_nodes);
+        let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &updated_domain_name_state, smt_side_nodes);
         let renewed = DomainName::new_renewed(
             &domain_name_id,
             Signer::address_of(account),
