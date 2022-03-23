@@ -1,17 +1,59 @@
 address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainNameTest {
+module DomainNameSmtTest {
     use 0x1::Debug;
     use 0x1::BCS;
     use 0x1::Vector;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
     use 0x18351d311d32201149a4df2a9fc2db8a::SMTProofs;
+    use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
+
 
     const TEST_EXPIRATION_DATE: u64 = 1679184000000;
     const TEST_OWNER: address = @0xb6D69DD935EDf7f2054acF12eb884df8;
 
     fun get_test_domain_name_state(domain_name_id: &DomainName::DomainNameId): DomainName::DomainNameState {
         DomainName::new_domain_name_state(domain_name_id, TEST_EXPIRATION_DATE, TEST_OWNER)
+    }
+
+    #[test]
+    public fun test_smt_membership_proof_and_update_1() {
+        let domain_name_id_top_level_domain = b"stc";
+        let domain_name_id_second_level_domain = b"a";
+        let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
+        let state_expiration_date: u64 = 1679184000000;
+        let state_owner: address = @0xb6d69dd935edf7f2054acf12eb884df8;
+
+        let domain_name_id = DomainName::new_domain_name_id(&domain_name_id_top_level_domain, &domain_name_id_second_level_domain);
+        let domain_name_state = DomainName::new_domain_name_state(&domain_name_id, state_expiration_date, state_owner);
+        let key = BCS::to_bytes<DomainName::DomainNameId>(&domain_name_id);
+        let value = BCS::to_bytes<DomainName::DomainNameState>(&domain_name_state);
+        Debug::print<vector<u8>>(&key);
+        Debug::print<vector<u8>>(&value);
+
+        // -------------------------------------------------------
+        let member_root = x"57f0d0786736ee370a8718c54e0cf87e3709b91ef618c9f1d444d208420e16dd";
+        let member_side_nodes = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut member_side_nodes, x"4aff52d81907e3ffc71e6523ce2cb4059c631ab4c0a93f486add6061d420241c");
+        Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
+        Vector::push_back(&mut member_side_nodes, x"3879bc88ee3eb90df3b2ec5e9fe00082f3392fe2f429e9ec0011eaee8de42e78");
+        Vector::push_back(&mut member_side_nodes, x"e0431ca32d842482ad438aa9e5ba8a2ba39725f53c8bd097a9910b7bb2437b07");
+        Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
+        let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
+        assert(member_v_ok, 1168);
+
+        let renewed_state_expiration_date: u64 = state_expiration_date + renew_period;
+        let renewed_domain_name_state = DomainName::new_domain_name_state(&domain_name_id, renewed_state_expiration_date, state_owner);
+        let leaf_path = SMTreeHasher::digest(&key);
+        let renewed_leaf_value_hash = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameState>(&renewed_domain_name_state));
+        let new_smt_root = SMTProofs::compute_root_hash_by_leaf(
+            &leaf_path,
+            &renewed_leaf_value_hash,
+            &member_side_nodes,
+        );
+        let expected_new_smt_root = x"d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde";
+        Debug::print<vector<u8>>(&new_smt_root);
+        assert(expected_new_smt_root == new_smt_root, 1166)
     }
 
     #[test]
