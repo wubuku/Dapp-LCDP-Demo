@@ -117,6 +117,8 @@ func TestDomainNameRenewDomains(t *testing.T) {
 	time.Sleep(time.Second * 5)
 	testRenewDomainName(&starcoinClient, database, smTree, privateKeyConfig, "stc", "c", t)
 	time.Sleep(time.Second * 5)
+	testRenewDomainName(&starcoinClient, database, smTree, privateKeyConfig, "stc", "d", t)
+	time.Sleep(time.Second * 5)
 }
 
 func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.SparseMerkleTree, privateKeyConfig map[string]string, tld string, sld string, t *testing.T) {

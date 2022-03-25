@@ -51,8 +51,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
-github.com/wubuku/smt v0.2.1-0.20220322080945-128b37382127 h1:EZx0SneSQ6FLzN5JOAi4B96MPLy1QVStNSTGAQtRFWM=
-github.com/wubuku/smt v0.2.1-0.20220322080945-128b37382127/go.mod h1:/sdYDakowo/XaxS2Fl7CBqtuf/O2uTqF2zmAUFAtAiw=
+github.com/wubuku/smt v0.2.1-0.20220325130446-661bc96c92f5 h1:NVRFoTkmwx2ZYkCXEIFWlo7G+yxPWWC9CBSfijlvVaI=
+github.com/wubuku/smt v0.2.1-0.20220325130446-661bc96c92f5/go.mod h1:/sdYDakowo/XaxS2Fl7CBqtuf/O2uTqF2zmAUFAtAiw=
 go.dedis.ch/fixbuf v1.0.3 h1:hGcV9Cd/znUxlusJ64eAlExS+5cJDIyTyEG+otu5wQs=
 go.dedis.ch/fixbuf v1.0.3/go.mod h1:yzJMt34Wa5xD37V5RTdmp38cz3QhMagdGoem9anUalw=
 go.dedis.ch/kyber/v3 v3.0.4/go.mod h1:OzvaEnPvKlyrWyp3kGXlFdp7ap1VC6RkZDTaPikqhsQ=

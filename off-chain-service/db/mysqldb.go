@@ -47,11 +47,11 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 	return w, nil
 }
 
-func (w *MySqlDB) GetDomainNameSmtValue(path string, smtRoot string) (*DomainNameSmtValue, error) {
+func (w *MySqlDB) GetDomainNameSmtValue(path string, valueHash string) (*DomainNameSmtValue, error) {
 	v := new(DomainNameSmtValue)
 	if err := w.db.Where(&DomainNameSmtValue{
-		Path:    path,
-		SmtRoot: smtRoot,
+		Path:      path,
+		ValueHash: valueHash,
 	}).First(v).Error; err != nil {
 		//if !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
@@ -151,28 +151,44 @@ type DomainNameSmtValueMapStore struct {
 	db *MySqlDB
 }
 
-func (db *MySqlDB) NewDomainNameSmtValueMapStore() smt.MapStore {
+func (db *MySqlDB) NewDomainNameSmtValueMapStore() smt.SmtValueStore {
 	return &DomainNameSmtValueMapStore{
 		db: db,
 	}
 }
 
-// Get gets the value for a key(path).
+func (m *DomainNameSmtValueMapStore) Immutable() bool {
+	return true
+}
+
 func (m *DomainNameSmtValueMapStore) Get(key []byte) ([]byte, error) {
+	return nil, fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Get")
+}
+
+func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
+	return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Set")
+}
+
+// Delete deletes a key.
+func (m *DomainNameSmtValueMapStore) Delete(key []byte) error {
+	// path := hex.EncodeToString(key)
+	// _ = path
+	return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Delete")
+}
+
+// Get gets the value for a key(path).
+func (m *DomainNameSmtValueMapStore) GetForValueHash(key []byte, valueHash []byte) ([]byte, error) {
 	path := hex.EncodeToString(key)
-	smtRoot := "todo"
-	// todo
-	//return nil, fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Get")
-	domainNameSmtValue, err := m.db.GetDomainNameSmtValue(path, smtRoot)
+	h := hex.EncodeToString(valueHash)
+	domainNameSmtValue, err := m.db.GetDomainNameSmtValue(path, h)
 	if err != nil {
 		return nil, err
 	}
 	return hex.DecodeString(domainNameSmtValue.Value)
-
 }
 
 // Set updates the value for a key(path).
-func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
+func (m *DomainNameSmtValueMapStore) SetForValueHash(key []byte, valueHash []byte, value []byte) error {
 	path := hex.EncodeToString(key)
 	// todo
 	//return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Set")
@@ -182,7 +198,7 @@ func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
 	}
 	domainNameSmtVal := &DomainNameSmtValue{
 		Path:                          path,
-		SmtRoot:                       "todo", //todo
+		ValueHash:                     hex.EncodeToString(valueHash),
 		Value:                         hex.EncodeToString(value),
 		DomainNameIdTopLevelDomain:    domainNameState.DomainNameIdTopLevelDomain,
 		DomainNameIdSecondLevelDomain: domainNameState.DomainNameIdSecondLevelDomain,
@@ -204,14 +220,6 @@ func (m *DomainNameSmtValueMapStore) Set(key []byte, value []byte) error {
 		return nil
 	}
 	return err
-}
-
-// Delete deletes a key.
-func (m *DomainNameSmtValueMapStore) Delete(key []byte) error {
-	path := hex.EncodeToString(key)
-	_ = path
-	//return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Delete") //todo
-	return nil
 }
 
 // Update Starcoin height handled

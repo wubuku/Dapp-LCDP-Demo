@@ -12,9 +12,9 @@ type DomainNameSmtNode struct {
 }
 
 type DomainNameSmtValue struct {
-	Path    string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_root
-	SmtRoot string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_root
-	Value   string `gorm:"size:36000"`
+	Path      string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_vhash
+	ValueHash string `gorm:"primaryKey;size:66"` //;uniqueIndex:uni_smt_leaf_path_vhash
+	Value     string `gorm:"size:36000"`
 	// //////////////////// decoded DomainNameState /////////////////////
 	DomainNameIdTopLevelDomain    string `gorm:"size:100"`
 	DomainNameIdSecondLevelDomain string `gorm:"size:100"`

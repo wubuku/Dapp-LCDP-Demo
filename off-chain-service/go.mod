@@ -13,4 +13,4 @@ require (
 	gorm.io/gorm v1.23.3
 )
 
-replace github.com/celestiaorg/smt v0.2.1 => github.com/wubuku/smt v0.2.1-0.20220322080945-128b37382127
+replace github.com/celestiaorg/smt v0.2.1 => github.com/wubuku/smt v0.2.1-0.20220325130446-661bc96c92f5
