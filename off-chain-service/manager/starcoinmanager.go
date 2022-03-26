@@ -162,8 +162,8 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 			string(domainNameEvt.GetDomainNameId().SecondLevelDomain),
 			domainNameEvt.GetUpdatedState().ExpirationDate,
 			domainNameEvt.GetUpdatedState().Owner,
-			db.SmtDigest(smtKey),
-			db.SmtDigest(updatedSmtValue),
+			tools.SmtDigest(smtKey),
+			tools.SmtDigest(updatedSmtValue),
 			domainNameEvt.GetUpdatedSmtRoot(),
 			domainNameEvt.GetPreviousSmtRoot(),
 		)
@@ -178,7 +178,7 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 			return errors.Wrap(err, "handleNewBlock - NewDomainNameSmtNodeMapStore error")
 		}
 		valueStore := m.db.NewDomainNameSmtValueMapStore()
-		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
+		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
 		offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")

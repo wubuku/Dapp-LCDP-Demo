@@ -3,22 +3,7 @@ package db
 import (
 	"encoding/hex"
 	"fmt"
-	"hash"
-
-	"golang.org/x/crypto/sha3"
 )
-
-func SmtDigest(data []byte) []byte {
-	hasher := New256Hasher()
-	hasher.Write(data)
-	sum := hasher.Sum(nil)
-	hasher.Reset()
-	return sum
-}
-
-func New256Hasher() hash.Hash {
-	return sha3.New256() //sha256.New()
-}
 
 func HexToAccountAddress(value string) ([16]uint8, error) {
 	bytes, err := hex.DecodeString(value)

@@ -67,17 +67,3 @@ func EncodeDomainNameRenewTxPaylaod(module_addr string,
 		},
 	}
 }
-
-func ParseSmtLeaf(data []byte) ([]byte, []byte) {
-	return data[len(SmtLeafPrefix()) : SmtPathSize()+len(SmtLeafPrefix())], data[len(SmtLeafPrefix())+SmtPathSize():]
-}
-
-func SmtLeafPrefix() []byte {
-	leafPrefix := []byte{0}
-	//nodePrefix = []byte{1}
-	return leafPrefix
-}
-
-func SmtPathSize() int {
-	return 32
-}

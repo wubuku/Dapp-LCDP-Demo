@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
+	"starcoin-ns-demo/tools"
 	"testing"
 
 	"github.com/celestiaorg/smt"
@@ -21,6 +22,99 @@ var (
 func init() {
 	testDomainNameOwner, _ = hex.DecodeString("b6D69DD935EDf7f2054acF12eb884df8")
 }
+
+// func TestPrintDate(t *testing.T) {
+// 	d1 := uint64(time.Date(2023, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
+// 	d2 := uint64(time.Date(2022, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
+// 	fmt.Println(d1)
+// 	fmt.Println(d2)
+// 	fmt.Println(d1 - d2)
+// 	fmt.Println(1000 * 60 * 60 * 24 * 365)
+// }
+
+func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
+	// Initialise two new key-value store to store the nodes and values of the tree
+	nodeStore, valueStore, _ := testGetSmtSimpleMapStores()
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	var key []byte
+	var domainNameId *DomainNameId
+
+	// ///////////////////////
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "e", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "f", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "g", t)
+	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
+}
+
+func TestSmtProveAndPrintMoveRegisterAndRenewFunctionalTests(t *testing.T) {
+	TestPrintMoveDomainNameFunctionalTestFileStart(t)
+
+	nodeStore := smt.NewSimpleMap()
+	valueStore := smt.NewSimpleMap()
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	var key []byte
+	var domainNameId *DomainNameId
+
+	// ///////////////////////
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "e", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "f", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "g", t)
+	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
+
+	// ///////////////////////////////////////////////////////
+	// print DomainName renew functional test code
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
+	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
+	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
+	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
+
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
+	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
+}
+
+//! account: alice, 0xb6D69DD935EDf7f2054acF12eb884df8, 10000000000 0x1::STC::STC
+//
+//
+// ! block-prologue
+// ! author: genesis
+// ! block-number: 1
+// ! block-time: 1647648000000
 
 func TestPrintMoveDomainNameFunctionalTestFileStart(t *testing.T) {
 	fmt.Printf(`
@@ -58,98 +152,6 @@ func testUpdateDomainNameSmt(domainNameId *DomainNameId, expirationDate uint64, 
 	}
 	smt.Update(key, value)
 	return key, value
-}
-
-// func TestPrintDate(t *testing.T) {
-// 	d1 := uint64(time.Date(2023, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
-// 	d2 := uint64(time.Date(2022, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
-// 	fmt.Println(d1)
-// 	fmt.Println(d2)
-// 	fmt.Println(d1 - d2)
-// 	fmt.Println(1000 * 60 * 60 * 24 * 365)
-// }
-
-func TestSmtGetValue(t *testing.T) {
-	nodeStore := smt.NewSimpleMap()
-	valueStore := smt.NewSimpleMap()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
-	var key []byte
-	var value []byte
-	var err error
-	var domainNameId *DomainNameId
-	// ///////////////////////
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
-	testUpdateDomainNameSmtByTestExpirationDate(domainNameId, smt, t)
-
-	// ////////// Get SMT get value by key /////////////
-	fmt.Println(smt.Root())
-	expectedValue, _ := hex.DecodeString("03737463016100742af786010000b6d69dd935edf7f2054acf12eb884df8")
-	value, err = smt.Get(key)
-	if err != nil {
-		fmt.Println(err)
-		t.FailNow()
-	}
-	fmt.Println("value:")
-	fmt.Println(hex.EncodeToString(value))
-	fmt.Println("expectedValue:")
-	fmt.Println(hex.EncodeToString(expectedValue))
-	if !bytes.Equal(expectedValue, value) {
-		fmt.Println("!bytes.Equal(expectedRoot, smt.Root())")
-		t.FailNow()
-	}
-}
-
-func testGetSmtSimpleMapStores() (smt.MapStore, smt.MapStore, error) {
-	nodeStore := smt.NewSimpleMap()
-	valueStore := smt.NewSimpleMap()
-	return nodeStore, valueStore, nil
-}
-
-// func testGetDBDomainNameSmtMapStores() (smt.MapStore, smt.MapStore, error) {
-// 	// //////////// New MySQL node MapStore /////////////////
-// 	//nodeStore := smt.NewSimpleMap()
-// 	db, err := localDevDB()
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
-// 	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
-// 	if err != nil {
-// 		return nil, nil, err
-// 	}
-// 	// //////////// New MySQL value MapStore /////////////////
-// 	//valueStore := smt.NewSimpleMap()
-// 	valueStore := db.NewDomainNameSmtValueMapStore()
-// 	return nodeStore, valueStore, nil
-// }
-
-func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
-	// Initialise two new key-value store to store the nodes and values of the tree
-	nodeStore, valueStore, _ := testGetSmtSimpleMapStores()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
-	var key []byte
-	var domainNameId *DomainNameId
-
-	// ///////////////////////
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "e", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "f", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "g", t)
-	testSmtProofAndPrintMoveUnitTestFun(domainNameId, key, smt, t)
 }
 
 func testSmtProofAndPrintMoveUnitTestFun(domainNameId *DomainNameId, key []byte, smt *smt.SparseMerkleTree, t *testing.T) {
@@ -198,6 +200,10 @@ func testPrintMoveNonMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byt
 		fmt.Println(err)
 		t.FailNow()
 	}
+	if !tools.IsSmtKeyAndLeafDataUnrelated(key, proof.NonMembershipLeafData) {
+		fmt.Printf("Key(%s) and leaf data(%s) are NOT unrelated!\n", hex.EncodeToString(key), hex.EncodeToString(proof.NonMembershipLeafData))
+		t.FailNow()
+	}
 	fmt.Printf("        let non_member_leaf_data = x\"%s\";\n", hex.EncodeToString(proof.NonMembershipLeafData))
 	fmt.Println("        let non_member_side_nodes = Vector::empty<vector<u8>>();")
 	for _, s := range proof.SideNodes {
@@ -208,9 +214,13 @@ func testPrintMoveNonMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byt
 func testPrintMoveMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byte, t *testing.T) {
 	fmt.Println("        // -------------------------------------------------------")
 	fmt.Printf("        let member_root = x\"%s\";\n", hex.EncodeToString(smt.Root()))
-	proof, err := smt.Prove(key)
+	proof, leafData, err := smt.ProveForRootAndGetLeafData(key, smt.Root())
 	if err != nil {
 		fmt.Println(err)
+		t.FailNow()
+	}
+	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+		fmt.Printf("Key(%s) and leaf data(%s) are NOT related!\n", hex.EncodeToString(key), hex.EncodeToString(leafData))
 		t.FailNow()
 	}
 	//fmt.Printf("        let member_leaf_data = x\"%s\";\n", hex.EncodeToString(proof.NonMembershipLeafData))
@@ -248,60 +258,6 @@ func testGetDomainNameKey(domainNameId *DomainNameId, t *testing.T) []byte {
 // 	fmt.Println(hex.EncodeToString(bs))
 // 	fmt.Println("e775f588f3f8e6983a7c0d4dd5bda65fab01176c7c3d7b6edb893762e0157dfd")
 // }
-
-func TestSmtProveAndPrintMoveRegisterFunctionalTest(t *testing.T) {
-	TestPrintMoveDomainNameFunctionalTestFileStart(t)
-
-	nodeStore := smt.NewSimpleMap()
-	valueStore := smt.NewSimpleMap()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, New256Hasher())
-	var key []byte
-	var domainNameId *DomainNameId
-
-	// ///////////////////////
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "e", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "f", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "g", t)
-	testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId, key, smt, t)
-
-	// ///////////////////////////////////////////////////////
-	// print DomainName renew functional test code
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
-	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "b", t)
-	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "c", t)
-	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
-
-	domainNameId, key = testGetDomainNameIdAndKey("stc", "d", t)
-	testSmtProofAndPrintMoveRenewFunctionalTestFun(domainNameId, key, smt, t)
-}
-
-//! account: alice, 0xb6D69DD935EDf7f2054acF12eb884df8, 10000000000 0x1::STC::STC
-//
-//
-// ! block-prologue
-// ! author: genesis
-// ! block-number: 1
-// ! block-time: 1647648000000
 
 func testSmtProofAndPrintMoveRegisterFunctionalTestFun(domainNameId *DomainNameId, key []byte, smt *smt.SparseMerkleTree, t *testing.T) {
 	testPrintMoveRegisterOrRenewFunctionalTestScriptStart()
@@ -437,3 +393,56 @@ func testPrintMoveRenewFunctionalTestFunEnd(smt *smt.SparseMerkleTree, key []byt
 // 	bs := []byte{212, 90, 131, 33, 192, 107, 125, 113, 213, 203, 228, 137, 180, 38, 36, 75, 111, 170, 158, 50, 19, 15, 147, 169, 234, 228, 181, 53, 255, 40, 61, 222}
 // 	fmt.Println(hex.EncodeToString(bs)) //d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde
 // }
+
+func testGetSmtSimpleMapStores() (smt.MapStore, smt.MapStore, error) {
+	nodeStore := smt.NewSimpleMap()
+	valueStore := smt.NewSimpleMap()
+	return nodeStore, valueStore, nil
+}
+
+// func testGetDBDomainNameSmtMapStores() (smt.MapStore, smt.MapStore, error) {
+// 	// //////////// New MySQL node MapStore /////////////////
+// 	//nodeStore := smt.NewSimpleMap()
+// 	db, err := localDevDB()
+// 	if err != nil {
+// 		return nil, nil, err
+// 	}
+// 	nodeStore, err := db.NewDomainNameSmtNodeMapStore()
+// 	if err != nil {
+// 		return nil, nil, err
+// 	}
+// 	// //////////// New MySQL value MapStore /////////////////
+// 	//valueStore := smt.NewSimpleMap()
+// 	valueStore := db.NewDomainNameSmtValueMapStore()
+// 	return nodeStore, valueStore, nil
+// }
+
+func TestSmtGetValue(t *testing.T) {
+	nodeStore := smt.NewSimpleMap()
+	valueStore := smt.NewSimpleMap()
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	var key []byte
+	var value []byte
+	var err error
+	var domainNameId *DomainNameId
+	// ///////////////////////
+	domainNameId, key = testGetDomainNameIdAndKey("stc", "a", t)
+	testUpdateDomainNameSmtByTestExpirationDate(domainNameId, smt, t)
+
+	// ////////// Get SMT get value by key /////////////
+	fmt.Println(smt.Root())
+	expectedValue, _ := hex.DecodeString("03737463016100742af786010000b6d69dd935edf7f2054acf12eb884df8")
+	value, err = smt.Get(key)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println("value:")
+	fmt.Println(hex.EncodeToString(value))
+	fmt.Println("expectedValue:")
+	fmt.Println(hex.EncodeToString(expectedValue))
+	if !bytes.Equal(expectedValue, value) {
+		fmt.Println("!bytes.Equal(expectedRoot, smt.Root())")
+		t.FailNow()
+	}
+}

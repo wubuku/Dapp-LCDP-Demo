@@ -67,7 +67,7 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 	}
 
 	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
-	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
+	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
 	_ = starcoinClient
 	_ = privateKeyConfig
 	_ = smTree
@@ -91,6 +91,8 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 	// time.Sleep(time.Second * 5)
 	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "j", t)
 	// time.Sleep(time.Second * 5)
+	// testRegisterDomainName(&starcoinClient, smTree, privateKeyConfig, "stc", "k", t)
+	// time.Sleep(time.Second * 5)
 }
 
 func TestDomainNameRenewDomains(t *testing.T) {
@@ -102,7 +104,7 @@ func TestDomainNameRenewDomains(t *testing.T) {
 	}
 
 	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
-	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, db.New256Hasher())
+	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
 	_ = starcoinClient
 	_ = privateKeyConfig
 	_ = smTree
@@ -145,6 +147,10 @@ func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.S
 		fmt.Println(err)
 		t.FailNow()
 	}
+	if !tools.IsSmtKeyAndLeafDataUnrelated(key, proof.NonMembershipLeafData) {
+		fmt.Printf("Key(%s) and leaf data(%s) are NOT unrelated!\n", hex.EncodeToString(key), hex.EncodeToString(proof.NonMembershipLeafData))
+		t.FailNow()
+	}
 	testSubmitDomainNameRegisterTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, smtRoot, proof.NonMembershipLeafData, concatSideNodes(proof.SideNodes), t)
 }
 
@@ -172,7 +178,11 @@ func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MyS
 		fmt.Println(err)
 		t.FailNow()
 	}
-	leafPath, leafValueHash := ParseSmtLeaf(leafData)
+	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+		fmt.Printf("Key(%s) and leaf data(%s) are NOT related!\n", hex.EncodeToString(key), hex.EncodeToString(leafData))
+		t.FailNow()
+	}
+	leafPath, leafValueHash := tools.ParseSmtLeaf(leafData)
 	domainNameSmtValue, err := database.GetDomainNameSmtValue(hex.EncodeToString(leafPath), hex.EncodeToString(leafValueHash))
 	if err != nil {
 		fmt.Println(err)
