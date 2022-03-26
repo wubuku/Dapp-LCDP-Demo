@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"starcoin-ns-demo/tools"
 
 	"github.com/celestiaorg/smt"
 	gomysql "github.com/go-sql-driver/mysql"
@@ -190,7 +191,9 @@ func (m *DomainNameSmtValueMapStore) GetForValueHash(key []byte, valueHash []byt
 // Set updates the value for a key(path).
 func (m *DomainNameSmtValueMapStore) SetForValueHash(key []byte, valueHash []byte, value []byte) error {
 	path := hex.EncodeToString(key)
-	// todo
+	if !bytes.Equal(valueHash, tools.SmtDigest(value)) {
+		return fmt.Errorf("failed to verify value by valueHash(%s). key: %s", hex.EncodeToString(valueHash), hex.EncodeToString(key))
+	}
 	//return fmt.Errorf("NOT IMPLEMENTED - (m *DomainNameSmtValueMapStore) Set")
 	domainNameState, err := BcsDeserializeDomainNameState(value)
 	if err != nil {

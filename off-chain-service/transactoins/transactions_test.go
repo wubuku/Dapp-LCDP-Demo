@@ -1,6 +1,7 @@
 package transactoins
 
 import (
+	"bytes"
 	"encoding/hex"
 	"errors"
 	"fmt"
@@ -186,6 +187,11 @@ func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MyS
 	domainNameSmtValue, err := database.GetDomainNameSmtValue(hex.EncodeToString(leafPath), hex.EncodeToString(leafValueHash))
 	if err != nil {
 		fmt.Println(err)
+		t.FailNow()
+	}
+	value, _ := hex.DecodeString(domainNameSmtValue.Value)
+	if !bytes.Equal(leafValueHash, tools.SmtDigest(value)) {
+		fmt.Printf("failed to verify value by valueHash(%s). key: %s\n", hex.EncodeToString(leafValueHash), hex.EncodeToString(key))
 		t.FailNow()
 	}
 	var stateExpirationDate uint64 = domainNameSmtValue.ExpirationDate
