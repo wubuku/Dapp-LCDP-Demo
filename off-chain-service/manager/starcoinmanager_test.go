@@ -1,6 +1,8 @@
 package manager
 
 import (
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"starcoin-ns-demo/db"
 	"starcoin-ns-demo/tools"
@@ -21,6 +23,23 @@ func TestHandleNewBlock(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
+}
+
+func TestGetDomainNameStateAndSmtProof(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	domainNameId := db.NewDomainNameId("stc", "d")
+	state, proof, smtRoot, err := starcoinManager.GetDomainNameStateAndSmtProof(domainNameId)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println("---------- state ----------")
+	fmt.Println(state)
+	fmt.Println("---------- proof ----------")
+	j, _ := json.Marshal(proof)
+	fmt.Println(string(j))
+	fmt.Println("---------- root -----------")
+	fmt.Println(hex.EncodeToString(smtRoot))
 }
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {

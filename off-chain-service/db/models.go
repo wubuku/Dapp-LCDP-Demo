@@ -20,8 +20,16 @@ type DomainNameSmtValue struct {
 	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
 	ExpirationDate                uint64
 	Owner                         string `gorm:"size:66"`
-
+	// //////////////////////////////////////////////////////////////////
 	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+}
+
+func (v *DomainNameSmtValue) GetDomainNameState() (*DomainNameState, error) {
+	stateOwner, err := HexToAccountAddress(v.Owner)
+	if err != nil {
+		return nil, err
+	}
+	return NewDomainNameState(NewDomainNameId(v.DomainNameIdTopLevelDomain, v.DomainNameIdSecondLevelDomain), v.ExpirationDate, stateOwner[:]), nil
 }
 
 type DomainNameId struct {

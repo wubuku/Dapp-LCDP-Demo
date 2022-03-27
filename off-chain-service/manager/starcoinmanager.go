@@ -10,6 +10,7 @@ import (
 	"log"
 	"time"
 
+	"starcoin-ns-demo/contract"
 	"starcoin-ns-demo/db"
 	"starcoin-ns-demo/events"
 	"starcoin-ns-demo/tools"
@@ -173,12 +174,10 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 		}
 
 		// Update SMT
-		nodeStore, err := m.db.NewDomainNameSmtNodeMapStore()
+		smt, err := m.getSMTree()
 		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - NewDomainNameSmtNodeMapStore error")
+			return errors.Wrap(err, "handleNewBlock - getSMTree error")
 		}
-		valueStore := m.db.NewDomainNameSmtValueMapStore()
-		smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
 		offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
 		if err != nil {
 			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
@@ -189,4 +188,70 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 	}
 
 	return nil
+}
+
+func (m *StarcoinManager) getSMTree() (*smt.SparseMerkleTree, error) {
+	nodeStore, err := m.db.NewDomainNameSmtNodeMapStore()
+	if err != nil {
+		return nil, err
+	}
+	valueStore := m.db.NewDomainNameSmtValueMapStore()
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	return smt, nil
+}
+
+// Return domain name state and SMT proof by domainNameId.
+func (m *StarcoinManager) GetDomainNameStateAndSmtProof(domainNameId *db.DomainNameId) (*db.DomainNameState, *smt.SparseMerkleProof, []byte, error) {
+	smtRootStr, err := contract.GetDomainNameSmtRoot(m.starcoinClient, m.contractAddress)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	smtRoot, err := tools.HexToBytes(smtRootStr)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	state, proof, err := m.GetDomainNameStateAndSmtProofForRoot(domainNameId, smtRoot)
+	return state, proof, smtRoot, err
+}
+
+// Return domain name state and SMT proof by domainNameId and SMT root.
+// If corresponding domain name dosen't exist(key is non-member of SMT), return nil and non-membership proof.
+func (m *StarcoinManager) GetDomainNameStateAndSmtProofForRoot(domainNameId *db.DomainNameId, smtRoot []byte) (*db.DomainNameState, *smt.SparseMerkleProof, error) {
+	var err error
+	var key []byte
+	key, err = domainNameId.BcsSerialize()
+	if err != nil {
+		return nil, nil, err
+	}
+	smTree, err := m.getSMTree()
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - getSMTree error")
+	}
+	proof, leafData, err := smTree.ProveForRootAndGetLeafData(key, smtRoot)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - ProveForRootAndGetLeafData error")
+	}
+	if len(leafData) == 0 || len(proof.NonMembershipLeafData) != 0 {
+		return nil, &proof, nil
+	}
+	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+		return nil, nil, fmt.Errorf("Key(%s) and leaf data(%s) are NOT related", hex.EncodeToString(key), hex.EncodeToString(leafData))
+	}
+	leafPath, leafValueHash := tools.ParseSmtLeaf(leafData)
+	domainNameSmtValue, err := m.db.GetDomainNameSmtValue(hex.EncodeToString(leafPath), hex.EncodeToString(leafValueHash))
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - GetDomainNameSmtValue error")
+	}
+	value, err := hex.DecodeString(domainNameSmtValue.Value)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - hex.DecodeString(domainNameSmtValue.Value) error")
+	}
+	if !bytes.Equal(leafValueHash, tools.SmtDigest(value)) {
+		return nil, nil, fmt.Errorf("failed to verify value by valueHash(%s). key: %s", hex.EncodeToString(leafValueHash), hex.EncodeToString(key))
+	}
+	state, err := domainNameSmtValue.GetDomainNameState()
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - domainNameSmtValue.GetDomainNameState error")
+	}
+	return state, &proof, nil
 }
