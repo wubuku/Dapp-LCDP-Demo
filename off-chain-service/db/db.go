@@ -2,6 +2,7 @@ package db
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 )
 
@@ -18,4 +19,30 @@ func HexToAccountAddress(value string) ([16]uint8, error) {
 		addr[i] = bytes[i]
 	}
 	return addr, nil
+}
+
+func EncodeSmtProofSideNodes(sideNodes [][]byte) (string, error) {
+	ss := make([]string, 0, len(sideNodes))
+	for _, s := range sideNodes {
+		ss = append(ss, hex.EncodeToString(s))
+	}
+	r, err := json.Marshal(ss)
+	return string(r), err
+}
+
+func DecodeSmtProofSideNodes(s string) ([][]byte, error) {
+	ss := &[]string{}
+	err := json.Unmarshal([]byte(s), ss)
+	if err != nil {
+		return nil, err
+	}
+	bs := make([][]byte, 0, len(*ss))
+	for _, v := range *ss {
+		b, err := hex.DecodeString(v)
+		if err != nil {
+			return nil, err
+		}
+		bs = append(bs, b)
+	}
+	return bs, nil
 }

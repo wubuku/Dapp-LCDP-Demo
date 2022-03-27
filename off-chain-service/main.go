@@ -6,8 +6,6 @@ import (
 	"starcoin-ns-demo/manager"
 	"starcoin-ns-demo/tools"
 
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/starcoinorg/starcoin-go/client"
 )
@@ -17,24 +15,27 @@ const (
 	DEV_CONTRACT_ADDRESS           = "0x18351d311d32201149a4df2a9fc2db8a"
 )
 
+var (
+	starcoinManager *manager.StarcoinManager
+)
+
 func main() {
-	starcoinManager, err := getLocalDevStarcoinManager()
+	var err error
+	starcoinManager, err = getLocalDevStarcoinManager()
 	if err != nil {
 		fmt.Println("main - getLocalDevStarcoinManager error.")
 		return
 	}
 	go starcoinManager.MonitorChain()
-	// for {
-	// 	time.Sleep(time.Hour)
-	// }
 
+	// //////////// Web Services //////////////
 	r := gin.Default()
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	// r.GET("/ping", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"message": "pong",
+	// 	})
+	// })
+	r.GET("/getDomainNameStateAndSmtProof", getDomainNameStateAndSmtProof)
 	r.Run("0.0.0.0:8099")
 }
 
