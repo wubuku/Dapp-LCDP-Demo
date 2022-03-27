@@ -5,8 +5,10 @@ import (
 	"starcoin-ns-demo/db"
 	"starcoin-ns-demo/manager"
 	"starcoin-ns-demo/tools"
-	"time"
 
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 	"github.com/starcoinorg/starcoin-go/client"
 )
 
@@ -22,9 +24,18 @@ func main() {
 		return
 	}
 	go starcoinManager.MonitorChain()
-	for {
-		time.Sleep(time.Hour)
-	}
+	// for {
+	// 	time.Sleep(time.Hour)
+	// }
+
+	r := gin.Default()
+
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+	r.Run("0.0.0.0:8099")
 }
 
 func getLocalDevStarcoinManager() (*manager.StarcoinManager, error) {
