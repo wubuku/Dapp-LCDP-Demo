@@ -75,53 +75,43 @@ func EncodeTwoTypeArgsAndFourU128TxPaylaod(module string, function string, t1, t
 }
 
 func encode_u128_argument(arg serde.Uint128) []byte {
-
 	s := bcs.NewSerializer()
 	if err := s.SerializeU128(arg); err == nil {
 		return s.GetBytes()
 	}
-
 	panic("Unable to serialize argument of type u128")
 }
 
 func encode_u8vector_argument(arg []byte) []byte {
-
 	s := bcs.NewSerializer()
 	if err := s.SerializeBytes(arg); err == nil {
 		return s.GetBytes()
 	}
-
 	panic("Unable to serialize argument of type u8vector")
 }
 
 func encode_vecbytes_argument(arg diemtypes.VecBytes) []byte {
-
 	if val, err := arg.BcsSerialize(); err == nil {
 		{
 			return val
 		}
 	}
-
 	panic("Unable to serialize argument of type vecbytes")
 }
 
 func encode_u64_argument(arg uint64) []byte {
-
 	s := bcs.NewSerializer()
 	if err := s.SerializeU64(arg); err == nil {
 		return s.GetBytes()
 	}
-
 	panic("Unable to serialize argument of type u64")
 }
 
 func encode_u8_argument(arg uint8) []byte {
-
 	s := bcs.NewSerializer()
 	if err := s.SerializeU8(arg); err == nil {
 		return s.GetBytes()
 	}
-
 	panic("Unable to serialize argument of type u64")
 }
 
@@ -133,6 +123,15 @@ func encode_array16_u8_argument(arg [16]uint8) []byte {
 		}
 	}
 	return serializer.GetBytes()
+}
+
+func encode_address_argument(arg diemtypes.AccountAddress) []byte {
+	if val, err := arg.BcsSerialize(); err == nil {
+		{
+			return val
+		}
+	}
+	panic("Unable to serialize argument of type address")
 }
 
 // Parse string to ModuleId
