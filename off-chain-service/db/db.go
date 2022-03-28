@@ -4,8 +4,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"starcoin-ns-demo/tools"
 )
 
+// Hex string to Starcoin account address.
 func HexToAccountAddress(value string) ([16]uint8, error) {
 	bytes, err := hex.DecodeString(value)
 	if err != nil {
@@ -21,15 +23,17 @@ func HexToAccountAddress(value string) ([16]uint8, error) {
 	return addr, nil
 }
 
+// Encode SMT proof side nodes to JSON string.
 func EncodeSmtProofSideNodes(sideNodes [][]byte) (string, error) {
 	ss := make([]string, 0, len(sideNodes))
 	for _, s := range sideNodes {
-		ss = append(ss, hex.EncodeToString(s))
+		ss = append(ss, tools.EncodeToHex(s))
 	}
 	r, err := json.Marshal(ss)
 	return string(r), err
 }
 
+// Decode JSON string to SMT proof side nodes.
 func DecodeSmtProofSideNodes(s string) ([][]byte, error) {
 	ss := &[]string{}
 	err := json.Unmarshal([]byte(s), ss)
@@ -38,7 +42,7 @@ func DecodeSmtProofSideNodes(s string) ([][]byte, error) {
 	}
 	bs := make([][]byte, 0, len(*ss))
 	for _, v := range *ss {
-		b, err := hex.DecodeString(v)
+		b, err := tools.HexToBytes(v)
 		if err != nil {
 			return nil, err
 		}

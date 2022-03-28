@@ -13,7 +13,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/novifinancial/serde-reflection/serde-generate/runtime/golang v0.0.0-20220114180008-bde96ef4a0a2
 	github.com/pkg/errors v0.9.1
-	github.com/starcoinorg/starcoin-go v0.0.0-20220121050438-0e951f5e0a17
+	github.com/starcoinorg/starcoin-go v0.0.0-20220324132534-1ecb04f29836
 	github.com/ugorji/go v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220321153916-2c7772ba3064
 	golang.org/x/sys v0.0.0-20220325203850-36772127a21f // indirect

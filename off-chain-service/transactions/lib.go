@@ -1,4 +1,4 @@
-package transactoins
+package transactions
 
 import diemtypes "github.com/starcoinorg/starcoin-go/types"
 

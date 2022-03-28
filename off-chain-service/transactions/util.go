@@ -1,4 +1,4 @@
-package transactoins
+package transactions
 
 import (
 	"strings"
@@ -135,6 +135,7 @@ func encode_array16_u8_argument(arg [16]uint8) []byte {
 	return serializer.GetBytes()
 }
 
+// Parse string to ModuleId
 func ParseModuleId(str string) *diemtypes.ModuleId {
 	ss := strings.Split(str, "::")
 	if len(ss) < 2 {

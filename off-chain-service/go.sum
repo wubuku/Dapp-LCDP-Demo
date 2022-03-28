@@ -89,8 +89,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/rogpeppe/go-internal v1.8.0 h1:FCbCCtXNOY3UtUuHUYaghJg4y7Fd14rXifAYUAtL9R8=
 github.com/rogpeppe/go-internal v1.8.0/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
-github.com/starcoinorg/starcoin-go v0.0.0-20220121050438-0e951f5e0a17 h1:kfkxiTKvVcGSgA0RguMgYHm1eWb8vKm3avB1renkh98=
-github.com/starcoinorg/starcoin-go v0.0.0-20220121050438-0e951f5e0a17/go.mod h1:P9XqzWTePMp9MxrXY9ND/diw388Gk3nUHs/QVaAZnzA=
+github.com/starcoinorg/starcoin-go v0.0.0-20220324132534-1ecb04f29836 h1:BJ6f6Z5pqsRw8nkd+Q+m4ZwcJ4akZwHhUxabjPo30+U=
+github.com/starcoinorg/starcoin-go v0.0.0-20220324132534-1ecb04f29836/go.mod h1:P9XqzWTePMp9MxrXY9ND/diw388Gk3nUHs/QVaAZnzA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=

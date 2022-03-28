@@ -39,6 +39,14 @@ func HexToBytes(str string) ([]byte, error) {
 	return hex.DecodeString(str[2:])
 }
 
+func ConcatBytesSlices(nodes [][]byte) []byte {
+	r := make([]byte, 0)
+	for _, n := range nodes {
+		r = append(r, n...)
+	}
+	return r
+}
+
 // func FormatTokenAmount(symbol string, precision int, amount *big.Int) string {
 // 	ac := accounting.Accounting{
 // 		Symbol:    symbol,

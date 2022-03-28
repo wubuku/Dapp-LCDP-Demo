@@ -63,3 +63,15 @@ func BytesSliceToHexSlice(a [][]byte) []string {
 	}
 	return ss
 }
+
+func HexSliceToBytesSlice(a []string) ([][]byte, error) {
+	ss := make([][]byte, 0, len(a))
+	for _, s := range a {
+		bs, err := tools.HexToBytes(s)
+		if err != nil {
+			return nil, err
+		}
+		ss = append(ss, bs)
+	}
+	return ss, nil
+}

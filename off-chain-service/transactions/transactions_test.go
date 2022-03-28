@@ -1,4 +1,4 @@
-package transactoins
+package transactions
 
 import (
 	"bytes"
@@ -152,7 +152,7 @@ func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.S
 		fmt.Printf("Key(%s) and leaf data(%s) are NOT unrelated!\n", hex.EncodeToString(key), hex.EncodeToString(proof.NonMembershipLeafData))
 		t.FailNow()
 	}
-	testSubmitDomainNameRegisterTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, smtRoot, proof.NonMembershipLeafData, concatSideNodes(proof.SideNodes), t)
+	testSubmitDomainNameRegisterTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, smtRoot, proof.NonMembershipLeafData, tools.ConcatBytesSlices(proof.SideNodes), t)
 }
 
 func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MySqlDB, smTree *smt.SparseMerkleTree, privateKeyConfig map[string]string, tld string, sld string, t *testing.T) {
@@ -201,15 +201,7 @@ func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MyS
 		fmt.Println(err)
 		t.FailNow()
 	}
-	testSubmitDomainNameRenewTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, stateExpirationDate, stateOwner, smtRoot, concatSideNodes(proof.SideNodes), t)
-}
-
-func concatSideNodes(nodes [][]byte) []byte {
-	r := make([]byte, 0)
-	for _, n := range nodes {
-		r = append(r, n...)
-	}
-	return r
+	testSubmitDomainNameRenewTransaction(starcoinClient, privateKeyConfig, domainNameId.TopLevelDomain, domainNameId.SecondLevelDomain, stateExpirationDate, stateOwner, smtRoot, tools.ConcatBytesSlices(proof.SideNodes), t)
 }
 
 func testDecodeSmtRootHex(h string, t *testing.T) []byte {
