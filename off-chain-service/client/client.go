@@ -67,6 +67,45 @@ func (client *DomainNameClient) Register(topLevelDomain string, secondLevelDomai
 	return nil
 }
 
+func (client *DomainNameClient) Renew(topLevelDomain string, secondLevelDomain string, renewPeriod uint64, state *vo.DomainNameState, smtRoot string, sparseMerkleProof *vo.SparseMerkleProof) error {
+	renew_arg_smt_root, err := tools.HexToBytes(smtRoot)
+	if err != nil {
+		return err
+	}
+	renew_arg_smt_side_nodes, err := vo.HexSliceToBytesSlice(sparseMerkleProof.SideNodes)
+	if err != nil {
+		return err
+	}
+	state_expiration_date := state.ExpirationDate
+	state_owner, err := tools.HexToStarcoinAccountAddress(state.Owner)
+	if err != nil {
+		return err
+	}
+	register_tx_payload := transactions.EncodeDomainNameRenewTxPaylaod(client.contractAddress,
+		topLevelDomain,
+		secondLevelDomain,
+		renewPeriod,
+		state_expiration_date,
+		state_owner,
+		renew_arg_smt_root,
+		tools.ConcatBytesSlices(renew_arg_smt_side_nodes),
+	)
+	txHash, err := tools.SubmitStarcoinTransaction(client.starcoinClient, client.privateKeyConfig, &register_tx_payload)
+	if err != nil {
+		return err
+	}
+	//fmt.Printf("Wating transaction(%s) to be confirmed...\n", txHash)
+	ok, err := tools.WaitTransactionConfirm(client.starcoinClient, txHash, time.Minute*2)
+	//fmt.Println(ok, err)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return fmt.Errorf("unknown starcoin transaction error, hash: %s", txHash)
+	}
+	return nil
+}
+
 func (client *DomainNameClient) GetDomainNameStateAndSmtProof(topLevelDomain string, secondLevelDomain string, smtRoot string) (*vo.DomainNameStateAndSmtProof, error) {
 	uRL, err := client.getServiceURL("getDomainNameStateAndSmtProof")
 	if err != nil {

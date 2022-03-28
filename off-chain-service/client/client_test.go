@@ -54,6 +54,28 @@ func TestRegisterDomainName(t *testing.T) {
 	}
 }
 
+func TestRenewDomainName(t *testing.T) {
+	client, err := localDevDomainNameClient()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	stateAndProof, err := client.GetDomainNameStateAndSmtProof("stc", "a", "")
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	if stateAndProof.DomainNameState == nil {
+		fmt.Println("DomainName dosen't exist.")
+		t.FailNow()
+	}
+	err = client.Renew("stc", "a", 10000000, stateAndProof.DomainNameState, stateAndProof.SmtRoot, stateAndProof.SparseMerkleProof)
+	if err != nil {
+		fmt.Println("client.Renew error: " + err.Error())
+		t.FailNow()
+	}
+}
+
 func localDevDomainNameClient() (*DomainNameClient, error) {
 	starcoinClient := localDevStarcoinClient()
 	privateKeyConfig, err := localDevAlicePrivateKeyConfig()

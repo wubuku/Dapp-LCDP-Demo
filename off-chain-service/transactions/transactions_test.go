@@ -196,7 +196,7 @@ func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MyS
 	}
 	var stateExpirationDate uint64 = domainNameSmtValue.ExpirationDate
 	var stateOwner [16]uint8
-	stateOwner, err = db.HexToAccountAddress(domainNameSmtValue.Owner)
+	stateOwner, err = tools.HexToStarcoinAccountAddress(domainNameSmtValue.Owner)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

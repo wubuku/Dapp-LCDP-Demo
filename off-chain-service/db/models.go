@@ -2,6 +2,7 @@ package db
 
 import (
 	"encoding/hex"
+	"starcoin-ns-demo/tools"
 )
 
 type DomainNameSmtNode struct {
@@ -25,7 +26,7 @@ type DomainNameSmtValue struct {
 }
 
 func (v *DomainNameSmtValue) GetDomainNameState() (*DomainNameState, error) {
-	stateOwner, err := HexToAccountAddress(v.Owner)
+	stateOwner, err := tools.HexToStarcoinAccountAddress(v.Owner)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +139,7 @@ func (domainNameState *DomainNameState) SetDomainNameId(domainNameId *DomainName
 }
 
 func (domainNameState *DomainNameState) GetOwner() ([16]uint8, error) {
-	return HexToAccountAddress(domainNameState.Owner)
+	return tools.HexToStarcoinAccountAddress(domainNameState.Owner)
 }
 
 func (domainNameState *DomainNameState) SetOwner(owner [16]uint8) {

@@ -424,17 +424,6 @@ func ToBigFloat(i interface{}) (*big.Float, error) {
 	return nil, fmt.Errorf("unknown type to big.Float %t", i)
 }
 
-// Parse module Id., return address and module name.
-func ParseStarcoinModuleId(str string) (string, string, error) {
-	ss := strings.Split(str, "::")
-	if len(ss) < 2 {
-		return "", "", fmt.Errorf("module Id string format error")
-	} else if len(ss) > 2 {
-		return "", "", fmt.Errorf("module Id string format error")
-	}
-	return ss[0], ss[1], nil
-}
-
 func Uint128ToBigInt(u serde.Uint128) *big.Int {
 	h := new(big.Int).SetUint64(u.High)
 	l := new(big.Int).SetUint64(u.Low)
@@ -456,4 +445,31 @@ func BigIntToUint128(i *big.Int) serde.Uint128 {
 		High: h,
 		Low:  l,
 	}
+}
+
+// Parse module Id., return address and module name.
+func ParseStarcoinModuleId(str string) (string, string, error) {
+	ss := strings.Split(str, "::")
+	if len(ss) < 2 {
+		return "", "", fmt.Errorf("module Id string format error")
+	} else if len(ss) > 2 {
+		return "", "", fmt.Errorf("module Id string format error")
+	}
+	return ss[0], ss[1], nil
+}
+
+// Hex string to Starcoin account address.
+func HexToStarcoinAccountAddress(value string) ([16]uint8, error) {
+	bytes, err := HexToBytes(value)
+	if err != nil {
+		return [16]uint8{}, err
+	}
+	if len(bytes) != 16 {
+		return [16]uint8{}, fmt.Errorf("account address length err: %v", len(bytes))
+	}
+	var addr [16]uint8
+	for i := 0; i < 16; i++ {
+		addr[i] = bytes[i]
+	}
+	return addr, nil
 }
