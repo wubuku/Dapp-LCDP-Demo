@@ -5,6 +5,11 @@ import (
 	"starcoin-ns-demo/tools"
 )
 
+const (
+	DOMAIN_NAME_STATE_HEAD_ID_DEFAULT    string = "DEFAULT"
+	DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME string = "domain_name_state"
+)
+
 type DomainNameSmtNode struct {
 	Hash string `gorm:"primaryKey;size:66"`
 	Data string `gorm:"size:132"`
@@ -148,11 +153,23 @@ func (domainNameState *DomainNameState) SetOwner(owner [16]uint8) {
 
 type DomainNameStateHead struct {
 	HeadId    string `gorm:"primaryKey;size:100"`
+	BlockHash string `gorm:"size:66;index:idx_block_hash_evt_key"`
+	EventKey  string `gorm:"size:100;index:idx_block_hash_evt_key"`
 	SmtRoot   string `gorm:"size:66"`
 	TableName string `gorm:"size:100"`
 
 	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 	UpdatedAt int64  `gorm:"autoUpdateTime:milli;index"`
+}
+
+func NewDomainNameStateHead(headId string, blockHash string, eventKey string, smtRoot string, tableName string) *DomainNameStateHead {
+	return &DomainNameStateHead{
+		HeadId:    headId,
+		BlockHash: blockHash,
+		EventKey:  eventKey,
+		SmtRoot:   smtRoot,
+		TableName: tableName,
+	}
 }
 
 type ChainHeight struct {
