@@ -1,8 +1,10 @@
 address 0x18351d311d32201149a4df2a9fc2db8a {
 module DomainNameRenewLogic {
     //use 0x1::Vector;
-    //use 0x1::Debug;
+    //use 0x1::Debug
     use 0x1::Signer;
+    use 0x1::Account;
+    use 0x1::STC;
     use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
 
     public fun verify(
@@ -16,7 +18,10 @@ module DomainNameRenewLogic {
         _ = account;
         _ = domain_name_state;
         _ = renew_period;
-
+        // ////////////////////////
+        let amount = Account::withdraw<STC::STC>(account, 1000000);
+        Account::deposit(DomainName::genesis_account(), amount);
+        // ////////////////////////
         let e_account = Signer::address_of(account);
         let e_renew_period = renew_period;
         (e_account, e_renew_period)
