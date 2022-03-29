@@ -84,17 +84,18 @@ func (m *StarcoinManager) MonitorChain() {
 				if m.currentHeight%10 == 0 {
 					log.Printf("StarcoinManager.MonitorChain - handle confirmed starcoin block height: %d", m.currentHeight)
 				}
-				err = m.handleNewBlock(m.currentHeight + 1)
+				err := m.handleNewBlock(m.currentHeight + 1)
 				if err != nil {
 					log.Printf("StarcoinManager.MonitorChain - handle confirmed starcoin block error: %s,  height: %d", err.Error(), m.currentHeight)
 					blockHandleResult = false
 				}
 				if !blockHandleResult {
+					// if block handled NOT ok, don't increase starcoin height
 					break
 				}
 				m.currentHeight++
 			}
-			if err = m.db.UpdateStarcoinHeight(m.currentHeight); err != nil {
+			if err := m.db.UpdateStarcoinHeight(m.currentHeight); err != nil {
 				log.Printf("StarcoinManager.MonitorChain - failed to save height of Starcoin: %v", err)
 			}
 			// case <-this.exitChan:
@@ -106,10 +107,10 @@ func (m *StarcoinManager) MonitorChain() {
 func (m *StarcoinManager) handleNewBlock(height uint64) error {
 	starcoinClient := m.starcoinClient
 	address := m.contractAddress
-	// ///////////////////////////////////////////////////////
+	// //////////////////////// Filter event type tags ///////////////////////////////
 	typeTagRegistered := m.contractAddress + "::DomainName::Registered"
 	typeTagRenewed := m.contractAddress + "::DomainName::Renewed"
-	// ////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////////////////
 	fromBlock := height
 	toBlock := height
 	eventFilter := &stcclient.EventFilter{
@@ -128,65 +129,73 @@ func (m *StarcoinManager) handleNewBlock(height uint64) error {
 	}
 
 	for _, evt := range evts {
-		evtData, err := tools.HexToBytes(evt.Data)
+		err := m.handleStarcoinEvent(evt)
 		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - tools.HexToBytes error")
-		}
-		// BCS deserialize on-chain Domain-Name-Event
-		domainNameEvt, err := events.BcsDeserializeDomainNameEvent(evt.TypeTag, evtData)
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - BcsDeserializeDomainNameRegistered error")
-		}
-		blockNumber, err := strconv.ParseUint(evt.BlockNumber, 10, 64)
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - ParseUint error")
-		}
-
-		domainNameId := db.NewDomainNameId(string(domainNameEvt.GetDomainNameId().TopLevelDomain), string(domainNameEvt.GetDomainNameId().SecondLevelDomain))
-		smtKey, err := domainNameId.BcsSerialize()
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
-		}
-		updatedSmtValue, err := domainNameEvt.GetUpdatedState().BcsSerialize()
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
-		}
-
-		domainNameEvent := db.NewDomainNameEvent(
-			evt.BlockHash,
-			evt.EventKey,
-			blockNumber,
-			evt.TransactionHash,
-			evt.TypeTag,
-			evtData,
-			string(domainNameEvt.GetDomainNameId().TopLevelDomain),
-			string(domainNameEvt.GetDomainNameId().SecondLevelDomain),
-			domainNameEvt.GetUpdatedState().ExpirationDate,
-			domainNameEvt.GetUpdatedState().Owner,
-			tools.SmtDigest(smtKey),
-			tools.SmtDigest(updatedSmtValue),
-			domainNameEvt.GetUpdatedSmtRoot(),
-			domainNameEvt.GetPreviousSmtRoot(),
-		)
-		err = m.db.SaveDomainNameEvent(domainNameEvent)
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
-		}
-
-		// Update SMT
-		smt, err := m.getSMTree()
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - getSMTree error")
-		}
-		offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
-		if err != nil {
-			return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
-		}
-		if !bytes.Equal(offChainSmtRoot, domainNameEvt.GetUpdatedSmtRoot()) {
-			return fmt.Errorf("handleNewBlock - offChainSmtRoot(%s) != onChainEvent.UpdatedSmtRoot(%s)", hex.EncodeToString(offChainSmtRoot), hex.EncodeToString(domainNameEvt.GetUpdatedSmtRoot()))
+			return err
 		}
 	}
 
+	return nil
+}
+
+// handle a Starcoin event
+func (m *StarcoinManager) handleStarcoinEvent(evt stcclient.Event) error {
+	evtData, err := tools.HexToBytes(evt.Data)
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - tools.HexToBytes error")
+	}
+	// BCS deserialize on-chain Domain-Name-Event
+	domainNameEvt, err := events.BcsDeserializeDomainNameEvent(evt.TypeTag, evtData)
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - BcsDeserializeDomainNameRegistered error")
+	}
+	blockNumber, err := strconv.ParseUint(evt.BlockNumber, 10, 64)
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - ParseUint error")
+	}
+
+	domainNameId := db.NewDomainNameId(string(domainNameEvt.GetDomainNameId().TopLevelDomain), string(domainNameEvt.GetDomainNameId().SecondLevelDomain))
+	smtKey, err := domainNameId.BcsSerialize()
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - domainNameId.BcsSerialize error")
+	}
+	updatedSmtValue, err := domainNameEvt.GetUpdatedState().BcsSerialize()
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
+	}
+	// //////////////////// Update SMT ////////////////////
+	smt, err := m.getSMTree()
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - getSMTree error")
+	}
+	offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
+	}
+	if !bytes.Equal(offChainSmtRoot, domainNameEvt.GetUpdatedSmtRoot()) {
+		return fmt.Errorf("handleNewBlock - offChainSmtRoot(%s) != onChainEvent.UpdatedSmtRoot(%s)", hex.EncodeToString(offChainSmtRoot), hex.EncodeToString(domainNameEvt.GetUpdatedSmtRoot()))
+	}
+	// ////////////// Save Domain-Name-Event ///////////////
+	domainNameEvent := db.NewDomainNameEvent(
+		evt.BlockHash,
+		evt.EventKey,
+		blockNumber,
+		evt.TransactionHash,
+		evt.TypeTag,
+		evtData,
+		string(domainNameEvt.GetDomainNameId().TopLevelDomain),
+		string(domainNameEvt.GetDomainNameId().SecondLevelDomain),
+		domainNameEvt.GetUpdatedState().ExpirationDate,
+		domainNameEvt.GetUpdatedState().Owner,
+		tools.SmtDigest(smtKey),
+		tools.SmtDigest(updatedSmtValue),
+		domainNameEvt.GetUpdatedSmtRoot(),
+		domainNameEvt.GetPreviousSmtRoot(),
+	)
+	err = m.db.SaveDomainNameEvent(domainNameEvent)
+	if err != nil {
+		return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
+	}
 	return nil
 }
 

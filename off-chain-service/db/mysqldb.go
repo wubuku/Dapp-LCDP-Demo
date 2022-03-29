@@ -8,8 +8,8 @@ import (
 	"starcoin-ns-demo/tools"
 
 	"github.com/celestiaorg/smt"
-	gomysql "github.com/go-sql-driver/mysql"
-	"gorm.io/driver/mysql"
+	"github.com/go-sql-driver/mysql"
+	gormmysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -24,7 +24,7 @@ type MySqlDB struct {
 }
 
 func NewMySqlDB(dsn string) (*MySqlDB, error) {
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(gormmysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
@@ -66,7 +66,7 @@ func (w *MySqlDB) GetDomainNameSmtValue(path string, valueHash string) (*DomainN
 
 func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
 	err := w.db.Save(e).Error
-	var mysqlErr *gomysql.MySQLError
+	var mysqlErr *mysql.MySQLError
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
 		// oldData, err := m.Get(key)
 		// if err != nil {
@@ -127,7 +127,7 @@ func (m *DomainNameSmtNodeMapStore) Set(key []byte, value []byte) error {
 		Data: d,
 	}
 	err := m.db.db.Create(n).Error
-	var mysqlErr *gomysql.MySQLError
+	var mysqlErr *mysql.MySQLError
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
 		oldData, err := m.Get(key)
 		if err != nil {
@@ -209,7 +209,7 @@ func (m *DomainNameSmtValueMapStore) SetForValueHash(key []byte, valueHash []byt
 		Owner:                         domainNameState.Owner,
 	}
 	err = m.db.db.Create(domainNameSmtVal).Error
-	var mysqlErr *gomysql.MySQLError
+	var mysqlErr *mysql.MySQLError
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
 		// oldData, err := m.Get(key)
 		// if err != nil {
