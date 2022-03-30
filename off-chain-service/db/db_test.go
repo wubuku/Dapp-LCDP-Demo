@@ -8,6 +8,43 @@ import (
 	"github.com/google/uuid"
 )
 
+func TestGetPreviousDomainNameEvent(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	e, err := database.GetLastDomainNameEvent()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(e)
+	if e == nil {
+		return
+	}
+	preEvt, err := database.GetPreviousDomainNameEvent(e)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(preEvt)
+}
+
+func TestGetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	es, err := database.GetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(23)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(es)
+}
+
 func TestNewDomainNameStateHead(t *testing.T) {
 	database, err := localDevDB()
 	if err != nil {

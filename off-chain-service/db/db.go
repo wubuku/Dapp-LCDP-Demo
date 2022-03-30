@@ -32,3 +32,26 @@ func DecodeSmtProofSideNodes(s string) ([][]byte, error) {
 	}
 	return bs, nil
 }
+
+// Encode event IDs to JSON string.
+func EncodeEventIds(eventIds []uint64) (string, error) {
+	r, err := json.Marshal(eventIds)
+	return string(r), err
+}
+
+// Decode JSON string to event IDs.
+func DecodeEventIds(s string) ([]uint64, error) {
+	ss := new([]uint64)
+	err := json.Unmarshal([]byte(s), ss)
+	if err != nil {
+		return nil, err
+	}
+	return *ss, nil
+}
+
+func reverseUint64Slices(slices [][]uint64) [][]uint64 {
+	for left, right := 0, len(slices)-1; left < right; left, right = left+1, right-1 {
+		slices[left], slices[right] = slices[right], slices[left]
+	}
+	return slices
+}

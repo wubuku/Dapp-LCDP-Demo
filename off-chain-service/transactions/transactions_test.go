@@ -21,10 +21,10 @@ const (
 	ONE_YEAR_MILLS       uint64 = 1000 * 60 * 60 * 24 * 365
 )
 
-var SMT_PLACEHOLDER []byte
+var TEST_SMT_PLACEHOLDER []byte
 
 func init() {
-	SMT_PLACEHOLDER = make([]byte, 32)
+	TEST_SMT_PLACEHOLDER = make([]byte, 32)
 }
 
 func TestDomainNameInitGenesis(t *testing.T) {
@@ -56,7 +56,7 @@ func TestDomainNameRegisterFirstDomain(t *testing.T) {
 	}
 	tld := "stc"
 	sld := "a"
-	testSubmitDomainNameRegisterTransaction(&starcoinClient, privateKeyConfig, tld, sld, SMT_PLACEHOLDER, []byte{}, []byte{}, t)
+	testSubmitDomainNameRegisterTransaction(&starcoinClient, privateKeyConfig, tld, sld, TEST_SMT_PLACEHOLDER, []byte{}, []byte{}, t)
 }
 
 func TestDomainNameRegisterDomains(t *testing.T) {

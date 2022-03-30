@@ -39,6 +39,7 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 		&DomainNameSmtNode{},
 		&DomainNameSmtValue{},
 		&DomainNameEvent{},
+		&DomainNameEventSequence{},
 		&DomainNameState{},
 		&DomainNameStateHead{},
 	)
@@ -64,8 +65,184 @@ func (w *MySqlDB) GetDomainNameSmtValue(path string, valueHash string) (*DomainN
 	return v, nil
 }
 
-func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
-	err := w.db.Save(e).Error
+func (w *MySqlDB) CreateDomainNameEvent(e *DomainNameEvent) error {
+	err := w.db.Create(e).Error
+	var mysqlErr *mysql.MySQLError
+	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
+		// can only re-create last DomainNameEvent
+		existedE, err := w.GetDomainNameEventByBlockHashAndEventKey(e.BlockHash, e.EventKey)
+		if err != nil {
+			return err
+		}
+		if existedE != nil {
+			// ignore err?
+			return nil
+			// maxId, err := w.GetDomainNameEventMaxId()
+			// if err != nil {
+			// 	return err
+			// }
+			// if existedE.Id != maxId {
+			// 	return fmt.Errorf(
+			// 		"re-create DomainNameEvent(BlockHash: %s, EventKey: %s, Id: %d) which is not last event, max event ID: %d",
+			// 		existedE.BlockHash, existedE.EventKey, existedE.Id, maxId) // think about removing this event then go on
+			// }
+		}
+		// ignore error?
+		return nil
+	}
+	return err
+}
+
+// Get DomainNameEvent by block hash and event key(DomainNameEvent's composite domain key).
+func (w *MySqlDB) GetDomainNameEventByBlockHashAndEventKey(blockHash string, eventKey string) (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Where("block_hash = ? and event_key = ?", blockHash, eventKey).Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+func (w *MySqlDB) GetDomainNameEvent(id uint64) (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Where("id = ?", id).Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetDomainNameEventMaxId() (uint64, error) {
+	var list []DomainNameEvent
+	if err := w.db.Select("id").Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return 0, err
+	}
+	if len(list) == 0 {
+		return 0, nil
+	}
+	first := list[0]
+	return first.Id, nil
+}
+
+func (w *MySqlDB) GetLastDomainNameEvent() (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetPreviousDomainNameEvent(e *DomainNameEvent) (*DomainNameEvent, error) {
+	if e.PreviousSmtRoot == "" {
+		return nil, nil
+	}
+	var list []DomainNameEvent
+	if err := w.db.Where("id < ? and updated_smt_root = ?", e.Id, e.PreviousSmtRoot).Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetLastDomainNameEventByIdLessThan(id uint64) (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Where("id < ?", id).Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetLastDomainNameEventByBlockNumberLessThan(blockNumber uint64) (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Where("block_number < ?", blockNumber).Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetDomainNameEventSequence(seqId string) (*DomainNameEventSequence, error) {
+	es := new(DomainNameEventSequence)
+	if err := w.db.Where(&DomainNameEventSequence{
+		SequenceId: seqId,
+	}).First(es).Error; err != nil {
+		return nil, err
+	}
+	return es, nil
+}
+
+func (w *MySqlDB) GetDomainNameEventSequenceAllElementIds(es *DomainNameEventSequence) ([]uint64, error) {
+	idSlices := make([][]uint64, 0)
+	currentES := es
+	for {
+		var err error
+		idSlice, err := DecodeEventIds(currentES.ElementIds)
+		if err != nil {
+			return nil, err
+		}
+		idSlices = append(idSlices, idSlice)
+		if currentES.PreviousSequenceId == "" {
+			break
+		}
+		currentES, err = w.GetDomainNameEventSequence(currentES.PreviousSequenceId)
+		if err != nil {
+			return nil, err
+		}
+		if currentES == nil {
+			break
+		}
+	}
+	idSlices = reverseUint64Slices(idSlices)
+	ids := make([]uint64, 0)
+	for i, v := range idSlices {
+		if len(v) == 0 {
+			return nil, fmt.Errorf("empty slice, index: %d", i)
+		}
+		if len(ids) > 0 && ids[len(ids)-1] == v[0] {
+			ids = append(ids, v[1:]...)
+		} else {
+			if len(ids) > 0 && ids[len(ids)-1] == v[0] {
+				return nil, fmt.Errorf("cannot concatenate slice(...%d) and slice(%d...)", ids[len(ids)-1], v[0])
+			}
+			ids = append(ids, v...)
+		}
+	}
+	return ids, nil
+}
+
+func (w *MySqlDB) GetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(eventId uint64) (*DomainNameEventSequence, error) {
+	var list []DomainNameEventSequence
+	if err := w.db.Where("last_event_id <= ?", eventId).Order("last_event_id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) CreateDomainNameEventSequence(es *DomainNameEventSequence) error {
+	err := w.db.Create(es).Error
 	var mysqlErr *mysql.MySQLError
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
 		// oldData, err := m.Get(key)
@@ -82,18 +259,19 @@ func (w *MySqlDB) SaveDomainNameEvent(e *DomainNameEvent) error {
 	return err
 }
 
-func (db *MySqlDB) NewDomainNameSmtNodeMapStore() (smt.MapStore, error) {
-	return &DomainNameSmtNodeMapStore{
-		db: db,
-	}, nil
-}
-
+// //////////////// Map Store interface ////////////////////
 //Get(key []byte) ([]byte, error)     // Get gets the value for a key.
 //Set(key []byte, value []byte) error // Set updates the value for a key.
 //Delete(key []byte) error            // Delete deletes a key.
 
 type DomainNameSmtNodeMapStore struct {
 	db *MySqlDB
+}
+
+func (db *MySqlDB) NewDomainNameSmtNodeMapStore() (smt.MapStore, error) {
+	return &DomainNameSmtNodeMapStore{
+		db: db,
+	}, nil
 }
 
 // The 'Get' gets the value for a key.

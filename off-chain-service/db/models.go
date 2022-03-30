@@ -68,11 +68,11 @@ type DomainNameEvent struct {
 	DomainNameIdSecondLevelDomain string `gorm:"size:100"`
 	UpdatedStateExpirationDate    uint64 // state property
 	UpdatedStateOwner             string `gorm:"size:66"` // state property
-	// SMT info.
-	DomainNameIdSmtHash string `gorm:"size:66"` // SMT leaf path
-	UpdatedStateSmtHash string `gorm:"size:66"` // SMT leaf value hash
-	UpdatedSmtRoot      string `gorm:"size:66;index"`
-	PreviousSmtRoot     string `gorm:"size:66;index"`
+	// /////////////// SMT info. ///////////////////
+	DomainNameIdSmtHash string `gorm:"size:66"`       // SMT leaf path
+	UpdatedStateSmtHash string `gorm:"size:66"`       // SMT leaf value hash
+	UpdatedSmtRoot      string `gorm:"size:66;index"` // SMT root after event occurred
+	PreviousSmtRoot     string `gorm:"size:66;index"` // SMT root befor event occurred
 
 	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 }
@@ -100,7 +100,7 @@ func NewDomainNameEvent(
 		TransactionHash:               transactionHash,
 		EventType:                     eventType,
 		BcsData:                       hex.EncodeToString(bcsData),
-		DomainNameIdTopLevelDomain:    domainNameIdSecondLevelDomain,
+		DomainNameIdTopLevelDomain:    domainNameIdTopLevelDomain,
 		DomainNameIdSecondLevelDomain: domainNameIdSecondLevelDomain,
 		UpdatedStateExpirationDate:    updatedStateExpirationDate,
 		UpdatedStateOwner:             hex.EncodeToString(updatedStateOwner[:]),
@@ -111,14 +111,48 @@ func NewDomainNameEvent(
 	}
 }
 
+type DomainNameEventSequence struct {
+	SequenceId         string `gorm:"primaryKey;size:100"`                   // event sequence ID
+	LastEventId        uint64 `gorm:"not null"`                              // last event ID of this sequence
+	SmtRoot            string `gorm:"size:66;index"`                         // SMT root after last event occurred
+	BlockHash          string `gorm:"size:66;index:idx_block_hash_evt_key"`  // last event block hash
+	EventKey           string `gorm:"size:100;index:idx_block_hash_evt_key"` // last event EventKey
+	BlockNumber        uint64 `gorm:"not null"`                              // last event block number
+	PreviousSequenceId string `gorm:"size:100"`                              // previous event sequence ID.
+	ElementIds         string `gorm:"size:10000"`                            // element(event) IDs of this sequence
+	Status             string `gorm:"size:20"`                               // status
+}
+
+func NewDomainNameEventSequence(
+	sequenceId string,
+	lastEventId uint64,
+	smtRoot string,
+	blockHash string,
+	eventKey string,
+	blockNumber uint64,
+	previousSequenceId string,
+	elementIds string,
+) *DomainNameEventSequence {
+	return &DomainNameEventSequence{
+		SequenceId:         sequenceId,
+		LastEventId:        lastEventId,
+		SmtRoot:            smtRoot,
+		BlockHash:          blockHash,
+		EventKey:           eventKey,
+		BlockNumber:        blockNumber,
+		PreviousSequenceId: previousSequenceId,
+		ElementIds:         elementIds,
+	}
+}
+
 type DomainNameState struct {
 	DomainNameIdTopLevelDomain    string `gorm:"primaryKey;size:100"`
 	DomainNameIdSecondLevelDomain string `gorm:"primaryKey;size:100"`
 	ExpirationDate                uint64
 	Owner                         string `gorm:"size:66"`
 
-	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
-	UpdatedAt int64  `gorm:"autoUpdateTime:milli;index"`
+	CreatedAt uint64 `gorm:"not null"` // use block number? //autoCreateTime:milli
+	UpdatedAt uint64 `gorm:"index"`    // use block number? //autoUpdateTime:milli;
 }
 
 func NewDomainNameState(domainNameId *DomainNameId, expirationDate uint64, owner []byte) *DomainNameState {

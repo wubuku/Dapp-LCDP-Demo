@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	STARCOIN_USEFUL_BLOCK_NUM = 0
+	WAITING_STARCOIN_CONFIRMATIONS = 0 // waiting STARCOIN CONFIRMATION block count
 )
 
 type StarcoinManager struct {
@@ -51,16 +51,16 @@ func NewStarcoinManager(
 	return &m, nil
 }
 
-func (this *StarcoinManager) init() bool {
-	if this.currentHeight > 0 {
-		log.Printf("StarcoinManager init - start height from flag: %d", this.currentHeight)
+func (m *StarcoinManager) init() bool {
+	if m.currentHeight > 0 {
+		log.Printf("StarcoinManager init - start height from flag: %d", m.currentHeight)
 		return true
 	}
-	heightFromDB, err := this.db.GetStarcoinHeight() // TODO: ignore db error???
+	heightFromDB, err := m.db.GetStarcoinHeight() // TODO: ignore db error???
 	if err != nil {
 		log.Printf("StarcoinManager init - Get height from DB error: %s", err.Error())
 	}
-	this.currentHeight = heightFromDB
+	m.currentHeight = heightFromDB
 	return true
 }
 
@@ -75,12 +75,19 @@ func (m *StarcoinManager) MonitorChain() {
 				log.Printf("StarcoinManager.MonitorChain - cannot get node height, err: %s", err.Error())
 				continue
 			}
-			// if height-this.currentHeight <= config.STARCOIN_USEFUL_BLOCK_NUM {
-			// 	continue
-			// }
+			if height-m.currentHeight <= WAITING_STARCOIN_CONFIRMATIONS {
+				if e, err := m.db.GetLastDomainNameEvent(); err == nil && e != nil {
+					if b, err := m.isDomainNameEventAvailable(e); err == nil {
+						if !b {
+							m.rollbackToAvailableHeight(e.BlockNumber)
+						}
+					}
+				}
+				continue
+			}
 			log.Printf("StarcoinManager.MonitorChain - starcoin height is %d", height)
 			blockHandleResult = true
-			for m.currentHeight < height-STARCOIN_USEFUL_BLOCK_NUM {
+			for m.currentHeight < height-WAITING_STARCOIN_CONFIRMATIONS {
 				if m.currentHeight%10 == 0 {
 					log.Printf("StarcoinManager.MonitorChain - handle confirmed starcoin block height: %d", m.currentHeight)
 				}
@@ -164,12 +171,20 @@ func (m *StarcoinManager) handleStarcoinEvent(evt stcclient.Event) error {
 		return errors.Wrap(err, "handleNewBlock - UpdatedState.BcsSerialize error")
 	}
 	// //////////////////// Update SMT ////////////////////
-	smt, err := m.getSMTree()
+	smTree, err := m.getSMTree()
 	if err != nil {
 		return errors.Wrap(err, "handleNewBlock - getSMTree error")
 	}
-	offChainSmtRoot, err := smt.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
+	offChainSmtRoot, err := smTree.UpdateForRoot(smtKey, updatedSmtValue, domainNameEvt.GetPreviousSmtRoot())
 	if err != nil {
+		var invalidKeyError *smt.InvalidKeyError
+		if errors.As(err, &invalidKeyError) {
+			blockNumber, err := strconv.ParseUint(evt.BlockNumber, 10, 64)
+			if err != nil {
+				return err
+			}
+			m.rollbackToAvailableHeight(blockNumber)
+		}
 		return errors.Wrap(err, "handleNewBlock - UpdateForRoot error")
 	}
 	if !bytes.Equal(offChainSmtRoot, domainNameEvt.GetUpdatedSmtRoot()) {
@@ -192,9 +207,26 @@ func (m *StarcoinManager) handleStarcoinEvent(evt stcclient.Event) error {
 		domainNameEvt.GetUpdatedSmtRoot(),
 		domainNameEvt.GetPreviousSmtRoot(),
 	)
-	err = m.db.SaveDomainNameEvent(domainNameEvent)
+	err = m.db.CreateDomainNameEvent(domainNameEvent)
 	if err != nil {
-		return errors.Wrap(err, "handleNewBlock - SaveDomainNameEvent error")
+		return errors.Wrap(err, "handleNewBlock - CreateDomainNameEvent error")
+	}
+	return nil
+}
+
+// Rollback to available height from 'fromHeight'.
+func (m *StarcoinManager) rollbackToAvailableHeight(fromHeight uint64) error {
+	e, err := m.GetLastAvailableDomainNameEventByBlockNumberLessThan(fromHeight)
+	if err != nil {
+		log.Printf("StarcoinManager.rollbackToAvailableHeight - GetLastAvailableDomainNameEventByBlockNumberLessThan error: %s", err.Error())
+		return err
+	}
+	m.currentHeight = e.BlockNumber - 1 // Maybe the event's block is NOT processed completely, rollback one more block
+	log.Printf("StarcoinManager.rollbackToAvailableHeight - currentHeight: %d", m.currentHeight)
+	err = m.db.UpdateStarcoinHeight(m.currentHeight)
+	if err != nil {
+		log.Printf("StarcoinManager.rollbackToAvailableHeight - db.UpdateStarcoinHeight error: %s", err.Error())
+		return err
 	}
 	return nil
 }
@@ -241,7 +273,7 @@ func (m *StarcoinManager) GetDomainNameStateAndSmtProofForRoot(domainNameId *db.
 		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - ProveForRootAndGetLeafData error")
 	}
 	if len(leafData) == 0 || len(proof.NonMembershipLeafData) != 0 {
-		return nil, &proof, nil
+		return nil, &proof, nil // Non-Membership proof
 	}
 	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
 		return nil, nil, fmt.Errorf("Key(%s) and leaf data(%s) are NOT related", hex.EncodeToString(key), hex.EncodeToString(leafData))
@@ -263,4 +295,214 @@ func (m *StarcoinManager) GetDomainNameStateAndSmtProofForRoot(domainNameId *db.
 		return nil, nil, errors.Wrap(err, "GetDomainNameStateForSmtRoot - domainNameSmtValue.GetDomainNameState error")
 	}
 	return state, &proof, nil
+}
+
+func (m *StarcoinManager) BuildDomainNameEventSequence() (*db.DomainNameEventSequence, error) {
+	lastEvent, err := m.GetLastAvailableDomainNameEvent()
+	if err != nil {
+		return nil, err
+	}
+	return m.doBuildDomainNameEventSequence(lastEvent)
+}
+
+func (m *StarcoinManager) BuildDomainNameEventSequenceForLastEventId(lastEventId uint64) (*db.DomainNameEventSequence, error) {
+	lastEvent, err := m.db.GetDomainNameEvent(lastEventId)
+	if err != nil {
+		return nil, err
+	}
+	return m.doBuildDomainNameEventSequence(lastEvent)
+}
+
+func (m *StarcoinManager) doBuildDomainNameEventSequence(lastEvent *db.DomainNameEvent) (*db.DomainNameEventSequence, error) {
+	lastAvailableEventSeq, err := m.doGetLastAvailableDomainNameEventSequence(lastEvent.Id)
+	if err != nil {
+		return nil, err
+	}
+	if lastAvailableEventSeq != nil && lastAvailableEventSeq.LastEventId == lastEvent.Id {
+		return nil, nil // already exists
+	}
+	var previousSeqId string
+	if lastAvailableEventSeq != nil {
+		previousSeqId = lastAvailableEventSeq.SequenceId
+	}
+	var firstEventId uint64 = 0
+	if lastAvailableEventSeq != nil {
+		firstEventId = lastAvailableEventSeq.LastEventId
+	}
+	ids, err := m.getDomainNameEventSequenceElementIds(lastEvent, firstEventId)
+	if err != nil {
+		return nil, err
+	}
+	idsJson, err := db.EncodeEventIds(ids)
+	if err != nil {
+		return nil, err
+	}
+	seqId := getDomainNameEventSequenceId(lastEvent)
+	es := db.NewDomainNameEventSequence(seqId,
+		lastEvent.Id,
+		lastEvent.UpdatedSmtRoot,
+		lastEvent.BlockHash,
+		lastEvent.EventKey,
+		lastEvent.BlockNumber,
+		previousSeqId,
+		idsJson,
+	)
+	err = m.db.CreateDomainNameEventSequence(es)
+	if err != nil {
+		return nil, err
+	}
+	return es, nil
+}
+
+func (m *StarcoinManager) GetLastAvailableDomainNameEventByBlockNumberLessThan(blockNumber uint64) (*db.DomainNameEvent, error) {
+	currentE, err := m.db.GetLastDomainNameEventByBlockNumberLessThan(blockNumber)
+	if err != nil {
+		return nil, err
+	}
+	if currentE == nil {
+		return nil, nil
+	}
+	return m.doGetLastAvailableDomainNameEvent(currentE)
+}
+
+func (m *StarcoinManager) GetLastAvailableDomainNameEvent() (*db.DomainNameEvent, error) {
+	currentE, err := m.db.GetLastDomainNameEvent()
+	if err != nil {
+		return nil, err
+	}
+	if currentE == nil {
+		return nil, nil
+	}
+	return m.doGetLastAvailableDomainNameEvent(currentE)
+}
+
+func (m *StarcoinManager) doGetLastAvailableDomainNameEvent(fromEvent *db.DomainNameEvent) (*db.DomainNameEvent, error) {
+	currentE := fromEvent
+	for {
+		b, err := m.isDomainNameEventAvailable(currentE)
+		if err != nil {
+			return nil, err
+		}
+		if b {
+			break
+		}
+		currentE, err = m.db.GetLastDomainNameEventByIdLessThan(currentE.Id)
+		if err != nil {
+			return nil, err
+		}
+		if currentE == nil {
+			return nil, nil
+		}
+	}
+	return currentE, nil
+}
+
+func (m *StarcoinManager) isDomainNameEventAvailable(e *db.DomainNameEvent) (bool, error) {
+	blockInfo, err := m.starcoinClient.GetBlockInfoByNumber(context.Background(), e.BlockNumber)
+	if err != nil {
+		return false, err
+	}
+	if blockInfo.BlockHash == e.BlockHash {
+		return true, nil
+	}
+	return false, nil
+}
+
+func (m *StarcoinManager) GetLastAvailableDomainNameEventSequenceeAllElementIds() ([]uint64, error) {
+	e, err := m.GetLastAvailableDomainNameEvent()
+	if err != nil {
+		return nil, err
+	}
+	es, err := m.doGetLastAvailableDomainNameEventSequence(e.Id)
+	if err != nil {
+		return nil, err
+	}
+	allEventIds, err := m.db.GetDomainNameEventSequenceAllElementIds(es)
+	if err != nil {
+		return nil, err
+	}
+	return allEventIds, nil
+}
+
+func (m *StarcoinManager) GetLastAvailableDomainNameEventSequence() (*db.DomainNameEventSequence, error) {
+	e, err := m.GetLastAvailableDomainNameEvent()
+	if err != nil {
+		return nil, err
+	}
+	return m.doGetLastAvailableDomainNameEventSequence(e.Id)
+}
+
+func (m *StarcoinManager) doGetLastAvailableDomainNameEventSequence(eventId uint64) (*db.DomainNameEventSequence, error) {
+	currentEventId := eventId
+	var currentES *db.DomainNameEventSequence
+	for {
+		var err error
+		currentES, err = m.db.GetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(currentEventId)
+		if err != nil {
+			return nil, err
+		}
+		if currentES == nil {
+			return nil, nil
+		}
+		blockInfo, err := m.starcoinClient.GetBlockInfoByNumber(context.Background(), currentES.BlockNumber)
+		if err != nil {
+			return nil, err
+		}
+		if blockInfo.BlockHash == currentES.BlockHash {
+			e, err := m.db.GetDomainNameEvent(currentES.LastEventId) // GetDomainNameEventBlock by Id
+			if err == nil && e != nil && e.BlockHash == currentES.BlockHash {
+				break
+			}
+			// continue
+		}
+		currentEventId--
+	}
+	return currentES, nil
+}
+
+func (m *StarcoinManager) getDomainNameEventSequenceElementIds(lastEvent *db.DomainNameEvent, firstEventId uint64) ([]uint64, error) {
+	ids := make([]uint64, 0, lastEvent.Id-firstEventId)
+	currentE := lastEvent
+	ids = append(ids, currentE.Id)
+	for {
+		var err error
+		previousE, err := m.db.GetPreviousDomainNameEvent(currentE)
+		if err != nil {
+			return nil, err
+		}
+		if previousE == nil {
+			if currentE.PreviousSmtRoot != "" {
+				preRoot, _ := tools.HexToBytes(currentE.PreviousSmtRoot)
+				if !bytes.Equal(preRoot, tools.SmtPlaceholder()) {
+					return nil, fmt.Errorf("cannot find previous DomainNameSequence by SMT root: %s", currentE.PreviousSmtRoot)
+				}
+			}
+			break // PreviousSmtRoot is empty or placeholder
+		}
+		ids = append(ids, previousE.Id)
+		if previousE.Id == firstEventId {
+			break
+		}
+		currentE = previousE
+	}
+	return reverseUint64Slice(ids), nil
+}
+
+func getDomainNameEventSequenceId(lastEvent *db.DomainNameEvent) string {
+	bs, err := tools.HexToBytes(lastEvent.UpdatedSmtRoot)
+	if err != nil {
+		return lastEvent.UpdatedSmtRoot
+	}
+	endIdx := 4
+	if len(bs) < 4 {
+		endIdx = len(bs)
+	}
+	return "ES_" + hex.EncodeToString(bs[0:endIdx])
+}
+
+func reverseUint64Slice(slice []uint64) []uint64 {
+	for left, right := 0, len(slice)-1; left < right; left, right = left+1, right-1 {
+		slice[left], slice[right] = slice[right], slice[left]
+	}
+	return slice
 }

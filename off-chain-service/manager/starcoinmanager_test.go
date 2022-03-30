@@ -42,6 +42,55 @@ func TestGetDomainNameStateAndSmtProof(t *testing.T) {
 	fmt.Println(hex.EncodeToString(smtRoot))
 }
 
+func TestBuildDomainNameEventSequenceForLastEventId(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	es, err := starcoinManager.BuildDomainNameEventSequenceForLastEventId(21)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(es)
+}
+
+func TestBuildDomainNameEventSequence(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	es, err := starcoinManager.BuildDomainNameEventSequence()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(es)
+}
+
+func TestGetLastAvailableDomainNameEvent(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	e, err := starcoinManager.GetLastAvailableDomainNameEvent()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(e)
+	// GET sequnece IDs
+	ids, err := starcoinManager.getDomainNameEventSequenceElementIds(e, 4)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(ids)
+}
+
+func TestGetLastAvailableDomainNameEventSequence(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	//eventId := uint64(1000000000)
+	allEventIds, err := starcoinManager.GetLastAvailableDomainNameEventSequenceeAllElementIds()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	fmt.Println(allEventIds)
+	fmt.Println(len(allEventIds))
+}
+
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
 	url := STARCOIN_LOCAL_DEV_NETWORK_URL
 	contractAddress := DEV_CONTRACT_ADDRESS

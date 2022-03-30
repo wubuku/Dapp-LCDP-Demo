@@ -89,6 +89,10 @@ func SmtPathSize() int {
 	return 32
 }
 
+func SmtPlaceholder() []byte {
+	return make([]byte, 32)
+}
+
 func IsSmtKeyAndLeafDataRelated(key []byte, leafData []byte) bool {
 	return !IsSmtKeyAndLeafDataUnrelated(key, leafData)
 }

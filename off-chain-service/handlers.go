@@ -25,7 +25,12 @@ func getDomainNameStateAndSmtProof(c *gin.Context) {
 		smtRoot, _ = tools.HexToBytes(smtRootQuery)
 	}
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, "") //todo ???
+		c.JSON(http.StatusInternalServerError, "GetDomainNameStateAndSmtProof error") //todo ???
+		return
+	}
+	if proof == nil {
+		c.JSON(http.StatusNotFound, "proof not found") //todo ???
+		return
 	}
 
 	var voState *vo.DomainNameState

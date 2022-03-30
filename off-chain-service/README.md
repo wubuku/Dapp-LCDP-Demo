@@ -110,3 +110,12 @@ So can `execute-function` in console like below:
 account execute-function -s 0xb6d69dd935edf7f2054acf12eb884df8 --function 0x18351d311d32201149a4df2a9fc2db8a::DomainNameScripts::register --arg b"stc" --arg b"h" --arg 100000000u64 --arg x"c3c31156aa20a7f6b753a4b744fd5e20c65d8001a91b0eeff5f364afc992c2ca" --arg x"0004b3aa51ad2579c12245c054dd23d1dd20d4ec149f42fc9b024f5f6efed546107584e94fc2a5f659dbf92d2cf520e06d4fae54bf7ed8b9f94a5ebefdf3f8cdb2" --arg x"77a7163788939dcd181114a862da9e7f809bf8bb6229bc108c8aeae59b36e69f532df1b6c190890e5a4bad41908931b7b4b3b52346aae06fc267b2d0e694c570" -b
 ```
 
+## Test rollback
+
+Trigger rollback logic:
+
+* Delete updated SMT root node of one DomainNameEvent.
+* Modify BlockHashes of this event, the previous block's and the subsequent blocks' events.
+* Set chain heigh to this event's block number.
+* Restart service.
+
