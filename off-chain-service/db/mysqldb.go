@@ -286,34 +286,14 @@ func (w *MySqlDB) CreateDomainNameEventSequence(es *DomainNameEventSequence) err
 func (w *MySqlDB) UpdateDomainNameStateByEvent(e *DomainNameEvent) error {
 	headId := getDomainNameStateHeadIdByEvent(e)
 	err := w.db.Transaction(func(tx *gorm.DB) error {
-		s, err := getDomainNameState(tx, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain)
+		updatedStateOwner, err := e.GetUpdatedStateOwner()
 		if err != nil {
 			return err
 		}
-		if s == nil {
-			updatedStateOwner, err := e.GetUpdatedStateOwner()
-			if err != nil {
-				return err
-			}
-			s = NewDomainNameState(e.GetDomainNameId(), e.UpdatedStateExpirationDate, updatedStateOwner)
-			s.CreatedAtBlockNumber = e.BlockNumber
-			s.UpdatedAtBlockNumber = e.BlockNumber
-			if err = tx.Create(s).Error; err != nil {
-				return err
-			}
-		} else {
-			s.ExpirationDate = e.UpdatedStateExpirationDate
-			updatedStateOwner, err := e.GetUpdatedStateOwner()
-			if err != nil {
-				return err
-			}
-			s.SetOwner(updatedStateOwner)
-			s.UpdatedAtBlockNumber = e.BlockNumber
-			if err = tx.Save(s).Error; err != nil {
-				return err
-			}
+		err = createOrUpdateDomainNameState(tx, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain, e.UpdatedStateExpirationDate, updatedStateOwner, e.BlockNumber)
+		if err != nil {
+			return err
 		}
-
 		h, err := getDomainNameStateHead(tx, headId)
 		if err != nil {
 			return err
@@ -341,6 +321,35 @@ func (w *MySqlDB) UpdateDomainNameStateByEvent(e *DomainNameEvent) error {
 		return nil
 	})
 	return err
+}
+
+func createOrUpdateDomainNameState(tx *gorm.DB,
+	domainNameIdTopLevelDomain string,
+	domainNameIdSecondLevelDomain string,
+	updatedStateExpirationDate uint64,
+	updatedStateOwner [16]uint8,
+	updatedAtBlockNumber uint64,
+) error {
+	s, err := getDomainNameState(tx, domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain)
+	if err != nil {
+		return err
+	}
+	if s == nil {
+		s = NewDomainNameState(NewDomainNameId(domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain),
+			updatedStateExpirationDate, updatedStateOwner)
+		s.CreatedAtBlockNumber = updatedAtBlockNumber
+		s.UpdatedAtBlockNumber = updatedAtBlockNumber
+		if err = tx.Create(s).Error; err != nil {
+			return err
+		}
+	} else {
+		s.SetOwner(updatedStateOwner)
+		s.UpdatedAtBlockNumber = updatedAtBlockNumber
+		if err = tx.Save(s).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (w *MySqlDB) GetDefaultDomainNameStateHead() (*DomainNameStateHead, error) {
@@ -561,3 +570,44 @@ func createOrUpdate(db *gorm.DB, dest interface{}) error {
 	}
 	return nil
 }
+
+// //////////////////// SQL format //////////////////////
+const (
+	SQL_FORMAT_SELECT_DOMAIN_NAME_STATE = `SELECT 
+    domain_name_id_top_level_domain,
+    domain_name_id_second_level_domain,
+    expiration_date,
+    owner,
+    created_at_block_number,
+    updated_at_block_number
+FROM
+    %s s
+WHERE
+    s.domain_name_id_top_level_domain = ?
+        AND s.domain_name_id_second_level_domain = ?
+	`
+
+	SQL_FORMAT_INSERT_DOMAIN_NAME_STATE = `INSERT INTO domain_name_state
+	(domain_name_id_top_level_domain,
+	domain_name_id_second_level_domain,
+	expiration_date,
+	owner,
+	created_at_block_number,
+	updated_at_block_number)
+	VALUES
+	(?,
+	?,
+	?,
+	?,
+	?,
+	?
+	`
+
+	SQL_FORMAT_UPDATE_DOMAIN_NAME_STATE = `UPDATE domain_name_state
+	SET
+	expiration_date = ?,
+	owner = ?,
+	updated_at_block_number = ?
+	WHERE domain_name_id_top_level_domain = ? AND domain_name_id_second_level_domain = ?
+	`
+)
