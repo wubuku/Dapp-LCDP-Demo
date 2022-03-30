@@ -214,6 +214,54 @@ func (m *StarcoinManager) handleStarcoinEvent(evt stcclient.Event) error {
 	return nil
 }
 
+func (m *StarcoinManager) UpdateDomainNameStates() {
+	updateStateTicker := time.NewTicker(time.Second * 2) //time.Duration(this.config.StarcoinConfig.MonitorInterval) * time.Second)
+	for {
+		select {
+		case <-updateStateTicker.C:
+			var e *db.DomainNameEvent
+			var err error
+			for {
+				e, err = m.fetchDomainNameEventAndUpdateState()
+				if err != nil {
+					break
+				}
+				if e == nil {
+					break
+				}
+			}
+		}
+	}
+
+}
+
+func (m *StarcoinManager) fetchDomainNameEventAndUpdateState() (*db.DomainNameEvent, error) {
+	h, err := m.db.GetDefaultDomainNameStateHead()
+	if err != nil {
+		return nil, err
+	}
+	var e *db.DomainNameEvent = nil
+	if h == nil {
+		e, err = m.db.GetFirstDomainNameEvent() //todo: Get first event by headId?
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		e, err = m.db.GetLastDomainNameEventByPreviousSmtRoot(h.SmtRoot)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if e == nil {
+		return nil, nil
+	}
+	if err = m.db.UpdateDomainNameStateByEvent(e); err != nil {
+		return nil, err
+	}
+	log.Printf("updated DomainNameState by event, Id: %d, UpdatedSmtRoot: %s", e.Id, e.UpdatedSmtRoot)
+	return e, nil
+}
+
 // Rollback to available height from 'fromHeight'.
 func (m *StarcoinManager) rollbackToAvailableHeight(fromHeight uint64) error {
 	e, err := m.GetLastAvailableDomainNameEventByBlockNumberLessThan(fromHeight)

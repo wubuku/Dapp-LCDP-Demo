@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/celestiaorg/smt"
+	"github.com/starcoinorg/starcoin-go/types"
 )
 
 // CONST var for test
@@ -16,11 +17,12 @@ var (
 	testDomainNameRegistrationPeriod uint64 = 1000 * 60 * 60 * 24 * 365 // One year
 	testDomainNameRenewPeriod        uint64 = 1000 * 60 * 60 * 24 * 365 // One year
 	testDomainNameExpirationDate     uint64 = 1679184000000             // uint64(time.Date(2023, 3, 19, 0, 0, 0, 0, time.UTC).UnixNano() / 1000000)
-	testDomainNameOwner              []byte
+	testDomainNameOwner              [16]uint8
 )
 
 func init() {
-	testDomainNameOwner, _ = hex.DecodeString("b6D69DD935EDf7f2054acF12eb884df8")
+	a, _ := types.ToAccountAddress("0xb6D69DD935EDf7f2054acF12eb884df8")
+	testDomainNameOwner = *a
 }
 
 // func TestPrintDate(t *testing.T) {
@@ -127,7 +129,7 @@ func TestPrintMoveDomainNameFunctionalTestFileStart(t *testing.T) {
 //! block-number: 1
 //! block-time: %d
 
-`, hex.EncodeToString(testDomainNameOwner), testBlockTime)
+`, hex.EncodeToString(testDomainNameOwner[:]), testBlockTime)
 }
 
 func testUpdateDomainNameSmtByTestExpirationDate(domainNameId *DomainNameId, smt *smt.SparseMerkleTree, t *testing.T) ([]byte, []byte) {
@@ -319,7 +321,7 @@ func testPrintMoveRenewFunctionalTestFunStart(tld string, sld string, t *testing
         let renew_period: u64 = 1000 * 60 * 60 * 24 * 365; // One year
         let state_expiration_date: u64 = %d;
         let state_owner: address = @0x%s;
-    `, sld, tld, sld, testDomainNameExpirationDate, hex.EncodeToString(testDomainNameOwner))
+    `, sld, tld, sld, testDomainNameExpirationDate, hex.EncodeToString(testDomainNameOwner[:]))
 	fmt.Println()
 }
 

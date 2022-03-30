@@ -45,6 +45,24 @@ func TestGetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(t *testing.
 	fmt.Println(es)
 }
 
+func TestUpdateDomainNameStateByEvent(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	e, err := database.GetDomainNameEvent(4)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	err = database.UpdateDomainNameStateByEvent(e)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+}
+
 func TestNewDomainNameStateHead(t *testing.T) {
 	database, err := localDevDB()
 	if err != nil {

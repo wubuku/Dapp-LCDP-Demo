@@ -129,6 +129,18 @@ func (w *MySqlDB) GetDomainNameEventMaxId() (uint64, error) {
 	return first.Id, nil
 }
 
+func (w *MySqlDB) GetFirstDomainNameEvent() (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Order("id").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
 func (w *MySqlDB) GetLastDomainNameEvent() (*DomainNameEvent, error) {
 	var list []DomainNameEvent
 	if err := w.db.Order("id desc").Limit(1).Find(&list).Error; err != nil {
@@ -159,6 +171,18 @@ func (w *MySqlDB) GetPreviousDomainNameEvent(e *DomainNameEvent) (*DomainNameEve
 func (w *MySqlDB) GetLastDomainNameEventByIdLessThan(id uint64) (*DomainNameEvent, error) {
 	var list []DomainNameEvent
 	if err := w.db.Where("id < ?", id).Order("id desc").Limit(1).Find(&list).Error; err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func (w *MySqlDB) GetLastDomainNameEventByPreviousSmtRoot(r string) (*DomainNameEvent, error) {
+	var list []DomainNameEvent
+	if err := w.db.Where("previous_smt_root = ?", r).Order("id desc").Limit(1).Find(&list).Error; err != nil {
 		return nil, err
 	}
 	if len(list) == 0 {
@@ -257,6 +281,106 @@ func (w *MySqlDB) CreateDomainNameEventSequence(es *DomainNameEventSequence) err
 		return nil
 	}
 	return err
+}
+
+func (w *MySqlDB) UpdateDomainNameStateByEvent(e *DomainNameEvent) error {
+	headId := getDomainNameStateHeadIdByEvent(e)
+	err := w.db.Transaction(func(tx *gorm.DB) error {
+		s, err := getDomainNameState(tx, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain)
+		if err != nil {
+			return err
+		}
+		if s == nil {
+			updatedStateOwner, err := e.GetUpdatedStateOwner()
+			if err != nil {
+				return err
+			}
+			s = NewDomainNameState(e.GetDomainNameId(), e.UpdatedStateExpirationDate, updatedStateOwner)
+			s.CreatedAtBlockNumber = e.BlockNumber
+			s.UpdatedAtBlockNumber = e.BlockNumber
+			if err = tx.Create(s).Error; err != nil {
+				return err
+			}
+		} else {
+			s.ExpirationDate = e.UpdatedStateExpirationDate
+			updatedStateOwner, err := e.GetUpdatedStateOwner()
+			if err != nil {
+				return err
+			}
+			s.SetOwner(updatedStateOwner)
+			s.UpdatedAtBlockNumber = e.BlockNumber
+			if err = tx.Save(s).Error; err != nil {
+				return err
+			}
+		}
+
+		h, err := getDomainNameStateHead(tx, headId)
+		if err != nil {
+			return err
+		}
+		if h == nil {
+			h := NewDomainNameStateHead(headId, e.BlockHash, e.EventKey, e.UpdatedSmtRoot, DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME)
+			if err = tx.Create(h).Error; err != nil {
+				return err
+			}
+		} else {
+			h.BlockHash = e.BlockHash
+			h.EventKey = e.EventKey
+			h.SmtRoot = e.UpdatedSmtRoot
+			dbUpdated := tx.Model(&DomainNameStateHead{}).Where(
+				"head_id = ? and smt_root = ?", headId, e.PreviousSmtRoot,
+			).Updates(h)
+			if dbUpdated.Error != nil {
+				return err
+			}
+			rowsAffected := dbUpdated.RowsAffected
+			if rowsAffected == 0 {
+				return fmt.Errorf("optimistic lock error. headId: %s, smtRoot: %s", headId, e.PreviousSmtRoot)
+			}
+		}
+		return nil
+	})
+	return err
+}
+
+func (w *MySqlDB) GetDefaultDomainNameStateHead() (*DomainNameStateHead, error) {
+	return getDomainNameStateHead(w.db, DOMAIN_NAME_STATE_HEAD_ID_DEFAULT)
+}
+
+func getDomainNameStateHeadIdByEvent(e *DomainNameEvent) string {
+	headId := DOMAIN_NAME_STATE_HEAD_ID_DEFAULT //todo
+	return headId
+}
+
+func getDomainNameState(database *gorm.DB, tld string, sld string) (*DomainNameState, error) {
+	var list []DomainNameState
+	err := database.Where(&DomainNameState{
+		DomainNameIdTopLevelDomain:    tld,
+		DomainNameIdSecondLevelDomain: sld,
+	}).Limit(1).Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func getDomainNameStateHead(database *gorm.DB, headId string) (*DomainNameStateHead, error) {
+	var list []DomainNameStateHead
+	err := database.Where(&DomainNameStateHead{
+		HeadId: headId,
+	}).Limit(1).Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
 }
 
 // //////////////// Map Store interface ////////////////////

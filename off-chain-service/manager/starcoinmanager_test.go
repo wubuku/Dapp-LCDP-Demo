@@ -70,7 +70,7 @@ func TestGetLastAvailableDomainNameEvent(t *testing.T) {
 		t.FailNow()
 	}
 	fmt.Println(e)
-	// GET sequnece IDs
+	// then GET the sequnece's event IDs
 	ids, err := starcoinManager.getDomainNameEventSequenceElementIds(e, 4)
 	if err != nil {
 		fmt.Println(err)
@@ -79,7 +79,7 @@ func TestGetLastAvailableDomainNameEvent(t *testing.T) {
 	fmt.Println(ids)
 }
 
-func TestGetLastAvailableDomainNameEventSequence(t *testing.T) {
+func TestGetLastAvailableDomainNameEventSequenceeAllElementIds(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
 	//eventId := uint64(1000000000)
 	allEventIds, err := starcoinManager.GetLastAvailableDomainNameEventSequenceeAllElementIds()

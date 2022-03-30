@@ -35,7 +35,7 @@ func (v *DomainNameSmtValue) GetDomainNameState() (*DomainNameState, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewDomainNameState(NewDomainNameId(v.DomainNameIdTopLevelDomain, v.DomainNameIdSecondLevelDomain), v.ExpirationDate, stateOwner[:]), nil
+	return NewDomainNameState(NewDomainNameId(v.DomainNameIdTopLevelDomain, v.DomainNameIdSecondLevelDomain), v.ExpirationDate, stateOwner), nil
 }
 
 type DomainNameId struct {
@@ -111,6 +111,18 @@ func NewDomainNameEvent(
 	}
 }
 
+func (domainNameEvent *DomainNameEvent) GetDomainNameId() *DomainNameId {
+	domainNameId := DomainNameId{
+		TopLevelDomain:    domainNameEvent.DomainNameIdTopLevelDomain,
+		SecondLevelDomain: domainNameEvent.DomainNameIdSecondLevelDomain,
+	}
+	return &domainNameId
+}
+
+func (domainNameEvent *DomainNameEvent) GetUpdatedStateOwner() ([16]uint8, error) {
+	return tools.HexToStarcoinAccountAddress(domainNameEvent.UpdatedStateOwner)
+}
+
 type DomainNameEventSequence struct {
 	SequenceId         string `gorm:"primaryKey;size:100"`                   // event sequence ID
 	LastEventId        uint64 `gorm:"not null"`                              // last event ID of this sequence
@@ -151,16 +163,16 @@ type DomainNameState struct {
 	ExpirationDate                uint64
 	Owner                         string `gorm:"size:66"`
 
-	CreatedAt uint64 `gorm:"not null"` // use block number? //autoCreateTime:milli
-	UpdatedAt uint64 `gorm:"index"`    // use block number? //autoUpdateTime:milli;
+	CreatedAtBlockNumber uint64 `gorm:"not null"`       // use block number as timestamp? //autoCreateTime:milli
+	UpdatedAtBlockNumber uint64 `gorm:"not null;index"` // use block number as timestamp? //autoUpdateTime:milli;
 }
 
-func NewDomainNameState(domainNameId *DomainNameId, expirationDate uint64, owner []byte) *DomainNameState {
+func NewDomainNameState(domainNameId *DomainNameId, expirationDate uint64, owner [16]uint8) *DomainNameState {
 	return &DomainNameState{
 		DomainNameIdTopLevelDomain:    domainNameId.TopLevelDomain,
 		DomainNameIdSecondLevelDomain: domainNameId.SecondLevelDomain,
 		ExpirationDate:                expirationDate,
-		Owner:                         hex.EncodeToString(owner),
+		Owner:                         hex.EncodeToString(owner[:]),
 	}
 }
 

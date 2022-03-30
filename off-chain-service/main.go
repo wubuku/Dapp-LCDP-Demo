@@ -27,6 +27,7 @@ func main() {
 		return
 	}
 	go starcoinManager.MonitorChain()
+	go starcoinManager.UpdateDomainNameStates()
 
 	// //////////// Web Services //////////////
 	r := gin.Default()
