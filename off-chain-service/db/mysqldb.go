@@ -40,9 +40,10 @@ func NewMySqlDB(dsn string) (*MySqlDB, error) {
 		&DomainNameSmtValue{},
 		&DomainNameEvent{},
 		&DomainNameEventSequence{},
-		&DomainNameState{},
 		&DomainNameStateHead{},
 	)
+
+	//db.AutoMigrate(&DomainNameState{}) // just create as template
 
 	w := new(MySqlDB)
 	w.db = db
@@ -283,73 +284,91 @@ func (w *MySqlDB) CreateDomainNameEventSequence(es *DomainNameEventSequence) err
 	return err
 }
 
-func (w *MySqlDB) UpdateDomainNameStateByEvent(e *DomainNameEvent) error {
-	headId := getDomainNameStateHeadIdByEvent(e)
-	err := w.db.Transaction(func(tx *gorm.DB) error {
-		updatedStateOwner, err := e.GetUpdatedStateOwner()
-		if err != nil {
-			return err
-		}
-		err = createOrUpdateDomainNameState(tx, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain, e.UpdatedStateExpirationDate, updatedStateOwner, e.BlockNumber)
-		if err != nil {
-			return err
-		}
-		h, err := getDomainNameStateHead(tx, headId)
-		if err != nil {
-			return err
-		}
-		if h == nil {
-			h := NewDomainNameStateHead(headId, e.BlockHash, e.EventKey, e.UpdatedSmtRoot, DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME)
-			if err = tx.Create(h).Error; err != nil {
-				return err
-			}
-		} else {
-			h.BlockHash = e.BlockHash
-			h.EventKey = e.EventKey
-			h.SmtRoot = e.UpdatedSmtRoot
-			dbUpdated := tx.Model(&DomainNameStateHead{}).Where(
-				"head_id = ? and smt_root = ?", headId, e.PreviousSmtRoot,
-			).Updates(h)
-			if dbUpdated.Error != nil {
-				return err
-			}
-			rowsAffected := dbUpdated.RowsAffected
-			if rowsAffected == 0 {
-				return fmt.Errorf("optimistic lock error. headId: %s, smtRoot: %s", headId, e.PreviousSmtRoot)
-			}
-		}
-		return nil
-	})
-	return err
-}
+// func (w *MySqlDB) UpdateDomainNameStateByEvent(e *DomainNameEvent) error {
+// 	err := w.db.Transaction(func(tx *gorm.DB) error {
+// 		updatedStateOwner, err := e.GetUpdatedStateOwner()
+// 		if err != nil {
+// 			return err
+// 		}
+// 		err = createOrUpdateDomainNameState(tx, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain, e.UpdatedStateExpirationDate, updatedStateOwner, e.BlockNumber)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		err = w.createOrUpdateDomainNameStateHead(tx, e)
+// 		return nil
+// 	})
+// 	return err
+// }
 
-func createOrUpdateDomainNameState(tx *gorm.DB,
-	domainNameIdTopLevelDomain string,
-	domainNameIdSecondLevelDomain string,
-	updatedStateExpirationDate uint64,
-	updatedStateOwner [16]uint8,
-	updatedAtBlockNumber uint64,
-) error {
-	s, err := getDomainNameState(tx, domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain)
-	if err != nil {
+// func createOrUpdateDomainNameState(tx *gorm.DB,
+// 	domainNameIdTopLevelDomain string,
+// 	domainNameIdSecondLevelDomain string,
+// 	updatedStateExpirationDate uint64,
+// 	updatedStateOwner [16]uint8,
+// 	updatedAtBlockNumber uint64,
+// ) error {
+// 	s, err := getDomainNameState(tx, domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if s == nil {
+// 		s = NewDomainNameState(NewDomainNameId(domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain),
+// 			updatedStateExpirationDate, updatedStateOwner)
+// 		s.CreatedAtBlockNumber = updatedAtBlockNumber
+// 		s.UpdatedAtBlockNumber = updatedAtBlockNumber
+// 		if err = tx.Create(s).Error; err != nil {
+// 			return err
+// 		}
+// 	} else {
+// 		s.SetOwner(updatedStateOwner)
+// 		s.UpdatedAtBlockNumber = updatedAtBlockNumber
+// 		if err = tx.Save(s).Error; err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
+
+// func (w *MySqlDB) createOrUpdateDomainNameStateHead(tx *gorm.DB, e *DomainNameEvent, stateTableName string) error {
+// 	headId := getDomainNameStateHeadIdByEvent(e)
+// 	h, err := getDomainNameStateHead(tx, headId)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if h == nil {
+// 		h := NewDomainNameStateHead(headId, e.BlockHash, e.EventKey, e.UpdatedSmtRoot, stateTableName)
+// 		if err = tx.Create(h).Error; err != nil {
+// 			return err
+// 		}
+// 	} else {
+// 		return UpdateDomainNameStateHeadByEvent(tx, h, e)
+// 	}
+// 	return nil
+// }
+
+func UpdateDomainNameStateHeadByEvent(tx *gorm.DB, h *DomainNameStateHead, e *DomainNameEvent) error {
+	h.BlockHash = e.BlockHash
+	h.EventKey = e.EventKey
+	h.SmtRoot = e.UpdatedSmtRoot
+	dbUpdated := tx.Model(&DomainNameStateHead{}).Where(
+		"head_id = ? and smt_root = ?", h.HeadId, e.PreviousSmtRoot,
+	).Updates(h)
+	if err := dbUpdated.Error; err != nil {
 		return err
 	}
-	if s == nil {
-		s = NewDomainNameState(NewDomainNameId(domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain),
-			updatedStateExpirationDate, updatedStateOwner)
-		s.CreatedAtBlockNumber = updatedAtBlockNumber
-		s.UpdatedAtBlockNumber = updatedAtBlockNumber
-		if err = tx.Create(s).Error; err != nil {
-			return err
-		}
-	} else {
-		s.SetOwner(updatedStateOwner)
-		s.UpdatedAtBlockNumber = updatedAtBlockNumber
-		if err = tx.Save(s).Error; err != nil {
-			return err
-		}
+	rowsAffected := dbUpdated.RowsAffected
+	if rowsAffected == 0 {
+		return fmt.Errorf("optimistic lock error. headId: %s, smtRoot: %s", h.HeadId, e.PreviousSmtRoot)
 	}
 	return nil
+}
+
+func (w *MySqlDB) CreateDomainNameStateHead(headId string, stateTableName string, e *DomainNameEvent) (*DomainNameStateHead, error) {
+	h := NewDomainNameStateHead(headId, e.BlockHash, e.EventKey, e.UpdatedSmtRoot, stateTableName)
+	if err := w.db.Create(h).Error; err != nil {
+		return nil, err
+	}
+	return h, nil
 }
 
 // ///////////////////// Operate DomainNameState using specific table name  /////////////////////////
@@ -408,6 +427,22 @@ const (
 )
 
 // //////////////////// SQL formats end. //////////////////////
+
+func (w *MySqlDB) UpdateDomainNameStateAndHeadForTableByEvent(tableName string, h *DomainNameStateHead, e *DomainNameEvent) error {
+	err := w.db.Transaction(func(tx *gorm.DB) error {
+		updatedStateOwner, err := e.GetUpdatedStateOwner()
+		if err != nil {
+			return err
+		}
+		err = CreateOrUpdateDomainNameStateForTable(tx, tableName, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain, e.UpdatedStateExpirationDate, updatedStateOwner, e.BlockNumber)
+		if err != nil {
+			return err
+		}
+		err = UpdateDomainNameStateHeadByEvent(tx, h, e)
+		return err
+	})
+	return err
+}
 
 func (w *MySqlDB) UpdateDomainNameStateForTableByEvent(tableName string, e *DomainNameEvent) error {
 	err := w.db.Transaction(func(tx *gorm.DB) error {
@@ -517,6 +552,10 @@ func (w *MySqlDB) CreateDomainNameStateTable(tableName string) error {
 
 func (w *MySqlDB) GetDefaultDomainNameStateHead() (*DomainNameStateHead, error) {
 	return getDomainNameStateHead(w.db, DOMAIN_NAME_STATE_HEAD_ID_DEFAULT)
+}
+
+func (w *MySqlDB) GetDomainNameStateHead(headId string) (*DomainNameStateHead, error) {
+	return getDomainNameStateHead(w.db, headId)
 }
 
 func getDomainNameStateHeadIdByEvent(e *DomainNameEvent) string {
@@ -740,9 +779,13 @@ func (w *MySqlDB) HasTable(tableName string) bool {
 	return w.db.Migrator().HasTable(tableName)
 }
 
-func (w *MySqlDB) DropTable(tableName string) error {
-	if err := w.db.Migrator().DropTable(tableName); err != nil {
-		return err
-	}
-	return nil
-}
+// func (w *MySqlDB) DropTable(tableName string) error {
+// 	if err := w.db.Migrator().DropTable(tableName); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func (w *MySqlDB) RenameTable(o string, n string) error {
+// 	return w.db.Migrator().RenameTable(o, n)
+// }

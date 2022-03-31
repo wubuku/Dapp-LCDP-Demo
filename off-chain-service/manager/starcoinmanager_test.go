@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"starcoin-ns-demo/db"
 	"starcoin-ns-demo/tools"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/starcoinorg/starcoin-go/client"
 )
@@ -89,6 +91,16 @@ func TestGetLastAvailableDomainNameEventSequenceeAllElementIds(t *testing.T) {
 	}
 	fmt.Println(allEventIds)
 	fmt.Println(len(allEventIds))
+}
+
+func TestRebuildDomainNameStates(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp
+	err := starcoinManager.RebuildDomainNameStates(ts)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
 }
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
