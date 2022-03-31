@@ -63,6 +63,70 @@ func TestUpdateDomainNameStateByEvent(t *testing.T) {
 	}
 }
 
+func TestCreateDomainNameStateTable(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	tableName := "domain_name_state_test_0331"
+	err = database.CreateDomainNameStateTable(tableName)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+}
+
+func TestDropTable(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	tableName := "domain_name_state_test_0331"
+	b := database.db.Migrator().HasTable(tableName)
+	fmt.Println(b)
+	if b {
+		err = database.db.Migrator().DropTable(tableName)
+		if err != nil {
+			fmt.Println(err)
+			t.FailNow()
+		}
+	}
+}
+
+func TestUpdateDomainNameStateForTableByEvent(t *testing.T) {
+	database, err := localDevDB()
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	es, err := database.GetLastDomainNameEventSequenceByLastEventIdLessThanOrEquals(10000000)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	eventIds, err := database.GetDomainNameEventSequenceAllElementIds(es)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+
+	tableName := "domain_name_state_test_0331"
+	for _, eId := range eventIds {
+		e, err := database.GetDomainNameEvent(eId)
+		if err != nil {
+			fmt.Println(err)
+			t.FailNow()
+		}
+		err = database.UpdateDomainNameStateForTableByEvent(tableName, e)
+		if err != nil {
+			fmt.Println(err)
+			t.FailNow()
+		}
+	}
+}
+
 func TestNewDomainNameStateHead(t *testing.T) {
 	database, err := localDevDB()
 	if err != nil {

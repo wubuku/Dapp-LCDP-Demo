@@ -352,6 +352,169 @@ func createOrUpdateDomainNameState(tx *gorm.DB,
 	return nil
 }
 
+// ///////////////////// Operate DomainNameState using specific table name  /////////////////////////
+
+const (
+	SQL_FORMAT_SELECT_DOMAIN_NAME_STATE = `SELECT 
+		domain_name_id_top_level_domain,
+		domain_name_id_second_level_domain,
+		expiration_date,
+		owner,
+		created_at_block_number,
+		updated_at_block_number
+	FROM
+		%s s
+	WHERE
+		s.domain_name_id_top_level_domain = ?
+			AND s.domain_name_id_second_level_domain = ?  limit 1
+	`
+
+	SQL_FORMAT_INSERT_DOMAIN_NAME_STATE = `INSERT INTO %s
+	(domain_name_id_top_level_domain,
+	domain_name_id_second_level_domain,
+	expiration_date,
+	owner,
+	created_at_block_number,
+	updated_at_block_number)
+	VALUES
+	(?,
+	?,
+	?,
+	?,
+	?,
+	?)
+	`
+
+	SQL_FORMAT_UPDATE_DOMAIN_NAME_STATE = `UPDATE %s
+	SET
+	expiration_date = ?,
+	owner = ?,
+	updated_at_block_number = ?
+	WHERE domain_name_id_top_level_domain = ? AND domain_name_id_second_level_domain = ?
+	`
+
+	SQL_FORMAT_CREATE_TABLE_DOMAIN_NAME_STATE = `
+	CREATE TABLE %s (
+		domain_name_id_top_level_domain VARCHAR(100) NOT NULL,
+		domain_name_id_second_level_domain VARCHAR(100) NOT NULL,
+		expiration_date BIGINT(20) UNSIGNED DEFAULT NULL,
+		owner VARCHAR(66) DEFAULT NULL,
+		created_at_block_number BIGINT(20) UNSIGNED NOT NULL,
+		updated_at_block_number BIGINT(20) UNSIGNED NOT NULL,
+		PRIMARY KEY (domain_name_id_top_level_domain , domain_name_id_second_level_domain),
+		KEY idx_domain_name_state_updated_at_block_number (updated_at_block_number)
+	)  ENGINE=INNODB DEFAULT CHARSET=LATIN1	
+	`
+)
+
+// //////////////////// SQL formats end. //////////////////////
+
+func (w *MySqlDB) UpdateDomainNameStateForTableByEvent(tableName string, e *DomainNameEvent) error {
+	err := w.db.Transaction(func(tx *gorm.DB) error {
+		updatedStateOwner, err := e.GetUpdatedStateOwner()
+		if err != nil {
+			return err
+		}
+		err = CreateOrUpdateDomainNameStateForTable(tx, tableName, e.DomainNameIdTopLevelDomain, e.DomainNameIdSecondLevelDomain, e.UpdatedStateExpirationDate, updatedStateOwner, e.BlockNumber)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
+}
+
+func CreateOrUpdateDomainNameStateForTable(tx *gorm.DB, tableName string,
+	domainNameIdTopLevelDomain string,
+	domainNameIdSecondLevelDomain string,
+	updatedStateExpirationDate uint64,
+	updatedStateOwner [16]uint8,
+	updatedAtBlockNumber uint64,
+) error {
+	s, err := GetDomainNameStateForTable(tx, tableName, domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain)
+	if err != nil {
+		return err
+	}
+	if s == nil {
+		err := InsertDomainNameStateForTable(tx, tableName,
+			domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain,
+			updatedStateExpirationDate, updatedStateOwner,
+			updatedAtBlockNumber,
+		)
+		if err != nil {
+			return err
+		}
+	} else {
+		err := UpdateDomainNameStateForTable(tx, tableName,
+			domainNameIdTopLevelDomain, domainNameIdSecondLevelDomain,
+			updatedStateExpirationDate, updatedStateOwner,
+			updatedAtBlockNumber,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func GetDomainNameStateForTable(database *gorm.DB, tableName string, tld string, sld string) (*DomainNameState, error) {
+	var list []DomainNameState
+	sql := fmt.Sprintf(SQL_FORMAT_SELECT_DOMAIN_NAME_STATE, tableName)
+	err := database.Raw(sql, tld, sld).Scan(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, nil
+	}
+	first := list[0]
+	return &first, nil
+}
+
+func InsertDomainNameStateForTable(tx *gorm.DB, tableName string,
+	domainNameIdTopLevelDomain string,
+	domainNameIdSecondLevelDomain string,
+	updatedStateExpirationDate uint64,
+	updatedStateOwner [16]uint8,
+	updatedAtBlockNumber uint64,
+) error {
+	sql := fmt.Sprintf(SQL_FORMAT_INSERT_DOMAIN_NAME_STATE, tableName)
+	err := tx.Exec(sql,
+		domainNameIdTopLevelDomain,
+		domainNameIdSecondLevelDomain,
+		updatedStateExpirationDate,
+		hex.EncodeToString(updatedStateOwner[:]),
+		updatedAtBlockNumber,
+		updatedAtBlockNumber,
+	).Error
+	return err
+}
+
+func UpdateDomainNameStateForTable(tx *gorm.DB, tableName string,
+	domainNameIdTopLevelDomain string,
+	domainNameIdSecondLevelDomain string,
+	updatedStateExpirationDate uint64,
+	updatedStateOwner [16]uint8,
+	updatedAtBlockNumber uint64,
+) error {
+	sql := fmt.Sprintf(SQL_FORMAT_UPDATE_DOMAIN_NAME_STATE, tableName)
+	err := tx.Exec(sql,
+		updatedStateExpirationDate,
+		hex.EncodeToString(updatedStateOwner[:]),
+		updatedAtBlockNumber,
+		domainNameIdTopLevelDomain,
+		domainNameIdSecondLevelDomain,
+	).Error
+	return err
+}
+
+func (w *MySqlDB) CreateDomainNameStateTable(tableName string) error {
+	sql := fmt.Sprintf(SQL_FORMAT_CREATE_TABLE_DOMAIN_NAME_STATE, tableName)
+	return w.db.Exec(sql).Error
+}
+
+// ////////////////////////////////////////////
+
 func (w *MySqlDB) GetDefaultDomainNameStateHead() (*DomainNameStateHead, error) {
 	return getDomainNameStateHead(w.db, DOMAIN_NAME_STATE_HEAD_ID_DEFAULT)
 }
@@ -560,6 +723,8 @@ func (w *MySqlDB) GetStarcoinHeight() (uint64, error) {
 	return ch.Height, nil
 }
 
+// //////////////////////// util methods //////////////////////////
+
 func createOrUpdate(db *gorm.DB, dest interface{}) error {
 	if err := db.Save(dest).Error; err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -571,43 +736,13 @@ func createOrUpdate(db *gorm.DB, dest interface{}) error {
 	return nil
 }
 
-// //////////////////// SQL format //////////////////////
-const (
-	SQL_FORMAT_SELECT_DOMAIN_NAME_STATE = `SELECT 
-    domain_name_id_top_level_domain,
-    domain_name_id_second_level_domain,
-    expiration_date,
-    owner,
-    created_at_block_number,
-    updated_at_block_number
-FROM
-    %s s
-WHERE
-    s.domain_name_id_top_level_domain = ?
-        AND s.domain_name_id_second_level_domain = ?
-	`
+func (w *MySqlDB) HasTable(tableName string) bool {
+	return w.db.Migrator().HasTable(tableName)
+}
 
-	SQL_FORMAT_INSERT_DOMAIN_NAME_STATE = `INSERT INTO domain_name_state
-	(domain_name_id_top_level_domain,
-	domain_name_id_second_level_domain,
-	expiration_date,
-	owner,
-	created_at_block_number,
-	updated_at_block_number)
-	VALUES
-	(?,
-	?,
-	?,
-	?,
-	?,
-	?
-	`
-
-	SQL_FORMAT_UPDATE_DOMAIN_NAME_STATE = `UPDATE domain_name_state
-	SET
-	expiration_date = ?,
-	owner = ?,
-	updated_at_block_number = ?
-	WHERE domain_name_id_top_level_domain = ? AND domain_name_id_second_level_domain = ?
-	`
-)
+func (w *MySqlDB) DropTable(tableName string) error {
+	if err := w.db.Migrator().DropTable(tableName); err != nil {
+		return err
+	}
+	return nil
+}
