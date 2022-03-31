@@ -215,34 +215,39 @@ func (m *StarcoinManager) handleStarcoinEvent(evt stcclient.Event) error {
 }
 
 func (m *StarcoinManager) UpdateDomainNameStates() {
-	updateStateTicker := time.NewTicker(time.Second * 2) //time.Duration(this.config.StarcoinConfig.MonitorInterval) * time.Second)
+	updateStateTicker := time.NewTicker(time.Second * 5) //time.Duration(this.config.StarcoinConfig.MonitorInterval) * time.Second)
 	for {
 		select {
-		case <-updateStateTicker.C:
+		case t := <-updateStateTicker.C:
+			//log.Println("----------------- ", t, "-----------------")
+			_ = t
 			var e *db.DomainNameEvent
 			var lastE *db.DomainNameEvent
 			var err error
 			headId := db.DOMAIN_NAME_STATE_HEAD_ID_DEFAULT
 			h, err := m.db.GetDomainNameStateHead(headId) // h(ead) maybe null
 			if err != nil {
-				break
+				log.Printf("UpdateDomainNameStates - GetDomainNameStateHead error: %s", err.Error())
+				continue
 			}
 			lastE, err = m.db.GetLastDomainNameEvent() //todo: Get last DomainNameEvent by headId?
 			if err != nil {
-				break
+				log.Printf("UpdateDomainNameStates - GetLastDomainNameEvent error: %s", err.Error())
+				continue
 			}
 			if lastE == nil {
-				break
+				continue
 			}
 			if h != nil {
 				if h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey {
-					break
+					continue
 				}
-			} // if h(ead) is null, continue...
+			} // else if h(ead) is null...
 			var allEventHandled bool = false
 			for {
-				e, err = m.retrieveDomainNameEventAndUpdateState(h, headId)
+				e, h, err = m.retrieveDomainNameEventAndUpdateState(h, headId)
 				if err != nil {
+					log.Printf("UpdateDomainNameStates - retrieveDomainNameEventAndUpdateState error: %s", err.Error())
 					break
 				}
 				if e == nil {
@@ -250,24 +255,25 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 				}
 				if e.Id == lastE.Id {
 					allEventHandled = true
+					break
 				}
 			}
-			if !allEventHandled {
+			if !allEventHandled { //&& lastE != nil
 				log.Printf("NOT all events are handled. Last event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
 			}
 		}
 	}
-
 }
 
-func (m *StarcoinManager) RebuildDomainNameStates(tableNameSuffix string) error {
+func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix string) error {
+	_ = headId
 	var err error
-	es, err := m.GetLastAvailableDomainNameEventSequence()
+	es, err := m.GetLastAvailableDomainNameEventSequence() //todo: use headId
 	if err != nil {
 		return err
 	}
 	if es == nil {
-		es, err = m.BuildDomainNameEventSequence()
+		es, err = m.BuildDomainNameEventSequence() //todo: use headId
 		if err != nil {
 			return err
 		}
@@ -320,43 +326,55 @@ func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, 
 	return tableName
 }
 
-// Head and headId can NOT be both nil(empty)
-func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainNameStateHead, headId string) (*db.DomainNameEvent, error) {
+// Head and headId can NOT be both nil(empty).
+// Retrun handled event, (created)state head, and error.
+func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainNameStateHead, headId string) (*db.DomainNameEvent, *db.DomainNameStateHead, error) {
 	var err error
-	var e *db.DomainNameEvent = nil
+	var event *db.DomainNameEvent
 	var tableName string
 	if head == nil {
-		e, err = m.db.GetFirstDomainNameEvent() //todo: Get first event by headId?
+		event, err = m.db.GetFirstDomainNameEvent() //todo: Get first event by headId?
+		//log.Println("m.db.GetFirstDomainNameEvent()", event)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		// //////////////////// create state table and head ////////////////////
-		ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp
+		if event == nil {
+			return nil, nil, nil
+		}
+		// //////////////////// create state table ////////////////////
+		ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
 		tableName = db.DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME + "_" + ts
-		err = m.db.CreateDomainNameStateTable(tableName) // create state table here
+		// log.Println("retrieveDomainNameEventAndUpdateState - to CreateDomainNameStateHead...", tableName)
+		// create head first, as a lock
+		head, err = m.db.CreateDomainNameStateHead(headId, event.PreviousSmtRoot, tableName)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
-		head, err = m.db.CreateDomainNameStateHead(headId, tableName, e)
+		// then create state table here
+		err = m.db.CreateDomainNameStateTable(tableName)
 		if err != nil {
-			return nil, err
+			return nil, head, err
+		}
+		err = m.db.CreateOrReplaceDomainNameStateView(tableName)
+		if err != nil {
+			return nil, head, err
 		}
 	} else {
-		e, err = m.db.GetLastDomainNameEventByPreviousSmtRoot(head.SmtRoot)
+		event, err = m.db.GetLastDomainNameEventByPreviousSmtRoot(head.SmtRoot)
 		if err != nil {
-			return nil, err
+			return nil, head, err
 		}
-		tableName = head.TableName
-	}
-	if e == nil {
-		return nil, nil
+		if event == nil {
+			return nil, head, nil
+		}
 	}
 	// update state table and head
-	if err = m.db.UpdateDomainNameStateAndHeadForTableByEvent(tableName, head, e); err != nil {
-		return nil, err
+	tableName = head.TableName
+	if err = m.db.UpdateDomainNameStateAndHeadForTableByEvent(tableName, head, event); err != nil {
+		return nil, head, err
 	}
-	log.Printf("updated DomainNameState by event, Id: %d, UpdatedSmtRoot: %s", e.Id, e.UpdatedSmtRoot)
-	return e, nil
+	log.Printf("updated DomainNameState by event, Id: %d, BlockHash: %s, BlockNumber: %d, UpdatedSmtRoot: %s", event.Id, event.BlockHash, event.BlockNumber, event.UpdatedSmtRoot)
+	return event, head, nil
 }
 
 // Rollback to available height from 'fromHeight'.

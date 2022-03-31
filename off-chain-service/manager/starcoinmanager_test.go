@@ -96,7 +96,8 @@ func TestGetLastAvailableDomainNameEventSequenceeAllElementIds(t *testing.T) {
 func TestRebuildDomainNameStates(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
 	ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp
-	err := starcoinManager.RebuildDomainNameStates(ts)
+	headId := db.DOMAIN_NAME_STATE_HEAD_ID_DEFAULT
+	err := starcoinManager.RebuildDomainNameStates(headId, ts)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

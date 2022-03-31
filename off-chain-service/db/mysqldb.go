@@ -363,8 +363,8 @@ func UpdateDomainNameStateHeadByEvent(tx *gorm.DB, h *DomainNameStateHead, e *Do
 	return nil
 }
 
-func (w *MySqlDB) CreateDomainNameStateHead(headId string, stateTableName string, e *DomainNameEvent) (*DomainNameStateHead, error) {
-	h := NewDomainNameStateHead(headId, e.BlockHash, e.EventKey, e.UpdatedSmtRoot, stateTableName)
+func (w *MySqlDB) CreateDomainNameStateHead(headId string, smtRoot string, stateTableName string) (*DomainNameStateHead, error) {
+	h := NewDomainNameStateHead(headId, "_INITIALIZING_", "_INITIALIZING_", smtRoot, stateTableName)
 	if err := w.db.Create(h).Error; err != nil {
 		return nil, err
 	}
@@ -424,9 +424,22 @@ const (
 		KEY idx_domain_name_state_updated_at_block_number (updated_at_block_number)
 	)  ENGINE=INNODB DEFAULT CHARSET=LATIN1	
 	`
+
+	SQL_CREATE_OR_REPLACE_VIEW_DOMAIN_NAME_STATE = `
+	CREATE OR REPLACE VIEW domain_name_state AS
+    SELECT 
+        *
+    FROM
+        %s;	
+	`
 )
 
 // //////////////////// SQL formats end. //////////////////////
+
+func (w *MySqlDB) CreateOrReplaceDomainNameStateView(tableName string) error {
+	sql := fmt.Sprintf(SQL_CREATE_OR_REPLACE_VIEW_DOMAIN_NAME_STATE, tableName)
+	return w.db.Exec(sql).Error
+}
 
 func (w *MySqlDB) UpdateDomainNameStateAndHeadForTableByEvent(tableName string, h *DomainNameStateHead, e *DomainNameEvent) error {
 	err := w.db.Transaction(func(tx *gorm.DB) error {
