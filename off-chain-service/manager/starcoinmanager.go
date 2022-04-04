@@ -225,11 +225,12 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 		case t := <-updateStateTicker.C:
 			//log.Println("----------------- ", t, "-----------------")
 			_ = t
-			var e *db.DomainNameEvent
-			var lastE *db.DomainNameEvent
-			var err error
 			headId := db.DOMAIN_NAME_STATE_HEAD_ID_DEFAULT
-			h, err := m.db.GetDomainNameStateHead(headId) // h(ead) maybe null
+			var h *db.DomainNameStateHead
+			var lastE *db.DomainNameEvent
+			var e *db.DomainNameEvent
+			var err error
+			h, err = m.db.GetDomainNameStateHead(headId) // h(ead) maybe null
 			if err != nil {
 				log.Printf("UpdateDomainNameStates - GetDomainNameStateHead error: %s", err.Error())
 				continue
@@ -243,8 +244,7 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 				continue
 			}
 			//lastE != nil
-			if h != nil &&
-				h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey { // last event processed
+			if h != nil && h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey { // last event processed
 				continue
 			}
 			// h(ead) is null or last event is not processed
@@ -265,7 +265,13 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 			}
 			if !allEventHandled {
 				log.Printf("NOT all events are handled. Last event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
-				//todo
+				if err == nil && e == nil { //todo: is this ok?
+					log.Printf("Rebuild DomainName states, last event Id: %d", lastE.Id)
+					ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+					if rebuildErr := m.RebuildDomainNameStates(headId, ts); err != nil {
+						log.Printf("Rebuild DomainName states error: %s", rebuildErr.Error())
+					}
+				}
 			}
 		}
 	}
@@ -297,34 +303,35 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 		return err
 	}
 	var e *db.DomainNameEvent
-	var errored bool = false
-	err = nil
+	err = nil //var errored bool = false
 	for _, eId := range allEventIds {
 		e, err = m.db.GetDomainNameEvent(eId)
-		if err != nil {
-			errored = true
+		if err != nil { //errored = true
 			break
 		}
 		if e == nil {
-			err = fmt.Errorf("RebuildDomainNameStates - get null event. Event Id: %d", eId)
-			errored = true
+			err = fmt.Errorf("RebuildDomainNameStates - get null event. Event Id: %d", eId) //errored = true
 			break
 		}
 		err = m.db.UpdateDomainNameStateForTableByEvent(tableName, e)
-		if err != nil {
-			errored = true
+		if err != nil { //errored = true
 			break
 		}
 	}
-	if errored {
+	if err != nil { //errored {
 		// renameErr := m.db.RenameTable(tableName, tableName+"_errored")
-		// _ = renameErr
 		return err
 	}
 	// renameErr := m.db.RenameTable("domain_name_state", "domain_name_state_bak_"+tableNameSuffix)
-	// _ = renameErr
 	// err = m.db.RenameTable(tableName, "domain_name_state")
-	return nil
+	if err = m.db.CreateOrReplaceDomainNameStateView(tableName); err != nil {
+		return err
+	}
+	if err = m.db.DeleteDomainNameStateHead(headId); err != nil {
+		return err
+	}
+	err = m.db.CreateDomainNameStateHeadByEvent(headId, e, tableName)
+	return err
 }
 
 func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, tableNameSuffix string) string {
@@ -332,10 +339,13 @@ func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, 
 	return tableName
 }
 
-// Retrive first event or next event by head's SMTRoot then update state.
-// Head and headId can NOT be both nil(empty).
-// Retrun handled event, (created)state head, and error.
+// Retrive next event by head's SMT Root or first event(if head is nil), then update state using event.
+// The arguments 'head' and 'headId' can NOT be both nil(empty).
+// Retrun handled event, (created)head, and error.
 func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainNameStateHead, headId string) (*db.DomainNameEvent, *db.DomainNameStateHead, error) {
+	if head == nil && headId == "" {
+		return nil, nil, fmt.Errorf("head and headId can NOT be both nil(empty)")
+	}
 	var err error
 	var event *db.DomainNameEvent
 	var tableName string
