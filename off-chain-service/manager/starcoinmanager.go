@@ -242,6 +242,7 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 			if lastE == nil {
 				continue
 			}
+			//lastE != nil
 			if h != nil &&
 				h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey { // last event processed
 				continue
@@ -262,8 +263,9 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 					break
 				}
 			}
-			if !allEventHandled { //lastE != nil
+			if !allEventHandled {
 				log.Printf("NOT all events are handled. Last event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
+				//todo
 			}
 		}
 	}
@@ -330,6 +332,7 @@ func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, 
 	return tableName
 }
 
+// Retrive first event or next event by head's SMTRoot then update state.
 // Head and headId can NOT be both nil(empty).
 // Retrun handled event, (created)state head, and error.
 func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainNameStateHead, headId string) (*db.DomainNameEvent, *db.DomainNameStateHead, error) {
@@ -345,6 +348,7 @@ func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainN
 		if event == nil {
 			return nil, nil, nil
 		}
+		// todo: check event.PreviousSmtRoot? It must be placeholder.
 		// //////////////////// create state table ////////////////////
 		ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
 		tableName = db.DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME + "_" + ts
