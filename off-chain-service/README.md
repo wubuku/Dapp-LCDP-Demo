@@ -114,8 +114,5 @@ account execute-function -s 0xb6d69dd935edf7f2054acf12eb884df8 --function 0x1835
 
 Trigger rollback logic:
 
-* Delete updated SMT root node of one DomainNameEvent.
-* Modify BlockHashes of this event, the previous block's and the subsequent blocks' events.
-* Set chain heigh to this event's block number.
-* Restart service.
+* Modify BlockHashes of an DomainNameEvent and the subsequent blocks' events.
 

@@ -70,14 +70,14 @@ func (w *MySqlDB) CreateDomainNameEvent(e *DomainNameEvent) error {
 	err := w.db.Create(e).Error
 	var mysqlErr *mysql.MySQLError
 	if errors.As(err, &mysqlErr) && mysqlErr.Number == 1062 { // if it is Duplicate-entry DB error
-		// can only re-create last DomainNameEvent
 		existedE, err := w.GetDomainNameEventByBlockHashAndEventKey(e.BlockHash, e.EventKey)
 		if err != nil {
 			return err
 		}
 		if existedE != nil {
-			// ignore err?
+			// When chain is forked, we rollback to common ancester block and re-process it, so ignore this err?
 			return nil
+			// // can only re-create last DomainNameEvent?
 			// maxId, err := w.GetDomainNameEventMaxId()
 			// if err != nil {
 			// 	return err

@@ -21,6 +21,10 @@ import (
 )
 
 const (
+	// //////////////////////// Filter event type tags ///////////////////////////////
+	EVENT_TYPE_TAG_DOMAIN_NAME_REGISTERED = "%s::DomainName::Registered"
+	EVENT_TYPE_TAG_DOMAIN_NAME_RENEWED    = "%s::DomainName::Renewed"
+	// ///////////////////////////////////////////////////////////////////////////////
 	WAITING_STARCOIN_CONFIRMATIONS = 0 // waiting STARCOIN CONFIRMATION block count
 )
 
@@ -114,15 +118,15 @@ func (m *StarcoinManager) MonitorChain() {
 func (m *StarcoinManager) handleNewBlock(height uint64) error {
 	starcoinClient := m.starcoinClient
 	address := m.contractAddress
-	// //////////////////////// Filter event type tags ///////////////////////////////
-	typeTagRegistered := m.contractAddress + "::DomainName::Registered"
-	typeTagRenewed := m.contractAddress + "::DomainName::Renewed"
-	// ///////////////////////////////////////////////////////////////////////////////
+
 	fromBlock := height
 	toBlock := height
 	eventFilter := &stcclient.EventFilter{
-		Address:   []string{address},
-		TypeTags:  []string{typeTagRegistered, typeTagRenewed},
+		Address: []string{address},
+		TypeTags: []string{
+			fmt.Sprintf(EVENT_TYPE_TAG_DOMAIN_NAME_REGISTERED, m.contractAddress),
+			fmt.Sprintf(EVENT_TYPE_TAG_DOMAIN_NAME_RENEWED, m.contractAddress),
+		},
 		FromBlock: fromBlock,
 		ToBlock:   &toBlock,
 	}
@@ -238,11 +242,11 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 			if lastE == nil {
 				continue
 			}
-			if h != nil {
-				if h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey {
-					continue
-				}
-			} // else if h(ead) is null...
+			if h != nil &&
+				h.BlockHash == lastE.BlockHash && h.EventKey == lastE.EventKey { // last event processed
+				continue
+			}
+			// h(ead) is null or last event is not processed
 			var allEventHandled bool = false
 			for {
 				e, h, err = m.retrieveDomainNameEventAndUpdateState(h, headId)
@@ -258,7 +262,7 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 					break
 				}
 			}
-			if !allEventHandled { //&& lastE != nil
+			if !allEventHandled { //lastE != nil
 				log.Printf("NOT all events are handled. Last event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
 			}
 		}
@@ -635,9 +639,13 @@ func (m *StarcoinManager) getDomainNameEventSequenceElementIds(lastEvent *db.Dom
 		}
 		if previousE == nil {
 			if currentE.PreviousSmtRoot != "" {
-				preRoot, _ := tools.HexToBytes(currentE.PreviousSmtRoot)
+				preRoot, err := tools.HexToBytes(currentE.PreviousSmtRoot)
+				if err != nil {
+					return nil, fmt.Errorf("cannot parse PreviousSmtRoot: %s, event Id: %d", currentE.PreviousSmtRoot, currentE.Id)
+				}
 				if !bytes.Equal(preRoot, tools.SmtPlaceholder()) {
-					return nil, fmt.Errorf("cannot find previous DomainNameSequence by SMT root: %s", currentE.PreviousSmtRoot)
+					// This error generally does not happen if the database is not modified manually!
+					return nil, fmt.Errorf("cannot find previous DomainNameSequence by SMT root: %s, event Id: %d", currentE.PreviousSmtRoot, currentE.Id)
 				}
 			}
 			break // PreviousSmtRoot is empty or placeholder
