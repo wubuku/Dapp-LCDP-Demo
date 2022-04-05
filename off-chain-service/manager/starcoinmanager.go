@@ -55,6 +55,10 @@ func NewStarcoinManager(
 	return &m, nil
 }
 
+func (m *StarcoinManager) GetDB() *db.MySqlDB {
+	return m.db
+}
+
 func (m *StarcoinManager) init() bool {
 	if m.currentHeight > 0 {
 		log.Printf("StarcoinManager init - start height from flag: %d", m.currentHeight)

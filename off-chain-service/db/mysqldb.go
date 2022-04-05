@@ -482,7 +482,18 @@ func (w *MySqlDB) CreateDomainNameStateTable(tableName string) error {
 	return w.db.Exec(sql).Error
 }
 
-func getDomainNameState(database *gorm.DB, domainNameIdTopLevelDomain string, domainNameIdSecondLevelDomain string) (*DomainNameState, error) {
+func (w *MySqlDB) GetAllDomainNameState() ([]*DomainNameState, error) {
+	var database *gorm.DB = w.db
+	var list []*DomainNameState
+	err := database.Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	return list, nil
+}
+
+func (w *MySqlDB) GetDomainNameState(domainNameIdTopLevelDomain string, domainNameIdSecondLevelDomain string) (*DomainNameState, error) {
+	var database *gorm.DB = w.db
 	var list []DomainNameState
 	err := database.Where(&DomainNameState{
 		DomainNameIdTopLevelDomain:    domainNameIdTopLevelDomain,

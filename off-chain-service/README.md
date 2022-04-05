@@ -64,6 +64,22 @@ Can also get DomainName state and SMT proof by specific root:
 http://localhost:8099/getDomainNameStateAndSmtProof?top_level_domain=stc&second_level_domain=a&smt_root=0xc371efcbd4fe75ac4ec21d74b2368048505304a58d38047bce7a8f935fe35a9d
 ```
 
+### Get DomainName states
+
+HTTP GET:
+
+```
+http://localhost:8099/domainNameStates
+```
+
+### Get a DomainName state
+
+HTTP GET:
+
+```
+http://localhost:8099/domainNameStates/["stc","a"]
+```
+
 ## Test using Starcoin console
 
 ### Test register DomainName
@@ -90,7 +106,7 @@ Response like below:
 }
 ```
 
-Because register function of on-chain contract is: 
+Because `register` function of on-chain contract is: 
 
 ```Move
     public(script) fun register(
@@ -114,5 +130,10 @@ account execute-function -s 0xb6d69dd935edf7f2054acf12eb884df8 --function 0x1835
 
 Trigger rollback logic:
 
-* Modify BlockHashes of an DomainNameEvent and the subsequent blocks' events.
+* Modify `BlockHash`es of an DomainNameEvent and the subsequent blocks' events.
+
+Trigger rebuild DomainNameStates:
+
+* Modify `SmtRoot` of DomainNameStateHead.
+* Submit an new transaction on-chain(can use unit test `TestRegisterDomainName` or `TestRenewDomainName` to do this).
 

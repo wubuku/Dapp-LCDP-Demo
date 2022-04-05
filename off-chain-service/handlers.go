@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"starcoin-ns-demo/db"
 	"starcoin-ns-demo/tools"
@@ -50,4 +51,35 @@ func getDomainNameStateAndSmtProof(c *gin.Context) {
 		tools.EncodeToHex(smtRoot),
 	)
 	c.JSON(http.StatusOK, voStateAndProof)
+}
+
+func getDomainNameState(c *gin.Context) {
+	jsonId := c.Param("id")
+	if jsonId == "" {
+		c.JSON(http.StatusOK, nil)
+		return
+	}
+	var idArray []string
+	err := json.Unmarshal([]byte(jsonId), &idArray)
+	if err != nil || len(idArray) != 2 {
+		c.JSON(http.StatusInternalServerError, "Parse Id error") //todo ???
+		return
+	}
+	topLevelDomain := idArray[0]    //c.Query("top_level_domain")
+	secondLevelDomain := idArray[1] //c.Query("second_level_domain")
+	s, err := starcoinManager.GetDB().GetDomainNameState(topLevelDomain, secondLevelDomain)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "GetDomainNameState error") //todo ???
+		return
+	}
+	c.JSON(http.StatusOK, s)
+}
+
+func getDomainNameStates(c *gin.Context) {
+	ss, err := starcoinManager.GetDB().GetAllDomainNameState()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "GetAllDomainNameState error") //todo ???
+		return
+	}
+	c.JSON(http.StatusOK, ss)
 }

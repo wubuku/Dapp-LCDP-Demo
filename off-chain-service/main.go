@@ -37,6 +37,8 @@ func main() {
 	// 	})
 	// })
 	r.GET("/getDomainNameStateAndSmtProof", getDomainNameStateAndSmtProof)
+	r.GET("/domainNameStates", getDomainNameStates)
+	r.GET("/domainNameStates/:id", getDomainNameState)
 	r.Run("0.0.0.0:8099")
 }
 
