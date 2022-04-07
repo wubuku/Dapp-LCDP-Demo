@@ -2,7 +2,7 @@ aggregates:
   DomainName:
     id:
       name: DomainNameId
-      type: DoaminNameId
+      type: DomainNameId
     properties:
       ExpirationDate:
         type: u64
