@@ -252,7 +252,7 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 				continue
 			}
 			// h(ead) is null or last event is not processed
-			var allEventHandled bool = false
+			var lastEventHandled bool = false
 			for {
 				e, h, err = m.retrieveDomainNameEventAndUpdateState(h, headId)
 				if err != nil {
@@ -263,17 +263,19 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 					break
 				}
 				if e.Id == lastE.Id {
-					allEventHandled = true
+					lastEventHandled = true
 					break
 				}
 			}
-			if !allEventHandled {
-				log.Printf("NOT all events are handled. Last event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
-				if err == nil && e == nil { //todo: is this ok?
-					log.Printf("Rebuild DomainName states, last event Id: %d", lastE.Id)
-					ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
-					if rebuildErr := m.RebuildDomainNameStates(headId, ts); err != nil {
-						log.Printf("Rebuild DomainName states error: %s", rebuildErr.Error())
+			if !lastEventHandled {
+				log.Printf("Last event is not handled, event Id: %d, BlockHash: %s, EventKey: %s", lastE.Id, lastE.BlockHash, lastE.EventKey)
+				if err == nil && e == nil { //No error and no more event can be handled
+					if a, checkErr := m.isDomainNameEventAvailable(lastE); checkErr == nil && a {
+						log.Printf("Rebuild DomainName states, last event Id: %d", lastE.Id)
+						ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+						if rebuildErr := m.RebuildDomainNameStates(headId, ts); rebuildErr != nil {
+							log.Printf("Rebuild DomainName states error: %s", rebuildErr.Error())
+						}
 					}
 				}
 			}
