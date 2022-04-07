@@ -566,6 +566,7 @@ func (w *MySqlDB) CreateDomainNameStateHead(headId string, smtRoot string, state
 	return h, nil
 }
 
+// Create(insert) a New DomainNameStateHead by last handled event.
 func (w *MySqlDB) CreateDomainNameStateHeadByEvent(headId string, e *DomainNameEvent, stateTableName string) error {
 	h := NewDomainNameStateHead(
 		headId,

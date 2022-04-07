@@ -294,36 +294,12 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 			return err
 		}
 	}
-	allEventIds, err := m.db.GetDomainNameEventSequenceAllElementIds(es)
-	if err != nil {
-		return err
-	}
 	tableName := getDomainNameStateTableNameByEventSequence(es, tableNameSuffix)
 	if m.db.HasTable(tableName) {
 		return nil
 	}
-	err = m.db.CreateDomainNameStateTable(tableName)
-	if err != nil {
-		return err
-	}
-	var e *db.DomainNameEvent
-	err = nil //var errored bool = false
-	for _, eId := range allEventIds {
-		e, err = m.db.GetDomainNameEvent(eId)
-		if err != nil { //errored = true
-			break
-		}
-		if e == nil {
-			err = fmt.Errorf("RebuildDomainNameStates - get null event. Event Id: %d", eId) //errored = true
-			break
-		}
-		err = m.db.UpdateDomainNameStateForTableByEvent(tableName, e)
-		if err != nil { //errored = true
-			break
-		}
-	}
-	if err != nil { //errored {
-		// renameErr := m.db.RenameTable(tableName, tableName+"_errored")
+	var lastE *db.DomainNameEvent
+	if lastE, err = m.rebuildDomainNameStateTableByEventSequence(tableName, es); err != nil {
 		return err
 	}
 	// renameErr := m.db.RenameTable("domain_name_state", "domain_name_state_bak_"+tableNameSuffix)
@@ -334,8 +310,40 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 	if err = m.db.DeleteDomainNameStateHead(headId); err != nil {
 		return err
 	}
-	err = m.db.CreateDomainNameStateHeadByEvent(headId, e, tableName)
-	return err
+	return m.db.CreateDomainNameStateHeadByEvent(headId, lastE, tableName)
+}
+
+func (m *StarcoinManager) rebuildDomainNameStateTableByEventSequence(tableName string, es *db.DomainNameEventSequence) (*db.DomainNameEvent, error) {
+	var err error
+	allEventIds, err := m.db.GetDomainNameEventSequenceAllElementIds(es)
+	if err != nil {
+		return nil, err
+	}
+	err = m.db.CreateDomainNameStateTable(tableName)
+	if err != nil {
+		return nil, err
+	}
+	var e *db.DomainNameEvent
+	err = nil //var errored bool = false
+	for _, eId := range allEventIds {
+		e, err = m.db.GetDomainNameEvent(eId)
+		if err != nil { //errored = true
+			break
+		}
+		if e == nil {
+			err = fmt.Errorf("rebuildDomainNameStateTableByEventSequence - get null event by Event Id: %d", eId) //errored = true
+			break
+		}
+		err = m.db.UpdateDomainNameStateForTableByEvent(tableName, e)
+		if err != nil { //errored = true
+			break
+		}
+	}
+	if err != nil { //errored {
+		// renameErr := m.db.RenameTable(tableName, tableName+"_errored")
+		return nil, err
+	}
+	return e, nil
 }
 
 func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, tableNameSuffix string) string {
@@ -343,9 +351,9 @@ func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, 
 	return tableName
 }
 
-// Retrive next event by head's SMT Root or first event(if head is nil), then update state using event.
+// Retrive next event by head's SMT Root or first event(if head is nil), and then update state using event.
 // The arguments 'head' and 'headId' can NOT be both nil(empty).
-// Retrun handled event, (created)head, and error.
+// Retrun handled event(if no more event need to be handled, return nil), (created)head and error.
 func (m *StarcoinManager) retrieveDomainNameEventAndUpdateState(head *db.DomainNameStateHead, headId string) (*db.DomainNameEvent, *db.DomainNameStateHead, error) {
 	if head == nil && headId == "" {
 		return nil, nil, fmt.Errorf("head and headId can NOT be both nil(empty)")
