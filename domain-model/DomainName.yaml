@@ -1,0 +1,35 @@
+aggregates:
+  DomainName:
+    id:
+      name: DomainNameId
+      type: DoaminNameId
+    properties:
+      ExpirationDate:
+        type: u64
+      Owner:
+        type: AccountAddress
+    methods:
+      Register:
+        parameters:
+          Account:
+            type: signer
+            eventPropertyName: Owner
+          RegistrationPeriod:
+            type: u64
+        eventName: Registered
+      Renew:
+        parameters:
+          Account:
+            type: signer
+          RenewPeriod:
+            type: u64
+        eventName: Renewed
+
+
+valueObjects:
+  DomainNameId:
+    properties:
+      TopLevelDomain: # TLD
+        type: string
+      SecondLevelDomain: # SLD
+        type: string
