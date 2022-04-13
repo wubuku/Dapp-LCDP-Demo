@@ -18,6 +18,39 @@ const (
 	DEV_CONTRACT_ADDRESS           = "0x18351d311d32201149a4df2a9fc2db8a"
 )
 
+func TestBuildDomainNameEventSequencesAndStates(t *testing.T) {
+	starcoinManager := testGetLocalDevStarcoinManager(t)
+	e, err := starcoinManager.GetLastAvailableDomainNameEvent()
+	if err != nil { // fmt.Println(err)
+		t.FailNow()
+	} //fmt.Println(e)
+	eId_1 := e.Id / 2
+	eId_2 := e.Id - 1
+
+	es_1, err := starcoinManager.BuildDomainNameEventSequenceForLastEventId(eId_1)
+	if err != nil { // fmt.Println(err)
+		t.FailNow()
+	}
+	tableNameSuffix_1 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+	tableName_1 := getDomainNameStateTableNameByEventSequence(es_1, tableNameSuffix_1)
+	_, err = starcoinManager.BuildDomainNameStateTableByEventSequence(tableName_1, es_1)
+	if err != nil { // fmt.Println(err)
+		t.FailNow()
+	}
+
+	es_2, err := starcoinManager.BuildDomainNameEventSequenceForLastEventId(eId_2)
+	if err != nil { // fmt.Println(err)
+		t.FailNow()
+	}
+	tableNameSuffix_2 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+	tableName_2 := getDomainNameStateTableNameByEventSequence(es_2, tableNameSuffix_2)
+	_, err = starcoinManager.BuildDomainNameStateTableByEventSequence(tableName_2, es_2)
+	if err != nil { // fmt.Println(err)
+		t.FailNow()
+	}
+
+}
+
 func TestHandleNewBlock(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
 	err := starcoinManager.handleNewBlock(14)

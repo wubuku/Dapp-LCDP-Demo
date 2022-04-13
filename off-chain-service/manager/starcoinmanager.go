@@ -301,7 +301,7 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 		return nil
 	}
 	var lastE *db.DomainNameEvent
-	if lastE, err = m.rebuildDomainNameStateTableByEventSequence(tableName, es); err != nil {
+	if lastE, err = m.BuildDomainNameStateTableByEventSequence(tableName, es); err != nil {
 		return err
 	}
 	// renameErr := m.db.RenameTable("domain_name_state", "domain_name_state_bak_"+tableNameSuffix)
@@ -315,7 +315,7 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 	return m.db.CreateDomainNameStateHeadByEvent(headId, lastE, tableName)
 }
 
-func (m *StarcoinManager) rebuildDomainNameStateTableByEventSequence(tableName string, es *db.DomainNameEventSequence) (*db.DomainNameEvent, error) {
+func (m *StarcoinManager) BuildDomainNameStateTableByEventSequence(tableName string, es *db.DomainNameEventSequence) (*db.DomainNameEvent, error) {
 	var err error
 	allEventIds, err := m.db.GetDomainNameEventSequenceAllElementIds(es)
 	if err != nil {
