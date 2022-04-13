@@ -290,6 +290,22 @@ func (w *MySqlDB) CreateDomainNameEventSequence(es *DomainNameEventSequence) err
 	return err
 }
 
+// Set DomainNameEventSequence's StateTableName and status to STATE_TABLE_BUILT
+func (w *MySqlDB) SetDomainNameEventSequenceStateTableNameBuilt(es *DomainNameEventSequence, stateTableName string) error {
+	es.StateTableName = stateTableName
+	es.Status = DOMAIN_NAME_EVENT_SEQUENCE_STATUS_STATE_TABLE_BUILT
+	err := w.db.Save(es).Error
+	return err
+}
+
+// Reset DomainNameEventSequence's StateTableName and status to empty
+func (w *MySqlDB) ResetDomainNameEventSequenceStateTableName(es *DomainNameEventSequence) error {
+	es.StateTableName = ""
+	es.Status = ""
+	err := w.db.Save(es).Error
+	return err
+}
+
 // ///////////////////// DomainNameStateHead and DomainNameState ///////////////////////
 
 func (w *MySqlDB) UpdateDomainNameStateAndHeadForTableByEvent(tableName string, h *DomainNameStateHead, e *DomainNameEvent) error {

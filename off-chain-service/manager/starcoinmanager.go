@@ -272,8 +272,7 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 				if err == nil && e == nil { //No error and no more event can be handled
 					if a, checkErr := m.isDomainNameEventAvailable(lastE); checkErr == nil && a {
 						log.Printf("Rebuild DomainName states, last event Id: %d", lastE.Id)
-						ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
-						if rebuildErr := m.RebuildDomainNameStates(headId, ts); rebuildErr != nil {
+						if _, rebuildErr := m.RebuildDomainNameStates(headId); rebuildErr != nil {
 							log.Printf("Rebuild DomainName states error: %s", rebuildErr.Error())
 						}
 					}
@@ -283,27 +282,51 @@ func (m *StarcoinManager) UpdateDomainNameStates() {
 	}
 }
 
-func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix string) error {
+// Return built state table name and error.
+func (m *StarcoinManager) RebuildDomainNameStates(headId string) (string, error) {
 	_ = headId
 	var err error
+	var tableName string
 	es, err := m.GetLastAvailableDomainNameEventSequence() //todo: use headId
 	if err != nil {
-		return err
+		return "", err
 	}
 	if es == nil {
 		es, err = m.BuildDomainNameEventSequence() //todo: use headId
 		if err != nil {
-			return err
+			return "", err
+		}
+	} else {
+		tableName = es.StateTableName
+	}
+	if tableName == "" {
+		tableNameSuffix := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+		tableName = getDomainNameStateTableNameByEventSequence(es.SequenceId, tableNameSuffix)
+	}
+	var lastEvent *db.DomainNameEvent
+	if m.db.HasTable(tableName) {
+		// table already built
+		if lastEvent, err = m.db.GetDomainNameEvent(es.LastEventId); err != nil {
+			return "", err
+		}
+	} else {
+		if lastEvent, err = m.BuildDomainNameStateTableByEventSequence(tableName, es); err != nil {
+			return "", err
 		}
 	}
-	tableName := getDomainNameStateTableNameByEventSequence(es, tableNameSuffix)
-	if m.db.HasTable(tableName) {
-		return nil
+	err = m.updateDomainNameStateViewAndHead(headId, tableName, lastEvent)
+	if err != nil {
+		return "", err
 	}
-	var lastE *db.DomainNameEvent
-	if lastE, err = m.BuildDomainNameStateTableByEventSequence(tableName, es); err != nil {
-		return err
+	err = m.db.ResetDomainNameEventSequenceStateTableName(es)
+	if err != nil {
+		return "", err
 	}
+	return tableName, nil
+}
+
+func (m *StarcoinManager) updateDomainNameStateViewAndHead(headId string, tableName string, lastEvent *db.DomainNameEvent) error {
+	var err error
 	// renameErr := m.db.RenameTable("domain_name_state", "domain_name_state_bak_"+tableNameSuffix)
 	// err = m.db.RenameTable(tableName, "domain_name_state")
 	if err = m.db.CreateOrReplaceDomainNameStateView(tableName); err != nil {
@@ -312,7 +335,7 @@ func (m *StarcoinManager) RebuildDomainNameStates(headId string, tableNameSuffix
 	if err = m.db.DeleteDomainNameStateHead(headId); err != nil {
 		return err
 	}
-	return m.db.CreateDomainNameStateHeadByEvent(headId, lastE, tableName)
+	return m.db.CreateDomainNameStateHeadByEvent(headId, lastEvent, tableName)
 }
 
 func (m *StarcoinManager) BuildDomainNameStateTableByEventSequence(tableName string, es *db.DomainNameEventSequence) (*db.DomainNameEvent, error) {
@@ -345,11 +368,16 @@ func (m *StarcoinManager) BuildDomainNameStateTableByEventSequence(tableName str
 		// renameErr := m.db.RenameTable(tableName, tableName+"_errored")
 		return nil, err
 	}
+	if es.StateTableName != tableName || es.Status != db.DOMAIN_NAME_EVENT_SEQUENCE_STATUS_STATE_TABLE_BUILT {
+		if err := m.db.SetDomainNameEventSequenceStateTableNameBuilt(es, tableName); err != nil {
+			return nil, err
+		}
+	}
 	return e, nil
 }
 
-func getDomainNameStateTableNameByEventSequence(es *db.DomainNameEventSequence, tableNameSuffix string) string {
-	tableName := "domain_name_state_" + es.SequenceId + "_" + tableNameSuffix
+func getDomainNameStateTableNameByEventSequence(sequenceId string, tableNameSuffix string) string {
+	tableName := "domain_name_state_" + sequenceId + "_" + tableNameSuffix
 	return tableName
 }
 
@@ -514,7 +542,7 @@ func (m *StarcoinManager) doBuildDomainNameEventSequence(lastEvent *db.DomainNam
 		return nil, err
 	}
 	if lastAvailableEventSeq != nil && lastAvailableEventSeq.LastEventId == lastEvent.Id {
-		return nil, nil // already exists
+		return lastAvailableEventSeq, nil // already exists
 	}
 	var previousSeqId string
 	if lastAvailableEventSeq != nil {

@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	DOMAIN_NAME_STATE_HEAD_ID_DEFAULT    string = "DEFAULT"
-	DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME string = "domain_name_state"
+	DOMAIN_NAME_STATE_HEAD_ID_DEFAULT                   string = "DEFAULT"
+	DOMAIN_NAME_STATE_DEFAULT_TABLE_NAME                string = "domain_name_state"
+	DOMAIN_NAME_EVENT_SEQUENCE_STATUS_STATE_TABLE_BUILT        = "STATE_TABLE_BUILT"
 )
 
 type DomainNameSmtNode struct {
@@ -132,6 +133,7 @@ type DomainNameEventSequence struct {
 	BlockNumber        uint64 `gorm:"not null"`                              // last event block number
 	PreviousSequenceId string `gorm:"size:100"`                              // previous event sequence ID.
 	ElementIds         string `gorm:"size:10000"`                            // element(event) IDs of this sequence
+	StateTableName     string `gorm:"size:100"`                              // state table name built by this sequence
 	Status             string `gorm:"size:20"`                               // status
 }
 

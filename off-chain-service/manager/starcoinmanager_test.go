@@ -21,34 +21,42 @@ const (
 func TestBuildDomainNameEventSequencesAndStates(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
 	e, err := starcoinManager.GetLastAvailableDomainNameEvent()
-	if err != nil { // fmt.Println(err)
+	if err != nil {
 		t.FailNow()
-	} //fmt.Println(e)
+	}
 	eId_1 := e.Id / 2
 	eId_2 := e.Id - 1
-
+	// Build first event sequence and state snapshot table
 	es_1, err := starcoinManager.BuildDomainNameEventSequenceForLastEventId(eId_1)
-	if err != nil { // fmt.Println(err)
+	if err != nil {
 		t.FailNow()
 	}
-	tableNameSuffix_1 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
-	tableName_1 := getDomainNameStateTableNameByEventSequence(es_1, tableNameSuffix_1)
+	tableNameSuffix_1 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10)
+	tableName_1 := getDomainNameStateTableNameByEventSequence(es_1.SequenceId, tableNameSuffix_1)
 	_, err = starcoinManager.BuildDomainNameStateTableByEventSequence(tableName_1, es_1)
-	if err != nil { // fmt.Println(err)
+	if err != nil {
 		t.FailNow()
 	}
-
+	fmt.Println("built state snapshot table: " + tableName_1)
+	// Build second event sequence and state snapshot table
 	es_2, err := starcoinManager.BuildDomainNameEventSequenceForLastEventId(eId_2)
-	if err != nil { // fmt.Println(err)
+	if err != nil {
 		t.FailNow()
 	}
-	tableNameSuffix_2 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
-	tableName_2 := getDomainNameStateTableNameByEventSequence(es_2, tableNameSuffix_2)
+	tableNameSuffix_2 := strconv.FormatInt(time.Now().UnixNano()/1000000, 10)
+	tableName_2 := getDomainNameStateTableNameByEventSequence(es_2.SequenceId, tableNameSuffix_2)
 	_, err = starcoinManager.BuildDomainNameStateTableByEventSequence(tableName_2, es_2)
-	if err != nil { // fmt.Println(err)
+	if err != nil {
 		t.FailNow()
 	}
-
+	fmt.Println("built state snapshot table: " + tableName_2)
+	// Will rebuild current domain_name_state view based on the second snapshot table
+	headId := db.DOMAIN_NAME_STATE_HEAD_ID_DEFAULT
+	basedOnTableName, err := starcoinManager.RebuildDomainNameStates(headId)
+	if err != nil {
+		t.FailNow()
+	}
+	fmt.Println("built state view based on the table: " + basedOnTableName)
 }
 
 func TestHandleNewBlock(t *testing.T) {
@@ -128,13 +136,14 @@ func TestGetLastAvailableDomainNameEventSequenceeAllElementIds(t *testing.T) {
 
 func TestRebuildDomainNameStates(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
-	ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
+	//ts := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // timestamp as table suffix
 	headId := db.DOMAIN_NAME_STATE_HEAD_ID_DEFAULT
-	err := starcoinManager.RebuildDomainNameStates(headId, ts)
+	tableName, err := starcoinManager.RebuildDomainNameStates(headId)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
+	fmt.Println("built state table name: " + tableName)
 }
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
