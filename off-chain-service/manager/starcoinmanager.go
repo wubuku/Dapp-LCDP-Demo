@@ -460,7 +460,7 @@ func (m *StarcoinManager) getSMTree() (*smt.SparseMerkleTree, error) {
 		return nil, err
 	}
 	valueStore := m.db.NewDomainNameSmtValueMapStore()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	return smt, nil
 }
 
@@ -498,7 +498,7 @@ func (m *StarcoinManager) GetDomainNameStateAndSmtProofForRoot(domainNameId *db.
 	if len(leafData) == 0 || len(proof.NonMembershipLeafData) != 0 {
 		return nil, &proof, nil // Non-Membership proof
 	}
-	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+	if !tools.IsSmtKeyRelatedWithLeafData(key, leafData) {
 		return nil, nil, fmt.Errorf("Key(%s) and leaf data(%s) are NOT related", hex.EncodeToString(key), hex.EncodeToString(leafData))
 	}
 	leafPath, leafValueHash := tools.ParseSmtLeaf(leafData)

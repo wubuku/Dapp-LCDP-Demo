@@ -68,7 +68,7 @@ func TestDomainNameRegisterDomains(t *testing.T) {
 	}
 
 	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
-	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	_ = starcoinClient
 	_ = privateKeyConfig
 	_ = smTree
@@ -105,7 +105,7 @@ func TestDomainNameRenewDomains(t *testing.T) {
 	}
 
 	nodeStore, valueStore, _ := testGetDBDomainNameSmtMapStores()
-	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smTree := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	_ = starcoinClient
 	_ = privateKeyConfig
 	_ = smTree
@@ -148,7 +148,7 @@ func testRegisterDomainName(starcoinClient *client.StarcoinClient, smTree *smt.S
 		fmt.Println(err)
 		t.FailNow()
 	}
-	if !tools.IsSmtKeyAndLeafDataUnrelated(key, proof.NonMembershipLeafData) {
+	if !tools.IsSmtKeyUnrelatedWithLeafData(key, proof.NonMembershipLeafData) {
 		fmt.Printf("Key(%s) and leaf data(%s) are NOT unrelated!\n", hex.EncodeToString(key), hex.EncodeToString(proof.NonMembershipLeafData))
 		t.FailNow()
 	}
@@ -179,7 +179,7 @@ func testRenewDomainName(starcoinClient *client.StarcoinClient, database *db.MyS
 		fmt.Println(err)
 		t.FailNow()
 	}
-	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+	if !tools.IsSmtKeyRelatedWithLeafData(key, leafData) {
 		fmt.Printf("Key(%s) and leaf data(%s) are NOT related!\n", hex.EncodeToString(key), hex.EncodeToString(leafData))
 		t.FailNow()
 	}

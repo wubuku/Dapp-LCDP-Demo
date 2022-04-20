@@ -37,7 +37,7 @@ func init() {
 func TestSmtProveAndPrintMoveUnitTest(t *testing.T) {
 	// Initialise two new key-value store to store the nodes and values of the tree
 	nodeStore, valueStore, _ := testGetSmtSimpleMapStores()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	var key []byte
 	var domainNameId *DomainNameId
 
@@ -69,7 +69,7 @@ func TestSmtProveAndPrintMoveRegisterAndRenewFunctionalTests(t *testing.T) {
 
 	nodeStore := smt.NewSimpleMap()
 	valueStore := smt.NewSimpleMap()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	var key []byte
 	var domainNameId *DomainNameId
 
@@ -202,7 +202,7 @@ func testPrintMoveNonMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byt
 		fmt.Println(err)
 		t.FailNow()
 	}
-	if !tools.IsSmtKeyAndLeafDataUnrelated(key, proof.NonMembershipLeafData) {
+	if !tools.IsSmtKeyUnrelatedWithLeafData(key, proof.NonMembershipLeafData) {
 		fmt.Printf("Key(%s) and leaf data(%s) are NOT unrelated!\n", hex.EncodeToString(key), hex.EncodeToString(proof.NonMembershipLeafData))
 		t.FailNow()
 	}
@@ -221,7 +221,7 @@ func testPrintMoveMembershipRootAndProof(smt *smt.SparseMerkleTree, key []byte, 
 		fmt.Println(err)
 		t.FailNow()
 	}
-	if !tools.IsSmtKeyAndLeafDataRelated(key, leafData) {
+	if !tools.IsSmtKeyRelatedWithLeafData(key, leafData) {
 		fmt.Printf("Key(%s) and leaf data(%s) are NOT related!\n", hex.EncodeToString(key), hex.EncodeToString(leafData))
 		t.FailNow()
 	}
@@ -422,7 +422,7 @@ func testGetSmtSimpleMapStores() (smt.MapStore, smt.MapStore, error) {
 func TestSmtGetValue(t *testing.T) {
 	nodeStore := smt.NewSimpleMap()
 	valueStore := smt.NewSimpleMap()
-	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.New256Hasher())
+	smt := smt.NewSparseMerkleTree(nodeStore, valueStore, tools.NewSmt256Hasher())
 	var key []byte
 	var value []byte
 	var err error

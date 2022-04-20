@@ -1,14 +1,10 @@
 package tools
 
 import (
-	"bytes"
 	"encoding/hex"
 	"fmt"
-	"hash"
 	"math/big"
 	"strings"
-
-	"golang.org/x/crypto/sha3"
 	//"github.com/leekchan/accounting"
 )
 
@@ -62,61 +58,3 @@ func ConcatBytesSlices(nodes [][]byte) []byte {
 // 	}
 // 	return ac.FormatMoneyBigFloat(amount)
 // }
-
-func SmtDigest(data []byte) []byte {
-	hasher := New256Hasher()
-	hasher.Write(data)
-	sum := hasher.Sum(nil)
-	hasher.Reset()
-	return sum
-}
-
-func New256Hasher() hash.Hash {
-	return sha3.New256() //sha256.New()
-}
-
-func ParseSmtLeaf(data []byte) ([]byte, []byte) {
-	return data[len(SmtLeafPrefix()) : SmtPathSize()+len(SmtLeafPrefix())], data[len(SmtLeafPrefix())+SmtPathSize():]
-}
-
-func SmtLeafPrefix() []byte {
-	leafPrefix := []byte{0}
-	//nodePrefix = []byte{1}
-	return leafPrefix
-}
-
-func SmtPathSize() int {
-	return 32
-}
-
-func SmtPlaceholder() []byte {
-	return make([]byte, 32)
-}
-
-func IsSmtKeyAndLeafDataRelated(key []byte, leafData []byte) bool {
-	return !IsSmtKeyAndLeafDataUnrelated(key, leafData)
-}
-
-func IsSmtKeyAndLeafDataUnrelated(key []byte, nonMembershipLeafData []byte) bool {
-	//fmt.Println("NON-MEMBERSHIP-LEAF-DATA: " + hex.EncodeToString(nonMembershipLeafData))
-	if len(nonMembershipLeafData) == 0 {
-		return true
-	}
-	path := SmtDigest(key)
-	return IsSmtPathAndLeafDataUnrelated(path, nonMembershipLeafData)
-}
-
-func IsSmtPathAndLeafDataUnrelated(path []byte, nonMembershipLeafData []byte) bool {
-	//fmt.Println("LEAF-PATH: " + hex.EncodeToString(path))
-	unrelated := false
-	if len(nonMembershipLeafData) == 0 {
-		unrelated = true
-	} else {
-		nonMemberPath, _ := ParseSmtLeaf(nonMembershipLeafData)
-		if !bytes.Equal(nonMemberPath, path) {
-			unrelated = true
-		}
-	}
-	//fmt.Println("IS-UNRELATED-LEAF-DATA: " + strconv.FormatBool(unrelated))
-	return unrelated
-}
