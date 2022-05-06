@@ -33,12 +33,13 @@ func TestGetDomainNameStateAndSmtProof(t *testing.T) {
 }
 
 func TestRegisterDomainName(t *testing.T) {
+	sld := "jy"
 	client, err := localDevDomainNameClient()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	stateAndProof, err := client.GetDomainNameStateAndSmtProof("stc", "x", "")
+	stateAndProof, err := client.GetDomainNameStateAndSmtProof("stc", sld, "")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -47,7 +48,7 @@ func TestRegisterDomainName(t *testing.T) {
 		fmt.Println("DomainName already exists.")
 		t.FailNow()
 	}
-	err = client.Register("stc", "x", 10000000, stateAndProof.SmtRoot, stateAndProof.SparseMerkleProof)
+	err = client.Register("stc", sld, 10000000, stateAndProof.SmtRoot, stateAndProof.SparseMerkleProof)
 	if err != nil {
 		fmt.Println("client.Register error: " + err.Error())
 		t.FailNow()
@@ -55,12 +56,13 @@ func TestRegisterDomainName(t *testing.T) {
 }
 
 func TestRenewDomainName(t *testing.T) {
+	sld := "jy"
 	client, err := localDevDomainNameClient()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	stateAndProof, err := client.GetDomainNameStateAndSmtProof("stc", "a", "")
+	stateAndProof, err := client.GetDomainNameStateAndSmtProof("stc", sld, "")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -69,7 +71,7 @@ func TestRenewDomainName(t *testing.T) {
 		fmt.Println("DomainName dosen't exist.")
 		t.FailNow()
 	}
-	err = client.Renew("stc", "a", 10000000, stateAndProof.DomainNameState, stateAndProof.SmtRoot, stateAndProof.SparseMerkleProof)
+	err = client.Renew("stc", sld, 10000000, stateAndProof.DomainNameState, stateAndProof.SmtRoot, stateAndProof.SparseMerkleProof)
 	if err != nil {
 		fmt.Println("client.Renew error: " + err.Error())
 		t.FailNow()

@@ -125,9 +125,9 @@ func (domainNameEvent *DomainNameEvent) GetUpdatedStateOwner() ([16]uint8, error
 }
 
 type DomainNameEventSequence struct {
-	SequenceId         string `gorm:"primaryKey;size:100"`                   // event sequence ID
-	LastEventId        uint64 `gorm:"not null"`                              // last event ID of this sequence
-	SmtRoot            string `gorm:"size:66;index"`                         // SMT root after last event occurred
+	SequenceId  string `gorm:"primaryKey;size:100"` // event sequence ID
+	LastEventId uint64 `gorm:"not null"`            // last event ID of this sequence
+	//SmtRoot            string `gorm:"size:66;index"`                         // SMT root after last event occurred
 	BlockHash          string `gorm:"size:66;index:idx_block_hash_evt_key"`  // last event block hash
 	EventKey           string `gorm:"size:100;index:idx_block_hash_evt_key"` // last event EventKey
 	BlockNumber        uint64 `gorm:"not null"`                              // last event block number
@@ -140,7 +140,7 @@ type DomainNameEventSequence struct {
 func NewDomainNameEventSequence(
 	sequenceId string,
 	lastEventId uint64,
-	smtRoot string,
+	//smtRoot string,
 	blockHash string,
 	eventKey string,
 	blockNumber uint64,
@@ -148,9 +148,9 @@ func NewDomainNameEventSequence(
 	elementIds string,
 ) *DomainNameEventSequence {
 	return &DomainNameEventSequence{
-		SequenceId:         sequenceId,
-		LastEventId:        lastEventId,
-		SmtRoot:            smtRoot,
+		SequenceId:  sequenceId,
+		LastEventId: lastEventId,
+		//SmtRoot:            smtRoot,
 		BlockHash:          blockHash,
 		EventKey:           eventKey,
 		BlockNumber:        blockNumber,

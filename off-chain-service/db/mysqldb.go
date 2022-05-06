@@ -109,6 +109,7 @@ func (w *MySqlDB) GetDomainNameEventByBlockHashAndEventKey(blockHash string, eve
 	first := list[0]
 	return &first, nil
 }
+
 func (w *MySqlDB) GetDomainNameEvent(id uint64) (*DomainNameEvent, error) {
 	var list []DomainNameEvent
 	if err := w.db.Where("id = ?", id).Limit(1).Find(&list).Error; err != nil {

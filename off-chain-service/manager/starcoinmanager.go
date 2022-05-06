@@ -563,7 +563,7 @@ func (m *StarcoinManager) doBuildDomainNameEventSequence(lastEvent *db.DomainNam
 	seqId := getDomainNameEventSequenceId(lastEvent)
 	es := db.NewDomainNameEventSequence(seqId,
 		lastEvent.Id,
-		lastEvent.UpdatedSmtRoot,
+		//lastEvent.UpdatedSmtRoot,
 		lastEvent.BlockHash,
 		lastEvent.EventKey,
 		lastEvent.BlockNumber,
