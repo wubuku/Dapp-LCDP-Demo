@@ -10,7 +10,7 @@ module BCSDeserializer {
     const ERR_UNEXPECTED_BOOL_VALUE: u64 = 205;
     const ERR_OVERFLOW_PARSING_ULEB128_ENCODED_UINT32: u64 = 206;
     const ERR_INVALID_ULEB128_NUMBER_UNEXPECTED_ZERO_DIGIT: u64 = 207;
-    const INTEGER_MAX_VALUE: u64 = 2147483647;
+    const INTEGER32_MAX_VALUE: u64 = 2147483647;
 
     public fun deserialize_option_bytes_vector(input: &vector<u8>, offset: u64): (vector<Option::Option<vector<u8>>>, u64) {
         let (len, new_offset) = deserialize_len(input, offset);
@@ -104,7 +104,7 @@ module BCSDeserializer {
             new_offset = new_offset + 1;
             let digit: u8 = x & 0x7F;
             value = value | (digit as u64) << shift;
-            if ((value < 0) || (value > INTEGER_MAX_VALUE)) {
+            if ((value < 0) || (value > INTEGER32_MAX_VALUE)) {
                 abort ERR_OVERFLOW_PARSING_ULEB128_ENCODED_UINT32
             };
             if (digit == x) {
