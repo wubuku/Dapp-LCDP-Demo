@@ -2,6 +2,7 @@ address 0x18351d311d32201149a4df2a9fc2db8a {
 module BCSDeserializer {
     use 0x1::Errors;
     use 0x1::Vector;
+    use 0x1::Option;
     //use 0x1::BitOperators;
 
     const ERR_INPUT_NOT_LARGE_ENOUGH: u64 = 201;
@@ -10,6 +11,28 @@ module BCSDeserializer {
     const ERR_INVALID_ULEB128_NUMBER_UNEXPECTED_ZERO_DIGIT: u64 = 207;
     const INTEGER_MAX_VALUE: u64 = 2147483647;
 
+    public fun deserialize_option_bytes_vector(input: &vector<u8>, offset: u64): (vector<Option::Option<vector<u8>>>, u64) {
+        let (len, new_offset) = deserialize_len(input, offset);
+        let i = 0;
+        let vec = Vector::empty<Option::Option<vector<u8>>>();
+        while (i < len) {
+            let (opt_bs, o) = deserialize_option_bytes(input, new_offset);
+            Vector::push_back(&mut vec, opt_bs);
+            new_offset = o;
+            i = i + 1;
+        };
+        (vec, new_offset)
+    }
+
+    public fun deserialize_option_bytes(input: &vector<u8>, offset: u64): (Option::Option<vector<u8>>, u64) {
+        let (tag, new_offset) = deserialize_option_tag(input, offset);
+        if (!tag) {
+            return (Option::none<vector<u8>>(), new_offset)
+        } else {
+            let (bs, new_offset) = deserialize_bytes(input, new_offset);
+            return (Option::some<vector<u8>>(bs), new_offset)
+        }
+    }
 
     public fun deserialize_bytes(input: &vector<u8>, offset: u64): (vector<u8>, u64) {
         let (len, new_offset) = deserialize_len(input, offset);
@@ -70,6 +93,5 @@ module BCSDeserializer {
         assert(((offset + 1) <= Vector::length(input)) && (offset < offset + 1), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
         *Vector::borrow(input, offset)
     }
-
 }
 }
