@@ -36,7 +36,7 @@ module BCSDeserializer {
 
     public fun deserialize_bytes(input: &vector<u8>, offset: u64): (vector<u8>, u64) {
         let (len, new_offset) = deserialize_len(input, offset);
-        assert(((new_offset + len) <= Vector::length(input)) && (new_offset < new_offset + 1), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        assert(((new_offset + len) <= Vector::length(input)) && (new_offset < new_offset + len), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
         let i = 0;
         let content = Vector::empty<u8>();
         while (i < len) {
@@ -45,6 +45,31 @@ module BCSDeserializer {
             i = i + 1;
         };
         (content, new_offset + len)
+    }
+
+    public fun deserialize_u128(input: &vector<u8>, offset: u64): (u128, u64) {
+        let u = get_n_bytes_as_u128(input, offset, 16);
+        (u, offset + 16)
+    }
+
+    public fun deserialize_u64(input: &vector<u8>, offset: u64): (u64, u64) {
+        let u = get_n_bytes_as_u128(input, offset, 8);
+        ((u as u64), offset + 8)
+    }
+
+    public fun deserialize_u32(input: &vector<u8>, offset: u64): (u64, u64) {
+        let u = get_n_bytes_as_u128(input, offset, 4);
+        ((u as u64), offset + 4)
+    }
+
+    public fun deserialize_u16(input: &vector<u8>, offset: u64): (u64, u64) {
+        let u = get_n_bytes_as_u128(input, offset, 2);
+        ((u as u64), offset + 2)
+    }
+
+    public fun deserialize_u8(input: &vector<u8>, offset: u64): (u8, u64) {
+        let u = get_byte(input, offset);
+        (u, offset + 1)
     }
 
     public fun deserialize_option_tag(input: &vector<u8>, offset: u64): (bool, u64) {
@@ -92,6 +117,19 @@ module BCSDeserializer {
     fun get_byte(input: &vector<u8>, offset: u64): u8 {
         assert(((offset + 1) <= Vector::length(input)) && (offset < offset + 1), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
         *Vector::borrow(input, offset)
+    }
+
+    fun get_n_bytes_as_u128(input: &vector<u8>, offset: u64, n: u64): u128 {
+        assert(((offset + n) <= Vector::length(input)) && (offset < offset + n), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        let number: u128 = 0;
+        let i = 0;
+        while (i < n) {
+            let byte = *Vector::borrow(input, offset + i);
+            let s = (i as u8) * 8;
+            number = number + ((byte as u128) << s);
+            i = i + 1;
+        };
+        number
     }
 }
 }
