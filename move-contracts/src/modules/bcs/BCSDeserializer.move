@@ -3,6 +3,7 @@ module BCSDeserializer {
     use 0x1::Errors;
     use 0x1::Vector;
     use 0x1::Option;
+    use 0x1::BCS;
     //use 0x1::BitOperators;
 
     const ERR_INPUT_NOT_LARGE_ENOUGH: u64 = 201;
@@ -34,16 +35,19 @@ module BCSDeserializer {
         }
     }
 
+    public fun deserialize_address(input: &vector<u8>, offset: u64): (address, u64) {
+        let (content, new_offset) = deserialize_16_bytes(input, offset);
+        (BCS::to_address(content), new_offset)
+    }
+
+    public fun deserialize_16_bytes(input: &vector<u8>, offset: u64): (vector<u8>, u64) {
+        let content = get_n_bytes(input, offset, 16);
+        (content, offset + 16)
+    }
+
     public fun deserialize_bytes(input: &vector<u8>, offset: u64): (vector<u8>, u64) {
         let (len, new_offset) = deserialize_len(input, offset);
-        assert(((new_offset + len) <= Vector::length(input)) && (new_offset < new_offset + len), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
-        let i = 0;
-        let content = Vector::empty<u8>();
-        while (i < len) {
-            let b = *Vector::borrow(input, new_offset + i);
-            Vector::push_back(&mut content, b);
-            i = i + 1;
-        };
+        let content = get_n_bytes(input, new_offset, len);
         (content, new_offset + len)
     }
 
@@ -117,6 +121,18 @@ module BCSDeserializer {
     fun get_byte(input: &vector<u8>, offset: u64): u8 {
         assert(((offset + 1) <= Vector::length(input)) && (offset < offset + 1), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
         *Vector::borrow(input, offset)
+    }
+
+    fun get_n_bytes(input: &vector<u8>, offset: u64, n: u64): vector<u8> {
+        assert(((offset + n) <= Vector::length(input)) && (offset < offset + n), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        let i = 0;
+        let content = Vector::empty<u8>();
+        while (i < n) {
+            let b = *Vector::borrow(input, offset + i);
+            Vector::push_back(&mut content, b);
+            i = i + 1;
+        };
+        content
     }
 
     fun get_n_bytes_as_u128(input: &vector<u8>, offset: u64, n: u64): u128 {
