@@ -4,7 +4,7 @@ module StarcoinVerifier {
     use 0x1::Vector;
     use 0x1::Option;
     use 0x1::BCS;
-    use 0x18351d311d32201149a4df2a9fc2db8a::Bit;
+    //use 0x18351d311d32201149a4df2a9fc2db8a::Bit;
     use 0x18351d311d32201149a4df2a9fc2db8a::StructuredHash;
     use 0x18351d311d32201149a4df2a9fc2db8a::BCSDeserializer;
     use 0x1::Hash;
@@ -129,7 +129,7 @@ module StarcoinVerifier {
             if (*&leaf_data.hash1 == *&path) {
                 return false
             };
-            if (!(Bit::count_common_prefix(&leaf_data.hash1, &path) >= Vector::length(side_nodes))) {
+            if (!(count_common_prefix(&leaf_data.hash1, &path) >= Vector::length(side_nodes))) {
                 return false
             };
         } else {
@@ -153,7 +153,7 @@ module StarcoinVerifier {
         let proof_length = Vector::length(side_nodes);
         while (i < proof_length) {
             let sibling = *Vector::borrow(side_nodes, i);
-            let bit = Bit::get_bit_at_from_msb(path, proof_length - i - 1);
+            let bit = get_bit_at_from_msb(path, proof_length - i - 1);
             let internal_node = if (bit) {
                 SMTNode{ hash1: sibling, hash2: current_hash }
             } else {
@@ -172,6 +172,34 @@ module StarcoinVerifier {
     fun hash_value(value: &vector<u8>): vector<u8> {
         StructuredHash::hash(BLOB_HASH_PREFIX, value)
     }
+
+
+    //
+    //module Bit {
+    //    use 0x1::Vector;
+    //
+    fun count_common_prefix(data1: &vector<u8>, data2: &vector<u8>): u64 {
+        let count = 0;
+        let i = 0;
+        while ( i < Vector::length(data1) * 8) {
+            if (get_bit_at_from_msb(data1, i) == get_bit_at_from_msb(data2, i)) {
+                count = count + 1;
+            } else {
+                break
+            };
+            i = i + 1;
+        };
+        count
+    }
+
+    fun get_bit_at_from_msb(data: &vector<u8>, index: u64): bool {
+        let pos = index / 8;
+        let bit = (7 - index % 8);
+        (*Vector::borrow(data, pos) >> (bit as u8)) & 1u8 != 0
+    }
+    //
+    //}
+    //
 }
 
 module StructuredHash {
@@ -194,29 +222,6 @@ module StructuredHash {
     }
 }
 
-module Bit {
-    use 0x1::Vector;
-
-    public fun count_common_prefix(data1: &vector<u8>, data2: &vector<u8>): u64 {
-        let count = 0;
-        let i = 0;
-        while ( i < Vector::length(data1) * 8) {
-            if (get_bit_at_from_msb(data1, i) == get_bit_at_from_msb(data2, i)) {
-                count = count + 1;
-            } else {
-                break
-            };
-            i = i + 1;
-        };
-        count
-    }
-
-    public fun get_bit_at_from_msb(data: &vector<u8>, index: u64): bool {
-        let pos = index / 8;
-        let bit = (7 - index % 8);
-        (*Vector::borrow(data, pos) >> (bit as u8)) & 1u8 != 0
-    }
-}
 
 //    module StarcoinVerifierScripts {
 //        use 0x18351d311d32201149a4df2a9fc2db8a::StarcoinVerifier;

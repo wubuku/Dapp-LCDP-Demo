@@ -10,6 +10,13 @@ module BCSDeserializerTest {
         storage_roots: vector<Option::Option<vector<u8>>>,
     }
 
+    fun deserialize_account_state(data: &vector<u8>, offset: u64): (AccountState, u64) {
+        let (vec, new_offset) = BCSDeserializer::deserialize_option_bytes_vector(data, offset);
+        (AccountState{
+            storage_roots: vec
+        }, new_offset)
+    }
+
     #[test]
     fun test_deserialize_address() {
         let addr = @0x18351d311d32201149a4df2a9fc2db8a;
@@ -80,13 +87,40 @@ module BCSDeserializerTest {
     public fun test_deserialize_account_state() {
         let bs = x"020001200f30a41872208c6324fa842889315b14f9be6f3dd0d5050686317adfdd0cda60";
         Debug::print<vector<u8>>(&bs);
-        let (vec, _) = BCSDeserializer::deserialize_option_bytes_vector(&bs, 0);
-        let acc_state = AccountState{
-            storage_roots: vec
-        };
+        let (acc_state, _) = deserialize_account_state(&bs, 0);
         let rbs = BCS::to_bytes<AccountState>(&acc_state);
         Debug::print<vector<u8>>(&rbs);
         assert(bs == rbs, 111);
+    }
+
+    #[test]
+    public fun test_deserialize_bytes_array() {
+        let hello = b"hello";
+        let world = b"world";
+        let hello_world = Vector::empty<vector<u8>>();
+        Vector::push_back(&mut hello_world, hello);
+        Vector::push_back(&mut hello_world, world);
+        let bs = BCS::to_bytes<vector<vector<u8>>>(&hello_world);
+        let (r, offset) = BCSDeserializer::deserialize_bytes_vector(&bs, 0);
+        Debug::print<vector<u8>>(&bs);
+        Debug::print<u64>(&offset);
+        //Vector::push_back(&mut hello_world, b".");
+        assert(hello_world == r, 111);
+    }
+
+    #[test]
+    public fun test_deserialize_u128_array() {
+        let hello:u128 = 1111111;
+        let world:u128 = 2222222;
+        let hello_world = Vector::empty<u128>();
+        Vector::push_back(&mut hello_world, hello);
+        Vector::push_back(&mut hello_world, world);
+        let bs = BCS::to_bytes<vector<u128>>(&hello_world);
+        let (r, offset) = BCSDeserializer::deserialize_u128_vector(&bs, 0);
+        Debug::print<vector<u8>>(&bs);
+        Debug::print<u64>(&offset);
+        //Vector::push_back(&mut hello_world, b".");
+        assert(hello_world == r, 111);
     }
 
     #[test]
