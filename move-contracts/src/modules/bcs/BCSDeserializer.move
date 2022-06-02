@@ -25,6 +25,45 @@ module BCSDeserializer {
         (vec, new_offset)
     }
 
+    public fun deserialize_bytes_vector(input: &vector<u8>, offset: u64): (vector<vector<u8>>, u64) {
+        let (len, new_offset) = deserialize_len(input, offset);
+        let i = 0;
+        let vec = Vector::empty<vector<u8>>();
+        while (i < len) {
+            let (opt_bs, o) = deserialize_bytes(input, new_offset);
+            Vector::push_back(&mut vec, opt_bs);
+            new_offset = o;
+            i = i + 1;
+        };
+        (vec, new_offset)
+    }
+
+    public fun deserialize_u64_vector(input: &vector<u8>, offset: u64): (vector<u64>, u64) {
+        let (len, new_offset) = deserialize_len(input, offset);
+        let i = 0;
+        let vec = Vector::empty<u64>();
+        while (i < len) {
+            let (opt_bs, o) = deserialize_u64(input, new_offset);
+            Vector::push_back(&mut vec, opt_bs);
+            new_offset = o;
+            i = i + 1;
+        };
+        (vec, new_offset)
+    }
+
+    public fun deserialize_u128_vector(input: &vector<u8>, offset: u64): (vector<u128>, u64) {
+        let (len, new_offset) = deserialize_len(input, offset);
+        let i = 0;
+        let vec = Vector::empty<u128>();
+        while (i < len) {
+            let (opt_bs, o) = deserialize_u128(input, new_offset);
+            Vector::push_back(&mut vec, opt_bs);
+            new_offset = o;
+            i = i + 1;
+        };
+        (vec, new_offset)
+    }
+
     public fun deserialize_option_bytes(input: &vector<u8>, offset: u64): (Option::Option<vector<u8>>, u64) {
         let (tag, new_offset) = deserialize_option_tag(input, offset);
         if (!tag) {
