@@ -5,6 +5,14 @@ module StarcoinVerifierTest {
     use 0x18351d311d32201149a4df2a9fc2db8a::StarcoinVerifier;
 
     #[test]
+    fun test_create_literal_hash() {
+        let word = b"SPARSE_MERKLE_PLACEHOLDER_HASH";
+        let r = StarcoinVerifier::create_literal_hash(&word);
+        assert(r == x"5350415253455f4d45524b4c455f504c414345484f4c4445525f484153480000", 111);
+    }
+
+
+    #[test]
     fun test_verify_resource_state_proof() {
         let state_root = x"99163c0fc319b62c3897ada8f97881e396e33b30383f47e23d93aaed07d6806d";
         let account_address = @0x8c109349c6bd91411d6bc962e080c4a3;
@@ -107,6 +115,23 @@ module StarcoinVerifierTest {
         let b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_node, &expected_root, &key, &value);
         Debug::print<bool>(&b);
         assert(b, 111)
+    }
+
+
+    #[test]
+    fun test_verify_sm_proof_by_key_value_2() {
+        let side_nodes: vector<vector<u8>> = Vector::empty();
+        let leaf_data: StarcoinVerifier::SMTNode = StarcoinVerifier::empty_smt_node();
+        let expected_root: vector<u8> = StarcoinVerifier::placeholder();
+        let key: vector<u8> = b"random key";
+        let value: vector<u8> = Vector::empty(); //x""
+        let b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_data, &expected_root, &key, &value);
+        //Debug::print(&b);
+        assert(b, 111);
+
+        value = b"random value";
+        b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_data, &expected_root, &key, &value);
+        assert(!b, 111);
     }
 }
 }

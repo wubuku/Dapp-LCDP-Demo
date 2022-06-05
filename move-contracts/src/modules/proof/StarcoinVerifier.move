@@ -16,6 +16,9 @@ module StarcoinVerifier {
     const DEFAULT_VALUE: vector<u8> = x"";
     const ACCOUNT_STORAGE_INDEX_RESOURCE: u64 = 1;
     const ERROR_ACCOUNT_STORAGE_ROOTS: u64 = 101;
+    const ERROR_LITERAL_HASH_WRONG_LENGTH: u64 = 102;
+    const SPARSE_MERKLE_PLACEHOLDER_HASH_LITERAL: vector<u8> = b"SPARSE_MERKLE_PLACEHOLDER_HASH";
+
 
     struct AccountState has store, drop, copy {
         storage_roots: vector<Option::Option<vector<u8>>>,
@@ -75,6 +78,13 @@ module StarcoinVerifier {
         }
     }
 
+    public fun empty_smt_node(): SMTNode {
+        SMTNode{
+            hash1: Vector::empty(),
+            hash2: Vector::empty(),
+        }
+    }
+
     //    struct StarcoinMerkle has key {
     //        merkle_root: vector<u8>,
     //    }
@@ -122,33 +132,44 @@ module StarcoinVerifier {
         ok
     }
 
+    /// Verify sparse merkle proof by key and value.
     public fun verify_sm_proof_by_key_value(side_nodes: &vector<vector<u8>>, leaf_data: &SMTNode, expected_root: &vector<u8>, key: &vector<u8>, value: &vector<u8>): bool {
         let path = hash_key(key);
+        let current_hash: vector<u8>;
         if (*value == DEFAULT_VALUE) {
             // Non-membership proof.
-            if (*&leaf_data.hash1 == *&path) {
-                return false
-            };
-            if (!(count_common_prefix(&leaf_data.hash1, &path) >= Vector::length(side_nodes))) {
-                return false
+            if (empty_smt_node() == *leaf_data) {
+                current_hash = placeholder();
+            } else {
+                if (*&leaf_data.hash1 == *&path) {
+                    return false
+                };
+                if (!(count_common_prefix(&leaf_data.hash1, &path) >= Vector::length(side_nodes))) {
+                    return false
+                };
+                current_hash = StructuredHash::hash(SPARSE_MERKLE_LEAF_NODE, leaf_data);
             };
         } else {
-            if (*&leaf_data.hash1 != path) {
+            // Membership proof.
+            if (empty_smt_node() == *leaf_data) {
+                return false
+            };
+            if (*&leaf_data.hash1 != *&path) {
                 return false
             };
             let value_hash = hash_value(value);
             if (*&leaf_data.hash2 != value_hash) {
                 return false
             };
+            current_hash = StructuredHash::hash(SPARSE_MERKLE_LEAF_NODE, leaf_data);
         };
 
-        let current_hash = compute_sm_root_by_path_and_value_hash(side_nodes, &leaf_data.hash1, &leaf_data.hash2);
+        current_hash = compute_sm_root_by_path_and_node_hash(side_nodes, &path, &current_hash);
         current_hash == *expected_root
     }
 
-    public fun compute_sm_root_by_path_and_value_hash(side_nodes: &vector<vector<u8>>, path: &vector<u8>, value_hash: &vector<u8>): vector<u8> {
-        let leaf_node = SMTNode{ hash1: *path, hash2: *value_hash };
-        let current_hash = StructuredHash::hash(SPARSE_MERKLE_LEAF_NODE, &leaf_node);
+    public fun compute_sm_root_by_path_and_node_hash(side_nodes: &vector<vector<u8>>, path: &vector<u8>, node_hash: &vector<u8>): vector<u8> {
+        let current_hash = *node_hash;
         let i = 0;
         let proof_length = Vector::length(side_nodes);
         while (i < proof_length) {
@@ -163,6 +184,24 @@ module StarcoinVerifier {
             i = i + 1;
         };
         current_hash
+    }
+
+    public fun placeholder(): vector<u8> {
+        create_literal_hash(&SPARSE_MERKLE_PLACEHOLDER_HASH_LITERAL)
+    }
+
+    public fun create_literal_hash(word: &vector<u8>): vector<u8> {
+        if (Vector::length(word)  <= 32) {
+            let lenZero = 32 - Vector::length(word);
+            let i = 0;
+            let r = *word;
+            while (i < lenZero) {
+                Vector::push_back(&mut r, 0);
+                i = i + 1;
+            };
+            return r
+        };
+        abort ERROR_LITERAL_HASH_WRONG_LENGTH
     }
 
     fun hash_key(key: &vector<u8>): vector<u8> {
