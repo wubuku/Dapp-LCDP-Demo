@@ -252,7 +252,7 @@ func testSubmitDomainNameRenewTransaction(starcoinClient *client.StarcoinClient,
 }
 
 func localDevStarcoinClient() client.StarcoinClient {
-	starcoinClient := client.NewStarcoinClient("http://localhost:9850")
+	starcoinClient := client.NewStarcoinClient(tools.STARCOIN_LOCAL_DEV_NETWORK_URL)
 	return starcoinClient
 }
 

@@ -13,11 +13,6 @@ import (
 	"github.com/starcoinorg/starcoin-go/client"
 )
 
-const (
-	STARCOIN_LOCAL_DEV_NETWORK_URL = "http://localhost:9850"
-	DEV_CONTRACT_ADDRESS           = "0x18351d311d32201149a4df2a9fc2db8a"
-)
-
 func TestBuildDomainNameEventSequencesAndStates(t *testing.T) {
 	starcoinManager := testGetLocalDevStarcoinManager(t)
 	e, err := starcoinManager.GetLastAvailableDomainNameEvent()
@@ -147,8 +142,8 @@ func TestRebuildDomainNameStates(t *testing.T) {
 }
 
 func testGetLocalDevStarcoinManager(t *testing.T) *StarcoinManager {
-	url := STARCOIN_LOCAL_DEV_NETWORK_URL
-	contractAddress := DEV_CONTRACT_ADDRESS
+	url := tools.STARCOIN_LOCAL_DEV_NETWORK_URL
+	contractAddress := tools.DEV_CONTRACT_ADDRESS
 	starcoinClient := client.NewStarcoinClient(url)
 	restClient := tools.NewRestClient()
 	db, err := localDevDB()

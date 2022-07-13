@@ -94,7 +94,7 @@ func localDevDomainNameClient() (*DomainNameClient, error) {
 }
 
 func localDevStarcoinClient() stcclient.StarcoinClient {
-	starcoinClient := stcclient.NewStarcoinClient("http://localhost:9850")
+	starcoinClient := stcclient.NewStarcoinClient(tools.STARCOIN_LOCAL_DEV_NETWORK_URL)
 	return starcoinClient
 }
 

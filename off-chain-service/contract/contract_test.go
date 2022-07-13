@@ -2,6 +2,7 @@ package contract
 
 import (
 	"fmt"
+	"starcoin-ns-demo/tools"
 	"testing"
 
 	"github.com/starcoinorg/starcoin-go/client"
@@ -20,6 +21,6 @@ func TestGetDomainNameSmtRoot(t *testing.T) {
 }
 
 func localDevStarcoinClient() client.StarcoinClient {
-	starcoinClient := client.NewStarcoinClient("http://localhost:9850")
+	starcoinClient := client.NewStarcoinClient(tools.STARCOIN_LOCAL_DEV_NETWORK_URL)
 	return starcoinClient
 }
