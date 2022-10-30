@@ -3,3 +3,4 @@ move-contracts/storage
 off-chain-service/build
 move-contracts/alice
 starcoin-ns-demo
+move-contracts/release

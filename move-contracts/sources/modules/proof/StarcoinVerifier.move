@@ -1,14 +1,12 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
+module NSAdmin::StarcoinVerifier {
+    use NSAdmin::BCSDeserializer;
+    use NSAdmin::StructuredHash;
+    use StarcoinFramework::BCS;
+    use StarcoinFramework::Hash;
+    use StarcoinFramework::Option;
+    use StarcoinFramework::Vector;
 
-module StarcoinVerifier {
-    use 0x1::Vector;
-    use 0x1::Option;
-    use 0x1::BCS;
-    //use 0x18351d311d32201149a4df2a9fc2db8a::Bit;
-    use 0x18351d311d32201149a4df2a9fc2db8a::StructuredHash;
-    use 0x18351d311d32201149a4df2a9fc2db8a::BCSDeserializer;
-    use 0x1::Hash;
-
+    //use NSAdmin::Bit;
     const HASH_LEN_IN_BITS: u64 = 32 * 8;
     const SPARSE_MERKLE_LEAF_NODE: vector<u8> = b"SparseMerkleLeafNode";
     const SPARSE_MERKLE_INTERNAL_NODE: vector<u8> = b"SparseMerkleInternalNode";
@@ -26,7 +24,7 @@ module StarcoinVerifier {
 
     public fun bcs_deserialize_account_state(data: &vector<u8>): AccountState {
         let (vec, _) = BCSDeserializer::deserialize_option_bytes_vector(data, 0);
-        AccountState{
+        AccountState {
             storage_roots: vec
         }
     }
@@ -46,8 +44,12 @@ module StarcoinVerifier {
         proof: SparseMerkleProof,
     }
 
-    public fun new_state_proof(account_proof: SparseMerkleProof, account_state: vector<u8>, proof: SparseMerkleProof): StateProof {
-        StateProof{
+    public fun new_state_proof(
+        account_proof: SparseMerkleProof,
+        account_state: vector<u8>,
+        proof: SparseMerkleProof
+    ): StateProof {
+        StateProof {
             account_proof,
             account_state,
             proof,
@@ -60,7 +62,7 @@ module StarcoinVerifier {
     }
 
     public fun new_sparse_merkle_proof(siblings: vector<vector<u8>>, leaf: SMTNode): SparseMerkleProof {
-        SparseMerkleProof{
+        SparseMerkleProof {
             siblings,
             leaf,
         }
@@ -72,14 +74,14 @@ module StarcoinVerifier {
     }
 
     public fun new_smt_node(hash1: vector<u8>, hash2: vector<u8>): SMTNode {
-        SMTNode{
+        SMTNode {
             hash1,
             hash2,
         }
     }
 
     public fun empty_smt_node(): SMTNode {
-        SMTNode{
+        SMTNode {
             hash1: Vector::empty(),
             hash2: Vector::empty(),
         }
@@ -107,7 +109,10 @@ module StarcoinVerifier {
                                            account_address: address, resource_struct_tag: &vector<u8>,
                                            state: &vector<u8>): bool {
         let accountState: AccountState = bcs_deserialize_account_state(&state_proof.account_state);
-        assert(Vector::length(&accountState.storage_roots) > ACCOUNT_STORAGE_INDEX_RESOURCE, ERROR_ACCOUNT_STORAGE_ROOTS);
+        assert!(
+            Vector::length(&accountState.storage_roots) > ACCOUNT_STORAGE_INDEX_RESOURCE,
+            ERROR_ACCOUNT_STORAGE_ROOTS
+        );
         //
         // First, verify state for storage root.
         //
@@ -133,7 +138,13 @@ module StarcoinVerifier {
     }
 
     /// Verify sparse merkle proof by key and value.
-    public fun verify_sm_proof_by_key_value(side_nodes: &vector<vector<u8>>, leaf_data: &SMTNode, expected_root: &vector<u8>, key: &vector<u8>, value: &vector<u8>): bool {
+    public fun verify_sm_proof_by_key_value(
+        side_nodes: &vector<vector<u8>>,
+        leaf_data: &SMTNode,
+        expected_root: &vector<u8>,
+        key: &vector<u8>,
+        value: &vector<u8>
+    ): bool {
         let path = hash_key(key);
         let current_hash: vector<u8>;
         if (*value == DEFAULT_VALUE) {
@@ -168,7 +179,11 @@ module StarcoinVerifier {
         current_hash == *expected_root
     }
 
-    public fun compute_sm_root_by_path_and_node_hash(side_nodes: &vector<vector<u8>>, path: &vector<u8>, node_hash: &vector<u8>): vector<u8> {
+    public fun compute_sm_root_by_path_and_node_hash(
+        side_nodes: &vector<vector<u8>>,
+        path: &vector<u8>,
+        node_hash: &vector<u8>
+    ): vector<u8> {
         let current_hash = *node_hash;
         let i = 0;
         let proof_length = Vector::length(side_nodes);
@@ -176,9 +191,9 @@ module StarcoinVerifier {
             let sibling = *Vector::borrow(side_nodes, i);
             let bit = get_bit_at_from_msb(path, proof_length - i - 1);
             let internal_node = if (bit) {
-                SMTNode{ hash1: sibling, hash2: current_hash }
+                SMTNode { hash1: sibling, hash2: current_hash }
             } else {
-                SMTNode{ hash1: current_hash, hash2: sibling }
+                SMTNode { hash1: current_hash, hash2: sibling }
             };
             current_hash = StructuredHash::hash(SPARSE_MERKLE_INTERNAL_NODE, &internal_node);
             i = i + 1;
@@ -191,7 +206,7 @@ module StarcoinVerifier {
     }
 
     public fun create_literal_hash(word: &vector<u8>): vector<u8> {
-        if (Vector::length(word)  <= 32) {
+        if (Vector::length(word) <= 32) {
             let lenZero = 32 - Vector::length(word);
             let i = 0;
             let r = *word;
@@ -215,12 +230,12 @@ module StarcoinVerifier {
 
     //
     //module Bit {
-    //    use 0x1::Vector;
+    //    use StarcoinFramework::Vector;
     //
     fun count_common_prefix(data1: &vector<u8>, data2: &vector<u8>): u64 {
         let count = 0;
         let i = 0;
-        while ( i < Vector::length(data1) * 8) {
+        while (i < Vector::length(data1) * 8) {
             if (get_bit_at_from_msb(data1, i) == get_bit_at_from_msb(data2, i)) {
                 count = count + 1;
             } else {
@@ -241,10 +256,10 @@ module StarcoinVerifier {
     //
 }
 
-module StructuredHash {
-    use 0x1::Hash;
-    use 0x1::Vector;
-    use 0x1::BCS;
+module NSAdmin::StructuredHash {
+    use StarcoinFramework::BCS;
+    use StarcoinFramework::Hash;
+    use StarcoinFramework::Vector;
 
     const STARCOIN_HASH_PREFIX: vector<u8> = b"STARCOIN::";
 
@@ -263,9 +278,8 @@ module StructuredHash {
 
 
 //    module StarcoinVerifierScripts {
-//        use 0x18351d311d32201149a4df2a9fc2db8a::StarcoinVerifier;
+//        use NSAdmin::StarcoinVerifier;
 //        public(script) fun create(signer: signer, merkle_root: vector<u8>) {
 //            StarcoinVerifier::create(&signer, merkle_root);
 //        }
 //    }
-}

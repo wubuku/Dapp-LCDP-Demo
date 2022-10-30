@@ -1,6 +1,5 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainName {
-    use 0x1::Errors;
+module NSAdmin::DomainName {
+    use StarcoinFramework::Errors;
 
     const ERR_INVALID_ACCOUNT: u64 = 101;
     //const ERR_INVALID_TOKEN_TYPE: u64 = 102;
@@ -14,7 +13,7 @@ module DomainName {
         domain_name_id_top_level_domain: &vector<u8>,
         domain_name_id_second_level_domain: &vector<u8>,
     ): DomainNameId {
-        DomainNameId{
+        DomainNameId {
             top_level_domain: *domain_name_id_top_level_domain,
             second_level_domain: *domain_name_id_second_level_domain,
         }
@@ -31,7 +30,7 @@ module DomainName {
         expiration_date: u64,
         owner: address,
     ): DomainNameState {
-        DomainNameState{
+        DomainNameState {
             domain_name_id: *domain_name_id,
             expiration_date: expiration_date,
             owner: owner,
@@ -69,7 +68,7 @@ module DomainName {
         updated_smt_root: &vector<u8>,
         previous_smt_root: &vector<u8>,
     ): Registered {
-        Registered{
+        Registered {
             domain_name_id: *domain_name_id,
             owner: owner,
             registration_period: registration_period,
@@ -99,7 +98,7 @@ module DomainName {
         updated_smt_root: &vector<u8>,
         previous_smt_root: &vector<u8>,
     ): Renewed {
-        Renewed{
+        Renewed {
             domain_name_id: *domain_name_id,
             account: account,
             renew_period: renew_period,
@@ -113,11 +112,10 @@ module DomainName {
 
     /// Account permission check
     public fun require_genesis_account(address: address) {
-        assert(address == genesis_account(), Errors::invalid_argument(ERR_INVALID_ACCOUNT));
+        assert!(address == genesis_account(), Errors::invalid_argument(ERR_INVALID_ACCOUNT));
     }
 
     public fun genesis_account(): address {
-        @0x18351d311d32201149a4df2a9fc2db8a
+        @NSAdmin
     }
-}
 }

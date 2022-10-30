@@ -1,38 +1,35 @@
-//! account: admin, 0x18351d311d32201149a4df2a9fc2db8a, 10000000000 0x1::STC::STC
-//! account: alice, 0xb6D69DD935EDf7f2054acF12eb884df8, 10000000000 0x1::STC::STC
-//! account: bob, 0x49156896A605F092ba1862C50a9036c9, 10000000000 0x1::STC::STC
+//# init -n dev --addresses alice=0xb6D69DD935EDf7f2054acF12eb884df8
 
-//! new-transaction
-//! sender: admin
-address admin = {{admin}};
+//# faucet --addr NSAdmin --amount 10000000000000000
+
+//# faucet --addr alice --amount 10000000000000000
+
+//# faucet --addr bob --amount 10000000000000000
+
+//# run --signers NSAdmin
 script {
-    use 0x1::Debug;
-    //use 0x1::Vector;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
+    use StarcoinFramework::Debug;
+    //use StarcoinFramework::Vector;
+    use NSAdmin::DomainNameAggregate;
+    use NSAdmin::SMTreeHasher;
 
     fun test_init_genesis(signer: signer) {
         DomainNameAggregate::init_genesis(&signer);
         let smt_root = DomainNameAggregate::get_smt_root();
-        assert(SMTreeHasher::placeholder() == *&smt_root, 1001);
+        assert!(SMTreeHasher::placeholder() == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root)
     }
 }
 // check: EXECUTED
 
-//! block-prologue
-//! author: genesis
-//! block-number: 1
-//! block-time: 1647648000000
+//# block --timestamp 1647648000000
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
     // --------------------------------------------
     // block-time: 1647648000000,
@@ -60,21 +57,19 @@ script {
         );
         let smt_root = DomainNameAggregate::get_smt_root();
         let expected_smt_root = x"e775f588f3f8e6983a7c0d4dd5bda65fab01176c7c3d7b6edb893762e0157dfd";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_b(signer: signer) {
@@ -102,7 +97,7 @@ script {
         // -------- Domain name 'stc.b' added. --------
 
         let expected_smt_root = x"5386e70bd4690321161b87bd25955273aae58253f211ac88468177fed160ff24";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
@@ -110,14 +105,12 @@ script {
 
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_c(signer: signer) {
@@ -146,21 +139,19 @@ script {
         // -------- Domain name 'stc.c' added. --------
 
         let expected_smt_root = x"9cd3a823fb02a2c657b1a8f5a037f45466dd3cc811f383d33135c817c8f6b018";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_d(signer: signer) {
@@ -190,21 +181,19 @@ script {
         // -------- Domain name 'stc.d' added. --------
 
         let expected_smt_root = x"555043594d41809fd5a91e644f1e6d8b062f9c62bb77bc25100e25a2cfcc2443";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_e(signer: signer) {
@@ -233,21 +222,19 @@ script {
         // -------- Domain name 'stc.e' added. --------
 
         let expected_smt_root = x"ec693775597dade84e4b72c096467f380cbfb102edebee4644e903e9f798e95f";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_f(signer: signer) {
@@ -277,21 +264,19 @@ script {
         // -------- Domain name 'stc.f' added. --------
 
         let expected_smt_root = x"771810f2c466af5ca6bd340cdb42d8dff9647fa8f8c678c5ad4264494c1f3f90";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_register_g(signer: signer) {
@@ -322,7 +307,7 @@ script {
         // -------- Domain name 'stc.g' added. --------
 
         let expected_smt_root = x"57f0d0786736ee370a8718c54e0cf87e3709b91ef618c9f1d444d208420e16dd";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
@@ -330,14 +315,12 @@ script {
 
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_renew_a(signer: signer) {
@@ -370,22 +353,19 @@ script {
 
 
         let expected_smt_root = x"d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_renew_b(signer: signer) {
@@ -418,21 +398,19 @@ script {
 
 
         let expected_smt_root = x"673ea6675cd99b5c0360202ea9397e906da784b6443145c2ef1d3cce8c4d8e7c";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_renew_c(signer: signer) {
@@ -462,21 +440,19 @@ script {
 
 
         let expected_smt_root = x"fc70e205742a40e8c22a2a2eeaf749b8d2f8669330d343adc9c29f74c4fe06da";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }
 // check: EXECUTED
 
 
-//! new-transaction
-//! sender: alice
-address alice = {{alice}};
+//# run --signers alice
 script {
-    use 0x1::Debug;
-    use 0x1::Vector;
-    //use 0x1::Timestamp;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::Vector;
+    //use StarcoinFramework::Timestamp;
+    use NSAdmin::DomainNameAggregate;
 
 
     fun test_renew_d(signer: signer) {
@@ -510,7 +486,7 @@ script {
 
 
         let expected_smt_root = x"b3a524e7922ebd177cde9fc54ca257fbfb02e03541e3e7c3de75e79ab50ad198";
-        assert(expected_smt_root == *&smt_root, 1001);
+        assert!(expected_smt_root == *&smt_root, 1001);
         Debug::print<vector<u8>>(&smt_root);
     }
 }

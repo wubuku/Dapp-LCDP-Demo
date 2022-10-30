@@ -1,11 +1,10 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainNameRenewLogic {
-    //use 0x1::Vector;
-    //use 0x1::Debug
-    use 0x1::Signer;
-    use 0x1::Account;
-    use 0x1::STC;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
+module NSAdmin::DomainNameRenewLogic {
+    //use StarcoinFramework::Vector;
+    //use StarcoinFramework::Debug
+    use NSAdmin::DomainName;
+    use StarcoinFramework::Account;
+    use StarcoinFramework::STC;
+    use StarcoinFramework::Signer;
 
     public fun verify(
         account: &signer,
@@ -44,5 +43,4 @@ module DomainNameRenewLogic {
 
         updated_domain_name_state
     }
-}
 }

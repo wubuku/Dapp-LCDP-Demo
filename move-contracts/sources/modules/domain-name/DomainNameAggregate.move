@@ -1,17 +1,16 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainNameAggregate {
-    use 0x1::Event;
-    use 0x1::Signer;
-    //use 0x1::Vector;
-    use 0x1::Errors;
-    use 0x1::BCS;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTProofs;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRegisterLogic;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameRenewLogic;
+module NSAdmin::DomainNameAggregate {
+    use NSAdmin::DomainName;
+    use NSAdmin::DomainNameRegisterLogic;
+    use NSAdmin::DomainNameRenewLogic;
+    use NSAdmin::SMTProofs;
+    use NSAdmin::SMTreeHasher;
+    use StarcoinFramework::BCS;
+    use StarcoinFramework::Errors;
+    use StarcoinFramework::Event;
+    use StarcoinFramework::Signer;
+    use StarcoinFramework::Vector;
 
-
+    //use StarcoinFramework::Vector;
     //    fun not_used_modules_() {
     //        _ = Vector::empty<u8>();
     //    }
@@ -24,6 +23,19 @@ module DomainNameAggregate {
     struct EventStore has key, store {
         registered_event_handle: Event::EventHandle<DomainName::Registered>,
         renewed_event_handle: Event::EventHandle<DomainName::Renewed>,
+    }
+
+    // A test keyed struct
+    struct ATestKeyedStruct has key {}
+
+    public fun new_keyed_struct(): ATestKeyedStruct {
+        ATestKeyedStruct {}
+    }
+
+    public fun new_SMTStore(): SMTStore {
+        SMTStore {
+            root: Vector::empty<u8>(),
+        }
     }
 
     /// SMT
@@ -43,8 +55,8 @@ module DomainNameAggregate {
     public fun init_smt_store(account: &signer) {
         let account_address = Signer::address_of(account);
         DomainName::require_genesis_account(account_address);
-        assert(!exists<SMTStore>(Signer::address_of(account)), Errors::invalid_argument(ERR_GENESIS_INITIALIZED));
-        move_to(account, SMTStore{
+        assert!(!exists<SMTStore>(Signer::address_of(account)), Errors::invalid_argument(ERR_GENESIS_INITIALIZED));
+        move_to(account, SMTStore {
             root: *&SMTreeHasher::placeholder()
         });
     }
@@ -52,8 +64,8 @@ module DomainNameAggregate {
     public fun init_event_store(account: &signer) {
         let account_address = Signer::address_of(account);
         DomainName::require_genesis_account(account_address);
-        assert(!exists<EventStore>(Signer::address_of(account)), Errors::invalid_argument(ERR_GENESIS_INITIALIZED));
-        move_to(account, EventStore{
+        assert!(!exists<EventStore>(Signer::address_of(account)), Errors::invalid_argument(ERR_GENESIS_INITIALIZED));
+        move_to(account, EventStore {
             registered_event_handle: Event::new_event_handle<DomainName::Registered>(account),
             renewed_event_handle: Event::new_event_handle<DomainName::Renewed>(account),
         });
@@ -81,20 +93,38 @@ module DomainNameAggregate {
 
         let store_smt_root = get_smt_root();
         // Verify non-membership proof, because this is a CREATE command.
-        assert(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
+        assert!(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
         let leaf_path = get_smt_leaf_path(&domain_name_id);
-        let smt_proof_ok = SMTProofs::verify_non_membership_proof_by_leaf_path(&store_smt_root, smt_non_membership_leaf_data, smt_side_nodes, &leaf_path);
-        assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_NON_MEMBERSHIP_PROOF));
+        let smt_proof_ok = SMTProofs::verify_non_membership_proof_by_leaf_path(
+            &store_smt_root,
+            smt_non_membership_leaf_data,
+            smt_side_nodes,
+            &leaf_path
+        );
+        assert!(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_NON_MEMBERSHIP_PROOF));
 
         // ///////////// Call business logic module start ///////////////
         // Verify command arguments, and get event properties from command arguments.
-        let (e_owner, e_registration_period) = DomainNameRegisterLogic::verify(account, &domain_name_id, registration_period);
+        let (e_owner, e_registration_period) = DomainNameRegisterLogic::verify(
+            account,
+            &domain_name_id,
+            registration_period
+        );
         // Mutate state(get updated state) by event properties.
-        let updated_domain_name_state = DomainNameRegisterLogic::mutate(&domain_name_id, e_owner, e_registration_period);
+        let updated_domain_name_state = DomainNameRegisterLogic::mutate(
+            &domain_name_id,
+            e_owner,
+            e_registration_period
+        );
         // ///////////// Call business logic module end ///////////////
 
         // Create event and emit.
-        let updated_smt_root = update_smt_root_by_new_leaf_path_and_value(&leaf_path, &updated_domain_name_state, smt_non_membership_leaf_data, smt_side_nodes);
+        let updated_smt_root = update_smt_root_by_new_leaf_path_and_value(
+            &leaf_path,
+            &updated_domain_name_state,
+            smt_non_membership_leaf_data,
+            smt_side_nodes
+        );
         let registered = DomainName::new_registered(
             &domain_name_id,
             Signer::address_of(account),
@@ -137,11 +167,16 @@ module DomainNameAggregate {
 
         let store_smt_root = get_smt_root();
         // Verify membership proof, because this is a UPDATE command.
-        assert(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
+        assert!(*&store_smt_root == *smt_root, Errors::invalid_argument(ERR_INVALID_SMT_ROOT));
         let leaf_path = get_smt_leaf_path(&domain_name_id);
         let leaf_value_hash = SMTreeHasher::digest(&BCS::to_bytes<DomainName::DomainNameState>(&domain_name_state));
-        let smt_proof_ok = SMTProofs::verify_membership_proof(&store_smt_root, smt_side_nodes, &leaf_path, &leaf_value_hash);
-        assert(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_MEMBERSHIP_PROOF));
+        let smt_proof_ok = SMTProofs::verify_membership_proof(
+            &store_smt_root,
+            smt_side_nodes,
+            &leaf_path,
+            &leaf_value_hash
+        );
+        assert!(smt_proof_ok, Errors::invalid_state(ERR_INVALID_SMT_MEMBERSHIP_PROOF));
 
         // ///////////// Call business logic module start ///////////////
         // Verify command arguments, and get event properties from command arguments.
@@ -151,7 +186,11 @@ module DomainNameAggregate {
         // ///////////// Call business logic module end ///////////////
 
         // Create event and emit.
-        let updated_smt_root = update_smt_root_by_leaf_path_and_value(&leaf_path, &updated_domain_name_state, smt_side_nodes);
+        let updated_smt_root = update_smt_root_by_leaf_path_and_value(
+            &leaf_path,
+            &updated_domain_name_state,
+            smt_side_nodes
+        );
         let renewed = DomainName::new_renewed(
             &domain_name_id,
             Signer::address_of(account),
@@ -222,5 +261,4 @@ module DomainNameAggregate {
         );
         *&smt.root
     }
-}
 }

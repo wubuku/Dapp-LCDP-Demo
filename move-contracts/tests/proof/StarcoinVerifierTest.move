@@ -1,14 +1,13 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module StarcoinVerifierTest {
-    use 0x1::Vector;
-    use 0x1::Debug;
-    use 0x18351d311d32201149a4df2a9fc2db8a::StarcoinVerifier;
+module NSAdmin::StarcoinVerifierTest {
+    use StarcoinFramework::Vector;
+    use StarcoinFramework::Debug;
+    use NSAdmin::StarcoinVerifier;
 
     #[test]
     fun test_create_literal_hash() {
         let word = b"SPARSE_MERKLE_PLACEHOLDER_HASH";
         let r = StarcoinVerifier::create_literal_hash(&word);
-        assert(r == x"5350415253455f4d45524b4c455f504c414345484f4c4445525f484153480000", 111);
+        assert!(r == x"5350415253455f4d45524b4c455f504c414345484f4c4445525f484153480000", 111);
     }
 
 
@@ -75,7 +74,7 @@ module StarcoinVerifierTest {
             &state,
         );
         Debug::print(&b);
-        assert(b, 111);
+        assert!(b, 111);
     }
 
     #[test]
@@ -114,7 +113,7 @@ module StarcoinVerifierTest {
 
         let b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_node, &expected_root, &key, &value);
         Debug::print<bool>(&b);
-        assert(b, 111)
+        assert!(b, 111)
     }
 
 
@@ -127,11 +126,10 @@ module StarcoinVerifierTest {
         let value: vector<u8> = Vector::empty(); //x""
         let b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_data, &expected_root, &key, &value);
         //Debug::print(&b);
-        assert(b, 111);
+        assert!(b, 111);
 
         value = b"random value";
         b = StarcoinVerifier::verify_sm_proof_by_key_value(&side_nodes, &leaf_data, &expected_root, &key, &value);
-        assert(!b, 111);
+        assert!(!b, 111);
     }
-}
 }

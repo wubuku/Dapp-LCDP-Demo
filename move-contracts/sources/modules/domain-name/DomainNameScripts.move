@@ -1,13 +1,12 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainNameScripts {
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTProofUtils;
+module NSAdmin::DomainNameScripts {
+    use NSAdmin::DomainNameAggregate;
+    use NSAdmin::SMTProofUtils;
 
     public(script) fun init_genesis(account: signer) {
         DomainNameAggregate::init_genesis(&account);
     }
 
-    public(script) fun get_smt_root(): vector<u8> {
+    public fun get_smt_root(): vector<u8> {
         DomainNameAggregate::get_smt_root()
     }
 
@@ -52,5 +51,4 @@ module DomainNameScripts {
             &SMTProofUtils::split_side_nodes_data(&smt_side_nodes),
         );
     }
-}
 }

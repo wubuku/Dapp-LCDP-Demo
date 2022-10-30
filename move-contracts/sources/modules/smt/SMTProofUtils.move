@@ -1,12 +1,10 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
+module NSAdmin::SMTProofUtils {
 
-module SMTProofUtils {
-
-    use 0x1::Vector;
-    use 0x1::Errors;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTUtils;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTHash;
+    use NSAdmin::SMTHash;
+    use NSAdmin::SMTUtils;
+    use NSAdmin::SMTreeHasher;
+    use StarcoinFramework::Errors;
+    use StarcoinFramework::Vector;
 
     const ERROR_INVALID_PATH_BYTES_LENGTH: u64 = 101;
     const ERROR_INVALID_PATH_BITS_LENGTH: u64 = 102;
@@ -16,12 +14,14 @@ module SMTProofUtils {
 
     public fun path_bits_to_bool_vector_from_msb(path: &vector<u8>): vector<bool> {
         let path_len = Vector::length<u8>(path);
-        assert(path_len == SMTreeHasher::path_size(), Errors::invalid_argument(ERROR_INVALID_PATH_BYTES_LENGTH));
+        assert!(path_len == SMTreeHasher::path_size(), Errors::invalid_argument(ERROR_INVALID_PATH_BYTES_LENGTH));
         let result_vec = SMTUtils::bits_to_bool_vector_from_msb(path);
-        assert(Vector::length<bool>(&result_vec) == SMTreeHasher::path_size_in_bits(), Errors::invalid_state(ERROR_INVALID_PATH_BITS_LENGTH));
+        assert!(
+            Vector::length<bool>(&result_vec) == SMTreeHasher::path_size_in_bits(),
+            Errors::invalid_state(ERROR_INVALID_PATH_BITS_LENGTH)
+        );
         result_vec
     }
-
 
 
     /// Split sibling nodes data from concatenated data.
@@ -30,7 +30,7 @@ module SMTProofUtils {
     public fun split_side_nodes_data(side_nodes_data: &vector<u8>): vector<vector<u8>> {
         let node_data_length = SMTHash::size();
         let len = Vector::length(side_nodes_data);
-        assert(len % node_data_length == 0, Errors::invalid_state(ERROR_INVALID_NODES_DATA_PACKAGE_LENGTH));
+        assert!(len % node_data_length == 0, Errors::invalid_state(ERROR_INVALID_NODES_DATA_PACKAGE_LENGTH));
 
         if (len > 0) {
             let result = Vector::empty<vector<u8>>();
@@ -47,6 +47,4 @@ module SMTProofUtils {
             Vector::empty<vector<u8>>()
         }
     }
-
-}
 }

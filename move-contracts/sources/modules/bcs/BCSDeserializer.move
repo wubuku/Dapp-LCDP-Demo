@@ -1,10 +1,9 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module BCSDeserializer {
-    use 0x1::Errors;
-    use 0x1::Vector;
-    use 0x1::Option;
-    use 0x1::BCS;
-    //use 0x1::BitOperators;
+module NSAdmin::BCSDeserializer {
+    use StarcoinFramework::Errors;
+    use StarcoinFramework::Vector;
+    use StarcoinFramework::Option;
+    use StarcoinFramework::BCS;
+    //use StarcoinFramework::BitOperators;
 
     const ERR_INPUT_NOT_LARGE_ENOUGH: u64 = 201;
     const ERR_UNEXPECTED_BOOL_VALUE: u64 = 205;
@@ -12,7 +11,10 @@ module BCSDeserializer {
     const ERR_INVALID_ULEB128_NUMBER_UNEXPECTED_ZERO_DIGIT: u64 = 207;
     const INTEGER32_MAX_VALUE: u64 = 2147483647;
 
-    public fun deserialize_option_bytes_vector(input: &vector<u8>, offset: u64): (vector<Option::Option<vector<u8>>>, u64) {
+    public fun deserialize_option_bytes_vector(
+        input: &vector<u8>,
+        offset: u64
+    ): (vector<Option::Option<vector<u8>>>, u64) {
         let (len, new_offset) = deserialize_len(input, offset);
         let i = 0;
         let vec = Vector::empty<Option::Option<vector<u8>>>();
@@ -158,12 +160,18 @@ module BCSDeserializer {
     }
 
     fun get_byte(input: &vector<u8>, offset: u64): u8 {
-        assert(((offset + 1) <= Vector::length(input)) && (offset < offset + 1), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        assert!(
+            ((offset + 1) <= Vector::length(input)) && (offset < offset + 1),
+            Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH)
+        );
         *Vector::borrow(input, offset)
     }
 
     fun get_n_bytes(input: &vector<u8>, offset: u64, n: u64): vector<u8> {
-        assert(((offset + n) <= Vector::length(input)) && (offset < offset + n), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        assert!(
+            ((offset + n) <= Vector::length(input)) && (offset < offset + n),
+            Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH)
+        );
         let i = 0;
         let content = Vector::empty<u8>();
         while (i < n) {
@@ -175,7 +183,10 @@ module BCSDeserializer {
     }
 
     fun get_n_bytes_as_u128(input: &vector<u8>, offset: u64, n: u64): u128 {
-        assert(((offset + n) <= Vector::length(input)) && (offset < offset + n), Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH));
+        assert!(
+            ((offset + n) <= Vector::length(input)) && (offset < offset + n),
+            Errors::invalid_state(ERR_INPUT_NOT_LARGE_ENOUGH)
+        );
         let number: u128 = 0;
         let i = 0;
         while (i < n) {
@@ -187,4 +198,4 @@ module BCSDeserializer {
         number
     }
 }
-}
+

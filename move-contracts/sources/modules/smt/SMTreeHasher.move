@@ -1,10 +1,9 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module SMTreeHasher {
+module NSAdmin::SMTreeHasher {
 
-    use 0x1::Vector;
-    use 0x1::Errors;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTHash;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTUtils;
+    use NSAdmin::SMTHash;
+    use NSAdmin::SMTUtils;
+    use StarcoinFramework::Errors;
+    use StarcoinFramework::Vector;
 
     /// sparse merkle tree leaf(node) prefix.
     const LEAF_PREFIX: vector<u8> = x"00";
@@ -29,7 +28,7 @@ module SMTreeHasher {
         let data_len = Vector::length(data);
 
         let prefix_len = Vector::length(&LEAF_PREFIX);
-        assert(data_len >= prefix_len + path_size(), Errors::invalid_argument(ERROR_INVALID_LEAF_DATA));
+        assert!(data_len >= prefix_len + path_size(), Errors::invalid_argument(ERROR_INVALID_LEAF_DATA));
 
         let start = 0;
         let end = prefix_len;
@@ -48,7 +47,7 @@ module SMTreeHasher {
     public fun parse_node(data: &vector<u8>): (vector<u8>, vector<u8>) {
         let data_len = Vector::length(data);
         let prefix_len = Vector::length(&LEAF_PREFIX);
-        assert(data_len == prefix_len + path_size()*2, Errors::invalid_argument(ERROR_INVALID_NODE_DATA));
+        assert!(data_len == prefix_len + path_size() * 2, Errors::invalid_argument(ERROR_INVALID_NODE_DATA));
 
         let start = 0;
         let end = prefix_len;
@@ -82,14 +81,20 @@ module SMTreeHasher {
     public fun digest_leaf_data(data: &vector<u8>): vector<u8> {
         let data_len = Vector::length(data);
         let prefix_len = Vector::length(&LEAF_PREFIX);
-        assert(data_len >= prefix_len + path_size(), Errors::invalid_state(ERROR_INVALID_LEAF_DATA_LENGTH));
+        assert!(data_len >= prefix_len + path_size(), Errors::invalid_state(ERROR_INVALID_LEAF_DATA_LENGTH));
         SMTHash::hash(data)
     }
 
     public fun digest_node(left_data: &vector<u8>, right_data: &vector<u8>): (vector<u8>, vector<u8>) {
         let node_left_right_data_length = SMTHash::size();
-        assert(Vector::length(left_data) == node_left_right_data_length, Errors::invalid_state(ERROR_INVALID_NODE_DATA_LENGTH));
-        assert(Vector::length(right_data) == node_left_right_data_length, Errors::invalid_state(ERROR_INVALID_NODE_DATA_LENGTH));
+        assert!(
+            Vector::length(left_data) == node_left_right_data_length,
+            Errors::invalid_state(ERROR_INVALID_NODE_DATA_LENGTH)
+        );
+        assert!(
+            Vector::length(right_data) == node_left_right_data_length,
+            Errors::invalid_state(ERROR_INVALID_NODE_DATA_LENGTH)
+        );
 
         let value = NODE_PREFIX;
         value = SMTUtils::concat_u8_vectors(&value, *left_data);
@@ -110,12 +115,10 @@ module SMTreeHasher {
     }
 
     public fun path_size_in_bits(): u64 {
-        SMTHash::size()*8
+        SMTHash::size() * 8
     }
 
     public fun placeholder(): vector<u8> {
         SMTHash::size_zero_bytes()
     }
-
-}
 }

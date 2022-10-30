@@ -1,12 +1,11 @@
-address 0x18351d311d32201149a4df2a9fc2db8a {
-module DomainNameSmtTest {
-    use 0x1::Debug;
-    use 0x1::BCS;
-    use 0x1::Vector;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainName;
-    use 0x18351d311d32201149a4df2a9fc2db8a::DomainNameAggregate;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTProofs;
-    use 0x18351d311d32201149a4df2a9fc2db8a::SMTreeHasher;
+module NSAdmin::DomainNameSmtTest {
+    use StarcoinFramework::Debug;
+    use StarcoinFramework::BCS;
+    use StarcoinFramework::Vector;
+    use NSAdmin::DomainName;
+    use NSAdmin::DomainNameAggregate;
+    use NSAdmin::SMTProofs;
+    use NSAdmin::SMTreeHasher;
 
 
     const TEST_EXPIRATION_DATE: u64 = 1679184000000;
@@ -40,7 +39,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"e0431ca32d842482ad438aa9e5ba8a2ba39725f53c8bd097a9910b7bb2437b07");
         Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
 
         let renewed_state_expiration_date: u64 = state_expiration_date + renew_period;
         let renewed_domain_name_state = DomainName::new_domain_name_state(&domain_name_id, renewed_state_expiration_date, state_owner);
@@ -53,7 +52,7 @@ module DomainNameSmtTest {
         );
         let expected_new_smt_root = x"d45a8321c06b7d71d5cbe489b426244b6faa9e32130f93a9eae4b535ff283dde";
         Debug::print<vector<u8>>(&new_smt_root);
-        assert(expected_new_smt_root == new_smt_root, 1166)
+        assert!(expected_new_smt_root == new_smt_root, 1166)
     }
 
     #[test]
@@ -70,7 +69,7 @@ module DomainNameSmtTest {
         Debug::print<vector<u8>>(&value);
 
         let expected_value = x"03737463016100742af786010000b6d69dd935edf7f2054acf12eb884df8";
-        assert(expected_value == value, 1166)
+        assert!(expected_value == value, 1166)
     }
 
     #[test]
@@ -86,12 +85,12 @@ module DomainNameSmtTest {
         let non_member_leaf_data = x"";
         let non_member_side_nodes = Vector::empty<vector<u8>>();
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         let member_root = x"e775f588f3f8e6983a7c0d4dd5bda65fab01176c7c3d7b6edb893762e0157dfd";
         let member_side_nodes = Vector::empty<vector<u8>>();
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -109,7 +108,7 @@ module DomainNameSmtTest {
         let non_member_side_nodes = Vector::empty<vector<u8>>();
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.b' added. --------
         // -------------------------------------------------------
@@ -122,7 +121,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"0000000000000000000000000000000000000000000000000000000000000000");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -141,7 +140,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut non_member_side_nodes, x"237afd7c7dacd14ded4aa40751f0479d68ce1ace8ad138ef7c435b8046d21832");
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.c' added. --------
         // -------------------------------------------------------
@@ -150,7 +149,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"237afd7c7dacd14ded4aa40751f0479d68ce1ace8ad138ef7c435b8046d21832");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -170,7 +169,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut non_member_side_nodes, x"11afac5a351885a1b72e2f1ede7e755f50fcb157e5af441811f03e12260f91c2");
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.d' added. --------
         // -------------------------------------------------------
@@ -180,7 +179,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"11afac5a351885a1b72e2f1ede7e755f50fcb157e5af441811f03e12260f91c2");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -199,7 +198,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut non_member_side_nodes, x"4f106e9e0fd4e061a913e7d6d27dc197e15ff331406f2e045fea332e028e5749");
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.e' added. --------
         // -------------------------------------------------------
@@ -209,7 +208,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"4f106e9e0fd4e061a913e7d6d27dc197e15ff331406f2e045fea332e028e5749");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -229,7 +228,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut non_member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.f' added. --------
         // -------------------------------------------------------
@@ -243,7 +242,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
 
 
@@ -264,7 +263,7 @@ module DomainNameSmtTest {
         Vector::push_back(&mut non_member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
 
         let non_member_v_ok = SMTProofs::verify_non_membership_proof_by_key(&non_member_root, &non_member_leaf_data, &non_member_side_nodes, &key);
-        assert(non_member_v_ok, 1167);
+        assert!(non_member_v_ok, 1167);
 
         // -------- Domain name 'stc.g' added. --------
         // -------------------------------------------------------
@@ -275,7 +274,6 @@ module DomainNameSmtTest {
         Vector::push_back(&mut member_side_nodes, x"b36de233f7b6ecf32d1714f6c869c4c78c5c964275e5a72d3ab0ecf0d1c37c1e");
 
         let member_v_ok = SMTProofs::verify_membership_proof_by_key_value(&member_root, &member_side_nodes, &key, &value, true);
-        assert(member_v_ok, 1168);
+        assert!(member_v_ok, 1168);
     }
-}
 }
