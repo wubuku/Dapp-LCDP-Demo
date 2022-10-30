@@ -6,176 +6,68 @@ task 4 'run'. lines 9-23:
   "status": "Executed"
 }
 
-task 5 'block'. lines 25-25:
-Error: Transaction discarded. VMStatus: status UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION of type Invariant violation
-
 task 6 'run'. lines 27-64:
 {
-  "gas_used": 310432,
-  "status": {
-    "MoveAbort": {
-      "location": "Script",
-      "abort_code": "1001"
-    }
-  }
+  "gas_used": 330530,
+  "status": "Executed"
 }
 
 task 7 'run'. lines 67-104:
 {
-  "gas_used": 29752,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 2077940,
+  "status": "Executed"
 }
 
 task 8 'run'. lines 108-146:
 {
-  "gas_used": 33623,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 469553,
+  "status": "Executed"
 }
 
 task 9 'run'. lines 149-188:
 {
-  "gas_used": 37752,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 608576,
+  "status": "Executed"
 }
 
 task 10 'run'. lines 191-229:
 {
-  "gas_used": 33881,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 1712343,
+  "status": "Executed"
 }
 
 task 11 'run'. lines 232-271:
 {
-  "gas_used": 38162,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 2351952,
+  "status": "Executed"
 }
 
 task 12 'run'. lines 274-314:
 {
-  "gas_used": 41881,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 747599,
+  "status": "Executed"
 }
 
 task 13 'run'. lines 318-360:
 {
-  "gas_used": 57558,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 1026498,
+  "status": "Executed"
 }
 
 task 14 'run'. lines 363-405:
 {
-  "gas_used": 57558,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 1026498,
+  "status": "Executed"
 }
 
 task 15 'run'. lines 408-447:
 {
-  "gas_used": 44411,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 632993,
+  "status": "Executed"
 }
 
 task 16 'run'. lines 450-493:
 {
-  "gas_used": 61447,
-  "status": {
-    "MoveAbort": {
-      "location": {
-        "Module": {
-          "address": "0x18351d311d32201149a4df2a9fc2db8a",
-          "name": "DomainNameAggregate"
-        }
-      },
-      "abort_code": "26119"
-    }
-  }
+  "gas_used": 1157173,
+  "status": "Executed"
 }
