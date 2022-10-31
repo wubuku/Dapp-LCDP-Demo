@@ -8,66 +8,66 @@ task 4 'run'. lines 9-23:
 
 task 6 'run'. lines 27-64:
 {
-  "gas_used": 330530,
+  "gas_used": 324973,
   "status": "Executed"
 }
 
 task 7 'run'. lines 67-104:
 {
-  "gas_used": 2077940,
+  "gas_used": 2072383,
   "status": "Executed"
 }
 
 task 8 'run'. lines 108-146:
 {
-  "gas_used": 469553,
+  "gas_used": 463996,
   "status": "Executed"
 }
 
 task 9 'run'. lines 149-188:
 {
-  "gas_used": 608576,
+  "gas_used": 603019,
   "status": "Executed"
 }
 
 task 10 'run'. lines 191-229:
 {
-  "gas_used": 1712343,
+  "gas_used": 1706786,
   "status": "Executed"
 }
 
 task 11 'run'. lines 232-271:
 {
-  "gas_used": 2351952,
+  "gas_used": 2346395,
   "status": "Executed"
 }
 
 task 12 'run'. lines 274-314:
 {
-  "gas_used": 747599,
+  "gas_used": 742042,
   "status": "Executed"
 }
 
 task 13 'run'. lines 318-360:
 {
-  "gas_used": 1026498,
+  "gas_used": 1020941,
   "status": "Executed"
 }
 
 task 14 'run'. lines 363-405:
 {
-  "gas_used": 1026498,
+  "gas_used": 1020941,
   "status": "Executed"
 }
 
 task 15 'run'. lines 408-447:
 {
-  "gas_used": 632993,
+  "gas_used": 627436,
   "status": "Executed"
 }
 
 task 16 'run'. lines 450-493:
 {
-  "gas_used": 1157173,
+  "gas_used": 1151616,
   "status": "Executed"
 }

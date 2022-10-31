@@ -127,8 +127,8 @@ module NSAdmin::DomainNameAggregate {
         );
         let registered = DomainName::new_registered(
             &domain_name_id,
-            Signer::address_of(account),
-            registration_period,
+            e_owner,
+            e_registration_period,
             &updated_domain_name_state,
             &updated_smt_root,
             &store_smt_root, // previouse SMT root
@@ -193,8 +193,8 @@ module NSAdmin::DomainNameAggregate {
         );
         let renewed = DomainName::new_renewed(
             &domain_name_id,
-            Signer::address_of(account),
-            renew_period,
+            e_account,
+            e_renew_period,
             &updated_domain_name_state,
             &updated_smt_root,
             &store_smt_root, // previouse SMT root
