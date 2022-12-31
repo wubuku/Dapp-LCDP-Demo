@@ -17,6 +17,7 @@ aggregates:
           RegistrationPeriod:
             type: u64
         eventName: Registered
+        isCreationCommand: true
       Renew:
         parameters:
           Account:
