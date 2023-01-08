@@ -1,0 +1,42 @@
+aggregates:
+  Order:
+    id:
+      name: id
+      type: UID
+      arbitrary: true
+    properties:
+      TotalAmount:
+        type: u128
+
+    entities:
+      OrderItem:
+        id:
+          name: ProductId
+          type: String
+        properties:
+          Quantity:
+            type: u64
+          ItemAmount:
+            type: u128
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Product:
+            referenceType: Product
+            # mutable: false
+            # immutable: true
+            # eventPropertyName: Product
+          Quantity:
+            type: u64
+        event:
+          name: OrderCreated
+          properties:
+            UnitPrice:
+              type: u128
+            TotalAmount:
+              type: u128
+            Owner:
+              type: address
+              isOwner: true # Transfer the object to the account address indicated by this property
