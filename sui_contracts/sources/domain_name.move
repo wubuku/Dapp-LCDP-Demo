@@ -57,7 +57,7 @@ module sui_contracts::domain_name {
     }
 
     public fun domain_name_id(domain_name: &DomainName): DomainNameId {
-        *&domain_name.domain_name_id
+        domain_name.domain_name_id
     }
 
     public fun expiration_date(domain_name: &DomainName): u64 {
@@ -149,7 +149,7 @@ module sui_contracts::domain_name {
         //ctx: &mut TxContext,
     ): DomainName {
         //let id = object::new(ctx);
-        asset_domain_name_id_not_exists_then_add(domain_name_id,  domain_name_id_table, object::uid_to_inner(&id));
+        asset_domain_name_id_not_exists_then_add(domain_name_id, domain_name_id_table, object::uid_to_inner(&id));
         let domain_name = new_domain_name(
             id,
             domain_name_id,
@@ -194,7 +194,7 @@ module sui_contracts::domain_name {
         transfer::transfer(domain_name, recipient);
     }
 
-    public(friend) fun update_version_transfer(domain_name: DomainName, recipient: address) {
+    public(friend) fun update_version_and_transfer(domain_name: DomainName, recipient: address) {
         domain_name.version = domain_name.version + 1;
         transfer::transfer(domain_name, recipient);
     }

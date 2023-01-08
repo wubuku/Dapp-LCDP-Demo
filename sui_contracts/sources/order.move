@@ -1,11 +1,15 @@
 module sui_contracts::order {
-    use std::ascii::String;
+    use std::string::String;
 
+    use sui::event;
     use sui::object::{Self, UID};
-    use sui::table::Table;
-    use sui_contracts::order_item::OrderItem;
+    use sui::table::{Self, Table};
+    use sui::transfer;
+    use sui::tx_context::TxContext;
+    use sui_contracts::order_item::{Self, OrderItem};
 
     friend sui_contracts::order_create_logic;
+    friend sui_contracts::order_aggregate;
 
     struct Order has key {
         id: UID,
@@ -14,10 +18,23 @@ module sui_contracts::order {
         items: Table<String, OrderItem>
     }
 
+    public(friend) fun new_order(
+        id: UID,
+        total_amount: u128,
+        ctx: &mut TxContext,
+    ): Order {
+        Order {
+            id,
+            version: 0,
+            total_amount,
+            items: table::new<String, OrderItem>(ctx),
+        }
+    }
+
     struct OrderCreated has copy, drop {
         id: object::ID,
         //version: u64,
-        product: object::ID,
+        product: String,
         quantity: u64,
         unit_price: u128,
         total_amount: u128,
@@ -25,10 +42,30 @@ module sui_contracts::order {
         owner: address,
     }
 
+    public fun order_created_product(order_created: &OrderCreated): String {
+        order_created.product
+    }
+
+    public(friend) fun order_created_quantity(order_created: &OrderCreated): u64 {
+        order_created.quantity
+    }
+
+    public(friend) fun order_created_unit_price(order_created: &OrderCreated): u128 {
+        order_created.unit_price
+    }
+
+    public(friend) fun order_created_total_amount(order_created: &OrderCreated): u128 {
+        order_created.total_amount
+    }
+
+    public(friend) fun order_created_owner(order_created: &OrderCreated): address {
+        order_created.owner
+    }
+
     public(friend) fun new_order_created(
         id: &UID,
         //version: u64,
-        product: object::ID,
+        product: String,
         quantity: u64,
         unit_price: u128,
         total_amount: u128,
@@ -43,6 +80,24 @@ module sui_contracts::order {
             total_amount,
             owner,
         }
+    }
+
+    public(friend) fun add_item(order: &mut Order, item: OrderItem) {
+        let key = order_item::product_id(&item);
+        table::add(&mut order.items, key, item);
+    }
+
+    public(friend) fun remove_item(order: &mut Order, product_id: String) {
+        let item = table::remove(&mut order.items, product_id);
+        order_item::drop_order_item(item);
+    }
+
+    public(friend) fun transfer(order: Order, recipient: address) {
+        transfer::transfer(order, recipient);
+    }
+
+    public(friend) fun emit_order_created(order_created: OrderCreated) {
+        event::emit(order_created);
     }
 }
 

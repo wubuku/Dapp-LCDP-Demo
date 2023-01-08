@@ -30,7 +30,7 @@ module sui_contracts::domain_name_register_logic {
         )
     }
 
-    public(friend) fun create(
+    public(friend) fun mutate(
         registered: &domain_name::Registered,
         id: UID,
         domain_name_id_table: &mut domain_name::DomainNameIdTable,

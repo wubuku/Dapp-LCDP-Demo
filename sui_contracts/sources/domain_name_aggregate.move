@@ -23,7 +23,7 @@ module sui_contracts::domain_name_aggregate {
             domain_name_id_table,
             ctx,
         );
-        let domain_name = domain_name_register_logic::create(
+        let domain_name = domain_name_register_logic::mutate(
             &registered,
             id,
             domain_name_id_table,
@@ -47,7 +47,7 @@ module sui_contracts::domain_name_aggregate {
             &renewed,
             domain_name,
         );
-        domain_name::update_version_transfer(updated_domain_name, domain_name::renewed_account(&renewed));
+        domain_name::update_version_and_transfer(updated_domain_name, domain_name::renewed_account(&renewed));
         domain_name::emit_renewed(renewed);
     }
 }
