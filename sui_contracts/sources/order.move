@@ -10,6 +10,7 @@ module sui_contracts::order {
 
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
+    friend sui_contracts::order_update_item_quantity_logic;
     friend sui_contracts::order_aggregate;
 
     struct Order has key {
@@ -104,6 +105,35 @@ module sui_contracts::order {
         }
     }
 
+
+    struct OrderItemQuantityUpdated has copy, drop {
+        id: object::ID,
+        version: u64,
+        product_id: String,
+        quantity: u64,
+    }
+
+    public fun order_item_quantity_updated_product_id(order_item_quantity_updated: &OrderItemQuantityUpdated): String {
+        order_item_quantity_updated.product_id
+    }
+
+    public fun order_item_quantity_updated_quantity(order_item_quantity_updated: &OrderItemQuantityUpdated): u64 {
+        order_item_quantity_updated.quantity
+    }
+
+    public(friend) fun new_order_item_quantity_updated(
+        order: &Order,
+        product_id: String,
+        quantity: u64,
+    ): OrderItemQuantityUpdated {
+        OrderItemQuantityUpdated {
+            id: object::uid_to_inner(&order.id),
+            version: order.version,
+            product_id,
+            quantity,
+        }
+    }
+
     // -------------------------
 
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
@@ -115,6 +145,12 @@ module sui_contracts::order {
         let item = table::remove(&mut order.items, product_id);
         order_item::drop_order_item(item);
     }
+
+    public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
+        table::borrow_mut(&mut order.items, product_id)
+    }
+
+    // --------------------------
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
         transfer::transfer(order, recipient);

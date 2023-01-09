@@ -52,3 +52,12 @@ aggregates:
 #            Owner:
 #              type: address
 #              isOwner: true # Transfer the object to the account address indicated by this property
+
+      UpdateItemQuantity:
+        parameters:
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderItemQuantityUpdated
