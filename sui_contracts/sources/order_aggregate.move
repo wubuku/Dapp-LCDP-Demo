@@ -22,7 +22,7 @@ module sui_contracts::order_aggregate {
             id,
             ctx,
         );
-        order::transfer(
+        order::transfer_object(
             order_,
             order::order_created_owner(&order_created)
         );
@@ -43,7 +43,7 @@ module sui_contracts::order_aggregate {
             &order_item_removed,
             order_,
         );
-        order::update_version_and_transfer(
+        order::update_version_and_transfer_object(
             updated_order,
             tx_context::sender(ctx), //the owner of order is NOT indicated in event
         );

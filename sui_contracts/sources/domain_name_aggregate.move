@@ -30,7 +30,7 @@ module sui_contracts::domain_name_aggregate {
             ctx,
         );
         //domain_name::fill_registered_id(&mut registered, domain_name::id(&domain_name));
-        domain_name::transfer(domain_name, domain_name::registered_owner(&registered));
+        domain_name::transfer_object(domain_name, domain_name::registered_owner(&registered));
         domain_name::emit_registered(registered);
     }
 
@@ -48,7 +48,7 @@ module sui_contracts::domain_name_aggregate {
             &renewed,
             domain_name,
         );
-        domain_name::update_version_and_transfer(updated_domain_name, domain_name::renewed_account(&renewed));
+        domain_name::update_version_and_transfer_object(updated_domain_name, domain_name::renewed_account(&renewed));
         domain_name::emit_renewed(renewed);
     }
 }

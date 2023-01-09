@@ -42,10 +42,10 @@ aggregates:
 #          name: Shared
 #          isObjectFrozen: true # Freeze the object after the event has already occurred
 
-  valueObjects:
-    DomainNameId:
-      properties:
-        TopLevelDomain: # TLD
-          type: string
-        SecondLevelDomain: # SLD
-          type: string
+    valueObjects:
+      DomainNameId:
+        properties:
+          TopLevelDomain: # TLD
+            type: String
+          SecondLevelDomain: # SLD
+            type: String

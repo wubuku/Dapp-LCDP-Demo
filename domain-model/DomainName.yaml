@@ -27,10 +27,10 @@ aggregates:
         eventName: Renewed
 
 
-valueObjects:
-  DomainNameId:
-    properties:
-      TopLevelDomain: # TLD
-        type: string
-      SecondLevelDomain: # SLD
-        type: string
+    valueObjects:
+      DomainNameId:
+        properties:
+          TopLevelDomain: # TLD
+            type: string
+          SecondLevelDomain: # SLD
+            type: string

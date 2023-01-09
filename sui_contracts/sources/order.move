@@ -116,11 +116,11 @@ module sui_contracts::order {
         order_item::drop_order_item(item);
     }
 
-    public(friend) fun transfer(order: Order, recipient: address) {
+    public(friend) fun transfer_object(order: Order, recipient: address) {
         transfer::transfer(order, recipient);
     }
 
-    public(friend) fun update_version_and_transfer(order: Order, recipient: address) {
+    public(friend) fun update_version_and_transfer_object(order: Order, recipient: address) {
         order.version = order.version + 1;
         transfer::transfer(order, recipient);
     }

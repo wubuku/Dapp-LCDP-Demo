@@ -42,8 +42,8 @@ module sui_contracts::domain_name {
     struct DomainName has key {
         /// surrogate Id. First field name must be 'id'
         id: UID,
-        version: u64,
         domain_name_id: DomainNameId,
+        version: u64,
         expiration_date: u64,
         //owner: address, // default owned by address
     }
@@ -52,12 +52,12 @@ module sui_contracts::domain_name {
         object::uid_to_inner(&domain_name.id)
     }
 
-    public fun version(domain_name: &DomainName): u64 {
-        *&domain_name.version
-    }
-
     public fun domain_name_id(domain_name: &DomainName): DomainNameId {
         domain_name.domain_name_id
+    }
+
+    public fun version(domain_name: &DomainName): u64 {
+        *&domain_name.version
     }
 
     public fun expiration_date(domain_name: &DomainName): u64 {
@@ -71,6 +71,24 @@ module sui_contracts::domain_name {
     // public fun get_owner(domain_name: &DomainName): address {
     //     *&domain_name.owner
     // }
+
+
+    fun new_domain_name(
+        id: UID,
+        domain_name_id: DomainNameId,
+        //version: u64,
+        expiration_date: u64,
+        //owner: address,
+    ): DomainName {
+        DomainName {
+            id,
+            domain_name_id,
+            version: 0,
+            expiration_date,
+            //owner: owner,
+        }
+    }
+
 
     struct Registered has copy, drop {
         id: object::ID,
@@ -113,8 +131,8 @@ module sui_contracts::domain_name {
 
     struct Renewed has copy, drop {
         id: object::ID,
-        version: u64,
         domain_name_id: DomainNameId,
+        version: u64,
         renew_period: u64,
         account: address,
     }
@@ -158,7 +176,7 @@ module sui_contracts::domain_name {
         domain_name
     }
 
-    public fun asset_domain_name_id_not_exists(
+    public(friend) fun asset_domain_name_id_not_exists(
         domain_name_id: DomainNameId,
         domain_name_id_table: &DomainNameIdTable,
     ) {
@@ -174,27 +192,11 @@ module sui_contracts::domain_name {
         table::add(&mut domain_name_id_table.table, domain_name_id, id);
     }
 
-    fun new_domain_name(
-        id: UID,
-        //version: u64,
-        domain_name_id: DomainNameId,
-        expiration_date: u64,
-        //owner: address,
-    ): DomainName {
-        DomainName {
-            id,
-            version: 0,
-            domain_name_id,
-            expiration_date,
-            //owner: owner,
-        }
-    }
-
-    public(friend) fun transfer(domain_name: DomainName, recipient: address) {
+    public(friend) fun transfer_object(domain_name: DomainName, recipient: address) {
         transfer::transfer(domain_name, recipient);
     }
 
-    public(friend) fun update_version_and_transfer(domain_name: DomainName, recipient: address) {
+    public(friend) fun update_version_and_transfer_object(domain_name: DomainName, recipient: address) {
         domain_name.version = domain_name.version + 1;
         transfer::transfer(domain_name, recipient);
     }

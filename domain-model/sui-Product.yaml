@@ -1,0 +1,27 @@
+aggregates:
+  Product:
+    immutable: true
+    id:
+      name: ProductId
+      type: String
+      length: 20
+      generator: sequence
+      generatorName: ProductIdGenerator # Used to generate ProductId
+    properties:
+      Name:
+        type: String
+      UnitPrice:
+        type: u128
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Name:
+            type: String
+          UnitPrice:
+            type: u128
+        event:
+          name: ProductCreated
+          #isObjectFrozen: true # This is true because the Product is immutable.
+
