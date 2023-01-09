@@ -36,6 +36,8 @@ module sui_contracts::order_update_item_quantity_logic {
         order_item::set_item_amount(
             item, unit_price * (order::order_item_quantity_updated_quantity(order_item_quantity_updated) as u128)
         );
+        //let order_item_item = order_item::borrow_mut_item(item, product_id);
+        //order_item::set_order_item_item_desc(order_item_item, product_id);
         order_
     }
 }

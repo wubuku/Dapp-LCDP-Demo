@@ -43,6 +43,7 @@ module sui_contracts::order_create_logic {
             order::order_created_product(order_created),
             order::order_created_quantity(order_created),
             order::order_created_unit_price(order_created) * (order::order_created_quantity(order_created) as u128),
+            //ctx,
         );
         order::add_item(&mut order, order_item);
         order

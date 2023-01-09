@@ -10,17 +10,32 @@ module sui_contracts::order_item {
         product_id: String,
         quantity: u64,
         item_amount: u128,
+        //items: table::Table<String, OrderItemItem>,
     }
+
+    // struct OrderItemItem has store {
+    //     description: String,
+    // }
+
+    // public(friend) fun borrow_mut_item(order_item: &mut OrderItem, item_id: String): &mut OrderItemItem {
+    //     table::borrow_mut(&mut order_item.items, item_id)
+    // }
+    //
+    // public(friend) fun set_order_item_item_desc(order_item_item: &mut OrderItemItem, desc: String) {
+    //     order_item_item.description = desc
+    // }
 
     public(friend) fun new_order_item(
         product_id: String,
         quantity: u64,
         item_amount: u128,
+        //ctx: &mut TxContext
     ): OrderItem {
         OrderItem {
             product_id,
             quantity,
             item_amount,
+            //items: table::new(ctx)
         }
     }
 
@@ -29,7 +44,9 @@ module sui_contracts::order_item {
             product_id: _,
             quantity: _,
             item_amount: _,
+            //items,
         } = item;
+        //table::destroy_empty<String , OrderItemItem>(items);
     }
 
     public fun product_id(order_item: &OrderItem): String {
