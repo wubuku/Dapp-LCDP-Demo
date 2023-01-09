@@ -8,6 +8,9 @@ module sui_contracts::product {
     use sui::transfer;
     use sui::tx_context::TxContext;
 
+    friend sui_contracts::product_create_logic;
+    friend sui_contracts::product_aggregate;
+
     struct ProductIdGenerator has key {
         id: UID,
         sequence: u128,
@@ -76,12 +79,18 @@ module sui_contracts::product {
         product_created.name
     }
 
+    public fun product_created_unit_price(product_created: &ProductCreated): u128 {
+        product_created.unit_price
+    }
+
     public(friend) fun new_product_created(
         id: &UID,
-        product_id: String,
+        //product_id: String,
         name: String,
         unit_price: u128,
+        product_id_generator: &mut ProductIdGenerator,
     ): ProductCreated {
+        let product_id = next_product_id(product_id_generator);
         ProductCreated {
             id: object::uid_to_inner(id),
             product_id,
@@ -97,10 +106,10 @@ module sui_contracts::product {
         //product_id: String,
         name: String,
         unit_price: u128,
-        product_id_generator: &mut ProductIdGenerator,
+        product_id_generator: &ProductIdGenerator,
         //ctx: &mut TxContext,
     ): Product {
-        let product_id = next_product_id(product_id_generator);
+        let product_id = current_product_id(product_id_generator);
         new_product(
             id,
             product_id,
@@ -109,11 +118,17 @@ module sui_contracts::product {
         )
     }
 
+    fun current_product_id(
+        product_id_generator: &ProductIdGenerator,
+    ): String {
+        string::utf8(hex::encode(bcs::to_bytes(&product_id_generator.sequence)))
+    }
+
     fun next_product_id(
         product_id_generator: &mut ProductIdGenerator,
     ): String {
         product_id_generator.sequence = product_id_generator.sequence + 1;
-        string::utf8(hex::encode(bcs::to_bytes(&product_id_generator.sequence)))
+        current_product_id(product_id_generator)
     }
 
     public(friend) fun transfer_object(product: Product, recipient: address) {
