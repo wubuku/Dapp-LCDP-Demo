@@ -7,7 +7,7 @@ module sui_contracts::domain_name_renew_logic {
     public(friend) fun verify(
         renew_period: u64,
         domain_name: &domain_name::DomainName,
-        ctx: &mut TxContext,
+        ctx: &TxContext,
     ): domain_name::Renewed {
         // ////////////////////////
         // let amount = Account::withdraw<STC::STC>(account, 1000000);

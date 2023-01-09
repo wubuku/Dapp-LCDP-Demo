@@ -9,6 +9,7 @@ module sui_contracts::order {
     use sui_contracts::order_item::{Self, OrderItem};
 
     friend sui_contracts::order_create_logic;
+    friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_aggregate;
 
     struct Order has key {
@@ -82,6 +83,29 @@ module sui_contracts::order {
         }
     }
 
+    struct OrderItemRemoved has copy, drop {
+        id: object::ID,
+        version: u64,
+        product_id: String,
+    }
+
+    public fun order_item_removed_product_id(order_item_removed: &OrderItemRemoved): String {
+        order_item_removed.product_id
+    }
+
+    public(friend) fun new_order_item_removed(
+        order: &Order,
+        product_id: String,
+    ): OrderItemRemoved {
+        OrderItemRemoved {
+            id: object::uid_to_inner(&order.id),
+            version: order.version,
+            product_id,
+        }
+    }
+
+    // -------------------------
+
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
         let key = order_item::product_id(&item);
         table::add(&mut order.items, key, item);
@@ -96,8 +120,17 @@ module sui_contracts::order {
         transfer::transfer(order, recipient);
     }
 
+    public(friend) fun update_version_and_transfer(order: Order, recipient: address) {
+        order.version = order.version + 1;
+        transfer::transfer(order, recipient);
+    }
+
     public(friend) fun emit_order_created(order_created: OrderCreated) {
         event::emit(order_created);
+    }
+
+    public(friend) fun emit_order_item_removed(order_item_removed: OrderItemRemoved) {
+        event::emit(order_item_removed);
     }
 }
 

@@ -34,8 +34,9 @@ module sui_contracts::domain_name_register_logic {
         registered: &domain_name::Registered,
         id: UID,
         domain_name_id_table: &mut domain_name::DomainNameIdTable,
-        //ctx: &mut TxContext,
+        ctx: &mut TxContext, // keep this for future use
     ): domain_name::DomainName {
+        let _ = ctx;
         let domain_name = domain_name::create_domain_name(
             id,
             domain_name::registered_domain_name_id(registered),

@@ -27,6 +27,7 @@ module sui_contracts::domain_name_aggregate {
             &registered,
             id,
             domain_name_id_table,
+            ctx,
         );
         //domain_name::fill_registered_id(&mut registered, domain_name::id(&domain_name));
         domain_name::transfer(domain_name, domain_name::registered_owner(&registered));

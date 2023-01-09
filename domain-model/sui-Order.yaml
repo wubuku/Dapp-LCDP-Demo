@@ -40,3 +40,15 @@ aggregates:
             Owner:
               type: address
               isOwner: true # Transfer the object to the account address indicated by this property
+
+      RemoveItem:
+        parameters:
+          ProductId:
+            type: String
+            # eventPropertyName: ProductId
+        event:
+          name: OrderItemRemoved
+#          properties:
+#            Owner:
+#              type: address
+#              isOwner: true # Transfer the object to the account address indicated by this property
