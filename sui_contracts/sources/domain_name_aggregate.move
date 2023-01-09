@@ -47,6 +47,7 @@ module sui_contracts::domain_name_aggregate {
         let updated_domain_name = domain_name_renew_logic::mutate(
             &renewed,
             domain_name,
+            ctx,
         );
         domain_name::update_version_and_transfer_object(updated_domain_name, domain_name::renewed_account(&renewed));
         domain_name::emit_renewed(renewed);

@@ -33,7 +33,7 @@ module sui_contracts::domain_name_register_logic {
     public(friend) fun mutate(
         registered: &domain_name::Registered,
         id: UID,
-        domain_name_id_table: &mut domain_name::DomainNameIdTable,
+        domain_name_id_table: &mut domain_name::DomainNameIdTable, // use mutable reference to update id table
         ctx: &TxContext, // keep this for future use?
     ): domain_name::DomainName {
         let _ = ctx;

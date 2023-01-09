@@ -25,9 +25,9 @@ module sui_contracts::domain_name_renew_logic {
     public(friend) fun mutate(
         renewed: &domain_name::Renewed,
         domain_name: domain_name::DomainName,
-        //ctx: &mut TxContext,
+        ctx: &mut TxContext, // keep this for future use?
     ): domain_name::DomainName {
-        //_ = ctx;
+        let _ = ctx;
         // let updated_domain_name_state = DomainName::new_domain_name_state(
         //     &DomainName::get_domain_name_state_domain_name_id(domain_name_state),
         //     DomainName::get_domain_name_state_expiration_date(domain_name_state) + renew_period,

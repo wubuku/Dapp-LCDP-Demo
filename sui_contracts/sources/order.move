@@ -168,5 +168,9 @@ module sui_contracts::order {
     public(friend) fun emit_order_item_removed(order_item_removed: OrderItemRemoved) {
         event::emit(order_item_removed);
     }
+
+    public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) {
+        event::emit(order_item_quantity_updated);
+    }
 }
 

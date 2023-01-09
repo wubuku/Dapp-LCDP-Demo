@@ -6,6 +6,7 @@ module sui_contracts::order_aggregate {
     use sui_contracts::order_create_logic;
     use sui_contracts::order_remove_item_logic;
     use sui_contracts::product::Product;
+    use sui_contracts::order_update_item_quantity_logic;
 
     public entry fun create(
         product: &mut Product,
@@ -29,7 +30,7 @@ module sui_contracts::order_aggregate {
         order::emit_order_created(order_created);
     }
 
-    public entry fun add_item(
+    public entry fun remove_item(
         product_id: String,
         order_: order::Order,
         ctx: &mut TxContext,
@@ -42,11 +43,36 @@ module sui_contracts::order_aggregate {
         let updated_order = order_remove_item_logic::mutate(
             &order_item_removed,
             order_,
+            ctx,
         );
         order::update_version_and_transfer_object(
             updated_order,
             tx_context::sender(ctx), //the owner of order is NOT indicated in event
         );
         order::emit_order_item_removed(order_item_removed);
+    }
+
+    public entry fun update_item_quantity(
+        product_id: String,
+        quantity: u64,
+        order_: order::Order,
+        ctx: &mut TxContext,
+    ) {
+        let order_item_quantity_updated = order_update_item_quantity_logic::verify(
+            product_id,
+            quantity,
+            &order_,
+            ctx,
+        );
+        let updated_order = order_update_item_quantity_logic::mutate(
+            &order_item_quantity_updated,
+            order_,
+            ctx,
+        );
+        order::update_version_and_transfer_object(
+            updated_order,
+            tx_context::sender(ctx), //the owner of order is NOT indicated in event
+        );
+        order::emit_order_item_quantity_updated(order_item_quantity_updated);
     }
 }

@@ -20,8 +20,9 @@ module sui_contracts::order_remove_item_logic {
     public(friend) fun mutate(
         order_item_removed: &order::OrderItemRemoved,
         order_: order::Order,
-        //ctx: &TxContext,
+        ctx: &TxContext, // keep this for future use?
     ): order::Order {
+        let _ = ctx;
         let product_id = order::order_item_removed_product_id(order_item_removed);
         order::remove_item(&mut order_, product_id);
         order_
