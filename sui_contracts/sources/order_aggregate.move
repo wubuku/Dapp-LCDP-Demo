@@ -31,18 +31,18 @@ module sui_contracts::order_aggregate {
     }
 
     public entry fun remove_item(
+        order: order::Order,
         product_id: String,
-        order_: order::Order,
         ctx: &mut TxContext,
     ) {
         let order_item_removed = order_remove_item_logic::verify(
             product_id,
-            &order_,
+            &order,
             ctx,
         );
         let updated_order = order_remove_item_logic::mutate(
             &order_item_removed,
-            order_,
+            order,
             ctx,
         );
         order::update_version_and_transfer_object(
@@ -53,20 +53,20 @@ module sui_contracts::order_aggregate {
     }
 
     public entry fun update_item_quantity(
+        order: order::Order,
         product_id: String,
         quantity: u64,
-        order_: order::Order,
         ctx: &mut TxContext,
     ) {
         let order_item_quantity_updated = order_update_item_quantity_logic::verify(
             product_id,
             quantity,
-            &order_,
+            &order,
             ctx,
         );
         let updated_order = order_update_item_quantity_logic::mutate(
             &order_item_quantity_updated,
-            order_,
+            order,
             ctx,
         );
         order::update_version_and_transfer_object(

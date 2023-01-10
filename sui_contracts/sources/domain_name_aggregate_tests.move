@@ -33,8 +33,8 @@ module sui_contracts::domain_name_aggregate_tests {
             == domain_name::new_domain_name_id(b"sui", b"test"),
             0);
         domain_name_aggregate::renew(
-            1000000000,
             domain_name_1,
+            1000000000,
             ts::ctx(&mut scenario),
         );
 

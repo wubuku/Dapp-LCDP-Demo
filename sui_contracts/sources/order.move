@@ -20,6 +20,27 @@ module sui_contracts::order {
         items: Table<String, OrderItem>
     }
 
+    public fun id(order: &Order): object::ID {
+        object::uid_to_inner(&order.id)
+    }
+
+    public fun version(order: &Order): u64 {
+        order.version
+    }
+
+    public fun total_amount(order: &Order): u128 {
+        order.total_amount
+    }
+
+    // // TODO: Is this Ok???
+    // public fun items(order: &Order): &Table<String, OrderItem> {
+    //     &order.items
+    // }
+
+    public(friend) fun set_total_amount(order: &mut Order, total_amount: u128) {
+        order.total_amount = total_amount;
+    }
+
     public(friend) fun new_order(
         id: UID,
         total_amount: u128,
@@ -148,6 +169,18 @@ module sui_contracts::order {
 
     public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
         table::borrow_mut(&mut order.items, product_id)
+    }
+
+    public fun borrow_item(order: &Order, product_id: String): &OrderItem {
+        table::borrow(&order.items, product_id)
+    }
+
+    public fun items_contains(order: &Order, product_id: String): bool {
+        table::contains(&order.items, product_id)
+    }
+
+    public fun items_length(order: &Order): u64 {
+        table::length(&order.items)
     }
 
     // --------------------------

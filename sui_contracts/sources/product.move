@@ -45,6 +45,10 @@ module sui_contracts::product {
         product.product_id
     }
 
+    public fun name(product: &Product): String {
+        product.name
+    }
+
     public fun unit_price(product: &Product): u128 {
         product.unit_price
     }
@@ -158,21 +162,4 @@ module sui_contracts::product {
         init(ctx)
     }
 
-    #[test_only]
-    /// Wrapper of module initializer for testing
-    public fun test_create_product(
-        product_id: String,
-        unit_price: u128,
-        name: String,
-        ctx: &mut TxContext,
-    ) {
-        let id = object::new(ctx);
-        let product = new_product(
-            id,
-            product_id,
-            name,
-            unit_price,
-        );
-        transfer::share_object(product);
-    }
 }

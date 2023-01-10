@@ -35,8 +35,8 @@ module sui_contracts::domain_name_aggregate {
     }
 
     public entry fun renew(
-        renew_period: u64,
         domain_name: domain_name::DomainName,
+        renew_period: u64,
         ctx: &mut TxContext,
     ) {
         let renewed = domain_name_renew_logic::verify(
