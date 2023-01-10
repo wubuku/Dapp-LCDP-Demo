@@ -9,7 +9,7 @@ module sui_contracts::order_aggregate {
     use sui_contracts::order_update_item_quantity_logic;
 
     public entry fun create(
-        product: &mut Product,
+        product: &Product,
         quantity: u64,
         ctx: &mut TxContext,
     ) {
