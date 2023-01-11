@@ -31,12 +31,20 @@ module sui_contracts::domain_name {
         table: table::Table<DomainNameId, object::ID>,
     }
 
+    struct DomainNameIdTableCreated has copy, drop {
+        id: object::ID,
+    }
+
     fun init(ctx: &mut TxContext) {
         let domain_id_table = DomainNameIdTable {
             id: object::new(ctx),
             table: table::new(ctx),
         };
+        let domain_name_id_table_id = object::uid_to_inner(&domain_id_table.id);
         transfer::share_object(domain_id_table);
+        event::emit(DomainNameIdTableCreated {
+            id: domain_name_id_table_id,
+        });
     }
 
     struct DomainName has key {

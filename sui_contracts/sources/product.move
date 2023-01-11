@@ -16,12 +16,20 @@ module sui_contracts::product {
         sequence: u128,
     }
 
+    struct ProductIdGeneratorCreated has copy, drop {
+        id: object::ID,
+    }
+
     fun init(ctx: &mut TxContext) {
         let product_id_generator = ProductIdGenerator {
             id: object::new(ctx),
             sequence: 0,
         };
+        let product_id_generator_id = object::uid_to_inner(&product_id_generator.id);
         transfer::share_object(product_id_generator);
+        event::emit(ProductIdGeneratorCreated {
+            id: product_id_generator_id
+        });
     }
 
     struct Product has key {
@@ -161,5 +169,4 @@ module sui_contracts::product {
     public fun test_init(ctx: &mut TxContext) {
         init(ctx)
     }
-
 }
