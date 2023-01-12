@@ -5,3 +5,4 @@ move-contracts/alice
 starcoin-ns-demo
 move-contracts/release
 sui.log.*
+sui_contracts/build/
