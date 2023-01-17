@@ -1,0 +1,245 @@
+#%DDDML 0.1
+---
+
+configuration:
+
+  boundedContextName: "Dddml.SuiExample"
+  
+  defaultModule: 
+    name: "Dddml.SuiExample"
+
+  #genericTypes: ["TAccountId", "TQuantity"]
+  isGenericTypeAsType: true
+  baseUri: "/api"
+  
+  valueObjectBaseTypes:
+    "Email": "string"
+    
+  #defaultTimestampType: "Timestamp"
+
+  defaultReservedProperties:
+    active: Active
+    createdBy: CreatedBy
+    createdAt: CreatedAt
+    updatedBy: UpdatedBy
+    updatedAt: UpdatedAt
+    deleted: Deleted
+    version: Version
+    
+  sqlTypes:
+    DateTime: DATETIME
+    decimal: decimal(18,6)
+    decimal?: decimal(18,6)
+  
+  # -----------------------------------------
+  accountingQuantityTypes:
+    decimal:
+      zeroLogic:
+        Java: "BigDecimal.ZERO"
+      addLogic:
+        Java: "{fst}.add({snd} != null ? {snd} : BigDecimal.ZERO)"
+      negateLogic:
+        Java: "{0}.negate()"
+        
+  # -----------------------------------------
+  namedStringPatterns:
+    "AttributeId": "^[\\(A-Za-z0-9][A-Za-z0-9]*"
+    
+  onCommandExecuting:
+    Java: "{0}.setRequesterId(SecurityContextUtil.getRequesterId());"
+  
+  metadata:
+    
+    HttpServicesAuthorizationEnabled: false
+    #AutoAggregateMethodJavaDefautLogicEnabled: true
+    #AlwaysGeneratingClobEventProperties: true
+    
+    HttpPostCreationWithIdEnabled: true
+    HttpPutToMergePatchEnabled: true
+    
+    MvoUsingRViewAsMView: true
+    #MvoStateDatabaseTableNameFormat: "{0}s"
+    #MvoHttpServiceResourceCollectionNameFormat: "{0}s"
+    #MvoClrAggregateDomainSubNamespaceName: "MViews"
+    #MvoJavaAggregateDomainSubPackageName: "mviews"
+    
+    SpringSecurityEnabled: true
+    
+    ClrDomainServiceSubNamespaceName: "Services"
+    ClrHttpServiceSetRequesterIdAttributeEnabled: true
+    ClrHttpServiceJsonContractResolver: "Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver"
+    ClrHttpServiceJsonConverters: [
+        "Dddml.SuiExample.HttpServices.JsonConverters.LongConverter",
+        "Dddml.SuiExample.HttpServices.JsonConverters.DecimalConverter"]
+    ClrHttpServiceDtoJObjectMapperAssembly: "Dddml.SuiExample.HttpServices"
+
+    ClrRamlVersion: "0.8"
+    ClrRamlClientSubNamespace: "HttpServices.ClientProxies.Raml"
+    ClrRamlClientMainClassName: "DddmlSuiExampleRamlClient"
+
+    TypeScriptJsonUsingCamelCasePropertyName: true
+    
+    NoStateToCommandConverters: true
+
+    IgnoringRemovementConcurrencyConflict: true
+    
+    # --------------------------------------------------------------
+    # Enable Message-based Commands for all Internal Methods
+    InternalMethodMessagingCommandEnabled: true
+    # --------------------------------------------------------------
+    
+  clr:
+    specializationNamespace: "Dddml.SuiExample.Specialization"
+    isUsingSeparatedDomainAggregateNamespace: true
+    domainAssembly: "Dddml.SuiExample.Common"
+    serviceAssembly: "Dddml.SuiExample.Services"
+    clrValueTypes: ["Money"]
+    typeNamespaces:
+      "Money": "NodaMoney"
+
+  cSharp: 
+    defaultUserIdType: "string"
+    #typeMappings:
+    #  "Timestamp": "DateTime"
+    
+  java:
+  
+    boundedContextPackage: "org.dddml.suiexample"
+    specializationPackage: "org.dddml.suiexample.specialization"
+    isUsingSeparatedDomainAggregatePackage: true
+    defaultUserIdType: "string"
+    #JavaSerializationAnnotationTypes: {}
+    
+    typeMappings: 
+      "bool": "Boolean"
+      "bool?": "Boolean"
+      "DateTime": "Date"
+      "DateTime?": "Date"
+      "decimal": "BigDecimal"
+      "decimal?": "BigDecimal"
+      "int": "Integer"
+      "int?": "Integer"
+      "long": "Long"
+      "long?": "Long"
+      "string": "String"
+      "String": "String"
+      #"Timestamp": "Timestamp"
+   
+    typePackages:
+      "BigDecimal": "java.math"
+      "Date": "java.util"
+      "Money": "org.joda.money"
+      #"Timestamp": "java.sql"
+
+  # -----------------------------------------
+  onRestfulCommandExecuting:
+    Java: "{0}.setRequesterId(SecurityContextUtil.getRequesterId());"
+  #onRestfulCommandExecuting:
+  #  Java: "SecurityContextUtil.setCommandContext({0});"      
+      
+  php:
+  
+    boundedContextNamespace: "Dddml\\SuiExample"
+    specializationNamespace: "Dddml"
+    defaultUserIdType: "string"
+    isUsingSeparatedDomainAggregateNamespace: false
+    
+    typeMappings:
+      "bool": "boolean"
+      "bool?": "boolean"
+      "DateTime": "\\DateTime"
+      "DateTime?": "\\DateTime"
+      "decimal": "Decimal"
+      "decimal?": "Decimal"
+      "int": "integer"
+      "int?": "integer"
+      "long": "Long"
+      "long?": "Long"
+      "Money": "Money"
+      "string": "string"
+    
+    serializationAnnotationTypes:
+      "bool": "boolean"
+      "bool?": "boolean"
+      "int": "integer"
+      "int?": "integer"
+      "string": "string"
+      "decimal": "Dddml\\Serializer\\Type\\Decimal"
+      "decimal?": "Dddml\\Serializer\\Type\\Decimal"
+      "long": "Dddml\\Serializer\\Type\\Long"
+      "long?": "Dddml\\Serializer\\Type\\Long"
+      "Money": "Dddml\\Serializer\\Type\\Money"
+      "DateTime": "DateTime"
+      "DateTime?": "DateTime"
+      
+    #typeNamespaces:
+    #  "Money": "NodaMoney"
+      
+    defaultFieldTypes:
+      "bool": "CheckboxType"
+      "bool?": "CheckboxType"
+      "DateTime": "DateTimeType"
+      "DateTime?": "DateTimeType"
+      "decimal": "NumberType"
+      "decimal?": "NumberType"
+      "int": "IntegerType"
+      "int?": "IntegerType"
+      "long": "IntegerType"
+      "long?": "IntegerType"
+      "string": "TextType"
+      "Money": "MoneyType"
+        
+  typeScript:
+  
+    boundedContextNamespace: "Dddml.SuiExample"
+    specializationNamespace: "Dddml"
+    isUsingSeparatedDomainAggregateNamespace: false
+    
+    typeNamespaces:
+      "Money": "NodaMoney"
+  
+    typeMappings:
+      "bool": "boolean"
+      "bool?": "boolean"
+      "DateTime": "string"
+      "DateTime?": "string"
+      "decimal": "string"
+      "decimal?": "string"
+      "int": "number"
+      "int?": "number"
+      "float": "number"
+      "double": "number"
+      "long": "string"
+      "long?": "string"
+      "Money": "Money"
+      "string": "string"
+            
+  hibernate:
+  
+    hibernateTypes:
+      Money:
+        mappingType: "org.dddml.suiexample.domain.hibernate.usertypes.MoneyType"
+        propertyNames: ["Amount", "Currency"] 
+        propertyTypes: ["decimal", "string"]
+      DateTime:
+        mappingType: timestamp
+        
+  nHibernate:
+    
+    timestampMappingType: DateTimeUtc
+    nHibernateTypes:
+      Money:
+        mappingType: "Dddml.SuiExample.Services.Domain.NHibernate.NodaMoneyType, Dddml.SuiExample.Services"
+        propertyNames: ["Amount", "Currency"]
+        propertyTypes: ["decimal", "string"]
+
+  aggregates:
+  
+    AttributeSetInstance:
+      metadata:
+        PersistingStateEventRemovedPropertiesAsSet: true
+        CreationWithoutIdEnabled: true
+        HttpPostCreationEnabled: true
+        GeneratingAbstractIdGenerator: true
+
+        

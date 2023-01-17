@@ -3,8 +3,9 @@ aggregates:
     id:
       name: DomainNameId
       type: DomainNameId
-      generator: assigned # 'increment', 'UUID', etc.
-      tableName: DomainNameIdTable # Used to check the assigned Id., etc.
+      generator: 
+        class: assigned # 'increment', 'UUID', etc.
+        tableName: DomainNameIdTable # Used to check the assigned Id., etc.
     properties:
       ExpirationDate:
         type: u64

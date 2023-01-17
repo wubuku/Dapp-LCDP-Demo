@@ -1,0 +1,17 @@
+
+project:
+    
+  files:
+    - "boundedContext.yaml"
+    - "sui-DomainName.yaml"
+    - "sui-Order.yaml"
+    - "sui-Product.yaml"
+    
+    
+  # directories:
+    # - path: "."
+      # pattern: "*.yaml"
+      # fileExclusions:
+        # - "fileExclusion1.yaml"
+        # - "fileExclusion2.yaml"
+    

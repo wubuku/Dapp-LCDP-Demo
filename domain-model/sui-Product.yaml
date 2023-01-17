@@ -5,8 +5,9 @@ aggregates:
       name: ProductId
       type: String
       length: 20
-      generator: sequence
-      generatorName: ProductIdGenerator # Used to generate ProductId
+      generator: 
+        class: sequence
+        structName: ProductIdGenerator # Used to generate ProductId
     properties:
       Name:
         type: String
