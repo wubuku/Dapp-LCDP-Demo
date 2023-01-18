@@ -7,7 +7,12 @@ configuration:
   
   defaultModule: 
     name: "Dddml.SuiExample"
-
+  
+  isSurrogateIdMandatory: true
+  defaultSurrogateId:
+      name: id
+      type: UID
+      
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
   baseUri: "/api"
