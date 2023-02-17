@@ -1,7 +1,7 @@
 aggregates:
   Order:
     id:
-      name: id
+      name: Id
       type: UID
       arbitrary: true
     properties:

@@ -10,7 +10,7 @@ configuration:
   
   isSurrogateIdMandatory: true
   defaultSurrogateId:
-      name: id
+      name: Id
       type: UID
       
   #genericTypes: ["TAccountId", "TQuantity"]
@@ -93,19 +93,21 @@ configuration:
     InternalMethodMessagingCommandEnabled: true
     # --------------------------------------------------------------
     
-  clr:
-    specializationNamespace: "Dddml.SuiExample.Specialization"
-    isUsingSeparatedDomainAggregateNamespace: true
-    domainAssembly: "Dddml.SuiExample.Common"
-    serviceAssembly: "Dddml.SuiExample.Services"
-    clrValueTypes: ["Money"]
-    typeNamespaces:
-      "Money": "NodaMoney"
 
-  cSharp: 
-    defaultUserIdType: "string"
-    #typeMappings:
-    #  "Timestamp": "DateTime"
+  sui:
+    typeMappings:
+      "U8": "u8"
+      "U16": "u16"
+      "U32": "u32"
+      "U64": "u64"
+      "U128": "u128"
+      "vector<u8>": "vector<u8>"
+      "string": "String" # std::string::String
+      "String": "String"
+
+    typeModules:
+      "string": "std::string"
+      "String": "std::string"
     
   java:
   
@@ -129,9 +131,21 @@ configuration:
       "string": "String"
       "String": "String"
       #"Timestamp": "Timestamp"
-   
+      "U8": "Integer"
+      "U16": "Integer"
+      "U32": "Long"
+      "U64": "BigInteger"
+      "U128": "BigInteger"
+      "vector<u8>": "byte[]"
+      "u8": "Integer"
+      "u16": "Integer"
+      "u32": "Long"
+      "u64": "BigInteger"
+      "u128": "BigInteger"
+
     typePackages:
       "BigDecimal": "java.math"
+      "BigInteger": "java.math"
       "Date": "java.util"
       "Money": "org.joda.money"
       #"Timestamp": "java.sql"
