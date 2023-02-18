@@ -223,4 +223,3 @@ module sui_contracts::domain_name {
         init(ctx)
     }
 }
-

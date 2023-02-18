@@ -95,6 +95,8 @@ configuration:
     
 
   sui:
+    boundedContextPackage: "sui_contracts"
+
     typeMappings:
       "U8": "u8"
       "U16": "u16"
