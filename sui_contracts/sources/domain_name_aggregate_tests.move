@@ -3,6 +3,8 @@ module sui_contracts::domain_name_aggregate_tests {
     use sui::test_scenario as ts;
     use sui_contracts::domain_name::{Self, DomainNameIdTable, DomainName};
     use sui_contracts::domain_name_aggregate;
+    use std::string;
+
 
     #[test]
     //#[expected_failure(abort_code = sui_contracts::domain_name::EID_ALREADY_EXISTS)]
@@ -18,8 +20,8 @@ module sui_contracts::domain_name_aggregate_tests {
         {
             let domain_name_id_table = ts::take_shared<DomainNameIdTable>(&scenario);
             domain_name_aggregate::register(
-                b"sui",
-                b"test",
+                string::utf8( b"sui"),
+                string::utf8(b"test"),
                 1000000000,
                 &mut domain_name_id_table,
                 ts::ctx(&mut scenario),
@@ -30,7 +32,7 @@ module sui_contracts::domain_name_aggregate_tests {
         ts::next_tx(&mut scenario, addr1);
         let domain_name_1 = ts::take_from_address<DomainName>(&scenario, addr1);
         assert!(domain_name::domain_name_id(&domain_name_1)
-            == domain_name::new_domain_name_id(b"sui", b"test"),
+            == domain_name::new_domain_name_id(string::utf8(b"sui"), string::utf8(b"test")),
             0);
         domain_name_aggregate::renew(
             domain_name_1,

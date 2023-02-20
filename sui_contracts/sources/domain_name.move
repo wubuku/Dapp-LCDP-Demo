@@ -79,44 +79,34 @@ module sui_contracts::domain_name {
     fun new_domain_name(
         id: UID,
         domain_name_id: DomainNameId,
-        //version: u64,
         expiration_date: u64,
-        //owner: address,
     ): DomainName {
         DomainName {
             id,
             domain_name_id,
             version: 0,
             expiration_date,
-            //owner: owner,
         }
     }
 
-
     struct Registered has copy, drop {
         id: object::ID,
-        //version: u64,
         domain_name_id: DomainNameId,
         registration_period: u64,
-        // derived from ctx
         owner: address,
     }
 
     public fun registered_domain_name_id(registered: &Registered): DomainNameId {
-        *&registered.domain_name_id
+        registered.domain_name_id
     }
 
     public fun registered_registration_period(registered: &Registered): u64 {
-        *&registered.registration_period
+        registered.registration_period
     }
 
     public fun registered_owner(registered: &Registered): address {
-        *&registered.owner
+        registered.owner
     }
-
-    // public(friend) fun fill_registered_id(registered: &mut Registered, id: object::ID) {
-    //     registered.id = option::some(id);
-    // }
 
     public(friend) fun new_registered(
         id: &UID,
@@ -140,12 +130,16 @@ module sui_contracts::domain_name {
         account: address,
     }
 
+    public fun renewed_domain_name_id(renewed: &Renewed): DomainNameId {
+        renewed.domain_name_id
+    }
+
     public fun renewed_renew_period(renewed: &Renewed): u64 {
-        *&renewed.renew_period
+        renewed.renew_period
     }
 
     public fun renewed_account(renewed: &Renewed): address {
-        *&renewed.account
+        renewed.account
     }
 
     public(friend) fun new_renewed(
@@ -155,12 +149,13 @@ module sui_contracts::domain_name {
     ): Renewed {
         Renewed {
             id: id(domain_name),
-            version: version(domain_name),
             domain_name_id: domain_name_id(domain_name),
+            version: version(domain_name),
             renew_period,
             account,
         }
     }
+
 
     public(friend) fun create_domain_name(
         id: UID,
