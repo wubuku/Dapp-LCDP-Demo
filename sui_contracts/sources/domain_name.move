@@ -162,9 +162,7 @@ module sui_contracts::domain_name {
         domain_name_id: DomainNameId,
         expiration_date: u64,
         domain_name_id_table: &mut DomainNameIdTable,
-        //ctx: &mut TxContext,
     ): DomainName {
-        //let id = object::new(ctx);
         asset_domain_name_id_not_exists_then_add(domain_name_id, domain_name_id_table, object::uid_to_inner(&id));
         let domain_name = new_domain_name(
             id,
@@ -197,6 +195,14 @@ module sui_contracts::domain_name {
     public(friend) fun update_version_and_transfer_object(domain_name: DomainName, recipient: address) {
         domain_name.version = domain_name.version + 1;
         transfer::transfer(domain_name, recipient);
+    }
+
+    public(friend) fun share_object(domain_name: DomainName) {
+        transfer::share_object(domain_name);
+    }
+
+    public(friend) fun freeze_object(domain_name: DomainName) {
+        transfer::freeze_object(domain_name);
     }
 
     public(friend) fun emit_registered(registered: Registered) {
