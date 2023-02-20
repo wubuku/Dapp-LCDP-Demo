@@ -4,21 +4,23 @@ module sui_contracts::domain_name {
     use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
+    use std::string::String;
 
     friend sui_contracts::domain_name_register_logic;
     friend sui_contracts::domain_name_renew_logic;
+    
     friend sui_contracts::domain_name_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
 
     struct DomainNameId has store, drop, copy {
-        top_level_domain: vector<u8>,
-        second_level_domain: vector<u8>,
+        top_level_domain: String,
+        second_level_domain: String,
     }
 
     public fun new_domain_name_id(
-        top_level_domain: vector<u8>,
-        second_level_domain: vector<u8>,
+        top_level_domain: String,
+        second_level_domain: String,
     ): DomainNameId {
         DomainNameId {
             top_level_domain,
@@ -36,24 +38,22 @@ module sui_contracts::domain_name {
     }
 
     fun init(ctx: &mut TxContext) {
-        let domain_id_table = DomainNameIdTable {
+        let id_generator_table = DomainNameIdTable {
             id: object::new(ctx),
             table: table::new(ctx),
         };
-        let domain_name_id_table_id = object::uid_to_inner(&domain_id_table.id);
-        transfer::share_object(domain_id_table);
+        let id_generator_table_id = object::uid_to_inner(&id_generator_table.id);
+        transfer::share_object(id_generator_table);
         event::emit(DomainNameIdTableCreated {
-            id: domain_name_id_table_id,
+            id: id_generator_table_id,
         });
     }
 
     struct DomainName has key {
-        /// surrogate Id. First field name must be 'id'
         id: UID,
         domain_name_id: DomainNameId,
         version: u64,
         expiration_date: u64,
-        //owner: address, // default owned by address
     }
 
     public fun id(domain_name: &DomainName): object::ID {
@@ -65,21 +65,16 @@ module sui_contracts::domain_name {
     }
 
     public fun version(domain_name: &DomainName): u64 {
-        *&domain_name.version
+        domain_name.version
     }
 
     public fun expiration_date(domain_name: &DomainName): u64 {
-        *&domain_name.expiration_date
+        domain_name.expiration_date
     }
 
     public(friend) fun set_expiration_date(domain_name: &mut DomainName, expiration_date: u64) {
         domain_name.expiration_date = expiration_date;
     }
-
-    // public fun get_owner(domain_name: &DomainName): address {
-    //     *&domain_name.owner
-    // }
-
 
     fun new_domain_name(
         id: UID,

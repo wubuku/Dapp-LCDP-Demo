@@ -3,10 +3,11 @@ module sui_contracts::domain_name_aggregate {
     use sui_contracts::domain_name;
     use sui_contracts::domain_name_register_logic;
     use sui_contracts::domain_name_renew_logic;
+    use std::string::String;
 
     public entry fun register(
-        domain_name_id_top_level_domain: vector<u8>,
-        domain_name_id_second_level_domain: vector<u8>,
+        domain_name_id_top_level_domain: String,
+        domain_name_id_second_level_domain: String,
         registration_period: u64,
         domain_name_id_table: &mut domain_name::DomainNameIdTable,
         ctx: &mut TxContext,
