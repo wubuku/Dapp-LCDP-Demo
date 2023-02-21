@@ -41,6 +41,38 @@ module sui_contracts::order {
         order.total_amount = total_amount;
     }
 
+
+    // -------------------------
+
+    public(friend) fun add_item(order: &mut Order, item: OrderItem) {
+        let key = order_item::product_id(&item);
+        table::add(&mut order.items, key, item);
+    }
+
+    public(friend) fun remove_item(order: &mut Order, product_id: String) {
+        let item = table::remove(&mut order.items, product_id);
+        order_item::drop_order_item(item);
+    }
+
+    public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
+        table::borrow_mut(&mut order.items, product_id)
+    }
+
+    public fun borrow_item(order: &Order, product_id: String): &OrderItem {
+        table::borrow(&order.items, product_id)
+    }
+
+    public fun items_contains(order: &Order, product_id: String): bool {
+        table::contains(&order.items, product_id)
+    }
+
+    public fun items_length(order: &Order): u64 {
+        table::length(&order.items)
+    }
+
+    // --------------------------
+
+
     public(friend) fun new_order(
         id: UID,
         total_amount: u128,
@@ -154,36 +186,6 @@ module sui_contracts::order {
             quantity,
         }
     }
-
-    // -------------------------
-
-    public(friend) fun add_item(order: &mut Order, item: OrderItem) {
-        let key = order_item::product_id(&item);
-        table::add(&mut order.items, key, item);
-    }
-
-    public(friend) fun remove_item(order: &mut Order, product_id: String) {
-        let item = table::remove(&mut order.items, product_id);
-        order_item::drop_order_item(item);
-    }
-
-    public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
-        table::borrow_mut(&mut order.items, product_id)
-    }
-
-    public fun borrow_item(order: &Order, product_id: String): &OrderItem {
-        table::borrow(&order.items, product_id)
-    }
-
-    public fun items_contains(order: &Order, product_id: String): bool {
-        table::contains(&order.items, product_id)
-    }
-
-    public fun items_length(order: &Order): u64 {
-        table::length(&order.items)
-    }
-
-    // --------------------------
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
         transfer::transfer(order, recipient);
