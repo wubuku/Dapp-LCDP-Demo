@@ -1,23 +1,23 @@
 module sui_contracts::order {
-    use std::string::String;
-
     use sui::event;
     use sui::object::{Self, UID};
-    use sui::table::{Self, Table};
+    use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::order_item::{Self, OrderItem};
+    use std::string::String;
 
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
+    
     friend sui_contracts::order_aggregate;
 
     struct Order has key {
         id: UID,
         version: u64,
         total_amount: u128,
-        items: Table<String, OrderItem>
+        items: table::Table<String, OrderItem>
     }
 
     public fun id(order: &Order): object::ID {
@@ -32,17 +32,9 @@ module sui_contracts::order {
         order.total_amount
     }
 
-    // // TODO: Is this Ok???
-    // public fun items(order: &Order): &Table<String, OrderItem> {
-    //     &order.items
-    // }
-
     public(friend) fun set_total_amount(order: &mut Order, total_amount: u128) {
         order.total_amount = total_amount;
     }
-
-
-    // -------------------------
 
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
         let key = order_item::product_id(&item);
@@ -70,9 +62,6 @@ module sui_contracts::order {
         table::length(&order.items)
     }
 
-    // --------------------------
-
-
     public(friend) fun new_order(
         id: UID,
         total_amount: u128,
@@ -88,12 +77,10 @@ module sui_contracts::order {
 
     struct OrderCreated has copy, drop {
         id: object::ID,
-        //version: u64,
         product: String,
         quantity: u64,
         unit_price: u128,
         total_amount: u128,
-        // derived from ctx
         owner: address,
     }
 
@@ -101,30 +88,28 @@ module sui_contracts::order {
         order_created.product
     }
 
-    public(friend) fun order_created_quantity(order_created: &OrderCreated): u64 {
+    public fun order_created_quantity(order_created: &OrderCreated): u64 {
         order_created.quantity
     }
 
-    public(friend) fun order_created_unit_price(order_created: &OrderCreated): u128 {
+    public fun order_created_unit_price(order_created: &OrderCreated): u128 {
         order_created.unit_price
     }
 
-    public(friend) fun order_created_total_amount(order_created: &OrderCreated): u128 {
+    public fun order_created_total_amount(order_created: &OrderCreated): u128 {
         order_created.total_amount
     }
 
-    public(friend) fun order_created_owner(order_created: &OrderCreated): address {
+    public fun order_created_owner(order_created: &OrderCreated): address {
         order_created.owner
     }
 
     public(friend) fun new_order_created(
         id: &UID,
-        //version: u64,
         product: String,
         quantity: u64,
         unit_price: u128,
         total_amount: u128,
-        // derived from ctx
         owner: address,
     ): OrderCreated {
         OrderCreated {
@@ -152,12 +137,11 @@ module sui_contracts::order {
         product_id: String,
     ): OrderItemRemoved {
         OrderItemRemoved {
-            id: object::uid_to_inner(&order.id),
-            version: order.version,
+            id: id(order),
+            version: version(order),
             product_id,
         }
     }
-
 
     struct OrderItemQuantityUpdated has copy, drop {
         id: object::ID,
@@ -180,12 +164,13 @@ module sui_contracts::order {
         quantity: u64,
     ): OrderItemQuantityUpdated {
         OrderItemQuantityUpdated {
-            id: object::uid_to_inner(&order.id),
-            version: order.version,
+            id: id(order),
+            version: version(order),
             product_id,
             quantity,
         }
     }
+
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
         transfer::transfer(order, recipient);
@@ -194,6 +179,14 @@ module sui_contracts::order {
     public(friend) fun update_version_and_transfer_object(order: Order, recipient: address) {
         order.version = order.version + 1;
         transfer::transfer(order, recipient);
+    }
+
+    public(friend) fun share_object(order: Order) {
+        transfer::share_object(order);
+    }
+
+    public(friend) fun freeze_object(order: Order) {
+        transfer::freeze_object(order);
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) {
@@ -207,5 +200,5 @@ module sui_contracts::order {
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) {
         event::emit(order_item_quantity_updated);
     }
-}
 
+}
