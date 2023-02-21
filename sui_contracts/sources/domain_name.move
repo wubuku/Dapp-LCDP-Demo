@@ -218,4 +218,5 @@ module sui_contracts::domain_name {
     public fun test_init(ctx: &mut TxContext) {
         init(ctx)
     }
+
 }

@@ -175,4 +175,5 @@ module sui_contracts::product {
     public fun test_init(ctx: &mut TxContext) {
         init(ctx)
     }
+
 }
