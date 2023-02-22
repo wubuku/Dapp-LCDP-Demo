@@ -1,6 +1,6 @@
 module sui_contracts::product_aggregate {
     use std::string::String;
-    use sui::tx_context::TxContext;
+    use sui::tx_context;
     use sui_contracts::product;
     use sui_contracts::product_create_logic;
 
@@ -8,7 +8,7 @@ module sui_contracts::product_aggregate {
         name: String,
         unit_price: u128,
         product_id_generator: &mut product::ProductIdGenerator,
-        ctx: &mut TxContext,
+        ctx: &mut tx_context::TxContext,
     ) {
         let (product_created, id) = product_create_logic::verify(
             name,

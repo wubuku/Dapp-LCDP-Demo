@@ -1,6 +1,6 @@
 module sui_contracts::domain_name_aggregate {
     use std::string::String;
-    use sui::tx_context::TxContext;
+    use sui::tx_context;
     use sui_contracts::domain_name;
     use sui_contracts::domain_name_register_logic;
     use sui_contracts::domain_name_renew_logic;
@@ -10,7 +10,7 @@ module sui_contracts::domain_name_aggregate {
         domain_name_id_second_level_domain: String,
         registration_period: u64,
         domain_name_id_table: &mut domain_name::DomainNameIdTable,
-        ctx: &mut TxContext,
+        ctx: &mut tx_context::TxContext,
     ) {
         let domain_name_id = domain_name::new_domain_name_id(
             domain_name_id_top_level_domain,
@@ -37,7 +37,7 @@ module sui_contracts::domain_name_aggregate {
     public entry fun renew(
         domain_name: domain_name::DomainName,
         renew_period: u64,
-        ctx: &mut TxContext,
+        ctx: &mut tx_context::TxContext,
     ) {
         let renewed = domain_name_renew_logic::verify(
             renew_period,
