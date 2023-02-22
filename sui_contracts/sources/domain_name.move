@@ -1,11 +1,10 @@
 module sui_contracts::domain_name {
+    use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
     use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
-    use std::string::String;
-
     friend sui_contracts::domain_name_register_logic;
     friend sui_contracts::domain_name_renew_logic;
     

@@ -1,12 +1,11 @@
 module sui_contracts::order {
+    use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
     use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::order_item::{Self, OrderItem};
-    use std::string::String;
-
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;

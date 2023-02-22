@@ -1,14 +1,12 @@
 module sui_contracts::product {
+    use std::bcs;
+    use std::string;
+    use std::string::String;
     use sui::event;
+    use sui::hex;
     use sui::object::{Self, UID};
     use sui::transfer;
     use sui::tx_context::TxContext;
-    use sui::hex;
-    use std::bcs;
-    use std::string;
-
-    use std::string::String;
-
     friend sui_contracts::product_create_logic;
     
     friend sui_contracts::product_aggregate;

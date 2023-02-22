@@ -1,6 +1,5 @@
 module sui_contracts::order_item {
     use std::string::String;
-
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;

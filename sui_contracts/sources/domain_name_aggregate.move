@@ -54,4 +54,3 @@ module sui_contracts::domain_name_aggregate {
         domain_name::emit_renewed(renewed);
     }
 }
-
