@@ -1,9 +1,9 @@
 module sui_contracts::domain_name_aggregate {
+    use std::string::String;
     use sui::tx_context::TxContext;
     use sui_contracts::domain_name;
     use sui_contracts::domain_name_register_logic;
     use sui_contracts::domain_name_renew_logic;
-    use std::string::String;
 
     public entry fun register(
         domain_name_id_top_level_domain: String,
@@ -16,8 +16,7 @@ module sui_contracts::domain_name_aggregate {
             domain_name_id_top_level_domain,
             domain_name_id_second_level_domain,
         );
-        // //assert domain_name_id does not exist in domain_name_id_table
-        // domain_name::asset_domain_name_id_not_exists(domain_name_id, domain_name_id_table);
+
         let (registered, id) = domain_name_register_logic::verify(
             domain_name_id,
             registration_period,
@@ -30,10 +29,10 @@ module sui_contracts::domain_name_aggregate {
             domain_name_id_table,
             ctx,
         );
-        //domain_name::fill_registered_id(&mut registered, domain_name::id(&domain_name));
         domain_name::transfer_object(domain_name, domain_name::registered_owner(&registered));
         domain_name::emit_registered(registered);
     }
+
 
     public entry fun renew(
         domain_name: domain_name::DomainName,
@@ -53,4 +52,5 @@ module sui_contracts::domain_name_aggregate {
         domain_name::update_version_and_transfer_object(updated_domain_name, domain_name::renewed_account(&renewed));
         domain_name::emit_renewed(renewed);
     }
+
 }
