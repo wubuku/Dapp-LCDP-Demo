@@ -1,7 +1,5 @@
 module sui_contracts::product_aggregate {
-
     use std::string::String;
-
     use sui::tx_context::TxContext;
     use sui_contracts::product;
     use sui_contracts::product_create_logic;
@@ -18,15 +16,14 @@ module sui_contracts::product_aggregate {
             product_id_generator,
             ctx,
         );
-        let product_ = product_create_logic::mutate(
+        let product = product_create_logic::mutate(
             &product_created,
             id,
             product_id_generator,
             ctx,
         );
-        product::freeze_object(
-            product_,
-        );
+        product::freeze_object(product);
         product::emit_product_created(product_created);
     }
+
 }
