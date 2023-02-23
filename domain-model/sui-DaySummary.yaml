@@ -1,0 +1,21 @@
+aggregates:
+  DaySummary:
+    id:
+      name: Day
+      type: Day
+      generator:
+        class: assigned
+        tableName: DaySummaryIdTable
+    properties:
+      Description:
+        type: String
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Description:
+            type: String
+        event:
+          name: DaySummaryCreated
+
