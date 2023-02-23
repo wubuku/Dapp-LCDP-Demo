@@ -1,7 +1,7 @@
 module sui_contracts::domain_name_aggregate {
     use std::string::String;
     use sui::tx_context;
-    use sui_contracts::domain_name;
+    use sui_contracts::domain_name::{Self, DomainNameId};
     use sui_contracts::domain_name_register_logic;
     use sui_contracts::domain_name_renew_logic;
 
@@ -12,7 +12,7 @@ module sui_contracts::domain_name_aggregate {
         domain_name_id_table: &mut domain_name::DomainNameIdTable,
         ctx: &mut tx_context::TxContext,
     ) {
-        let domain_name_id = domain_name::new_domain_name_id(
+        let domain_name_id: DomainNameId = domain_name::new_domain_name_id(
             domain_name_id_top_level_domain,
             domain_name_id_second_level_domain,
         );
