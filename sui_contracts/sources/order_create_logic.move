@@ -32,7 +32,7 @@ module sui_contracts::order_create_logic {
     public(friend) fun mutate(
         order_created: &order::OrderCreated,
         id: UID,
-        ctx: &mut TxContext, // use mutable reference to new inner entity table
+        ctx: &mut TxContext,
     ): order::Order {
         let order = order::new_order(
             id,
@@ -47,5 +47,7 @@ module sui_contracts::order_create_logic {
         );
         order::add_item(&mut order, order_item);
         order
+
     }
+
 }
