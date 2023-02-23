@@ -3,9 +3,8 @@ module sui_contracts::order_v2_create_logic {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
     use sui_contracts::order_v2;
-    use sui_contracts::order_v2_item::{Self};
-    use sui_contracts::product::Product;
-    use sui_contracts::product;
+    use sui_contracts::order_v2_item;
+    use sui_contracts::product::{Self, Product};
 
     friend sui_contracts::order_v2_aggregate;
 
