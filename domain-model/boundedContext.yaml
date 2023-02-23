@@ -106,6 +106,8 @@ configuration:
       "vector<u8>": "vector<u8>"
       "string": "String" # std::string::String
       "String": "String"
+      "Boolean": "bool"
+      "Bool": "bool"
 
     typeModules:
       "string": "std::string"

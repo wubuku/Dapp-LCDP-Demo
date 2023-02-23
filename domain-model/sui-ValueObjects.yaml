@@ -1,0 +1,27 @@
+valueObjects:
+  Year:
+    properties:
+      Number:
+        type: u16
+      Calendar:
+        type: String
+
+  Month:
+    properties:
+      Year:
+        type: Year
+      Number:
+        type: u8
+      IsLeap:
+        type: bool
+
+  Day:
+    properties:
+      Year:
+        type: Year
+      Month:
+        type: Month
+      Number:
+        type: u8
+      TimeZone:
+        type: String

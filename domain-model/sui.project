@@ -7,6 +7,7 @@ project:
     - "sui-Order.yaml"
     - "sui-Product.yaml"
     - "sui-OrderV2.yaml"
+    - "sui-ValueObjects.yaml"
 
   # directories:
     # - path: "."
