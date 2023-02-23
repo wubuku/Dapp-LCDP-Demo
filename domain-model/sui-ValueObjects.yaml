@@ -17,8 +17,6 @@ valueObjects:
 
   Day:
     properties:
-      Year:
-        type: Year
       Month:
         type: Month
       Number:
