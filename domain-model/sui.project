@@ -6,8 +6,8 @@ project:
     - "sui-DomainName.yaml"
     - "sui-Order.yaml"
     - "sui-Product.yaml"
-    
-    
+    - "sui-OrderV2.yaml"
+
   # directories:
     # - path: "."
       # pattern: "*.yaml"

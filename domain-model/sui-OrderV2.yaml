@@ -1,0 +1,67 @@
+aggregates:
+  OrderV2:
+    id:
+      name: OrderId
+      type: string
+      generator:
+        class: assigned # 'increment', 'UUID', etc.
+        tableName: OrderIdTable # Used to check the assigned Id., etc.
+    properties:
+      TotalAmount:
+        type: u128
+      Items:
+        itemType: OrderV2Item
+
+    entities:
+      OrderV2Item:
+        id:
+          name: ProductId
+          type: String
+        properties:
+          Quantity:
+            type: u64
+          ItemAmount:
+            type: u128
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Product:
+            referenceType: Product
+            # mutable: false
+            # immutable: true
+            # eventPropertyName: Product
+          Quantity:
+            type: u64
+        event:
+          name: OrderV2Created
+          properties:
+            UnitPrice:
+              type: u128
+            TotalAmount:
+              type: u128
+            Owner:
+              type: address
+              isOwner: true # Transfer the object to the account address indicated by this property
+
+      RemoveItem:
+        parameters:
+          ProductId:
+            type: String
+            # eventPropertyName: ProductId
+        event:
+          name: OrderV2ItemRemoved
+#          properties:
+#            Owner:
+#              type: address
+#              isOwner: true # Transfer the object to the account address indicated by this property
+
+      UpdateItemQuantity:
+        parameters:
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderV2ItemQuantityUpdated
