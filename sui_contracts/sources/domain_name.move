@@ -27,6 +27,14 @@ module sui_contracts::domain_name {
         }
     }
 
+    public(friend) fun domain_name_id_top_level_domain(domain_name_id: &DomainNameId): String {
+        domain_name_id.top_level_domain
+    }
+
+    public(friend) fun domain_name_id_second_level_domain(domain_name_id: &DomainNameId): String {
+        domain_name_id.second_level_domain
+    }
+
     struct DomainNameIdTable has key {
         id: UID,
         table: table::Table<DomainNameId, object::ID>,
