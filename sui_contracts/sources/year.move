@@ -23,4 +23,5 @@ module sui_contracts::year {
     public fun calendar(year: &Year): String {
         year.calendar
     }
+
 }

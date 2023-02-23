@@ -1,6 +1,6 @@
 module sui_contracts::day {
-    use sui_contracts::month::Month;
     use std::string::String;
+    use sui_contracts::month::Month;
 
     struct Day has store, drop, copy {
         month: Month,
@@ -31,4 +31,5 @@ module sui_contracts::day {
     public fun time_zone(day: &Day): String {
         day.time_zone
     }
+
 }

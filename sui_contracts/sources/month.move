@@ -19,8 +19,8 @@ module sui_contracts::month {
         }
     }
 
-    public fun year(m: &Month): Year {
-        m.year
+    public fun year(month: &Month): Year {
+        month.year
     }
 
     public fun number(month: &Month): u8 {
@@ -30,4 +30,5 @@ module sui_contracts::month {
     public fun is_leap(month: &Month): bool {
         month.is_leap
     }
+
 }
