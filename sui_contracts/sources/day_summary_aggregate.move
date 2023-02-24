@@ -1,11 +1,11 @@
 module sui_contracts::day_summary_aggregate {
     use std::string::String;
     use sui::tx_context;
-    use sui_contracts::year::{Self};
-    use sui_contracts::month::{Self};
     use sui_contracts::day::{Self, Day};
     use sui_contracts::day_summary;
     use sui_contracts::day_summary_create_logic;
+    use sui_contracts::month;
+    use sui_contracts::year;
 
     public entry fun create(
         day_month_year_number: u16,
@@ -18,14 +18,6 @@ module sui_contracts::day_summary_aggregate {
         day_summary_id_table: &mut day_summary::DaySummaryIdTable,
         ctx: &mut tx_context::TxContext,
     ) {
-        // let day: Day = day_summary::new_day(
-        //     day_month_year_number,
-        //     day_month_year_calendar,
-        //     day_month_number,
-        //     day_month_is_leap,
-        //     day_number,
-        //     day_time_zone,
-        // );
         let day: Day = day::new(
             month::new(
                 year::new(
