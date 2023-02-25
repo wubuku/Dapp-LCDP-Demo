@@ -15,6 +15,7 @@ module sui_contracts::day_summary_aggregate {
         day_number: u8,
         day_time_zone: String,
         description: String,
+        meta_data: vector<u8>,
         day_summary_id_table: &mut day_summary::DaySummaryIdTable,
         ctx: &mut tx_context::TxContext,
     ) {
@@ -34,6 +35,7 @@ module sui_contracts::day_summary_aggregate {
         let (day_summary_created, id) = day_summary_create_logic::verify(
             day,
             description,
+            meta_data,
             day_summary_id_table,
             ctx,
         );

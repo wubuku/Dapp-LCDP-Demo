@@ -9,6 +9,8 @@ aggregates:
     properties:
       Description:
         type: String
+      Metadata:
+        type: vector<u8>
 
     methods:
       Create:
@@ -16,6 +18,8 @@ aggregates:
         parameters:
           Description:
             type: String
+          MetaData:
+            type: vector<u8>
         event:
           name: DaySummaryCreated
 

@@ -10,6 +10,7 @@ module sui_contracts::day_summary_create_logic {
     public(friend) fun verify(
         day: Day,
         description: String,
+        meta_data: vector<u8>,
         day_summary_id_table: &day_summary::DaySummaryIdTable,
         ctx: &mut TxContext,
     ): (day_summary::DaySummaryCreated, UID) {
@@ -20,6 +21,7 @@ module sui_contracts::day_summary_create_logic {
                &id,
                day,
                description,
+               meta_data,
            ),
            id,
         )
@@ -36,6 +38,7 @@ module sui_contracts::day_summary_create_logic {
             id,
             day_summary::day_summary_created_day(day_summary_created),
             day_summary::day_summary_created_description(day_summary_created),
+            day_summary::day_summary_created_meta_data(day_summary_created),
             day_summary_id_table,
         );
         day_summary
