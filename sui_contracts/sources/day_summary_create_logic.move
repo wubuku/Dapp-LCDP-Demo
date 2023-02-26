@@ -4,6 +4,7 @@ module sui_contracts::day_summary_create_logic {
     use sui::tx_context::{TxContext};
     use sui_contracts::day::Day;
     use sui_contracts::day_summary;
+    use std::option::Option;
 
     friend sui_contracts::day_summary_aggregate;
 
@@ -11,6 +12,8 @@ module sui_contracts::day_summary_create_logic {
         day: Day,
         description: String,
         meta_data: vector<u8>,
+        array_data: vector<String>,
+        optional_data: Option<vector<u8>>,
         day_summary_id_table: &day_summary::DaySummaryIdTable,
         ctx: &mut TxContext,
     ): (day_summary::DaySummaryCreated, UID) {
@@ -22,6 +25,8 @@ module sui_contracts::day_summary_create_logic {
                day,
                description,
                meta_data,
+               array_data,
+               optional_data,
            ),
            id,
         )
@@ -39,6 +44,8 @@ module sui_contracts::day_summary_create_logic {
             day_summary::day_summary_created_day(day_summary_created),
             day_summary::day_summary_created_description(day_summary_created),
             day_summary::day_summary_created_meta_data(day_summary_created),
+            day_summary::day_summary_created_array_data(day_summary_created),
+            day_summary::day_summary_created_optional_data(day_summary_created),
             day_summary_id_table,
         );
         day_summary

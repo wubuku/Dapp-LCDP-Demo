@@ -140,7 +140,7 @@ configuration:
       "U32": "Long"
       "U64": "BigInteger"
       "U128": "BigInteger"
-      "vector<u8>": "byte[]"
+      "vector<u8>": "int[]"
       "u8": "Integer"
       "u16": "Integer"
       "u32": "Long"

@@ -6,6 +6,7 @@ module sui_contracts::day_summary_aggregate {
     use sui_contracts::day_summary_create_logic;
     use sui_contracts::month;
     use sui_contracts::year;
+    use std::option::Option;
 
     public entry fun create(
         day_month_year_number: u16,
@@ -16,6 +17,8 @@ module sui_contracts::day_summary_aggregate {
         day_time_zone: String,
         description: String,
         meta_data: vector<u8>,
+        array_data: vector<String>,
+        optional_data: Option<vector<u8>>,
         day_summary_id_table: &mut day_summary::DaySummaryIdTable,
         ctx: &mut tx_context::TxContext,
     ) {
@@ -36,6 +39,8 @@ module sui_contracts::day_summary_aggregate {
             day,
             description,
             meta_data,
+            array_data,
+            optional_data,
             day_summary_id_table,
             ctx,
         );

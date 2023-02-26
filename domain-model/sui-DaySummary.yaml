@@ -11,6 +11,11 @@ aggregates:
         type: String
       Metadata:
         type: vector<u8>
+      ArrayData:
+        itemType: String
+      OptionalData:
+        type: vector<u8>
+        optional: true
 
     methods:
       Create:
@@ -18,8 +23,13 @@ aggregates:
         parameters:
           Description:
             type: String
-          MetaData:
+          MetaData: # note: not the same as the property name
             type: vector<u8>
+          ArrayData:
+            itemType: String
+          OptionalData:
+            type: vector<u8>
+            optional: true
         event:
           name: DaySummaryCreated
 
