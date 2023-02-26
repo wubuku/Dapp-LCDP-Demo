@@ -1,4 +1,5 @@
 module sui_contracts::day_summary {
+    use std::option::Option;
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -6,7 +7,6 @@ module sui_contracts::day_summary {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
-    use std::option::Option;
     friend sui_contracts::day_summary_create_logic;
     
     friend sui_contracts::day_summary_aggregate;

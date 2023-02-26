@@ -1,4 +1,5 @@
 module sui_contracts::day_summary_aggregate {
+    use std::option::Option;
     use std::string::String;
     use sui::tx_context;
     use sui_contracts::day::{Self, Day};
@@ -6,7 +7,6 @@ module sui_contracts::day_summary_aggregate {
     use sui_contracts::day_summary_create_logic;
     use sui_contracts::month;
     use sui_contracts::year;
-    use std::option::Option;
 
     public entry fun create(
         day_month_year_number: u16,
