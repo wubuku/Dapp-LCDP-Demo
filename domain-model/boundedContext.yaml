@@ -92,7 +92,8 @@ configuration:
     # Enable Message-based Commands for all Internal Methods
     InternalMethodMessagingCommandEnabled: true
     # --------------------------------------------------------------
-    
+
+    JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
   sui:
     boundedContextPackage: "sui_contracts"
