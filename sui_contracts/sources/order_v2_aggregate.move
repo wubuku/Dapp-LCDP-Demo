@@ -1,15 +1,15 @@
 module sui_contracts::order_v2_aggregate {
     use std::string::String;
     use sui::tx_context;
-    use sui_contracts::day;
+    use sui_contracts::day::{Self, Day};
     use sui_contracts::month;
-    use sui_contracts::year;
     use sui_contracts::order_v2;
     use sui_contracts::order_v2_create_logic;
     use sui_contracts::order_v2_remove_item_logic;
     use sui_contracts::order_v2_update_estimated_ship_date_logic;
     use sui_contracts::order_v2_update_item_quantity_logic;
     use sui_contracts::product::Product;
+    use sui_contracts::year;
 
     public entry fun create(
         order_id: String,
@@ -88,19 +88,20 @@ module sui_contracts::order_v2_aggregate {
         estimated_ship_date_time_zone: String,
         ctx: &mut tx_context::TxContext,
     ) {
-        let order_v2_estimated_ship_date_updated = order_v2_update_estimated_ship_date_logic::verify(
-            day::new(
-                month::new(
-                    year::new(
-                        estimated_ship_date_month_year_number,
-                        estimated_ship_date_month_year_calendar,
-                    ),
-                    estimated_ship_date_month_number,
-                    estimated_ship_date_month_is_leap,
+        let estimated_ship_date: Day = day::new(
+            month::new(
+                year::new(
+                    estimated_ship_date_month_year_number,
+                    estimated_ship_date_month_year_calendar,
                 ),
-                estimated_ship_date_number,
-                estimated_ship_date_time_zone,
+                estimated_ship_date_month_number,
+                estimated_ship_date_month_is_leap,
             ),
+            estimated_ship_date_number,
+            estimated_ship_date_time_zone,
+        );
+        let order_v2_estimated_ship_date_updated = order_v2_update_estimated_ship_date_logic::verify(
+            estimated_ship_date,
             &order_v2,
             ctx,
         );
