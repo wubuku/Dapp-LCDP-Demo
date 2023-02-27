@@ -5,6 +5,7 @@ module sui_contracts::order_v2_create_logic {
     use sui_contracts::order_v2;
     use sui_contracts::order_v2_item;
     use sui_contracts::product::{Self, Product};
+    use std::option;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -45,6 +46,7 @@ module sui_contracts::order_v2_create_logic {
             id,
             order_v2::order_v2_created_order_id(order_v2_created),
             order_v2::order_v2_created_total_amount(order_v2_created),
+            option::none(),
             order_id_table,
             ctx,
         );

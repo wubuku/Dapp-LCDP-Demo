@@ -9,6 +9,9 @@ aggregates:
     properties:
       TotalAmount:
         type: u128
+      EstimatedShipDate:
+        type: Day
+        optional: true
       Items:
         itemType: OrderV2Item
 
@@ -65,3 +68,10 @@ aggregates:
             type: u64
         event:
           name: OrderV2ItemQuantityUpdated
+
+      UpdateEstimatedShipDate:
+        parameters:
+          EstimatedShipDate:
+            type: Day
+        event:
+          name: OrderV2EstimatedShipDateUpdated

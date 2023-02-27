@@ -1,4 +1,5 @@
 module sui_contracts::order_v2 {
+    use std::option::Option;
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -6,9 +7,11 @@ module sui_contracts::order_v2 {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::order_v2_item::{Self, OrderV2Item};
+    use sui_contracts::day::Day;
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
     friend sui_contracts::order_v2_update_item_quantity_logic;
+    friend sui_contracts::order_v2_update_estimated_ship_date_logic;
     
     friend sui_contracts::order_v2_aggregate;
 
@@ -40,6 +43,7 @@ module sui_contracts::order_v2 {
         order_id: String,
         version: u64,
         total_amount: u128,
+        estimated_ship_date: Option<Day>,
         items: table::Table<String, OrderV2Item>
     }
 
@@ -61,6 +65,14 @@ module sui_contracts::order_v2 {
 
     public(friend) fun set_total_amount(order_v2: &mut OrderV2, total_amount: u128) {
         order_v2.total_amount = total_amount;
+    }
+
+    public fun estimated_ship_date(order_v2: &OrderV2): Option<Day> {
+        order_v2.estimated_ship_date
+    }
+
+    public(friend) fun set_estimated_ship_date(order_v2: &mut OrderV2, estimated_ship_date: Option<Day>) {
+        order_v2.estimated_ship_date = estimated_ship_date;
     }
 
     public(friend) fun add_item(order_v2: &mut OrderV2, item: OrderV2Item) {
@@ -93,6 +105,7 @@ module sui_contracts::order_v2 {
         id: UID,
         order_id: String,
         total_amount: u128,
+        estimated_ship_date: Option<Day>,
         ctx: &mut TxContext,
     ): OrderV2 {
         OrderV2 {
@@ -100,6 +113,7 @@ module sui_contracts::order_v2 {
             order_id,
             version: 0,
             total_amount,
+            estimated_ship_date,
             items: table::new<String, OrderV2Item>(ctx),
         }
     }
@@ -219,11 +233,39 @@ module sui_contracts::order_v2 {
         }
     }
 
+    struct OrderV2EstimatedShipDateUpdated has copy, drop {
+        id: object::ID,
+        order_id: String,
+        version: u64,
+        estimated_ship_date: Day,
+    }
+
+    public fun order_v2_estimated_ship_date_updated_order_id(order_v2_estimated_ship_date_updated: &OrderV2EstimatedShipDateUpdated): String {
+        order_v2_estimated_ship_date_updated.order_id
+    }
+
+    public fun order_v2_estimated_ship_date_updated_estimated_ship_date(order_v2_estimated_ship_date_updated: &OrderV2EstimatedShipDateUpdated): Day {
+        order_v2_estimated_ship_date_updated.estimated_ship_date
+    }
+
+    public(friend) fun new_order_v2_estimated_ship_date_updated(
+        order_v2: &OrderV2,
+        estimated_ship_date: Day,
+    ): OrderV2EstimatedShipDateUpdated {
+        OrderV2EstimatedShipDateUpdated {
+            id: id(order_v2),
+            order_id: order_id(order_v2),
+            version: version(order_v2),
+            estimated_ship_date,
+        }
+    }
+
 
     public(friend) fun create_order_v2(
         id: UID,
         order_id: String,
         total_amount: u128,
+        estimated_ship_date: Option<Day>,
         order_id_table: &mut OrderIdTable,
         ctx: &mut TxContext,
     ): OrderV2 {
@@ -232,6 +274,7 @@ module sui_contracts::order_v2 {
             id,
             order_id,
             total_amount,
+            estimated_ship_date,
             ctx,
         );
         order_v2
@@ -280,6 +323,10 @@ module sui_contracts::order_v2 {
 
     public(friend) fun emit_order_v2_item_quantity_updated(order_v2_item_quantity_updated: OrderV2ItemQuantityUpdated) {
         event::emit(order_v2_item_quantity_updated);
+    }
+
+    public(friend) fun emit_order_v2_estimated_ship_date_updated(order_v2_estimated_ship_date_updated: OrderV2EstimatedShipDateUpdated) {
+        event::emit(order_v2_estimated_ship_date_updated);
     }
 
     #[test_only]
