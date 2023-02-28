@@ -4,8 +4,9 @@ import org.dddml.suidemocontracts.tool.hibernate.SchemaTool;
 
 public class TestSchemaTool {
 
-    private static String _sqlDirectory = "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-service\\src\\generated\\resources\\scripts";
-    private static String _connectionString = "jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false";
+    //private static String _sqlDirectory = "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-service\\src\\generated\\resources\\scripts";
+    private static String _sqlDirectory = "/Users/yangjiefeng/Documents/wubuku/StarcoinNSDemo/sui-java-service/suiDemoContracts-cmd-service/src/generated/resources/scripts";
+    private static String _connectionString = "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false";
     private static String _username = "root";
     private static String _password = "123456";
 

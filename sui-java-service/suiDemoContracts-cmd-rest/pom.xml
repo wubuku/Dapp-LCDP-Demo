@@ -2,17 +2,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.dddml</groupId>
-        <artifactId>suiDemoContracts-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-
     <artifactId>suidemocontracts-cmd-rest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <description>suidemocontracts-cmd-rest</description>
+
+    <parent>
+        <groupId>org.dddml</groupId>
+        <artifactId>suidemocontracts-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../suiDemoContracts-parent/pom.xml</relativePath>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -80,11 +80,11 @@
             <artifactId>spring-mvc-rest-exhandler</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.syj.platform</groupId>
-            <artifactId>raml-generator</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.syj.platform</groupId>-->
+        <!--            <artifactId>raml-generator</artifactId>-->
+        <!--            <version>0.0.1-SNAPSHOT</version>-->
+        <!--        </dependency>-->
         <!--
         <dependency>
             <groupId>com.syj.platform</groupId>
@@ -132,27 +132,46 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.syj.platform</groupId>
-                <artifactId>raml-spring-mvc-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.4</version>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <id>add-generated-source</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate-raml</goal>
+                            <goal>add-source</goal>
                         </goals>
                         <configuration>
-                            <skip>false</skip>
                             <sources>
-                                <param>${project.basedir}/src/main/java</param>
-                                <param>${project.basedir}/src/generated/java</param>
+                                <source>${basedir}/src/generated/java</source>
                             </sources>
-                            <baseUri>api/</baseUri>
-                            <output>${project.basedir}/src/main/resources/${project.artifactId}.raml</output>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.syj.platform</groupId>-->
+            <!--                <artifactId>raml-spring-mvc-maven-plugin</artifactId>-->
+            <!--                <version>0.0.1-SNAPSHOT</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>compile</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate-raml</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <skip>false</skip>-->
+            <!--                            <sources>-->
+            <!--                                <param>${project.basedir}/src/main/java</param>-->
+            <!--                                <param>${project.basedir}/src/generated/java</param>-->
+            <!--                            </sources>-->
+            <!--                            <baseUri>api/</baseUri>-->
+            <!--                            <output>${project.basedir}/src/main/resources/${project.artifactId}.raml</output>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 </project>
