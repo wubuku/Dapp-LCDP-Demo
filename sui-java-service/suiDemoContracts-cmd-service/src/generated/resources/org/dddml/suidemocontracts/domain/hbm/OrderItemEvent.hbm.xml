@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.order">
+  
+  <class name="AbstractOrderItemEvent" table="order_item_event" mutable="false" abstract="true">
+
+	<composite-id name="orderItemEventId" class="org.dddml.suidemocontracts.domain.order.OrderItemEventId">
+		<key-property name="orderId" ><column name="order_item_id_order_id" sql-type="VARCHAR(42)" /></key-property>
+		<key-property name="productId" ><column name="order_item_id_product_id" length="50" /></key-property>
+		<key-property name="orderVersion" ><column name="order_version" /></key-property>
+	</composite-id>
+
+    <discriminator column="event_type" type="string" />
+
+
+    <property name="createdBy" column="created_by"/>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="commandId" column="command_id"/>
+
+        <subclass name="AbstractOrderItemEvent$AbstractOrderItemStateEvent" abstract="true">
+
+	<property name="quantity" ><column name="quantity" /></property>
+	<property name="itemAmount" ><column name="item_amount" /></property>
+	<property name="active" ><column name="active" /></property>
+
+    <property name="version" column="version" not-null="true" />
+
+    <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateCreated" discriminator-value="Created">
+    	
+    </subclass>
+
+    <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateMergePatched" discriminator-value="MergePatched">
+
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed"/>
+
+        <property name="isPropertyItemAmountRemoved" column="is_property_item_amount_removed"/>
+
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
+
+
+    </subclass>
+
+    <subclass name="AbstractOrderItemEvent$SimpleOrderItemStateRemoved" discriminator-value="Removed">
+
+    </subclass>
+
+
+        </subclass>
+
+  </class>
+  
+</hibernate-mapping>

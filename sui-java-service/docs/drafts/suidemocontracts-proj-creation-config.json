@@ -1,0 +1,238 @@
+{
+  "dddmlDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\domain-model",
+  "dataDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\data",
+  "boundedContextName": "Dddml.SuiDemoContracts",
+  "dddmlProjectFileName": "sui.project",
+  "boundedContextNamespace": "Dddml.SuiDemoContracts",
+  "boundedContextRootDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service",
+  "boundedContextJavaPackageName": "org.dddml.suidemocontracts",
+  "javaProjectsDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service",
+  "javaDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-common",
+  "javaDomainProjectName": "suiDemoContracts-common",
+  "javaHibernateProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-service",
+  "javaHibernateProjectName": "suiDemoContracts-cmd-service",
+  "javaRestfulProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-rest",
+  "javaRestfulProjectName": "suiDemoContracts-cmd-rest",
+  "javaRestfulClientProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-rest-client",
+  "javaRestfulClientProjectName": "suiDemoContracts-cmd-rest-client",
+  "sourceJavaDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaCommon",
+  "sourceJavaHibernateProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaServices",
+  "sourceJavaRestfulProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaRestful",
+  "sourceProjectRootPackageName": "org.dddml.wms",
+  "dddmlExampleCreation": false,
+  "aggregateT4ScriptUpdate": true,
+  "aggregateT4ScriptClean": true,
+  "sourceProjectRootNamespace": "Dddml.Wms",
+  "sourceDotNetRestfulClientDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\Dddml.Wms.HttpServices.Client",
+  "dotNetRestfulClientDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\Dddml.SuiDemoContracts.HttpServices.Client",
+  "dotNetRestfulClientDomainProjectName": "Dddml.SuiDemoContracts.HttpServices.Client",
+  "onlyDotNetRestfulClient": false,
+  "noMViewObjects": true,
+  "pom": {
+    "groupId": "org.dddml"
+  },
+  "domainPom": {
+    "parentGroupId": "com.syj.platform",
+    "parentArtifactId": "saas-platform-parent",
+    "parentVersion": "0.0.1-SNAPSHOT",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "parentPom": {
+    "parentGroupId": "com.syj.platform",
+    "parentArtifactId": "saas-platform-boot-parent",
+    "parentVersion": "0.0.1-SNAPSHOT",
+    "artifactId": "suiDemoContracts-parent"
+  },
+  "hibernatePom": {
+    "parentGroupId": "org.dddml",
+    "parentArtifactId": "suiDemoContracts-parent",
+    "parentVersion": "0.0.1-SNAPSHOT",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "restfulPom": {
+    "parentGroupId": "org.dddml",
+    "parentArtifactId": "suiDemoContracts-parent",
+    "parentVersion": "0.0.1-SNAPSHOT",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "restfulClientPom": {},
+  "javaSpecializationPackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+    "sourceProjectSubPackageName": "specialization",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+  },
+  "javaSpecializationHibernatePackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+    "sourceProjectSubPackageName": "specialization.hibernate",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+  },
+  "javaSpecializationSpringPackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+    "sourceProjectSubPackageName": "specialization.spring",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+  },
+  "javaToolPackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+    "sourceProjectSubPackageName": "tool",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+  },
+  "javaHibernateToolPackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+    "sourceProjectSubPackageName": "tool.hibernate",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "replacements": [
+      [
+        "\"GeoData.sql\"",
+        "//\"GeoData.sql\""
+      ],
+      [
+        "\"GeoAssocData.sql\"",
+        "//\"GeoAssocData.sql\""
+      ]
+    ],
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+  },
+  "javaHibernateToolHbmPackageCopy": {
+    "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\resources",
+    "sourceProjectSubPackageName": "tool.hibernate.hbm",
+    "testDataSourceReplacementEnabled": false,
+    "serverPortReplacementEnabled": false,
+    "filePattern": "*.xml",
+    "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\resources"
+  },
+  "javaHibernatePackageCopies": [
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\test\\java",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "fileNames": [
+        "InitEntityXmlData.java",
+        "InitEntityJsonData.java"
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\test\\java"
+    },
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\main\\java",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "fileNames": [
+        "InitEntityXmlData.java",
+        "InitEntityJsonData.java"
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\main\\java"
+    },
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+      "sourceProjectSubPackageName": "specialization",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "filePattern": "*.java",
+      "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+    },
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\generated\\java",
+      "sourceProjectSubPackageName": "specialization.json",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "filePattern": "*.java",
+      "targetProjectSrcJavaSubDirectoryPath": "src\\generated\\java"
+    }
+  ],
+  "javaRestfulPackageCopies": [
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\main\\java",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "filePattern": "*Application.java",
+      "replacements": [
+        [
+          "Wms",
+          "SuiDemoContracts"
+        ]
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\main\\java"
+    },
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\main\\java",
+      "sourceProjectSubPackageName": "restful.resource",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "fileNames": [
+        "RamlResource.java",
+        "SecurityContextUtil.java"
+      ],
+      "replacements": [
+        [
+          "Wms",
+          "SuiDemoContracts"
+        ],
+        [
+          "dddml-wms-restful-full.raml",
+          "suiDemoContracts-cmd-rest.raml"
+        ]
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\main\\java"
+    },
+    {
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\main\\java",
+      "sourceProjectSubPackageName": "restful",
+      "testDataSourceReplacementEnabled": false,
+      "serverPortReplacementEnabled": false,
+      "fileNames": [
+        "UserGroupAuthority.java"
+      ],
+      "replacements": [
+        [
+          "Wms",
+          "SuiDemoContracts"
+        ]
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\main\\java"
+    },
+    {
+      "isAutoPackagePathDisabled": true,
+      "sourceProjectSrcJavaSubDirectoryPath": "src\\main\\resources",
+      "testDataSourceReplacementEnabled": true,
+      "serverPortReplacementEnabled": true,
+      "filePattern": "*application.*",
+      "replacements": [
+        [
+          "Wms",
+          "SuiDemoContracts"
+        ]
+      ],
+      "excludedFileNames": [
+        "application.yml"
+      ],
+      "targetProjectSrcJavaSubDirectoryPath": "src\\main\\resources"
+    }
+  ],
+  "dotNetSpecializationDirectoryCopy": {
+    "sourceProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\Dddml.Wms.HttpServices.Client",
+    "sourceProjectSubDirectoryPath": "Specialization"
+  },
+  "javaEntityIdConstObjects": {
+    "entityNamePattern": ".*Type$",
+    "entityNames": [
+      "Uom",
+      "ProductPricePurpose",
+      "StatusItem",
+      "Enumeration"
+    ]
+  },
+  "testDataSource": {
+    "jdbcUrl": "jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false",
+    "username": "root",
+    "password": "123456"
+  },
+  "serverPort": 1023
+}

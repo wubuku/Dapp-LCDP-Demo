@@ -1,0 +1,3634 @@
+#%RAML 1.0
+title: suidemocontracts-cmd-rest
+description: suidemocontracts-cmd-rest
+version: 0.0.1-SNAPSHOT
+baseUri: api/
+protocols: [HTTP]
+mediaType: [application/json]
+types: 
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto.CreateOrderDto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      id: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+      createOrderItemCommands: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.OrderItemCommand.CreateOrderItem
+
+  org.dddml.suidemocontracts.domain.product.ProductStateDto: 
+    type: object
+    properties: 
+      productId: 
+        type: string
+        required: false
+      name: 
+        type: string
+        required: false
+      unitPrice: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+  org.dddml.suidemocontracts.domain.daysummary.DaySummaryStateDto: 
+    type: object
+    properties: 
+      day: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      description: 
+        type: string
+        required: false
+      metadata: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      optionalData: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+      arrayData: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+  org.dddml.suidemocontracts.domain.order.OrderItemCommand.CreateOrderItem: 
+    type: object
+  com.syj.raml.model.ref.ResourceTypeRef: 
+    type: object
+    properties: 
+      resourceType: 
+        type: com.syj.raml.model.api.ResourceType
+        required: false
+      structuredValue: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      name: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto.MergePatchOrderV2ItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      estimatedShipDate: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyEstimatedShipDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      orderId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.UpdateEstimatedShipDate: 
+    type: object
+    properties: 
+      orderId: 
+        type: string
+        required: false
+      estimatedShipDate: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.resources.Resource: 
+    type: object
+    properties: 
+      relativeUri: 
+        type: string
+        required: false
+      displayName: 
+        type: string
+        required: false
+      description: 
+        type: string
+        required: false
+      uriParameters: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      type: 
+        type: com.syj.raml.model.ref.ResourceTypeRef
+        required: false
+      securedBy: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.SecuritySchemeRef
+
+      is: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.TraitRef
+
+      methods: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.resources.RamlMethod
+
+      resources: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.resources.Resource
+
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  com.syj.raml.model.datamodel.TypeDeclaration: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      displayName: 
+        type: string
+        required: false
+      type: 
+        type: string
+        required: false
+      parentTypes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      defaultValue: 
+        type: string
+        required: false
+      examples: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.ExampleSpec
+
+      required: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      description: 
+        type: string
+        required: false
+      facets: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      id: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      stereotype: 
+        type: string
+        required: false
+      ref: 
+        type: string
+        required: false
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.product.CreateOrMergePatchProductDto.CreateProductDto: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      unitPrice: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyNameRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyUnitPriceRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.resources.Response: 
+    type: object
+    properties: 
+      code: 
+        type: string
+        required: false
+      description: 
+        type: string
+        required: false
+      headers: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      body: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  com.syj.raml.model.ref.AnnotationRef: 
+    type: object
+    properties: 
+      annotation: 
+        type: com.syj.raml.model.datamodel.TypeDeclaration
+        required: false
+      structuredValue: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      name: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.UpdateItemQuantity: 
+    type: object
+    properties: 
+      orderId: 
+        type: string
+        required: false
+      productId: 
+        type: string
+        required: false
+      quantity: 
+        type: number
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto.MergePatchDaySummaryDto: 
+    type: object
+    properties: 
+      description: 
+        type: string
+        required: false
+      metadata: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      optionalData: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      arrayData: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      isPropertyDescriptionRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyMetadataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyArrayDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyOptionalDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      day: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.api.Raml: 
+    type: object
+    properties: 
+      ramlVersion: 
+        type: string
+        required: false
+      title: 
+        type: string
+        required: false
+      description: 
+        type: string
+        required: false
+      version: 
+        type: string
+        required: false
+      baseUri: 
+        type: string
+        required: false
+      protocols: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      mediaType: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      documentation: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.DocumentationItem
+
+      baseUriParameters: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      resources: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.resources.Resource
+
+      securedBy: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.SecuritySchemeRef
+
+      types: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      annotationTypes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      traits: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.Trait
+
+      resourceTypes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.ResourceType
+
+      securitySchemes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.SecurityScheme
+
+      uses: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.Library
+
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto: 
+    type: object
+    properties: 
+      expirationDate: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyExpirationDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.resources.RamlMethod: 
+    type: object
+    properties: 
+      method: 
+        type: string
+        required: false
+      displayName: 
+        type: string
+        required: false
+      description: 
+        type: string
+        required: false
+      body: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      protocols: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      is: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.TraitRef
+
+      securedBy: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.SecuritySchemeRef
+
+      queryParameters: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      headers: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      queryString: 
+        type: com.syj.raml.model.datamodel.TypeDeclaration
+        required: false
+      responses: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.resources.Response
+
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.domainname.DomainNameId: 
+    type: object
+    properties: 
+      topLevelDomain: 
+        type: string
+        required: false
+      secondLevelDomain: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto.CreateDaySummaryDto: 
+    type: object
+    properties: 
+      description: 
+        type: string
+        required: false
+      metadata: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      optionalData: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      arrayData: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      isPropertyDescriptionRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyMetadataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyArrayDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyOptionalDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      day: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto.CreateOrderItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.datamodel.ExampleSpec: 
+    type: object
+    properties: 
+      value: 
+        type: string
+        required: false
+      name: 
+        type: string
+        required: false
+      structuredValue: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto.MergePatchDomainNameDto: 
+    type: object
+    properties: 
+      expirationDate: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyExpirationDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.specialization.PropertyMetadataDto: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      typeName: 
+        type: string
+        required: false
+      isBasicType: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      declaringObjectName: 
+        type: string
+        required: false
+      displayName: 
+        type: string
+        required: false
+      description: 
+        type: string
+        required: false
+      length: 
+        type: number
+        required: false
+      genericTypeName: 
+        type: string
+        required: false
+      referenceTypeName: 
+        type: string
+        required: false
+      referenceName: 
+        type: string
+        required: false
+      itemTypeName: 
+        type: string
+        required: false
+      inverseOf: 
+        type: string
+        required: false
+      isDerived: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isTransient: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isHoisted: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReallyFlattened: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      sourceChainingName: 
+        type: string
+        required: false
+      originalPropertyName: 
+        type: string
+        required: false
+      isNullableType: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isDiscriminator: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedProperty: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyVersion: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyDeleted: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyActive: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyCreatedBy: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyCreatedAt: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyUpdatedBy: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReservedPropertyUpdatedAt: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isId: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isGlobalId: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isOuterId: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isFilteringProperty: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      derivedFrom: 
+        type: string
+        required: false
+      isCollectionProperty: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isReferenceIdProperty: 
+        type: boolean
+        required: false
+        enum: [true, false]
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.RemoveItem: 
+    type: object
+    properties: 
+      orderId: 
+        type: string
+        required: false
+      productId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.domainname.DomainNameEvent: 
+    type: object
+    properties: 
+      commandId: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      version: 
+        type: number
+        required: false
+  org.dddml.suidemocontracts.domain.domainname.DomainNameStateDto: 
+    type: object
+    properties: 
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      expirationDate: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+  org.dddml.suidemocontracts.domain.order.OrderStateDto: 
+    type: object
+    properties: 
+      id: 
+        type: string
+        required: false
+      totalAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.OrderItemStateDto
+
+  org.dddml.suidemocontracts.domain.order.OrderItemStateDto: 
+    type: object
+    properties: 
+      productId: 
+        type: string
+        required: false
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      orderId: 
+        type: string
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+  com.syj.raml.model.api.SecurityScheme: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto: 
+    type: object
+    properties: 
+      description: 
+        type: string
+        required: false
+      metadata: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      optionalData: 
+        type: array
+        required: false
+        items: 
+          type: number
+
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      arrayData: 
+        type: array
+        required: false
+        items: 
+          type: string
+
+      isPropertyDescriptionRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyMetadataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyArrayDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyOptionalDataRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      day: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.api.ResourceType: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      usage: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto.CreateOrderV2Dto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      estimatedShipDate: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyEstimatedShipDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      orderId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+      createOrderV2ItemCommands: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemCommand.CreateOrderV2Item
+
+  org.dddml.suidemocontracts.domain.Month: 
+    type: object
+    properties: 
+      year: 
+        type: org.dddml.suidemocontracts.domain.Year
+        required: false
+      number: 
+        type: number
+        required: false
+      isLeap: 
+        type: boolean
+        required: false
+        enum: [true, false]
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      id: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto.CreateDomainNameDto: 
+    type: object
+    properties: 
+      expirationDate: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyExpirationDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.Day: 
+    type: object
+    properties: 
+      month: 
+        type: org.dddml.suidemocontracts.domain.Month
+        required: false
+      number: 
+        type: number
+        required: false
+      timeZone: 
+        type: string
+        required: false
+  com.syj.raml.model.ref.TraitRef: 
+    type: object
+    properties: 
+      trait: 
+        type: com.syj.raml.model.api.Trait
+        required: false
+      structuredValue: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      name: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.domainname.DomainNameCommands.Renew: 
+    type: object
+    properties: 
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      renewPeriod: 
+        type: number
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2StateDto: 
+    type: object
+    properties: 
+      orderId: 
+        type: string
+        required: false
+      totalAmount: 
+        type: number
+        required: false
+      estimatedShipDate: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemStateDto
+
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemStateDto: 
+    type: object
+    properties: 
+      productId: 
+        type: string
+        required: false
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      version: 
+        type: number
+        required: false
+      orderV2OrderId: 
+        type: string
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      updatedBy: 
+        type: string
+        required: false
+      updatedAt: 
+        type: datetime
+        required: false
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto.MergePatchOrderV2Dto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      estimatedShipDate: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyEstimatedShipDateRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      orderId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+      orderV2ItemCommands: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemCommand
+
+  org.dddml.suidemocontracts.domain.order.OrderEvent: 
+    type: object
+    properties: 
+      commandId: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      id: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+  com.syj.raml.model.api.DocumentationItem: 
+    type: object
+    properties: 
+      title: 
+        type: string
+        required: false
+      content: 
+        type: string
+        required: false
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  org.dddml.suidemocontracts.domain.domainname.DomainNameCommands.Register: 
+    type: object
+    properties: 
+      domainNameId: 
+        type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+        required: false
+      registrationPeriod: 
+        type: number
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2Event: 
+    type: object
+    properties: 
+      commandId: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      orderId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+  com.syj.raml.model.api.Trait: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      usage: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.order.OrderItemCommand: 
+    type: object
+    properties: 
+      productId: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.order.OrderCommands.UpdateItemQuantity: 
+    type: object
+    properties: 
+      id: 
+        type: string
+        required: false
+      productId: 
+        type: string
+        required: false
+      quantity: 
+        type: number
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemCommand: 
+    type: object
+    properties: 
+      productId: 
+        type: string
+        required: false
+  com.syj.raml.model.ref.SecuritySchemeRef: 
+    type: object
+    properties: 
+      securityScheme: 
+        type: com.syj.raml.model.api.SecurityScheme
+        required: false
+      structuredValue: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      name: 
+        type: string
+        required: false
+  org.dddml.suidemocontracts.domain.daysummary.DaySummaryEvent: 
+    type: object
+    properties: 
+      commandId: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      day: 
+        type: org.dddml.suidemocontracts.domain.Day
+        required: false
+      version: 
+        type: number
+        required: false
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.product.ProductEvent: 
+    type: object
+    properties: 
+      commandId: 
+        type: string
+        required: false
+      createdAt: 
+        type: datetime
+        required: false
+      createdBy: 
+        type: string
+        required: false
+      productId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto.MergePatchOrderDto: 
+    type: object
+    properties: 
+      totalAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      items: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto
+
+      isPropertyTotalAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      id: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+      orderItemCommands: 
+        type: array
+        required: false
+        items: 
+          type: org.dddml.suidemocontracts.domain.order.OrderItemCommand
+
+  org.dddml.suidemocontracts.domain.order.OrderCommands.RemoveItem: 
+    type: object
+    properties: 
+      id: 
+        type: string
+        required: false
+      productId: 
+        type: string
+        required: false
+      version: 
+        type: number
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.datamodel.TypeInstanceProperty: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      value: 
+        type: com.syj.raml.model.datamodel.TypeInstance
+        required: false
+      values: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeInstance
+
+      array: 
+        type: boolean
+        required: false
+        enum: [true, false]
+  org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto.CreateOrderV2ItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  com.syj.raml.model.api.Library: 
+    type: object
+    properties: 
+      name: 
+        type: string
+        required: false
+      usage: 
+        type: string
+        required: false
+      types: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      annotationTypes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeDeclaration
+
+      traits: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.Trait
+
+      resourceTypes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.ResourceType
+
+      securitySchemes: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.SecurityScheme
+
+      uses: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.api.Library
+
+      annotations: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.ref.AnnotationRef
+
+  com.syj.raml.model.datamodel.TypeInstance: 
+    type: object
+    properties: 
+      properties: 
+        type: array
+        required: false
+        items: 
+          type: com.syj.raml.model.datamodel.TypeInstanceProperty
+
+      scalar: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      value: 
+        type: any
+        required: false
+  org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto.MergePatchOrderItemDto: 
+    type: object
+    properties: 
+      quantity: 
+        type: number
+        required: false
+      itemAmount: 
+        type: number
+        required: false
+      active: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyQuantityRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyItemAmountRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      isPropertyActiveRemoved: 
+        type: boolean
+        required: false
+        enum: [true, false]
+      productId: 
+        type: string
+        required: false
+      commandType: 
+        type: string
+        required: false
+      commandId: 
+        type: string
+        required: false
+      requesterId: 
+        type: string
+        required: false
+      commandContext: 
+        type: object
+        required: false
+        properties: 
+          /[a-zA-Z_$]+[a-zA-Z_$0-9]*/: 
+            type: any
+        additionalProperties: true
+  org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemCommand.CreateOrderV2Item: 
+    type: object
+  org.dddml.suidemocontracts.domain.Year: 
+    type: object
+    properties: 
+      number: 
+        type: number
+        required: false
+      calendar: 
+        type: string
+        required: false
+/DaySummaries: 
+  displayName: Day Summary Resource
+  description: Day Summary Resource
+  get: 
+    displayName: 查询
+    description: 查询 DaySummaries
+    queryParameters: 
+      sort: 
+        displayName: sort
+        type: string
+        required: false
+        description: sort
+      fields: 
+        displayName: fields
+        type: string
+        required: false
+        description: fields
+      firstResult: 
+        displayName: firstResult
+        type: number
+        required: true
+        description: firstResult
+      maxResults: 
+        displayName: maxResults
+        type: number
+        required: true
+        description: maxResults
+      filter: 
+        displayName: filter
+        type: string
+        required: false
+        description: filter
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: array
+            items: 
+              type: org.dddml.suidemocontracts.domain.daysummary.DaySummaryStateDto
+
+  post: 
+    displayName: 新建
+    description: 新建 DaySummary
+    body: 
+      application/json: 
+        displayName: value
+        type: org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto.CreateDaySummaryDto
+        required: true
+        description: value
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: org.dddml.suidemocontracts.domain.Day
+  /{day}: 
+    uriParameters: 
+      day: 
+        displayName: day
+        type: string
+        required: true
+        description: day
+    get: 
+      displayName: 查看
+      description: 通过 Id 获取单个 DaySummary
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: org.dddml.suidemocontracts.domain.daysummary.DaySummaryStateDto
+    put: 
+      displayName: 创建 or 修改
+      description: 创建 or 修改 DaySummary
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    delete: 
+      displayName: 删除
+      description: 删除 DaySummary
+      queryParameters: 
+        commandId: 
+          displayName: commandId
+          type: string
+          required: false
+          description: commandId
+        version: 
+          displayName: version
+          type: number
+          required: false
+          description: version
+        requesterId: 
+          displayName: requesterId
+          type: string
+          required: false
+          description: requesterId
+      responses: 
+        200: 
+    patch: 
+      displayName: 修改
+      description: 修改 DaySummary
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.daysummary.CreateOrMergePatchDaySummaryDto.MergePatchDaySummaryDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    /_historyStates: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get History State
+          description: Get History State
+          queryParameters: 
+            fields: 
+              displayName: fields
+              type: string
+              required: false
+              description: fields
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.daysummary.DaySummaryStateDto
+    /_events: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get Event
+          description: Get Event
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.daysummary.DaySummaryEvent
+  /_count: 
+    get: 
+      displayName: Get Count
+      description: Get Count
+      queryParameters: 
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: number
+  /_page: 
+    get: 
+      displayName: 查询
+      description: 分页查询 DaySummaries
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+        page: 
+          displayName: page
+          type: number
+          required: true
+          description: page
+        size: 
+          displayName: size
+          type: number
+          required: true
+          description: size
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: object
+              properties: 
+                content: 
+                  type: array
+                  required: false
+                  items: 
+                    type: org.dddml.suidemocontracts.domain.daysummary.DaySummaryStateDto
+
+                number: 
+                  type: number
+                  required: false
+                size: 
+                  type: number
+                  required: false
+                totalElements: 
+                  type: number
+                  required: false
+  /_metadata: 
+    /filteringFields: 
+      get: 
+        displayName: Get Metadata Filtering Fields
+        description: Get Metadata Filtering Fields
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.specialization.PropertyMetadataDto
+
+/DomainNames: 
+  displayName: Domain Name Resource
+  description: Domain Name Resource
+  get: 
+    displayName: 查询
+    description: 查询 DomainNames
+    queryParameters: 
+      sort: 
+        displayName: sort
+        type: string
+        required: false
+        description: sort
+      fields: 
+        displayName: fields
+        type: string
+        required: false
+        description: fields
+      firstResult: 
+        displayName: firstResult
+        type: number
+        required: true
+        description: firstResult
+      maxResults: 
+        displayName: maxResults
+        type: number
+        required: true
+        description: maxResults
+      filter: 
+        displayName: filter
+        type: string
+        required: false
+        description: filter
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: array
+            items: 
+              type: org.dddml.suidemocontracts.domain.domainname.DomainNameStateDto
+
+  post: 
+    displayName: 新建
+    description: 新建 DomainName
+    body: 
+      application/json: 
+        displayName: value
+        type: org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto.CreateDomainNameDto
+        required: true
+        description: value
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: org.dddml.suidemocontracts.domain.domainname.DomainNameId
+  /{domainNameId}: 
+    uriParameters: 
+      domainNameId: 
+        displayName: domainNameId
+        type: string
+        required: true
+        description: domainNameId
+    get: 
+      displayName: 查看
+      description: 通过 Id 获取单个 DomainName
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: org.dddml.suidemocontracts.domain.domainname.DomainNameStateDto
+    put: 
+      displayName: 创建 or 修改
+      description: 创建 or 修改 DomainName
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    delete: 
+      displayName: 删除
+      description: 删除 DomainName
+      queryParameters: 
+        commandId: 
+          displayName: commandId
+          type: string
+          required: false
+          description: commandId
+        version: 
+          displayName: version
+          type: number
+          required: false
+          description: version
+        requesterId: 
+          displayName: requesterId
+          type: string
+          required: false
+          description: requesterId
+      responses: 
+        200: 
+    patch: 
+      displayName: 修改
+      description: 修改 DomainName
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.domainname.CreateOrMergePatchDomainNameDto.MergePatchDomainNameDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    /_commands: 
+      /Register: 
+        put: 
+          displayName: Register
+          description: Register
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.domainname.DomainNameCommands.Register
+              required: true
+              description: content
+          responses: 
+            200: 
+      /Renew: 
+        put: 
+          displayName: Renew
+          description: Renew
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.domainname.DomainNameCommands.Renew
+              required: true
+              description: content
+          responses: 
+            200: 
+    /_historyStates: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get History State
+          description: Get History State
+          queryParameters: 
+            fields: 
+              displayName: fields
+              type: string
+              required: false
+              description: fields
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.domainname.DomainNameStateDto
+    /_events: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get Event
+          description: Get Event
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.domainname.DomainNameEvent
+  /_count: 
+    get: 
+      displayName: Get Count
+      description: Get Count
+      queryParameters: 
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: number
+  /_page: 
+    get: 
+      displayName: 查询
+      description: 分页查询 DomainNames
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+        page: 
+          displayName: page
+          type: number
+          required: true
+          description: page
+        size: 
+          displayName: size
+          type: number
+          required: true
+          description: size
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: object
+              properties: 
+                content: 
+                  type: array
+                  required: false
+                  items: 
+                    type: org.dddml.suidemocontracts.domain.domainname.DomainNameStateDto
+
+                number: 
+                  type: number
+                  required: false
+                size: 
+                  type: number
+                  required: false
+                totalElements: 
+                  type: number
+                  required: false
+  /_metadata: 
+    /filteringFields: 
+      get: 
+        displayName: Get Metadata Filtering Fields
+        description: Get Metadata Filtering Fields
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.specialization.PropertyMetadataDto
+
+/OrderV2s: 
+  displayName: OrderV2Resource
+  description: OrderV2Resource
+  get: 
+    displayName: 查询
+    description: 查询 OrderV2s
+    queryParameters: 
+      sort: 
+        displayName: sort
+        type: string
+        required: false
+        description: sort
+      fields: 
+        displayName: fields
+        type: string
+        required: false
+        description: fields
+      firstResult: 
+        displayName: firstResult
+        type: number
+        required: true
+        description: firstResult
+      maxResults: 
+        displayName: maxResults
+        type: number
+        required: true
+        description: maxResults
+      filter: 
+        displayName: filter
+        type: string
+        required: false
+        description: filter
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: array
+            items: 
+              type: org.dddml.suidemocontracts.domain.orderv2.OrderV2StateDto
+
+  post: 
+    displayName: 新建
+    description: 新建 OrderV2
+    body: 
+      application/json: 
+        displayName: value
+        type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto.CreateOrderV2Dto
+        required: true
+        description: value
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: string
+  /{orderId}: 
+    uriParameters: 
+      orderId: 
+        displayName: orderId
+        type: string
+        required: true
+        description: orderId
+    get: 
+      displayName: 查看
+      description: 通过 Id 获取单个 OrderV2
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: org.dddml.suidemocontracts.domain.orderv2.OrderV2StateDto
+    put: 
+      displayName: 创建 or 修改
+      description: 创建 or 修改 OrderV2
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto
+          required: true
+          description: value
+      responses: 
+        200: 
+    delete: 
+      displayName: 删除
+      description: 删除 OrderV2
+      queryParameters: 
+        commandId: 
+          displayName: commandId
+          type: string
+          required: false
+          description: commandId
+        version: 
+          displayName: version
+          type: number
+          required: false
+          description: version
+        requesterId: 
+          displayName: requesterId
+          type: string
+          required: false
+          description: requesterId
+      responses: 
+        200: 
+    patch: 
+      displayName: 修改
+      description: 修改 OrderV2
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2Dto.MergePatchOrderV2Dto
+          required: true
+          description: value
+      responses: 
+        200: 
+    /_commands: 
+      /UpdateItemQuantity: 
+        put: 
+          displayName: Update Item Quantity
+          description: Update Item Quantity
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.UpdateItemQuantity
+              required: true
+              description: content
+          responses: 
+            200: 
+      /RemoveItem: 
+        put: 
+          displayName: Remove Item
+          description: Remove Item
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.RemoveItem
+              required: true
+              description: content
+          responses: 
+            200: 
+      /UpdateEstimatedShipDate: 
+        put: 
+          displayName: Update Estimated Ship Date
+          description: Update Estimated Ship Date
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.orderv2.OrderV2Commands.UpdateEstimatedShipDate
+              required: true
+              description: content
+          responses: 
+            200: 
+    /_historyStates: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get History State
+          description: Get History State
+          queryParameters: 
+            fields: 
+              displayName: fields
+              type: string
+              required: false
+              description: fields
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.orderv2.OrderV2StateDto
+    /_events: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get Event
+          description: Get Event
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.orderv2.OrderV2Event
+    /OrderV2Items: 
+      get: 
+        displayName: OrderV2Item List
+        description: OrderV2Item List
+        queryParameters: 
+          sort: 
+            displayName: sort
+            type: string
+            required: false
+            description: sort
+          fields: 
+            displayName: fields
+            type: string
+            required: false
+            description: fields
+          filter: 
+            displayName: filter
+            type: string
+            required: false
+            description: filter
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemStateDto
+
+      post: 
+        displayName: 新建
+        description: 新建 OrderV2Item
+        body: 
+          application/json: 
+            displayName: body
+            type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto.CreateOrderV2ItemDto
+            required: true
+            description: body
+        queryParameters: 
+          commandId: 
+            displayName: commandId
+            type: string
+            required: false
+            description: commandId
+          version: 
+            displayName: version
+            type: number
+            required: false
+            description: version
+          requesterId: 
+            displayName: requesterId
+            type: string
+            required: false
+            description: requesterId
+        responses: 
+          200: 
+      /{productId}: 
+        uriParameters: 
+          productId: 
+            displayName: productId
+            type: string
+            required: true
+            description: productId
+        delete: 
+          displayName: 移除
+          description: 移除 OrderV2Item
+          queryParameters: 
+            commandId: 
+              displayName: commandId
+              type: string
+              required: false
+              description: commandId
+            version: 
+              displayName: version
+              type: number
+              required: false
+              description: version
+            requesterId: 
+              displayName: requesterId
+              type: string
+              required: false
+              description: requesterId
+          responses: 
+            200: 
+        put: 
+          displayName: 创建 or 修改
+          description: 创建 or 修改 OrderV2Item
+          body: 
+            application/json: 
+              displayName: body
+              type: org.dddml.suidemocontracts.domain.orderv2.CreateOrMergePatchOrderV2ItemDto.MergePatchOrderV2ItemDto
+              required: true
+              description: body
+          queryParameters: 
+            commandId: 
+              displayName: commandId
+              type: string
+              required: false
+              description: commandId
+            version: 
+              displayName: version
+              type: number
+              required: false
+              description: version
+            requesterId: 
+              displayName: requesterId
+              type: string
+              required: false
+              description: requesterId
+          responses: 
+            200: 
+        get: 
+          displayName: 查看
+          description: 获取指定 ProductId 的 OrderV2Item
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemStateDto
+  /_count: 
+    get: 
+      displayName: Get Count
+      description: Get Count
+      queryParameters: 
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: number
+  /_page: 
+    get: 
+      displayName: 查询
+      description: 分页查询 OrderV2s
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+        page: 
+          displayName: page
+          type: number
+          required: true
+          description: page
+        size: 
+          displayName: size
+          type: number
+          required: true
+          description: size
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: object
+              properties: 
+                content: 
+                  type: array
+                  required: false
+                  items: 
+                    type: org.dddml.suidemocontracts.domain.orderv2.OrderV2StateDto
+
+                number: 
+                  type: number
+                  required: false
+                size: 
+                  type: number
+                  required: false
+                totalElements: 
+                  type: number
+                  required: false
+  /_metadata: 
+    /filteringFields: 
+      get: 
+        displayName: Get Metadata Filtering Fields
+        description: Get Metadata Filtering Fields
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.specialization.PropertyMetadataDto
+
+/Orders: 
+  displayName: Order Resource
+  description: Order Resource
+  get: 
+    displayName: 查询
+    description: 查询 Orders
+    queryParameters: 
+      sort: 
+        displayName: sort
+        type: string
+        required: false
+        description: sort
+      fields: 
+        displayName: fields
+        type: string
+        required: false
+        description: fields
+      firstResult: 
+        displayName: firstResult
+        type: number
+        required: true
+        description: firstResult
+      maxResults: 
+        displayName: maxResults
+        type: number
+        required: true
+        description: maxResults
+      filter: 
+        displayName: filter
+        type: string
+        required: false
+        description: filter
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: array
+            items: 
+              type: org.dddml.suidemocontracts.domain.order.OrderStateDto
+
+  post: 
+    displayName: 新建
+    description: 新建 Order
+    body: 
+      application/json: 
+        displayName: value
+        type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto.CreateOrderDto
+        required: true
+        description: value
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: string
+  /{id}: 
+    uriParameters: 
+      id: 
+        displayName: id
+        type: string
+        required: true
+        description: id
+    get: 
+      displayName: 查看
+      description: 通过 Id 获取单个 Order
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: org.dddml.suidemocontracts.domain.order.OrderStateDto
+    put: 
+      displayName: 创建 or 修改
+      description: 创建 or 修改 Order
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    delete: 
+      displayName: 删除
+      description: 删除 Order
+      queryParameters: 
+        commandId: 
+          displayName: commandId
+          type: string
+          required: false
+          description: commandId
+        version: 
+          displayName: version
+          type: number
+          required: false
+          description: version
+        requesterId: 
+          displayName: requesterId
+          type: string
+          required: false
+          description: requesterId
+      responses: 
+        200: 
+    patch: 
+      displayName: 修改
+      description: 修改 Order
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderDto.MergePatchOrderDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    /OrderItems: 
+      post: 
+        displayName: 新建
+        description: 新建 OrderItem
+        body: 
+          application/json: 
+            displayName: body
+            type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto.CreateOrderItemDto
+            required: true
+            description: body
+        queryParameters: 
+          commandId: 
+            displayName: commandId
+            type: string
+            required: false
+            description: commandId
+          version: 
+            displayName: version
+            type: number
+            required: false
+            description: version
+          requesterId: 
+            displayName: requesterId
+            type: string
+            required: false
+            description: requesterId
+        responses: 
+          200: 
+      get: 
+        displayName: OrderItem List
+        description: OrderItem List
+        queryParameters: 
+          sort: 
+            displayName: sort
+            type: string
+            required: false
+            description: sort
+          fields: 
+            displayName: fields
+            type: string
+            required: false
+            description: fields
+          filter: 
+            displayName: filter
+            type: string
+            required: false
+            description: filter
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.domain.order.OrderItemStateDto
+
+      /{productId}: 
+        uriParameters: 
+          productId: 
+            displayName: productId
+            type: string
+            required: true
+            description: productId
+        delete: 
+          displayName: 移除
+          description: 移除 OrderItem
+          queryParameters: 
+            commandId: 
+              displayName: commandId
+              type: string
+              required: false
+              description: commandId
+            version: 
+              displayName: version
+              type: number
+              required: false
+              description: version
+            requesterId: 
+              displayName: requesterId
+              type: string
+              required: false
+              description: requesterId
+          responses: 
+            200: 
+        get: 
+          displayName: 查看
+          description: 获取指定 ProductId 的 OrderItem
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.order.OrderItemStateDto
+        put: 
+          displayName: 创建 or 修改
+          description: 创建 or 修改 OrderItem
+          body: 
+            application/json: 
+              displayName: body
+              type: org.dddml.suidemocontracts.domain.order.CreateOrMergePatchOrderItemDto.MergePatchOrderItemDto
+              required: true
+              description: body
+          queryParameters: 
+            commandId: 
+              displayName: commandId
+              type: string
+              required: false
+              description: commandId
+            version: 
+              displayName: version
+              type: number
+              required: false
+              description: version
+            requesterId: 
+              displayName: requesterId
+              type: string
+              required: false
+              description: requesterId
+          responses: 
+            200: 
+    /_commands: 
+      /UpdateItemQuantity: 
+        put: 
+          displayName: Update Item Quantity
+          description: Update Item Quantity
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.order.OrderCommands.UpdateItemQuantity
+              required: true
+              description: content
+          responses: 
+            200: 
+      /RemoveItem: 
+        put: 
+          displayName: Remove Item
+          description: Remove Item
+          body: 
+            application/json: 
+              displayName: content
+              type: org.dddml.suidemocontracts.domain.order.OrderCommands.RemoveItem
+              required: true
+              description: content
+          responses: 
+            200: 
+    /_historyStates: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get History State
+          description: Get History State
+          queryParameters: 
+            fields: 
+              displayName: fields
+              type: string
+              required: false
+              description: fields
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.order.OrderStateDto
+    /_events: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get Event
+          description: Get Event
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.order.OrderEvent
+  /_count: 
+    get: 
+      displayName: Get Count
+      description: Get Count
+      queryParameters: 
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: number
+  /_page: 
+    get: 
+      displayName: 查询
+      description: 分页查询 Orders
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+        page: 
+          displayName: page
+          type: number
+          required: true
+          description: page
+        size: 
+          displayName: size
+          type: number
+          required: true
+          description: size
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: object
+              properties: 
+                content: 
+                  type: array
+                  required: false
+                  items: 
+                    type: org.dddml.suidemocontracts.domain.order.OrderStateDto
+
+                number: 
+                  type: number
+                  required: false
+                size: 
+                  type: number
+                  required: false
+                totalElements: 
+                  type: number
+                  required: false
+  /_metadata: 
+    /filteringFields: 
+      get: 
+        displayName: Get Metadata Filtering Fields
+        description: Get Metadata Filtering Fields
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.specialization.PropertyMetadataDto
+
+/Products: 
+  displayName: Product Resource
+  description: Product Resource
+  get: 
+    displayName: 查询
+    description: 查询 Products
+    queryParameters: 
+      sort: 
+        displayName: sort
+        type: string
+        required: false
+        description: sort
+      fields: 
+        displayName: fields
+        type: string
+        required: false
+        description: fields
+      firstResult: 
+        displayName: firstResult
+        type: number
+        required: true
+        description: firstResult
+      maxResults: 
+        displayName: maxResults
+        type: number
+        required: true
+        description: maxResults
+      filter: 
+        displayName: filter
+        type: string
+        required: false
+        description: filter
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: array
+            items: 
+              type: org.dddml.suidemocontracts.domain.product.ProductStateDto
+
+  post: 
+    displayName: 新建
+    description: 新建 Product
+    body: 
+      application/json: 
+        displayName: value
+        type: org.dddml.suidemocontracts.domain.product.CreateOrMergePatchProductDto.CreateProductDto
+        required: true
+        description: value
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: string
+  /{productId}: 
+    uriParameters: 
+      productId: 
+        displayName: productId
+        type: string
+        required: true
+        description: productId
+    get: 
+      displayName: 查看
+      description: 通过 Id 获取单个 Product
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: org.dddml.suidemocontracts.domain.product.ProductStateDto
+    put: 
+      displayName: 创建 or 修改
+      description: 创建 or 修改 Product
+      body: 
+        application/json: 
+          displayName: value
+          type: org.dddml.suidemocontracts.domain.product.CreateOrMergePatchProductDto.CreateProductDto
+          required: true
+          description: value
+      responses: 
+        200: 
+    /_historyStates: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get History State
+          description: Get History State
+          queryParameters: 
+            fields: 
+              displayName: fields
+              type: string
+              required: false
+              description: fields
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.product.ProductStateDto
+    /_events: 
+      /{version}: 
+        uriParameters: 
+          version: 
+            displayName: version
+            type: number
+            required: true
+            description: version
+        get: 
+          displayName: Get Event
+          description: Get Event
+          responses: 
+            200: 
+              body: 
+                application/json: 
+                  type: org.dddml.suidemocontracts.domain.product.ProductEvent
+  /_count: 
+    get: 
+      displayName: Get Count
+      description: Get Count
+      queryParameters: 
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: number
+  /_page: 
+    get: 
+      displayName: 查询
+      description: 分页查询 Products
+      queryParameters: 
+        fields: 
+          displayName: fields
+          type: string
+          required: false
+          description: fields
+        page: 
+          displayName: page
+          type: number
+          required: true
+          description: page
+        size: 
+          displayName: size
+          type: number
+          required: true
+          description: size
+        filter: 
+          displayName: filter
+          type: string
+          required: false
+          description: filter
+      responses: 
+        200: 
+          body: 
+            application/json: 
+              type: object
+              properties: 
+                content: 
+                  type: array
+                  required: false
+                  items: 
+                    type: org.dddml.suidemocontracts.domain.product.ProductStateDto
+
+                number: 
+                  type: number
+                  required: false
+                size: 
+                  type: number
+                  required: false
+                totalElements: 
+                  type: number
+                  required: false
+  /_metadata: 
+    /filteringFields: 
+      get: 
+        displayName: Get Metadata Filtering Fields
+        description: Get Metadata Filtering Fields
+        responses: 
+          200: 
+            body: 
+              application/json: 
+                type: array
+                items: 
+                  type: org.dddml.suidemocontracts.specialization.PropertyMetadataDto
+
+/api.json: 
+  get: 
+    displayName: Get Raml Json
+    description: Get Raml Json
+    responses: 
+      200: 
+        body: 
+          application/json: 
+            type: com.syj.raml.model.api.Raml

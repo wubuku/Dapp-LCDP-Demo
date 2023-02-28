@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+  <bean id="domainNameStateRepository" class="org.dddml.suidemocontracts.domain.domainname.hibernate.HibernateDomainNameStateRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="domainNameStateQueryRepository" class="org.dddml.suidemocontracts.domain.domainname.hibernate.HibernateDomainNameStateQueryRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="domainNameEventStore" class="org.dddml.suidemocontracts.domain.domainname.hibernate.HibernateDomainNameEventStore">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="domainNameApplicationService" class="org.dddml.suidemocontracts.domain.domainname.AbstractDomainNameApplicationService$SimpleDomainNameApplicationService">
+    <constructor-arg ref="domainNameEventStore"/>
+    <constructor-arg ref="domainNameStateRepository"/>
+    <constructor-arg ref="domainNameStateQueryRepository"/>
+  </bean>
+
+
+  <bean id="orderItemStateDao" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderItemStateDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderItemEventDao" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderItemEventDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderStateRepository" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderStateRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderStateQueryRepository" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderStateQueryRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderEventStore" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderEventStore">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderApplicationService" class="org.dddml.suidemocontracts.domain.order.AbstractOrderApplicationService$SimpleOrderApplicationService">
+    <constructor-arg ref="orderEventStore"/>
+    <constructor-arg ref="orderStateRepository"/>
+    <constructor-arg ref="orderStateQueryRepository"/>
+  </bean>
+
+
+  <bean id="productStateRepository" class="org.dddml.suidemocontracts.domain.product.hibernate.HibernateProductStateRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="productStateQueryRepository" class="org.dddml.suidemocontracts.domain.product.hibernate.HibernateProductStateQueryRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="productEventStore" class="org.dddml.suidemocontracts.domain.product.hibernate.HibernateProductEventStore">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="productApplicationService" class="org.dddml.suidemocontracts.domain.product.AbstractProductApplicationService$SimpleProductApplicationService">
+    <constructor-arg ref="productEventStore"/>
+    <constructor-arg ref="productStateRepository"/>
+    <constructor-arg ref="productStateQueryRepository"/>
+  </bean>
+
+
+  <bean id="orderV2ItemStateDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemStateDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderV2ItemEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemEventDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderV2StateRepository" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2StateRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderV2StateQueryRepository" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2StateQueryRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="orderV2EventStore" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2EventStore">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderV2ApplicationService" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2ApplicationService$SimpleOrderV2ApplicationService">
+    <constructor-arg ref="orderV2EventStore"/>
+    <constructor-arg ref="orderV2StateRepository"/>
+    <constructor-arg ref="orderV2StateQueryRepository"/>
+  </bean>
+
+
+  <bean id="daySummaryStateRepository" class="org.dddml.suidemocontracts.domain.daysummary.hibernate.HibernateDaySummaryStateRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="daySummaryStateQueryRepository" class="org.dddml.suidemocontracts.domain.daysummary.hibernate.HibernateDaySummaryStateQueryRepository">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
+  </bean>
+
+  <bean id="daySummaryEventStore" class="org.dddml.suidemocontracts.domain.daysummary.hibernate.HibernateDaySummaryEventStore">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="daySummaryApplicationService" class="org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryApplicationService$SimpleDaySummaryApplicationService">
+    <constructor-arg ref="daySummaryEventStore"/>
+    <constructor-arg ref="daySummaryStateRepository"/>
+    <constructor-arg ref="daySummaryStateQueryRepository"/>
+  </bean>
+
+</beans>
+

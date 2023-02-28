@@ -3,10 +3,10 @@
 
 configuration:
 
-  boundedContextName: "Dddml.SuiExample"
+  boundedContextName: "Dddml.SuiDemoContracts"
   
   defaultModule: 
-    name: "Dddml.SuiExample"
+    name: "Dddml.SuiDemoContracts"
   
   isSurrogateIdMandatory: true
   defaultSurrogateId:
@@ -16,6 +16,8 @@ configuration:
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
   baseUri: "/api"
+  
+  databaseNamingConvention: "UnderscoredNamingConvention"
   
   valueObjectBaseTypes:
     "Email": "string"
@@ -74,13 +76,13 @@ configuration:
     ClrHttpServiceSetRequesterIdAttributeEnabled: true
     ClrHttpServiceJsonContractResolver: "Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver"
     ClrHttpServiceJsonConverters: [
-        "Dddml.SuiExample.HttpServices.JsonConverters.LongConverter",
-        "Dddml.SuiExample.HttpServices.JsonConverters.DecimalConverter"]
-    ClrHttpServiceDtoJObjectMapperAssembly: "Dddml.SuiExample.HttpServices"
+        "Dddml.SuiDemoContracts.HttpServices.JsonConverters.LongConverter",
+        "Dddml.SuiDemoContracts.HttpServices.JsonConverters.DecimalConverter"]
+    ClrHttpServiceDtoJObjectMapperAssembly: "Dddml.SuiDemoContracts.HttpServices"
 
     ClrRamlVersion: "0.8"
     ClrRamlClientSubNamespace: "HttpServices.ClientProxies.Raml"
-    ClrRamlClientMainClassName: "DddmlSuiExampleRamlClient"
+    ClrRamlClientMainClassName: "DddmlSuiDemoContractsRamlClient"
 
     TypeScriptJsonUsingCamelCasePropertyName: true
     
@@ -116,8 +118,8 @@ configuration:
     
   java:
   
-    boundedContextPackage: "org.dddml.suiexample"
-    specializationPackage: "org.dddml.suiexample.specialization"
+    boundedContextPackage: "org.dddml.suidemocontracts"
+    specializationPackage: "org.dddml.suidemocontracts.specialization"
     isUsingSeparatedDomainAggregatePackage: true
     defaultUserIdType: "string"
     #JavaSerializationAnnotationTypes: {}
@@ -147,6 +149,7 @@ configuration:
       "u32": "Long"
       "u64": "BigInteger"
       "u128": "BigInteger"
+      #"UID": "String"
 
     typePackages:
       "BigDecimal": "java.math"
@@ -163,7 +166,7 @@ configuration:
       
   php:
   
-    boundedContextNamespace: "Dddml\\SuiExample"
+    boundedContextNamespace: "Dddml\\SuiDemoContracts"
     specializationNamespace: "Dddml"
     defaultUserIdType: "string"
     isUsingSeparatedDomainAggregateNamespace: false
@@ -215,7 +218,7 @@ configuration:
         
   typeScript:
   
-    boundedContextNamespace: "Dddml.SuiExample"
+    boundedContextNamespace: "Dddml.SuiDemoContracts"
     specializationNamespace: "Dddml"
     isUsingSeparatedDomainAggregateNamespace: false
     
@@ -242,7 +245,7 @@ configuration:
   
     hibernateTypes:
       Money:
-        mappingType: "org.dddml.suiexample.domain.hibernate.usertypes.MoneyType"
+        mappingType: "org.dddml.suidemocontracts.domain.hibernate.usertypes.MoneyType"
         propertyNames: ["Amount", "Currency"] 
         propertyTypes: ["decimal", "string"]
       DateTime:
@@ -253,7 +256,7 @@ configuration:
     timestampMappingType: DateTimeUtc
     nHibernateTypes:
       Money:
-        mappingType: "Dddml.SuiExample.Services.Domain.NHibernate.NodaMoneyType, Dddml.SuiExample.Services"
+        mappingType: "Dddml.SuiDemoContracts.Services.Domain.NHibernate.NodaMoneyType, Dddml.SuiDemoContracts.Services"
         propertyNames: ["Amount", "Currency"]
         propertyTypes: ["decimal", "string"]
 

@@ -1,0 +1,180 @@
+package org.dddml.suidemocontracts.domain.orderv2;
+
+import java.util.*;
+import java.math.BigInteger;
+import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
+
+public class OrderV2Commands
+{
+    private OrderV2Commands() {
+    }
+
+    public static class RemoveItem extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+
+        public String getCommandType() {
+            return "RemoveItem";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return this.productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Version
+         */
+        private Long version;
+
+        public Long getVersion() {
+            return this.version;
+        }
+
+        public void setVersion(Long version) {
+            this.version = version;
+        }
+
+    }
+
+    public static class UpdateItemQuantity extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+
+        public String getCommandType() {
+            return "UpdateItemQuantity";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return this.productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Quantity
+         */
+        private BigInteger quantity;
+
+        public BigInteger getQuantity() {
+            return this.quantity;
+        }
+
+        public void setQuantity(BigInteger quantity) {
+            this.quantity = quantity;
+        }
+
+        /**
+         * Version
+         */
+        private Long version;
+
+        public Long getVersion() {
+            return this.version;
+        }
+
+        public void setVersion(Long version) {
+            this.version = version;
+        }
+
+    }
+
+    public static class UpdateEstimatedShipDate extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+
+        public String getCommandType() {
+            return "UpdateEstimatedShipDate";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Estimated Ship Date
+         */
+        private Day estimatedShipDate;
+
+        public Day getEstimatedShipDate() {
+            return this.estimatedShipDate;
+        }
+
+        public void setEstimatedShipDate(Day estimatedShipDate) {
+            this.estimatedShipDate = estimatedShipDate;
+        }
+
+        /**
+         * Version
+         */
+        private Long version;
+
+        public Long getVersion() {
+            return this.version;
+        }
+
+        public void setVersion(Long version) {
+            this.version = version;
+        }
+
+    }
+
+}
+

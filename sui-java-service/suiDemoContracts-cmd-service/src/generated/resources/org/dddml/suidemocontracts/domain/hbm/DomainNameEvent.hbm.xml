@@ -1,0 +1,53 @@
+﻿<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.domainname">
+  
+  <class name="AbstractDomainNameEvent" table="domain_name_event" mutable="false" abstract="true">
+
+	<composite-id name="domainNameEventId" class="org.dddml.suidemocontracts.domain.domainname.DomainNameEventId">
+		<key-property name="domainNameIdTopLevelDomain" ><column name="domain_name_id_top_level_domain" /></key-property>
+		<key-property name="domainNameIdSecondLevelDomain" ><column name="domain_name_id_second_level_domain" /></key-property>
+		<key-property name="version" ><column name="version" /></key-property>
+	</composite-id>
+
+    <discriminator column="event_type" type="string" />
+
+
+    <property name="createdBy" column="created_by"/>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="commandId" column="command_id"/>
+
+        <subclass name="AbstractDomainNameEvent$AbstractDomainNameStateEvent" abstract="true">
+
+	<property name="expirationDate" ><column name="expiration_date" /></property>
+	<property name="active" ><column name="active" /></property>
+
+    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateCreated" discriminator-value="Created">
+    	
+    </subclass>
+
+    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateMergePatched" discriminator-value="MergePatched">
+
+        <property name="isPropertyExpirationDateRemoved" column="is_property_expiration_date_removed"/>
+
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
+
+
+    </subclass>
+
+    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateDeleted" discriminator-value="Deleted">
+
+    </subclass>
+
+
+        </subclass>
+
+  </class>
+  
+</hibernate-mapping>

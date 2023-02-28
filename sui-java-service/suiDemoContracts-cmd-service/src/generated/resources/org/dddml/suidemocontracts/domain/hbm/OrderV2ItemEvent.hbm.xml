@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
+  
+  <class name="AbstractOrderV2ItemEvent" table="order_v2_item_event" mutable="false" abstract="true">
+
+	<composite-id name="orderV2ItemEventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemEventId">
+		<key-property name="orderV2OrderId" ><column name="order_v2_item_id_order_v2_order_id" length="50" /></key-property>
+		<key-property name="productId" ><column name="order_v2_item_id_product_id" length="50" /></key-property>
+		<key-property name="orderV2Version" ><column name="order_v2_version" /></key-property>
+	</composite-id>
+
+    <discriminator column="event_type" type="string" />
+
+
+    <property name="createdBy" column="created_by"/>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="commandId" column="command_id"/>
+
+        <subclass name="AbstractOrderV2ItemEvent$AbstractOrderV2ItemStateEvent" abstract="true">
+
+	<property name="quantity" ><column name="quantity" /></property>
+	<property name="itemAmount" ><column name="item_amount" /></property>
+	<property name="active" ><column name="active" /></property>
+
+    <property name="version" column="version" not-null="true" />
+
+    <subclass name="AbstractOrderV2ItemEvent$SimpleOrderV2ItemStateCreated" discriminator-value="Created">
+    	
+    </subclass>
+
+    <subclass name="AbstractOrderV2ItemEvent$SimpleOrderV2ItemStateMergePatched" discriminator-value="MergePatched">
+
+        <property name="isPropertyQuantityRemoved" column="is_property_quantity_removed"/>
+
+        <property name="isPropertyItemAmountRemoved" column="is_property_item_amount_removed"/>
+
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
+
+
+    </subclass>
+
+    <subclass name="AbstractOrderV2ItemEvent$SimpleOrderV2ItemStateRemoved" discriminator-value="Removed">
+
+    </subclass>
+
+
+        </subclass>
+
+  </class>
+  
+</hibernate-mapping>

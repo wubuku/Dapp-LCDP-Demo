@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
+  
+  <class name="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2State$SimpleOrderV2State" table="order_v2">
+
+	<id name="orderId" length="50" column="order_id"><generator class="assigned"/></id>
+	<version name="version" column="version" type="long" />
+
+	<property name="totalAmount" ><column name="total_amount" /></property>
+	<component name="estimatedShipDate" class="org.dddml.suidemocontracts.domain.Day">
+		<property name="monthYearNumber" ><column name="estimated_ship_date_month_year_number" /></property>
+		<property name="monthYearCalendar" ><column name="estimated_ship_date_month_year_calendar" length="20" /></property>
+		<property name="monthNumber" ><column name="estimated_ship_date_month_number" /></property>
+		<property name="monthIsLeap" ><column name="estimated_ship_date_month_is_leap" /></property>
+		<property name="number" ><column name="estimated_ship_date_number" /></property>
+		<property name="timeZone" ><column name="estimated_ship_date_time_zone" length="20" /></property>
+	</component>
+	<property name="createdBy" ><column name="created_by" /></property>
+	<property name="updatedBy" ><column name="updated_by" /></property>
+	<property name="active" ><column name="active" /></property>
+	<property name="deleted" ><column name="deleted" /></property>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="updatedAt" column="updated_at" />
+
+
+  </class>
+  
+</hibernate-mapping>
+

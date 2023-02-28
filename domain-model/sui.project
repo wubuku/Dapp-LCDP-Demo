@@ -3,6 +3,7 @@ project:
     
   files:
     - "boundedContext.yaml"
+    - "types.yaml"
     - "sui-DomainName.yaml"
     - "sui-Order.yaml"
     - "sui-Product.yaml"

@@ -6,3 +6,15 @@ starcoin-ns-demo
 move-contracts/release
 sui.log.*
 sui_contracts/build/
+sui-java-service/dddml-suidemocontracts.net.sln
+sui-java-service/.idea/
+sui-java-service/suiDemoContracts-parent.iml
+sui-java-service/Dddml.SuiDemoContracts.HttpServices.Client/
+sui-java-service/modules/cmd-api/.idea/
+sui-java-service/**/*.csproj
+sui-java-service/**/*.iml
+sui-java-service/suiDemoContracts-cmd-rest/.idea/
+sui-java-service/suiDemoContracts-cmd-rest/target/
+sui-java-service/*/target/
+sui-java-service/**/*.tc
+sui-java-service/**/*.tt

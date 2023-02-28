@@ -1,0 +1,17 @@
+﻿
+
+
+
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/DomainNameState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/DomainNameEvent.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderEvent.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderItemState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderItemEvent.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/ProductState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderV2State.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderV2Event.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderV2ItemState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/OrderV2ItemEvent.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/DaySummaryState.hbm.xml"/>
+        <mapping resource="org/dddml/suidemocontracts/domain/hbm/DaySummaryEvent.hbm.xml"/>

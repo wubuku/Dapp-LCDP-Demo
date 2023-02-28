@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
+  
+  <class name="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2ItemState$SimpleOrderV2ItemState" table="order_v2_item">
+
+	<composite-id name="orderV2ItemId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemId">
+		<key-property name="orderV2OrderId" ><column name="order_v2_item_id_order_v2_order_id" length="50" /></key-property>
+		<key-property name="productId" ><column name="order_v2_item_id_product_id" length="50" /></key-property>
+	</composite-id>
+	<version name="version" column="version" type="long" />
+
+	<property name="quantity" ><column name="quantity" /></property>
+	<property name="itemAmount" ><column name="item_amount" /></property>
+	<property name="createdBy" ><column name="created_by" /></property>
+	<property name="updatedBy" ><column name="updated_by" /></property>
+	<property name="active" ><column name="active" /></property>
+	<property name="deleted" ><column name="deleted" /></property>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="updatedAt" column="updated_at" />
+
+
+  </class>
+  
+</hibernate-mapping>
+

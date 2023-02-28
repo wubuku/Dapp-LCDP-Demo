@@ -1,0 +1,52 @@
+﻿<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.order">
+  
+  <class name="AbstractOrderEvent" table="order_event" mutable="false" abstract="true">
+
+	<composite-id name="orderEventId" class="org.dddml.suidemocontracts.domain.order.OrderEventId">
+		<key-property name="id" ><column name="id" sql-type="VARCHAR(42)" /></key-property>
+		<key-property name="version" ><column name="version" /></key-property>
+	</composite-id>
+
+    <discriminator column="event_type" type="string" />
+
+
+    <property name="createdBy" column="created_by"/>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="commandId" column="command_id"/>
+
+        <subclass name="AbstractOrderEvent$AbstractOrderStateEvent" abstract="true">
+
+	<property name="totalAmount" ><column name="total_amount" /></property>
+	<property name="active" ><column name="active" /></property>
+
+    <subclass name="AbstractOrderEvent$SimpleOrderStateCreated" discriminator-value="Created">
+    	
+    </subclass>
+
+    <subclass name="AbstractOrderEvent$SimpleOrderStateMergePatched" discriminator-value="MergePatched">
+
+        <property name="isPropertyTotalAmountRemoved" column="is_property_total_amount_removed"/>
+
+        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
+
+
+    </subclass>
+
+    <subclass name="AbstractOrderEvent$SimpleOrderStateDeleted" discriminator-value="Deleted">
+
+    </subclass>
+
+
+        </subclass>
+
+  </class>
+  
+</hibernate-mapping>

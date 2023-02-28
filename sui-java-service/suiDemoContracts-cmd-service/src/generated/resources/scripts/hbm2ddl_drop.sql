@@ -1,0 +1,17 @@
+drop table if exists day_summary;
+drop table if exists day_summary_array_data;
+drop table if exists day_summary_event;
+drop table if exists day_summary_state_event_array_data;
+drop table if exists domain_name;
+drop table if exists domain_name_event;
+drop table if exists HIBERNATE_HELLO;
+drop table if exists hibernate_sequences;
+drop table if exists order_event;
+drop table if exists order_item;
+drop table if exists order_item_event;
+drop table if exists order_T;
+drop table if exists order_v2;
+drop table if exists order_v2_event;
+drop table if exists order_v2_item;
+drop table if exists order_v2_item_event;
+drop table if exists product;

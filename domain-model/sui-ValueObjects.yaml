@@ -5,6 +5,7 @@ valueObjects:
         type: u16
       Calendar:
         type: String
+        length: 20
 
   Month:
     properties:
@@ -23,3 +24,4 @@ valueObjects:
         type: u8
       TimeZone:
         type: String
+        length: 20
