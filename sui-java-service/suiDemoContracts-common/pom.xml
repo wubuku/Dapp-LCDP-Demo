@@ -13,7 +13,7 @@
         <groupId>org.dddml</groupId>
         <artifactId>suidemocontracts-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../suiDemoContracts-parent/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <packaging>jar</packaging>
     <properties>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
@@ -26,6 +26,13 @@
     <property name="createdAt" column="created_at" />
 
     <property name="commandId" column="command_id"/>
+    <property name="commandType" column="command_type" length="50" />
+
+    <subclass name="AbstractDaySummaryEvent$DaySummaryClobEvent" discriminator-value="DaySummaryClobEvent">
+      <property name="LobText" column="lob_text"/>
+      <subclass name="AbstractDaySummaryEvent$DaySummaryCreated" discriminator-value="DaySummaryCreated"/>
+    </subclass>
+
 
         <subclass name="AbstractDaySummaryEvent$AbstractDaySummaryStateEvent" abstract="true">
 

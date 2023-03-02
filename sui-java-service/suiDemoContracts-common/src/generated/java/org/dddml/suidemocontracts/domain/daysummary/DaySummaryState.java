@@ -13,7 +13,7 @@ public interface DaySummaryState
 
     Day getDay();
 
-    String getId();
+    String getSurrogateId();
 
     String getDescription();
 
@@ -40,7 +40,7 @@ public interface DaySummaryState
     interface MutableDaySummaryState extends DaySummaryState {
         void setDay(Day day);
 
-        void setId(String id);
+        void setSurrogateId(String id);
 
         void setDescription(String description);
 

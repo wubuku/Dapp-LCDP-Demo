@@ -22,16 +22,16 @@ public class ProductStateDto
         this.productId = productId;
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId()
+    public String getSurrogateId()
     {
-        return this.id;
+        return this.surrogateId;
     }
 
-    public void setId(String id)
+    public void setSurrogateId(String id)
     {
-        this.id = id;
+        this.surrogateId = id;
     }
 
     private String name;
@@ -162,8 +162,8 @@ public class ProductStateDto
             if (returnedFieldsContains("ProductId")) {
                 dto.setProductId(state.getProductId());
             }
-            if (returnedFieldsContains("Id")) {
-                dto.setId(state.getId());
+            if (returnedFieldsContains("SurrogateId")) {
+                dto.setSurrogateId(state.getSurrogateId());
             }
             if (returnedFieldsContains("Name")) {
                 dto.setName(state.getName());

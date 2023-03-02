@@ -26,16 +26,16 @@ public abstract class AbstractOrderV2CommandDto extends AbstractCommand
     /**
      * Id
      */
-    private String id;
+    private String surrogateId;
 
-    public String getId()
+    public String getSurrogateId()
     {
-        return this.id;
+        return this.surrogateId;
     }
 
-    public void setId(String id)
+    public void setSurrogateId(String id)
     {
-        this.id = id;
+        this.surrogateId = id;
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class AbstractOrderV2CommandDto extends AbstractCommand
 
     public void copyTo(OrderV2Command command) {
         command.setOrderId(this.getOrderId());
-        command.setId(this.getId());
+        command.setSurrogateId(this.getSurrogateId());
         command.setVersion(this.getVersion());
         
         command.setRequesterId(this.getRequesterId());

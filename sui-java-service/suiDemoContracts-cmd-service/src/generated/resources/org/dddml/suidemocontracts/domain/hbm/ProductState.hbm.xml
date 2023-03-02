@@ -10,7 +10,7 @@
 
     <cache usage="read-only"/>
 	<id name="productId" length="20" column="product_id"><generator class="assigned"/></id>
-	<version name="version" column="version" type="long" />
+	<property name="version" column="version" type="long" />
 
 	<property name="name" ><column name="name" /></property>
 	<property name="unitPrice" ><column name="unit_price" /></property>

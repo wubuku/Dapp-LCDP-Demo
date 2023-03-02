@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
@@ -21,6 +21,15 @@
     <property name="createdAt" column="created_at" />
 
     <property name="commandId" column="command_id"/>
+    <property name="commandType" column="command_type" length="50" />
+
+    <subclass name="AbstractOrderEvent$OrderClobEvent" discriminator-value="OrderClobEvent">
+      <property name="LobText" column="lob_text"/>
+      <subclass name="AbstractOrderEvent$OrderCreated" discriminator-value="OrderCreated"/>
+      <subclass name="AbstractOrderEvent$OrderItemRemoved" discriminator-value="OrderItemRemoved"/>
+      <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated"/>
+    </subclass>
+
 
         <subclass name="AbstractOrderEvent$AbstractOrderStateEvent" abstract="true">
 

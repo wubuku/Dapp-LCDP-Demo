@@ -46,14 +46,14 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
         getProductEventId().setVersion(version);
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId() {
-        return this.id;
+    public String getSurrogateId() {
+        return this.surrogateId;
     }
     
-    public void setId(String id) {
-        this.id = id;
+    public void setSurrogateId(String id) {
+        this.surrogateId = id;
     }
 
     public String getCreatedBy()

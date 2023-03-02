@@ -14,7 +14,7 @@ public interface OrderV2State
 
     String getOrderId();
 
-    String getId();
+    String getSurrogateId();
 
     BigInteger getTotalAmount();
 
@@ -39,7 +39,7 @@ public interface OrderV2State
     interface MutableOrderV2State extends OrderV2State {
         void setOrderId(String orderId);
 
-        void setId(String id);
+        void setSurrogateId(String id);
 
         void setTotalAmount(BigInteger totalAmount);
 

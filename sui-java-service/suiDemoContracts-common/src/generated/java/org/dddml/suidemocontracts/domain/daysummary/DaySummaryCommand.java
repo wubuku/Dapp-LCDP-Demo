@@ -13,9 +13,9 @@ public interface DaySummaryCommand extends Command
 
     void setDay(Day day);
 
-    String getId();
+    String getSurrogateId();
 
-    void setId(String id);
+    void setSurrogateId(String id);
 
     Long getVersion();
 

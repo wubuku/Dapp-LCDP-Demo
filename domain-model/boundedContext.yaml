@@ -93,9 +93,11 @@ configuration:
     # --------------------------------------------------------------
     # Enable Message-based Commands for all Internal Methods
     InternalMethodMessagingCommandEnabled: true
+
     # --------------------------------------------------------------
     AutoAggregateMethodJavaDefaultLogicEnabled: true
     AutoGeneratingCrUDCommandsDisabled: true
+    OptimisticLockingVersionDisabled: true
     JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
   sui:

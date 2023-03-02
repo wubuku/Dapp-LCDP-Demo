@@ -21,16 +21,16 @@ public class DaySummaryStateDto
         this.day = day;
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId()
+    public String getSurrogateId()
     {
-        return this.id;
+        return this.surrogateId;
     }
 
-    public void setId(String id)
+    public void setSurrogateId(String id)
     {
-        this.id = id;
+        this.surrogateId = id;
     }
 
     private String description;
@@ -183,8 +183,8 @@ public class DaySummaryStateDto
             if (returnedFieldsContains("Day")) {
                 dto.setDay(state.getDay());
             }
-            if (returnedFieldsContains("Id")) {
-                dto.setId(state.getId());
+            if (returnedFieldsContains("SurrogateId")) {
+                dto.setSurrogateId(state.getSurrogateId());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

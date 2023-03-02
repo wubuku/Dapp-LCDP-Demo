@@ -14,7 +14,7 @@ public interface ProductState
 
     String getProductId();
 
-    String getId();
+    String getSurrogateId();
 
     String getName();
 
@@ -37,7 +37,7 @@ public interface ProductState
     interface MutableProductState extends ProductState {
         void setProductId(String productId);
 
-        void setId(String id);
+        void setSurrogateId(String id);
 
         void setName(String name);
 

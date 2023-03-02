@@ -20,16 +20,16 @@ public abstract class AbstractDaySummaryCommand extends AbstractCommand implemen
         this.day = day;
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId()
+    public String getSurrogateId()
     {
-        return this.id;
+        return this.surrogateId;
     }
 
-    public void setId(String id)
+    public void setSurrogateId(String id)
     {
-        this.id = id;
+        this.surrogateId = id;
     }
 
     private Long version;

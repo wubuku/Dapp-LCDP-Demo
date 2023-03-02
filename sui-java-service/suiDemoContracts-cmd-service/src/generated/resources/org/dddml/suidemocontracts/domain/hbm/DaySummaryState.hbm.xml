@@ -16,7 +16,7 @@
 		<key-property name="number" ><column name="day_number" /></key-property>
 		<key-property name="timeZone" ><column name="day_time_zone" length="20" /></key-property>
 	</composite-id>
-	<version name="version" column="version" type="long" />
+	<property name="version" column="version" type="long" />
 
 	<property name="description" ><column name="description" /></property>
 	<property name="metadata" ><column name="metadata" /></property>

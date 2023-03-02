@@ -19,14 +19,14 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.orderId = orderId;
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId() {
-        return this.id;
+    public String getSurrogateId() {
+        return this.surrogateId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSurrogateId(String id) {
+        this.surrogateId = id;
     }
 
     private BigInteger totalAmount;

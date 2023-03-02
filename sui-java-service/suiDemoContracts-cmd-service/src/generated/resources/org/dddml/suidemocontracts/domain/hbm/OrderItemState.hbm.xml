@@ -12,7 +12,7 @@
 		<key-property name="orderId" ><column name="order_item_id_order_id" sql-type="VARCHAR(42)" /></key-property>
 		<key-property name="productId" ><column name="order_item_id_product_id" length="50" /></key-property>
 	</composite-id>
-	<version name="version" column="version" type="long" />
+	<property name="version" column="version" type="long" />
 
 	<property name="quantity" ><column name="quantity" /></property>
 	<property name="itemAmount" ><column name="item_amount" /></property>

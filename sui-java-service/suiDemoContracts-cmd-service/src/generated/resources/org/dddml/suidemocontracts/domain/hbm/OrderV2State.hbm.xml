@@ -9,7 +9,7 @@
   <class name="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2State$SimpleOrderV2State" table="order_v2">
 
 	<id name="orderId" length="50" column="order_id"><generator class="assigned"/></id>
-	<version name="version" column="version" type="long" />
+	<property name="version" column="version" type="long" />
 
 	<property name="totalAmount" ><column name="total_amount" /></property>
 	<component name="estimatedShipDate" class="org.dddml.suidemocontracts.domain.Day">

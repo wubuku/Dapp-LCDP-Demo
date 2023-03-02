@@ -14,9 +14,9 @@ public interface DomainNameCommand extends Command
 
     void setDomainNameId(DomainNameId domainNameId);
 
-    String getId();
+    String getSurrogateId();
 
-    void setId(String id);
+    void setSurrogateId(String id);
 
     Long getVersion();
 

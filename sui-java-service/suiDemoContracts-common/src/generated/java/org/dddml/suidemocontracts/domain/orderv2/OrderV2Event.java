@@ -24,9 +24,9 @@ public interface OrderV2Event extends Event {
     
     //void setVersion(Long version);
 
-    String getId();
+    String getSurrogateId();
     
-    //void setId(String id);
+    //void setSurrogateId(String id);
 
     String getCreatedBy();
 

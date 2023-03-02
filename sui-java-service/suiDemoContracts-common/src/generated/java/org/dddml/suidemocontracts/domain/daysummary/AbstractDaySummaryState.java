@@ -18,14 +18,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.day = day;
     }
 
-    private String id;
+    private String surrogateId;
 
-    public String getId() {
-        return this.id;
+    public String getSurrogateId() {
+        return this.surrogateId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setSurrogateId(String id) {
+        this.surrogateId = id;
     }
 
     private String description;
