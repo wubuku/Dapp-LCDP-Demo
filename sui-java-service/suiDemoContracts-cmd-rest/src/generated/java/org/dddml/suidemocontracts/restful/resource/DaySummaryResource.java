@@ -161,87 +161,19 @@ public class DaySummaryResource {
     }
 
 
-    /**
-     * 新建.
-     * 新建 DaySummary
-     */
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
-    public Day post(@RequestBody CreateOrMergePatchDaySummaryDto.CreateDaySummaryDto value,  HttpServletResponse response) {
+    @PutMapping("{day}/_commands/Create")
+    public void create(@PathVariable("day") String day, @RequestBody DaySummaryCommands.Create content) {
         try {
-            DaySummaryCommand.CreateDaySummary cmd = value;//.toCreateDaySummary();
+
+            DaySummaryCommands.Create cmd = content;//.toCreate();
+            Day idObj = DaySummaryResourceUtils.parseIdString(day);
             if (cmd.getDay() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "DaySummary");
+                cmd.setDay(idObj);
+            } else if (!cmd.getDay().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", day, cmd.getDay());
             }
-            Day idObj = cmd.getDay();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             daySummaryApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * 创建 or 修改.
-     * 创建 or 修改 DaySummary
-     */
-    @PutMapping("{day}")
-    public void put(@PathVariable("day") String day, @RequestBody CreateOrMergePatchDaySummaryDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                DaySummaryCommand.MergePatchDaySummary cmd = (DaySummaryCommand.MergePatchDaySummary) value.toSubclass();
-                DaySummaryResourceUtils.setNullIdOrThrowOnInconsistentIds(day, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                daySummaryApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            DaySummaryCommand.CreateDaySummary cmd = (DaySummaryCommand.CreateDaySummary) value.toSubclass();
-            DaySummaryResourceUtils.setNullIdOrThrowOnInconsistentIds(day, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            daySummaryApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * 修改.
-     * 修改 DaySummary
-     */
-    @PatchMapping("{day}")
-    public void patch(@PathVariable("day") String day, @RequestBody CreateOrMergePatchDaySummaryDto.MergePatchDaySummaryDto value) {
-        try {
-
-            DaySummaryCommand.MergePatchDaySummary cmd = value;//.toMergePatchDaySummary();
-            DaySummaryResourceUtils.setNullIdOrThrowOnInconsistentIds(day, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            daySummaryApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    /**
-     * 删除.
-     * 删除 DaySummary
-     */
-    @DeleteMapping("{day}")
-    public void delete(@PathVariable("day") String day,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            DaySummaryCommand.DeleteDaySummary deleteCmd = new DeleteDaySummaryDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            DaySummaryResourceUtils.setNullIdOrThrowOnInconsistentIds(day, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            daySummaryApplicationService.when(deleteCmd);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }

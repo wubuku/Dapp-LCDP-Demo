@@ -11,7 +11,7 @@ import org.dddml.suidemocontracts.domain.Command;
 
 public interface ProductApplicationService
 {
-    void when(ProductCommand.CreateProduct c);
+    void when(ProductCommands.Create c);
 
     ProductState get(String id);
 

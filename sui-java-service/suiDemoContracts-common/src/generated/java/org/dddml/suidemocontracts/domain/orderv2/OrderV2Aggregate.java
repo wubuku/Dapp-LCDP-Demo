@@ -13,11 +13,7 @@ public interface OrderV2Aggregate
 
     List<Event> getChanges();
 
-    void create(OrderV2Command.CreateOrderV2 c);
-
-    void mergePatch(OrderV2Command.MergePatchOrderV2 c);
-
-    void delete(OrderV2Command.DeleteOrderV2 c);
+    void create(String product, BigInteger quantity, Long version, String commandId, String requesterId, OrderV2Commands.Create c);
 
     void removeItem(String productId, Long version, String commandId, String requesterId, OrderV2Commands.RemoveItem c);
 

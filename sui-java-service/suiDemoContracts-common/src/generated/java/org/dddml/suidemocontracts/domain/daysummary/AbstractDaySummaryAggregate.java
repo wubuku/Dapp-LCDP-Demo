@@ -23,22 +23,6 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         return this.changes;
     }
 
-    public void create(DaySummaryCommand.CreateDaySummary c) {
-        if (c.getVersion() == null) { c.setVersion(DaySummaryState.VERSION_NULL); }
-        DaySummaryEvent e = map(c);
-        apply(e);
-    }
-
-    public void mergePatch(DaySummaryCommand.MergePatchDaySummary c) {
-        DaySummaryEvent e = map(c);
-        apply(e);
-    }
-
-    public void delete(DaySummaryCommand.DeleteDaySummary c) {
-        DaySummaryEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         DaySummaryCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -49,94 +33,64 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         changes.add(e);
     }
 
-    protected DaySummaryEvent map(DaySummaryCommand.CreateDaySummary c) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(c.getDay(), c.getVersion());
-        DaySummaryEvent.DaySummaryStateCreated e = newDaySummaryStateCreated(stateEventId);
-        e.setDescription(c.getDescription());
-        e.setMetadata(c.getMetadata());
-        ((AbstractDaySummaryEvent.AbstractDaySummaryStateEvent)e).setArrayData(c.getArrayData() == null ? null : java.util.Arrays.stream(c.getArrayData()).collect(java.util.stream.Collectors.toSet()));
-        e.setOptionalData(c.getOptionalData());
-        e.setActive(c.getActive());
-        ((AbstractDaySummaryEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DaySummaryEvent map(DaySummaryCommand.MergePatchDaySummary c) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(c.getDay(), c.getVersion());
-        DaySummaryEvent.DaySummaryStateMergePatched e = newDaySummaryStateMergePatched(stateEventId);
-        e.setDescription(c.getDescription());
-        e.setMetadata(c.getMetadata());
-        ((AbstractDaySummaryEvent.AbstractDaySummaryStateEvent)e).setArrayData(c.getArrayData() == null ? null : java.util.Arrays.stream(c.getArrayData()).collect(java.util.stream.Collectors.toSet()));
-        e.setOptionalData(c.getOptionalData());
-        e.setActive(c.getActive());
-        e.setIsPropertyDescriptionRemoved(c.getIsPropertyDescriptionRemoved());
-        e.setIsPropertyMetadataRemoved(c.getIsPropertyMetadataRemoved());
-        e.setIsPropertyArrayDataRemoved(c.getIsPropertyArrayDataRemoved());
-        e.setIsPropertyOptionalDataRemoved(c.getIsPropertyOptionalDataRemoved());
-        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
-        ((AbstractDaySummaryEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DaySummaryEvent map(DaySummaryCommand.DeleteDaySummary c) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(c.getDay(), c.getVersion());
-        DaySummaryEvent.DaySummaryStateDeleted e = newDaySummaryStateDeleted(stateEventId);
-        ((AbstractDaySummaryEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
 
     ////////////////////////
-
-    protected DaySummaryEvent.DaySummaryStateCreated newDaySummaryStateCreated(Long version, String commandId, String requesterId) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(this.state.getDay(), version);
-        DaySummaryEvent.DaySummaryStateCreated e = newDaySummaryStateCreated(stateEventId);
-        ((AbstractDaySummaryEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DaySummaryEvent.DaySummaryStateMergePatched newDaySummaryStateMergePatched(Long version, String commandId, String requesterId) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(this.state.getDay(), version);
-        DaySummaryEvent.DaySummaryStateMergePatched e = newDaySummaryStateMergePatched(stateEventId);
-        ((AbstractDaySummaryEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DaySummaryEvent.DaySummaryStateDeleted newDaySummaryStateDeleted(Long version, String commandId, String requesterId) {
-        DaySummaryEventId stateEventId = new DaySummaryEventId(this.state.getDay(), version);
-        DaySummaryEvent.DaySummaryStateDeleted e = newDaySummaryStateDeleted(stateEventId);
-        ((AbstractDaySummaryEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DaySummaryEvent.DaySummaryStateCreated newDaySummaryStateCreated(DaySummaryEventId stateEventId) {
-        return new AbstractDaySummaryEvent.SimpleDaySummaryStateCreated(stateEventId);
-    }
-
-    protected DaySummaryEvent.DaySummaryStateMergePatched newDaySummaryStateMergePatched(DaySummaryEventId stateEventId) {
-        return new AbstractDaySummaryEvent.SimpleDaySummaryStateMergePatched(stateEventId);
-    }
-
-    protected DaySummaryEvent.DaySummaryStateDeleted newDaySummaryStateDeleted(DaySummaryEventId stateEventId) {
-        return new AbstractDaySummaryEvent.SimpleDaySummaryStateDeleted(stateEventId);
-    }
-
 
     public static class SimpleDaySummaryAggregate extends AbstractDaySummaryAggregate {
         public SimpleDaySummaryAggregate(DaySummaryState state) {
             super(state);
+        }
+
+        @Override
+        public void create(String description, int[] metaData, String[] arrayData, int[] optionalData, Long version, String commandId, String requesterId, DaySummaryCommands.Create c) {
+            try {
+                verifyCreate(description, metaData, arrayData, optionalData, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, version, commandId, requesterId);
+            apply(e);
+        }
+
+        protected void verifyCreate(String description, int[] metaData, String[] arrayData, int[] optionalData, DaySummaryCommands.Create c) {
+            String Description = description;
+            int[] MetaData = metaData;
+            String[] ArrayData = arrayData;
+            int[] OptionalData = optionalData;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
+                    "verify",
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, VerificationContext.class},
+                    new Object[]{getState(), description, metaData, arrayData, optionalData, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.daysummary;
+//
+//public class CreateLogic {
+//    public static void verify(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, int[] optionalData, Long version, String commandId, String requesterId) {
+            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), version);
+            AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
+
+            e.setDescription(description);
+            e.setMetaData(metaData);
+            e.setArrayData(arrayData);
+            e.setOptionalData(optionalData);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setDaySummaryEventId(eventId);
+            return e;
         }
 
     }

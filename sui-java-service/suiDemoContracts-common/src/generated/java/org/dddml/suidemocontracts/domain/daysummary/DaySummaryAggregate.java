@@ -12,11 +12,7 @@ public interface DaySummaryAggregate
 
     List<Event> getChanges();
 
-    void create(DaySummaryCommand.CreateDaySummary c);
-
-    void mergePatch(DaySummaryCommand.MergePatchDaySummary c);
-
-    void delete(DaySummaryCommand.DeleteDaySummary c);
+    void create(String description, int[] metaData, String[] arrayData, int[] optionalData, Long version, String commandId, String requesterId, DaySummaryCommands.Create c);
 
     void throwOnInvalidStateTransition(Command c);
 }

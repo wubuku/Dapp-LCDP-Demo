@@ -41,6 +41,16 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         getDomainNameEventId().setVersion(version);
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()
@@ -76,6 +86,16 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         this.commandId = commandId;
     }
 
+    private String commandType;
+
+    public String getCommandType() {
+        return commandType;
+    }
+
+    public void setCommandType(String commandType) {
+        this.commandType = commandType;
+    }
+
     protected AbstractDomainNameEvent() {
     }
 
@@ -86,137 +106,108 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     public abstract String getEventType();
 
+    public static class DomainNameClobEvent extends  AbstractDomainNameEvent {
 
-    public static abstract class AbstractDomainNameStateEvent extends AbstractDomainNameEvent implements DomainNameEvent.DomainNameStateEvent {
-        private BigInteger expirationDate;
-
-        public BigInteger getExpirationDate()
-        {
-            return this.expirationDate;
+        protected Map<String, Object> getLobProperties() {
+            return lobProperties;
         }
 
-        public void setExpirationDate(BigInteger expirationDate)
-        {
-            this.expirationDate = expirationDate;
+        protected void setLobProperties(Map<String, Object> lobProperties) {
+            if (lobProperties == null) {
+                throw new IllegalArgumentException("lobProperties is null.");
+            }
+            this.lobProperties = lobProperties;
         }
 
-        private Boolean active;
+        private Map<String, Object> lobProperties = new HashMap<>();
 
-        public Boolean getActive()
-        {
-            return this.active;
+        protected String getLobText() {
+            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
         }
 
-        public void setActive(Boolean active)
-        {
-            this.active = active;
+        protected void setLobText(String text) {
+            getLobProperties().clear();
+            Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
+            if (ps != null) {
+                for (Map.Entry<String, Object> kv : ps.entrySet()) {
+                    getLobProperties().put(kv.getKey(), kv.getValue());
+                }
+            }
         }
 
-        protected AbstractDomainNameStateEvent(DomainNameEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static abstract class AbstractDomainNameStateCreated extends AbstractDomainNameStateEvent implements DomainNameEvent.DomainNameStateCreated
-    {
-        public AbstractDomainNameStateCreated() {
-            this(new DomainNameEventId());
-        }
-
-        public AbstractDomainNameStateCreated(DomainNameEventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.CREATED;
+            return "DomainNameClobEvent";
         }
 
     }
 
+    public static class Registered extends DomainNameClobEvent {
 
-    public static abstract class AbstractDomainNameStateMergePatched extends AbstractDomainNameStateEvent implements DomainNameEvent.DomainNameStateMergePatched
-    {
-        public AbstractDomainNameStateMergePatched() {
-            this(new DomainNameEventId());
-        }
-
-        public AbstractDomainNameStateMergePatched(DomainNameEventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.MERGE_PATCHED;
+            return "Registered";
         }
 
-        private Boolean isPropertyExpirationDateRemoved;
-
-        public Boolean getIsPropertyExpirationDateRemoved() {
-            return this.isPropertyExpirationDateRemoved;
+        public BigInteger getRegistrationPeriod() {
+            Object val = getLobProperties().get("registrationPeriod");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
         }
 
-        public void setIsPropertyExpirationDateRemoved(Boolean removed) {
-            this.isPropertyExpirationDateRemoved = removed;
+        public void setRegistrationPeriod(BigInteger value) {
+            getLobProperties().put("registrationPeriod", value);
         }
 
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved() {
-            return this.isPropertyActiveRemoved;
+        public String getOwner() {
+            Object val = getLobProperties().get("owner");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setIsPropertyActiveRemoved(Boolean removed) {
-            this.isPropertyActiveRemoved = removed;
+        public void setOwner(String value) {
+            getLobProperties().put("owner", value);
         }
-
 
     }
 
+    public static class Renewed extends DomainNameClobEvent {
 
-    public static abstract class AbstractDomainNameStateDeleted extends AbstractDomainNameStateEvent implements DomainNameEvent.DomainNameStateDeleted
-    {
-        public AbstractDomainNameStateDeleted() {
-            this(new DomainNameEventId());
-        }
-
-        public AbstractDomainNameStateDeleted(DomainNameEventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.DELETED;
+            return "Renewed";
+        }
+
+        public BigInteger getRenewPeriod() {
+            Object val = getLobProperties().get("renewPeriod");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setRenewPeriod(BigInteger value) {
+            getLobProperties().put("renewPeriod", value);
+        }
+
+        public String getAccount() {
+            Object val = getLobProperties().get("account");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setAccount(String value) {
+            getLobProperties().put("account", value);
         }
 
     }
 
-    public static class SimpleDomainNameStateCreated extends AbstractDomainNameStateCreated
-    {
-        public SimpleDomainNameStateCreated() {
-        }
-
-        public SimpleDomainNameStateCreated(DomainNameEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleDomainNameStateMergePatched extends AbstractDomainNameStateMergePatched
-    {
-        public SimpleDomainNameStateMergePatched() {
-        }
-
-        public SimpleDomainNameStateMergePatched(DomainNameEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleDomainNameStateDeleted extends AbstractDomainNameStateDeleted
-    {
-        public SimpleDomainNameStateDeleted() {
-        }
-
-        public SimpleDomainNameStateDeleted(DomainNameEventId eventId) {
-            super(eventId);
-        }
-    }
 
 }
 

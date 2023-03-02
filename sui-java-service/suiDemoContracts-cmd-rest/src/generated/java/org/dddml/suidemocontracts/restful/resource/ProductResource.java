@@ -162,42 +162,22 @@ public class ProductResource {
     }
 
 
-    /**
-     * 新建.
-     * 新建 Product
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchProductDto.CreateProductDto value,  HttpServletResponse response) {
+    @PutMapping("{productId}/_commands/Create")
+    public void create(@PathVariable("productId") String productId, @RequestBody ProductCommands.Create content) {
         try {
-            ProductCommand.CreateProduct cmd = value;//.toCreateProduct();
+
+            ProductCommands.Create cmd = content;//.toCreate();
+            String idObj = productId;
             if (cmd.getProductId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Product");
+                cmd.setProductId(idObj);
+            } else if (!cmd.getProductId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", productId, cmd.getProductId());
             }
-            String idObj = cmd.getProductId();
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            productApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * 创建 or 修改.
-     * 创建 or 修改 Product
-     */
-    @PutMapping("{productId}")
-    public void put(@PathVariable("productId") String productId, @RequestBody CreateOrMergePatchProductDto.CreateProductDto value) {
-        try {
-
-            ProductCommand.CreateProduct cmd = value;//.toCreateProduct();
-            ProductResourceUtils.setNullIdOrThrowOnInconsistentIds(productId, cmd);
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             productApplicationService.when(cmd);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
-
 
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {

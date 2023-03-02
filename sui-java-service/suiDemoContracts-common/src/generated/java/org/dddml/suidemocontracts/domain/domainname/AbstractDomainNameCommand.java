@@ -21,6 +21,18 @@ public abstract class AbstractDomainNameCommand extends AbstractCommand implemen
         this.domainNameId = domainNameId;
     }
 
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     private Long version;
 
     public Long getVersion()
@@ -33,98 +45,6 @@ public abstract class AbstractDomainNameCommand extends AbstractCommand implemen
         this.version = version;
     }
 
-
-    public static abstract class AbstractCreateOrMergePatchDomainName extends AbstractDomainNameCommand implements CreateOrMergePatchDomainName
-    {
-
-        private BigInteger expirationDate;
-
-        public BigInteger getExpirationDate()
-        {
-            return this.expirationDate;
-        }
-
-        public void setExpirationDate(BigInteger expirationDate)
-        {
-            this.expirationDate = expirationDate;
-        }
-
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
-    }
-
-    public static abstract class AbstractCreateDomainName extends AbstractCreateOrMergePatchDomainName implements CreateDomainName
-    {
-        @Override
-        public String getCommandType() {
-            return COMMAND_TYPE_CREATE;
-        }
-
-    }
-
-    public static abstract class AbstractMergePatchDomainName extends AbstractCreateOrMergePatchDomainName implements MergePatchDomainName
-    {
-        @Override
-        public String getCommandType() {
-            return COMMAND_TYPE_MERGE_PATCH;
-        }
-
-        private Boolean isPropertyExpirationDateRemoved;
-
-        public Boolean getIsPropertyExpirationDateRemoved()
-        {
-            return this.isPropertyExpirationDateRemoved;
-        }
-
-        public void setIsPropertyExpirationDateRemoved(Boolean removed)
-        {
-            this.isPropertyExpirationDateRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved()
-        {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed)
-        {
-            this.isPropertyActiveRemoved = removed;
-        }
-
-
-    }
-
-    public static class SimpleCreateDomainName extends AbstractCreateDomainName
-    {
-    }
-
-    
-    public static class SimpleMergePatchDomainName extends AbstractMergePatchDomainName
-    {
-    }
-
-    
-	public static class SimpleDeleteDomainName extends AbstractDomainNameCommand implements DeleteDomainName
-	{
-        @Override
-        public String getCommandType() {
-            return COMMAND_TYPE_DELETE;
-        }
-	}
-
-    
 
 }
 

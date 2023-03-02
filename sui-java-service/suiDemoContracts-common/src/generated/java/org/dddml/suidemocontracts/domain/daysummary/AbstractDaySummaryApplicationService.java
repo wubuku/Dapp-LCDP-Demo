@@ -45,16 +45,8 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(DaySummaryCommand.CreateDaySummary c) {
-        update(c, ar -> ar.create(c));
-    }
-
-    public void when(DaySummaryCommand.MergePatchDaySummary c) {
-        update(c, ar -> ar.mergePatch(c));
-    }
-
-    public void when(DaySummaryCommand.DeleteDaySummary c) {
-        update(c, ar -> ar.delete(c));
+    public void when(DaySummaryCommands.Create c) {
+        update(c, ar -> ar.create(c.getDescription(), c.getMetaData(), c.getArrayData(), c.getOptionalData(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public DaySummaryState get(Day id) {
@@ -132,18 +124,6 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
         }
-    }
-
-    public void initialize(DaySummaryEvent.DaySummaryStateCreated stateCreated) {
-        Day aggregateId = ((DaySummaryEvent.SqlDaySummaryEvent)stateCreated).getDaySummaryEventId().getDay();
-        DaySummaryState.SqlDaySummaryState state = new AbstractDaySummaryState.SimpleDaySummaryState();
-        state.setDay(aggregateId);
-
-        DaySummaryAggregate aggregate = getDaySummaryAggregate(state);
-        ((AbstractDaySummaryAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((DaySummaryEvent.SqlDaySummaryEvent)stateCreated).getDaySummaryEventId().getVersion(), aggregate, state);
     }
 
     protected boolean isDuplicateCommand(DaySummaryCommand command, EventStoreAggregateId eventStoreAggregateId, DaySummaryState state) {

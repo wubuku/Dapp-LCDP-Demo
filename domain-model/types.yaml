@@ -158,7 +158,12 @@ typeDefinitions:
     sqlType: VARCHAR(42)
     cSharpType: string
     javaType: String
-    
-    
+  address:
+    sqlType: VARCHAR(42)
+    cSharpType: string
+    javaType: String
+
+
+
     
     

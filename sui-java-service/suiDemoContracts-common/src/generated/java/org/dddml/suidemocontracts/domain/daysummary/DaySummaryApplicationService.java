@@ -10,11 +10,7 @@ import org.dddml.suidemocontracts.domain.Command;
 
 public interface DaySummaryApplicationService
 {
-    void when(DaySummaryCommand.CreateDaySummary c);
-
-    void when(DaySummaryCommand.MergePatchDaySummary c);
-
-    void when(DaySummaryCommand.DeleteDaySummary c);
+    void when(DaySummaryCommands.Create c);
 
     DaySummaryState get(Day id);
 

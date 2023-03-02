@@ -11,12 +11,6 @@ import org.dddml.suidemocontracts.domain.Command;
 
 public interface DomainNameApplicationService
 {
-    void when(DomainNameCommand.CreateDomainName c);
-
-    void when(DomainNameCommand.MergePatchDomainName c);
-
-    void when(DomainNameCommand.DeleteDomainName c);
-
     void when(DomainNameCommands.Register c);
 
     void when(DomainNameCommands.Renew c);

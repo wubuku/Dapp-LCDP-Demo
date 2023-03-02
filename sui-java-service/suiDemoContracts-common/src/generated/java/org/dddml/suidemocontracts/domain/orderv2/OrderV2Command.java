@@ -14,6 +14,10 @@ public interface OrderV2Command extends Command
 
     void setOrderId(String orderId);
 
+    String getId();
+
+    void setId(String id);
+
     Long getVersion();
 
     void setVersion(Long version);
@@ -33,88 +37,9 @@ public interface OrderV2Command extends Command
     }
 
     static boolean isCommandCreate(OrderV2Command c) {
-        if ((c instanceof OrderV2Command.CreateOrderV2) 
-            && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(OrderV2State.VERSION_NULL)))
-            return true;
-        if ((c instanceof OrderV2Command.MergePatchOrderV2))
-            return false;
-        if ((c instanceof OrderV2Command.DeleteOrderV2))
-            return false;
         if (c.getVersion().equals(OrderV2State.VERSION_NULL))
             return true;
         return false;
-    }
-
-    interface CreateOrMergePatchOrderV2 extends OrderV2Command
-    {
-
-        BigInteger getTotalAmount();
-
-        void setTotalAmount(BigInteger totalAmount);
-
-        Day getEstimatedShipDate();
-
-        void setEstimatedShipDate(Day estimatedShipDate);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface CreateOrderV2 extends CreateOrMergePatchOrderV2
-    {
-        CreateOrderV2ItemCommandCollection getCreateOrderV2ItemCommands();
-
-        OrderV2ItemCommand.CreateOrderV2Item newCreateOrderV2Item();
-
-    }
-
-    interface MergePatchOrderV2 extends CreateOrMergePatchOrderV2
-    {
-        Boolean getIsPropertyTotalAmountRemoved();
-
-        void setIsPropertyTotalAmountRemoved(Boolean removed);
-
-        Boolean getIsPropertyEstimatedShipDateRemoved();
-
-        void setIsPropertyEstimatedShipDateRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-        OrderV2ItemCommandCollection getOrderV2ItemCommands();
-
-        OrderV2ItemCommand.CreateOrderV2Item newCreateOrderV2Item();
-
-        OrderV2ItemCommand.MergePatchOrderV2Item newMergePatchOrderV2Item();
-
-        OrderV2ItemCommand.RemoveOrderV2Item newRemoveOrderV2Item();
-
-    }
-
-	interface DeleteOrderV2 extends OrderV2Command
-	{
-	}
-
-    interface CreateOrderV2ItemCommandCollection extends Iterable<OrderV2ItemCommand.CreateOrderV2Item>
-    {
-        void add(OrderV2ItemCommand.CreateOrderV2Item c);
-
-        void remove(OrderV2ItemCommand.CreateOrderV2Item c);
-
-        void clear();
-    }
-
-    interface OrderV2ItemCommandCollection extends Iterable<OrderV2ItemCommand>
-    {
-        void add(OrderV2ItemCommand c);
-
-        void remove(OrderV2ItemCommand c);
-
-        void clear();
     }
 
 }

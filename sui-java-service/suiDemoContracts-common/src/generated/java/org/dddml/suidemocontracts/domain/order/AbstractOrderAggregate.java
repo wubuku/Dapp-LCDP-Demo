@@ -24,22 +24,6 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         return this.changes;
     }
 
-    public void create(OrderCommand.CreateOrder c) {
-        if (c.getVersion() == null) { c.setVersion(OrderState.VERSION_NULL); }
-        OrderEvent e = map(c);
-        apply(e);
-    }
-
-    public void mergePatch(OrderCommand.MergePatchOrder c) {
-        OrderEvent e = map(c);
-        apply(e);
-    }
-
-    public void delete(OrderCommand.DeleteOrder c) {
-        OrderEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         OrderCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -50,191 +34,8 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         changes.add(e);
     }
 
-    protected OrderEvent map(OrderCommand.CreateOrder c) {
-        OrderEventId stateEventId = new OrderEventId(c.getId(), c.getVersion());
-        OrderEvent.OrderStateCreated e = newOrderStateCreated(stateEventId);
-        e.setTotalAmount(c.getTotalAmount());
-        e.setActive(c.getActive());
-        ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        Long version = c.getVersion();
-        for (OrderItemCommand.CreateOrderItem innerCommand : c.getCreateOrderItemCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            OrderItemEvent.OrderItemStateCreated innerEvent = mapCreate(innerCommand, c, version, this.state);
-            e.addOrderItemEvent(innerEvent);
-        }
-
-        return e;
-    }
-
-    protected OrderEvent map(OrderCommand.MergePatchOrder c) {
-        OrderEventId stateEventId = new OrderEventId(c.getId(), c.getVersion());
-        OrderEvent.OrderStateMergePatched e = newOrderStateMergePatched(stateEventId);
-        e.setTotalAmount(c.getTotalAmount());
-        e.setActive(c.getActive());
-        e.setIsPropertyTotalAmountRemoved(c.getIsPropertyTotalAmountRemoved());
-        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
-        ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        Long version = c.getVersion();
-        for (OrderItemCommand innerCommand : c.getOrderItemCommands()) {
-            throwOnInconsistentCommands(c, innerCommand);
-            OrderItemEvent innerEvent = map(innerCommand, c, version, this.state);
-            e.addOrderItemEvent(innerEvent);
-        }
-
-        return e;
-    }
-
-    protected OrderEvent map(OrderCommand.DeleteOrder c) {
-        OrderEventId stateEventId = new OrderEventId(c.getId(), c.getVersion());
-        OrderEvent.OrderStateDeleted e = newOrderStateDeleted(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-
-    protected OrderItemEvent map(OrderItemCommand c, OrderCommand outerCommand, Long version, OrderState outerState) {
-        OrderItemCommand.CreateOrderItem create = (c.getCommandType().equals(CommandType.CREATE)) ? ((OrderItemCommand.CreateOrderItem)c) : null;
-        if(create != null) {
-            return mapCreate(create, outerCommand, version, outerState);
-        }
-
-        OrderItemCommand.MergePatchOrderItem merge = (c.getCommandType().equals(CommandType.MERGE_PATCH)) ? ((OrderItemCommand.MergePatchOrderItem)c) : null;
-        if(merge != null) {
-            return mapMergePatch(merge, outerCommand, version, outerState);
-        }
-
-        OrderItemCommand.RemoveOrderItem remove = (c.getCommandType().equals(CommandType.REMOVE)) ? ((OrderItemCommand.RemoveOrderItem)c) : null;
-        if (remove != null) {
-            return mapRemove(remove, outerCommand, version, outerState);
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    protected OrderItemEvent.OrderItemStateCreated mapCreate(OrderItemCommand.CreateOrderItem c, OrderCommand outerCommand, Long version, OrderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderItemEventId stateEventId = new OrderItemEventId(outerState.getId(), c.getProductId(), version);
-        OrderItemEvent.OrderItemStateCreated e = newOrderItemStateCreated(stateEventId);
-        OrderItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)outerState.getItems()).getOrAdd(c.getProductId());
-
-        e.setQuantity(c.getQuantity());
-        e.setItemAmount(c.getItemAmount());
-        e.setActive(c.getActive());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-        return e;
-
-    }// END map(ICreate... ////////////////////////////
-
-    protected OrderItemEvent.OrderItemStateMergePatched mapMergePatch(OrderItemCommand.MergePatchOrderItem c, OrderCommand outerCommand, Long version, OrderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderItemEventId stateEventId = new OrderItemEventId(outerState.getId(), c.getProductId(), version);
-        OrderItemEvent.OrderItemStateMergePatched e = newOrderItemStateMergePatched(stateEventId);
-        OrderItemState s = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)outerState.getItems()).getOrAdd(c.getProductId());
-
-        e.setQuantity(c.getQuantity());
-        e.setItemAmount(c.getItemAmount());
-        e.setActive(c.getActive());
-        e.setIsPropertyQuantityRemoved(c.getIsPropertyQuantityRemoved());
-        e.setIsPropertyItemAmountRemoved(c.getIsPropertyItemAmountRemoved());
-        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-        return e;
-
-    }// END map(IMergePatch... ////////////////////////////
-
-    protected OrderItemEvent.OrderItemStateRemoved mapRemove(OrderItemCommand.RemoveOrderItem c, OrderCommand outerCommand, Long version, OrderState outerState) {
-        ((AbstractCommand)c).setRequesterId(outerCommand.getRequesterId());
-        OrderItemEventId stateEventId = new OrderItemEventId(outerState.getId(), c.getProductId(), version);
-        OrderItemEvent.OrderItemStateRemoved e = newOrderItemStateRemoved(stateEventId);
-
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-        return e;
-
-    }// END map(IRemove... ////////////////////////////
-
-    protected void throwOnInconsistentCommands(OrderCommand command, OrderItemCommand innerCommand) {
-        AbstractOrderCommand properties = command instanceof AbstractOrderCommand ? (AbstractOrderCommand) command : null;
-        AbstractOrderItemCommand innerProperties = innerCommand instanceof AbstractOrderItemCommand ? (AbstractOrderItemCommand) innerCommand : null;
-        if (properties == null || innerProperties == null) { return; }
-        String outerIdName = "Id";
-        String outerIdValue = properties.getId();
-        String innerOrderIdName = "OrderId";
-        String innerOrderIdValue = innerProperties.getOrderId();
-        if (innerOrderIdValue == null) {
-            innerProperties.setOrderId(outerIdValue);
-        }
-        else if (innerOrderIdValue != outerIdValue 
-            && (innerOrderIdValue == null || innerOrderIdValue != null && !innerOrderIdValue.equals(outerIdValue))) {
-            throw DomainError.named("inconsistentId", "Outer %1$s %2$s NOT equals inner %3$s %4$s", outerIdName, outerIdValue, innerOrderIdName, innerOrderIdValue);
-        }
-    }// END throwOnInconsistentCommands /////////////////////
-
 
     ////////////////////////
-
-    protected OrderEvent.OrderStateCreated newOrderStateCreated(Long version, String commandId, String requesterId) {
-        OrderEventId stateEventId = new OrderEventId(this.state.getId(), version);
-        OrderEvent.OrderStateCreated e = newOrderStateCreated(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected OrderEvent.OrderStateMergePatched newOrderStateMergePatched(Long version, String commandId, String requesterId) {
-        OrderEventId stateEventId = new OrderEventId(this.state.getId(), version);
-        OrderEvent.OrderStateMergePatched e = newOrderStateMergePatched(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected OrderEvent.OrderStateDeleted newOrderStateDeleted(Long version, String commandId, String requesterId) {
-        OrderEventId stateEventId = new OrderEventId(this.state.getId(), version);
-        OrderEvent.OrderStateDeleted e = newOrderStateDeleted(stateEventId);
-        ((AbstractOrderEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected OrderEvent.OrderStateCreated newOrderStateCreated(OrderEventId stateEventId) {
-        return new AbstractOrderEvent.SimpleOrderStateCreated(stateEventId);
-    }
-
-    protected OrderEvent.OrderStateMergePatched newOrderStateMergePatched(OrderEventId stateEventId) {
-        return new AbstractOrderEvent.SimpleOrderStateMergePatched(stateEventId);
-    }
-
-    protected OrderEvent.OrderStateDeleted newOrderStateDeleted(OrderEventId stateEventId) {
-        return new AbstractOrderEvent.SimpleOrderStateDeleted(stateEventId);
-    }
-
-    protected OrderItemEvent.OrderItemStateCreated newOrderItemStateCreated(OrderItemEventId stateEventId) {
-        return new AbstractOrderItemEvent.SimpleOrderItemStateCreated(stateEventId);
-    }
-
-    protected OrderItemEvent.OrderItemStateMergePatched newOrderItemStateMergePatched(OrderItemEventId stateEventId) {
-        return new AbstractOrderItemEvent.SimpleOrderItemStateMergePatched(stateEventId);
-    }
-
-    protected OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(OrderItemEventId stateEventId) {
-        return new AbstractOrderItemEvent.SimpleOrderItemStateRemoved(stateEventId);
-    }
-
 
     public static class SimpleOrderAggregate extends AbstractOrderAggregate {
         public SimpleOrderAggregate(OrderState state) {
@@ -242,13 +43,148 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         }
 
         @Override
+        public void create(String product, BigInteger quantity, Long version, String commandId, String requesterId, OrderCommands.Create c) {
+            try {
+                verifyCreate(product, quantity, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderCreated(product, quantity, version, commandId, requesterId);
+            apply(e);
+        }
+
+        @Override
         public void removeItem(String productId, Long version, String commandId, String requesterId, OrderCommands.RemoveItem c) {
-            throw new UnsupportedOperationException();
+            try {
+                verifyRemoveItem(productId, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderItemRemoved(productId, version, commandId, requesterId);
+            apply(e);
         }
 
         @Override
         public void updateItemQuantity(String productId, BigInteger quantity, Long version, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c) {
-            throw new UnsupportedOperationException();
+            try {
+                verifyUpdateItemQuantity(productId, quantity, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderItemQuantityUpdated(productId, quantity, version, commandId, requesterId);
+            apply(e);
+        }
+
+        protected void verifyCreate(String product, BigInteger quantity, OrderCommands.Create c) {
+            String Product = product;
+            BigInteger Quantity = quantity;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.CreateLogic",
+                    "verify",
+                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), product, quantity, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class CreateLogic {
+//    public static void verify(OrderState orderState, String product, BigInteger quantity, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyRemoveItem(String productId, OrderCommands.RemoveItem c) {
+            String ProductId = productId;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
+                    "verify",
+                    new Class[]{OrderState.class, String.class, VerificationContext.class},
+                    new Object[]{getState(), productId, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class RemoveItemLogic {
+//    public static void verify(OrderState orderState, String productId, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyUpdateItemQuantity(String productId, BigInteger quantity, OrderCommands.UpdateItemQuantity c) {
+            String ProductId = productId;
+            BigInteger Quantity = quantity;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
+                    "verify",
+                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), productId, quantity, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class UpdateItemQuantityLogic {
+//    public static void verify(OrderState orderState, String productId, BigInteger quantity, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected AbstractOrderEvent.OrderCreated newOrderCreated(String product, BigInteger quantity, Long version, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getId(), version);
+            AbstractOrderEvent.OrderCreated e = new AbstractOrderEvent.OrderCreated();
+
+            e.setProduct(product);
+            e.setQuantity(quantity);
+            e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
+            e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
+            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderEventId(eventId);
+            return e;
+        }
+
+        protected AbstractOrderEvent.OrderItemRemoved newOrderItemRemoved(String productId, Long version, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getId(), version);
+            AbstractOrderEvent.OrderItemRemoved e = new AbstractOrderEvent.OrderItemRemoved();
+
+            e.setProductId(productId);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderEventId(eventId);
+            return e;
+        }
+
+        protected AbstractOrderEvent.OrderItemQuantityUpdated newOrderItemQuantityUpdated(String productId, BigInteger quantity, Long version, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getId(), version);
+            AbstractOrderEvent.OrderItemQuantityUpdated e = new AbstractOrderEvent.OrderItemQuantityUpdated();
+
+            e.setProductId(productId);
+            e.setQuantity(quantity);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderEventId(eventId);
+            return e;
         }
 
     }

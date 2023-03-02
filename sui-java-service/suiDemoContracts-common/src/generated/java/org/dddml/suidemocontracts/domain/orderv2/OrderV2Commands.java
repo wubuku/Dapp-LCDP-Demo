@@ -10,7 +10,71 @@ public class OrderV2Commands
     private OrderV2Commands() {
     }
 
-    public static class RemoveItem extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+    public static class Create extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
+
+        public String getCommandType() {
+            return "Create";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Product
+         */
+        private String product;
+
+        public String getProduct() {
+            return this.product;
+        }
+
+        public void setProduct(String product) {
+            this.product = product;
+        }
+
+        /**
+         * Quantity
+         */
+        private BigInteger quantity;
+
+        public BigInteger getQuantity() {
+            return this.quantity;
+        }
+
+        public void setQuantity(BigInteger quantity) {
+            this.quantity = quantity;
+        }
+
+        /**
+         * Version
+         */
+        private Long version;
+
+        public Long getVersion() {
+            return this.version;
+        }
+
+        public void setVersion(Long version) {
+            this.version = version;
+        }
+
+    }
+
+    public static class RemoveItem extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "RemoveItem";
@@ -61,7 +125,7 @@ public class OrderV2Commands
 
     }
 
-    public static class UpdateItemQuantity extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+    public static class UpdateItemQuantity extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "UpdateItemQuantity";
@@ -125,7 +189,7 @@ public class OrderV2Commands
 
     }
 
-    public static class UpdateEstimatedShipDate extends org.dddml.suidemocontracts.domain.AbstractCommand implements OrderV2Command {
+    public static class UpdateEstimatedShipDate extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "UpdateEstimatedShipDate";

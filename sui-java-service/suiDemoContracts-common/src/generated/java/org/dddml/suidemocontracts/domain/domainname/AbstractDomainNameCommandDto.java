@@ -24,6 +24,21 @@ public abstract class AbstractDomainNameCommandDto extends AbstractCommand
     }
 
     /**
+     * Id
+     */
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    /**
      * Version
      */
     private Long version;
@@ -41,6 +56,7 @@ public abstract class AbstractDomainNameCommandDto extends AbstractCommand
 
     public void copyTo(DomainNameCommand command) {
         command.setDomainNameId(this.getDomainNameId());
+        command.setId(this.getId());
         command.setVersion(this.getVersion());
         
         command.setRequesterId(this.getRequesterId());

@@ -13,7 +13,7 @@ public interface ProductAggregate
 
     List<Event> getChanges();
 
-    void create(ProductCommand.CreateProduct c);
+    void create(String name, BigInteger unitPrice, Long version, String commandId, String requesterId, ProductCommands.Create c);
 
     void throwOnInvalidStateTransition(Command c);
 }

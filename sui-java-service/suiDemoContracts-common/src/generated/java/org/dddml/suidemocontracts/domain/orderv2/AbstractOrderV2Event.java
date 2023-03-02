@@ -41,6 +41,16 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         getOrderV2EventId().setVersion(version);
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()
@@ -76,6 +86,16 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         this.commandId = commandId;
     }
 
+    private String commandType;
+
+    public String getCommandType() {
+        return commandType;
+    }
+
+    public void setCommandType(String commandType) {
+        this.commandType = commandType;
+    }
+
     protected AbstractOrderV2Event() {
     }
 
@@ -109,319 +129,189 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         }
     }
 
-    public OrderV2ItemEvent.OrderV2ItemStateCreated newOrderV2ItemStateCreated(String productId) {
-        return new AbstractOrderV2ItemEvent.SimpleOrderV2ItemStateCreated(newOrderV2ItemEventId(productId));
-    }
-
-    public OrderV2ItemEvent.OrderV2ItemStateMergePatched newOrderV2ItemStateMergePatched(String productId) {
-        return new AbstractOrderV2ItemEvent.SimpleOrderV2ItemStateMergePatched(newOrderV2ItemEventId(productId));
-    }
-
-    public OrderV2ItemEvent.OrderV2ItemStateRemoved newOrderV2ItemStateRemoved(String productId) {
-        return new AbstractOrderV2ItemEvent.SimpleOrderV2ItemStateRemoved(newOrderV2ItemEventId(productId));
-    }
-
 
     public abstract String getEventType();
 
+    public static class OrderV2ClobEvent extends  AbstractOrderV2Event {
 
-    public static abstract class AbstractOrderV2StateEvent extends AbstractOrderV2Event implements OrderV2Event.OrderV2StateEvent {
-        private BigInteger totalAmount;
-
-        public BigInteger getTotalAmount()
-        {
-            return this.totalAmount;
+        protected Map<String, Object> getLobProperties() {
+            return lobProperties;
         }
 
-        public void setTotalAmount(BigInteger totalAmount)
-        {
-            this.totalAmount = totalAmount;
+        protected void setLobProperties(Map<String, Object> lobProperties) {
+            if (lobProperties == null) {
+                throw new IllegalArgumentException("lobProperties is null.");
+            }
+            this.lobProperties = lobProperties;
         }
 
-        private Day estimatedShipDate;
+        private Map<String, Object> lobProperties = new HashMap<>();
 
-        public Day getEstimatedShipDate()
-        {
-            return this.estimatedShipDate;
+        protected String getLobText() {
+            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
         }
 
-        public void setEstimatedShipDate(Day estimatedShipDate)
-        {
-            this.estimatedShipDate = estimatedShipDate;
+        protected void setLobText(String text) {
+            getLobProperties().clear();
+            Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
+            if (ps != null) {
+                for (Map.Entry<String, Object> kv : ps.entrySet()) {
+                    getLobProperties().put(kv.getKey(), kv.getValue());
+                }
+            }
         }
 
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
-        protected AbstractOrderV2StateEvent(OrderV2EventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static abstract class AbstractOrderV2StateCreated extends AbstractOrderV2StateEvent implements OrderV2Event.OrderV2StateCreated, Saveable
-    {
-        public AbstractOrderV2StateCreated() {
-            this(new OrderV2EventId());
-        }
-
-        public AbstractOrderV2StateCreated(OrderV2EventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.CREATED;
+            return "OrderV2ClobEvent";
         }
 
-        private Map<OrderV2ItemEventId, OrderV2ItemEvent.OrderV2ItemStateCreated> orderV2ItemEvents = new HashMap<OrderV2ItemEventId, OrderV2ItemEvent.OrderV2ItemStateCreated>();
-        
-        private Iterable<OrderV2ItemEvent.OrderV2ItemStateCreated> readOnlyOrderV2ItemEvents;
-
-        public Iterable<OrderV2ItemEvent.OrderV2ItemStateCreated> getOrderV2ItemEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderV2ItemEvents.values();
-            }
-            else
-            {
-                if (readOnlyOrderV2ItemEvents != null) { return readOnlyOrderV2ItemEvents; }
-                OrderV2ItemEventDao eventDao = getOrderV2ItemEventDao();
-                List<OrderV2ItemEvent.OrderV2ItemStateCreated> eL = new ArrayList<OrderV2ItemEvent.OrderV2ItemStateCreated>();
-                for (OrderV2ItemEvent e : eventDao.findByOrderV2EventId(this.getOrderV2EventId()))
-                {
-                    ((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).setEventReadOnly(true);
-                    eL.add((OrderV2ItemEvent.OrderV2ItemStateCreated)e);
-                }
-                return (readOnlyOrderV2ItemEvents = eL);
-            }
-        }
-
-        public void setOrderV2ItemEvents(Iterable<OrderV2ItemEvent.OrderV2ItemStateCreated> es)
-        {
-            if (es != null)
-            {
-                for (OrderV2ItemEvent.OrderV2ItemStateCreated e : es)
-                {
-                    addOrderV2ItemEvent(e);
-                }
-            }
-            else { this.orderV2ItemEvents.clear(); }
-        }
-        
-        public void addOrderV2ItemEvent(OrderV2ItemEvent.OrderV2ItemStateCreated e)
-        {
-            throwOnInconsistentEventIds((OrderV2ItemEvent.SqlOrderV2ItemEvent)e);
-            this.orderV2ItemEvents.put(((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).getOrderV2ItemEventId(), e);
-        }
-
-        public void save()
-        {
-            for (OrderV2ItemEvent.OrderV2ItemStateCreated e : this.getOrderV2ItemEvents()) {
-                getOrderV2ItemEventDao().save(e);
-            }
-        }
     }
 
+    public static class OrderV2Created extends OrderV2ClobEvent {
 
-    public static abstract class AbstractOrderV2StateMergePatched extends AbstractOrderV2StateEvent implements OrderV2Event.OrderV2StateMergePatched, Saveable
-    {
-        public AbstractOrderV2StateMergePatched() {
-            this(new OrderV2EventId());
-        }
-
-        public AbstractOrderV2StateMergePatched(OrderV2EventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.MERGE_PATCHED;
+            return "OrderV2Created";
         }
 
-        private Boolean isPropertyTotalAmountRemoved;
-
-        public Boolean getIsPropertyTotalAmountRemoved() {
-            return this.isPropertyTotalAmountRemoved;
-        }
-
-        public void setIsPropertyTotalAmountRemoved(Boolean removed) {
-            this.isPropertyTotalAmountRemoved = removed;
-        }
-
-        private Boolean isPropertyEstimatedShipDateRemoved;
-
-        public Boolean getIsPropertyEstimatedShipDateRemoved() {
-            return this.isPropertyEstimatedShipDateRemoved;
-        }
-
-        public void setIsPropertyEstimatedShipDateRemoved(Boolean removed) {
-            this.isPropertyEstimatedShipDateRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved() {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed) {
-            this.isPropertyActiveRemoved = removed;
-        }
-
-
-        private Map<OrderV2ItemEventId, OrderV2ItemEvent> orderV2ItemEvents = new HashMap<OrderV2ItemEventId, OrderV2ItemEvent>();
-        
-        private Iterable<OrderV2ItemEvent> readOnlyOrderV2ItemEvents;
-
-        public Iterable<OrderV2ItemEvent> getOrderV2ItemEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderV2ItemEvents.values();
+        public String getProduct() {
+            Object val = getLobProperties().get("product");
+            if (val instanceof String) {
+                return (String) val;
             }
-            else
-            {
-                if (readOnlyOrderV2ItemEvents != null) { return readOnlyOrderV2ItemEvents; }
-                OrderV2ItemEventDao eventDao = getOrderV2ItemEventDao();
-                List<OrderV2ItemEvent> eL = new ArrayList<OrderV2ItemEvent>();
-                for (OrderV2ItemEvent e : eventDao.findByOrderV2EventId(this.getOrderV2EventId()))
-                {
-                    ((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).setEventReadOnly(true);
-                    eL.add((OrderV2ItemEvent)e);
-                }
-                return (readOnlyOrderV2ItemEvents = eL);
-            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setOrderV2ItemEvents(Iterable<OrderV2ItemEvent> es)
-        {
-            if (es != null)
-            {
-                for (OrderV2ItemEvent e : es)
-                {
-                    addOrderV2ItemEvent(e);
-                }
-            }
-            else { this.orderV2ItemEvents.clear(); }
-        }
-        
-        public void addOrderV2ItemEvent(OrderV2ItemEvent e)
-        {
-            throwOnInconsistentEventIds((OrderV2ItemEvent.SqlOrderV2ItemEvent)e);
-            this.orderV2ItemEvents.put(((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).getOrderV2ItemEventId(), e);
+        public void setProduct(String value) {
+            getLobProperties().put("product", value);
         }
 
-        public void save()
-        {
-            for (OrderV2ItemEvent e : this.getOrderV2ItemEvents()) {
-                getOrderV2ItemEventDao().save(e);
+        public BigInteger getQuantity() {
+            Object val = getLobProperties().get("quantity");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
             }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
         }
+
+        public void setQuantity(BigInteger value) {
+            getLobProperties().put("quantity", value);
+        }
+
+        public BigInteger getUnitPrice() {
+            Object val = getLobProperties().get("unitPrice");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setUnitPrice(BigInteger value) {
+            getLobProperties().put("unitPrice", value);
+        }
+
+        public BigInteger getTotalAmount() {
+            Object val = getLobProperties().get("totalAmount");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setTotalAmount(BigInteger value) {
+            getLobProperties().put("totalAmount", value);
+        }
+
+        public String getOwner() {
+            Object val = getLobProperties().get("owner");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setOwner(String value) {
+            getLobProperties().put("owner", value);
+        }
+
     }
 
+    public static class OrderV2ItemRemoved extends OrderV2ClobEvent {
 
-    public static abstract class AbstractOrderV2StateDeleted extends AbstractOrderV2StateEvent implements OrderV2Event.OrderV2StateDeleted, Saveable
-    {
-        public AbstractOrderV2StateDeleted() {
-            this(new OrderV2EventId());
-        }
-
-        public AbstractOrderV2StateDeleted(OrderV2EventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.DELETED;
+            return "OrderV2ItemRemoved";
         }
 
-		
-        private Map<OrderV2ItemEventId, OrderV2ItemEvent.OrderV2ItemStateRemoved> orderV2ItemEvents = new HashMap<OrderV2ItemEventId, OrderV2ItemEvent.OrderV2ItemStateRemoved>();
-        
-        private Iterable<OrderV2ItemEvent.OrderV2ItemStateRemoved> readOnlyOrderV2ItemEvents;
-
-        public Iterable<OrderV2ItemEvent.OrderV2ItemStateRemoved> getOrderV2ItemEvents()
-        {
-            if (!getEventReadOnly())
-            {
-                return this.orderV2ItemEvents.values();
+        public String getProductId() {
+            Object val = getLobProperties().get("productId");
+            if (val instanceof String) {
+                return (String) val;
             }
-            else
-            {
-                if (readOnlyOrderV2ItemEvents != null) { return readOnlyOrderV2ItemEvents; }
-                OrderV2ItemEventDao eventDao = getOrderV2ItemEventDao();
-                List<OrderV2ItemEvent.OrderV2ItemStateRemoved> eL = new ArrayList<OrderV2ItemEvent.OrderV2ItemStateRemoved>();
-                for (OrderV2ItemEvent e : eventDao.findByOrderV2EventId(this.getOrderV2EventId()))
-                {
-                    ((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).setEventReadOnly(true);
-                    eL.add((OrderV2ItemEvent.OrderV2ItemStateRemoved)e);
-                }
-                return (readOnlyOrderV2ItemEvents = eL);
-            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setOrderV2ItemEvents(Iterable<OrderV2ItemEvent.OrderV2ItemStateRemoved> es)
-        {
-            if (es != null)
-            {
-                for (OrderV2ItemEvent.OrderV2ItemStateRemoved e : es)
-                {
-                    addOrderV2ItemEvent(e);
-                }
-            }
-            else { this.orderV2ItemEvents.clear(); }
-        }
-        
-        public void addOrderV2ItemEvent(OrderV2ItemEvent.OrderV2ItemStateRemoved e)
-        {
-            throwOnInconsistentEventIds((OrderV2ItemEvent.SqlOrderV2ItemEvent)e);
-            this.orderV2ItemEvents.put(((OrderV2ItemEvent.SqlOrderV2ItemEvent)e).getOrderV2ItemEventId(), e);
+        public void setProductId(String value) {
+            getLobProperties().put("productId", value);
         }
 
-        public void save()
-        {
-            for (OrderV2ItemEvent.OrderV2ItemStateRemoved e : this.getOrderV2ItemEvents()) {
-                getOrderV2ItemEventDao().save(e);
-            }
-        }
     }
 
-    public static class SimpleOrderV2StateCreated extends AbstractOrderV2StateCreated
-    {
-        public SimpleOrderV2StateCreated() {
+    public static class OrderV2ItemQuantityUpdated extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderV2ItemQuantityUpdated";
         }
 
-        public SimpleOrderV2StateCreated(OrderV2EventId eventId) {
-            super(eventId);
+        public String getProductId() {
+            Object val = getLobProperties().get("productId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
+
+        public void setProductId(String value) {
+            getLobProperties().put("productId", value);
+        }
+
+        public BigInteger getQuantity() {
+            Object val = getLobProperties().get("quantity");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setQuantity(BigInteger value) {
+            getLobProperties().put("quantity", value);
+        }
+
     }
 
-    public static class SimpleOrderV2StateMergePatched extends AbstractOrderV2StateMergePatched
-    {
-        public SimpleOrderV2StateMergePatched() {
+    public static class OrderV2EstimatedShipDateUpdated extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderV2EstimatedShipDateUpdated";
         }
 
-        public SimpleOrderV2StateMergePatched(OrderV2EventId eventId) {
-            super(eventId);
+        public Day getEstimatedShipDate() {
+            Object val = getLobProperties().get("estimatedShipDate");
+            if (val instanceof Day) {
+                return (Day) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Day.class);
         }
+
+        public void setEstimatedShipDate(Day value) {
+            getLobProperties().put("estimatedShipDate", value);
+        }
+
     }
 
-    public static class SimpleOrderV2StateDeleted extends AbstractOrderV2StateDeleted
-    {
-        public SimpleOrderV2StateDeleted() {
-        }
-
-        public SimpleOrderV2StateDeleted(OrderV2EventId eventId) {
-            super(eventId);
-        }
-    }
 
 }
 

@@ -13,6 +13,10 @@ public interface DaySummaryCommand extends Command
 
     void setDay(Day day);
 
+    String getId();
+
+    void setId(String id);
+
     Long getVersion();
 
     void setVersion(Long version);
@@ -32,75 +36,10 @@ public interface DaySummaryCommand extends Command
     }
 
     static boolean isCommandCreate(DaySummaryCommand c) {
-        if ((c instanceof DaySummaryCommand.CreateDaySummary) 
-            && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(DaySummaryState.VERSION_NULL)))
-            return true;
-        if ((c instanceof DaySummaryCommand.MergePatchDaySummary))
-            return false;
-        if ((c instanceof DaySummaryCommand.DeleteDaySummary))
-            return false;
         if (c.getVersion().equals(DaySummaryState.VERSION_NULL))
             return true;
         return false;
     }
-
-    interface CreateOrMergePatchDaySummary extends DaySummaryCommand
-    {
-
-        String getDescription();
-
-        void setDescription(String description);
-
-        int[] getMetadata();
-
-        void setMetadata(int[] metadata);
-
-        int[] getOptionalData();
-
-        void setOptionalData(int[] optionalData);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-        String[] getArrayData();
-
-        void setArrayData(String[] arrayData);
-
-    }
-
-    interface CreateDaySummary extends CreateOrMergePatchDaySummary
-    {
-    }
-
-    interface MergePatchDaySummary extends CreateOrMergePatchDaySummary
-    {
-        Boolean getIsPropertyDescriptionRemoved();
-
-        void setIsPropertyDescriptionRemoved(Boolean removed);
-
-        Boolean getIsPropertyMetadataRemoved();
-
-        void setIsPropertyMetadataRemoved(Boolean removed);
-
-        Boolean getIsPropertyArrayDataRemoved();
-
-        void setIsPropertyArrayDataRemoved(Boolean removed);
-
-        Boolean getIsPropertyOptionalDataRemoved();
-
-        void setIsPropertyOptionalDataRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-    }
-
-	interface DeleteDaySummary extends DaySummaryCommand
-	{
-	}
 
 }
 

@@ -14,47 +14,5 @@ public interface OrderItemCommand extends Command
 
     void setProductId(String productId);
 
-    interface CreateOrMergePatchOrderItem extends OrderItemCommand
-    {
-
-        BigInteger getQuantity();
-
-        void setQuantity(BigInteger quantity);
-
-        BigInteger getItemAmount();
-
-        void setItemAmount(BigInteger itemAmount);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface CreateOrderItem extends CreateOrMergePatchOrderItem
-    {
-    }
-
-    interface MergePatchOrderItem extends CreateOrMergePatchOrderItem
-    {
-        Boolean getIsPropertyQuantityRemoved();
-
-        void setIsPropertyQuantityRemoved(Boolean removed);
-
-        Boolean getIsPropertyItemAmountRemoved();
-
-        void setIsPropertyItemAmountRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-    }
-
-	interface RemoveOrderItem extends OrderItemCommand
-	{
-	}
-
 }
 

@@ -36,63 +36,6 @@ public interface OrderEvent extends Event {
 
     void setCommandId(String commandId);
 
-    interface OrderStateEvent extends OrderEvent {
-        BigInteger getTotalAmount();
-
-        void setTotalAmount(BigInteger totalAmount);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface OrderStateCreated extends OrderStateEvent
-    {
-        Iterable<OrderItemEvent.OrderItemStateCreated> getOrderItemEvents();
-        
-        void addOrderItemEvent(OrderItemEvent.OrderItemStateCreated e);
-
-        OrderItemEvent.OrderItemStateCreated newOrderItemStateCreated(String productId);
-
-    
-    }
-
-
-    interface OrderStateMergePatched extends OrderStateEvent
-    {
-        Boolean getIsPropertyTotalAmountRemoved();
-
-        void setIsPropertyTotalAmountRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-        Iterable<OrderItemEvent> getOrderItemEvents();
-        
-        void addOrderItemEvent(OrderItemEvent e);
-
-        OrderItemEvent.OrderItemStateCreated newOrderItemStateCreated(String productId);
-
-        OrderItemEvent.OrderItemStateMergePatched newOrderItemStateMergePatched(String productId);
-
-        OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String productId);
-
-
-    }
-
-    interface OrderStateDeleted extends OrderStateEvent
-    {
-        Iterable<OrderItemEvent.OrderItemStateRemoved> getOrderItemEvents();
-        
-        void addOrderItemEvent(OrderItemEvent.OrderItemStateRemoved e);
-        
-        OrderItemEvent.OrderItemStateRemoved newOrderItemStateRemoved(String productId);
-
-    }
-
 
 }
 

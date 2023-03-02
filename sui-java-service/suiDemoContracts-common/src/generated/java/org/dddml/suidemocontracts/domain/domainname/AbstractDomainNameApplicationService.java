@@ -46,18 +46,6 @@ public abstract class AbstractDomainNameApplicationService implements DomainName
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(DomainNameCommand.CreateDomainName c) {
-        update(c, ar -> ar.create(c));
-    }
-
-    public void when(DomainNameCommand.MergePatchDomainName c) {
-        update(c, ar -> ar.mergePatch(c));
-    }
-
-    public void when(DomainNameCommand.DeleteDomainName c) {
-        update(c, ar -> ar.delete(c));
-    }
-
     public void when(DomainNameCommands.Register c) {
         update(c, ar -> ar.register(c.getRegistrationPeriod(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
@@ -141,18 +129,6 @@ public abstract class AbstractDomainNameApplicationService implements DomainName
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
         }
-    }
-
-    public void initialize(DomainNameEvent.DomainNameStateCreated stateCreated) {
-        DomainNameId aggregateId = ((DomainNameEvent.SqlDomainNameEvent)stateCreated).getDomainNameEventId().getDomainNameId();
-        DomainNameState.SqlDomainNameState state = new AbstractDomainNameState.SimpleDomainNameState();
-        state.setDomainNameId(aggregateId);
-
-        DomainNameAggregate aggregate = getDomainNameAggregate(state);
-        ((AbstractDomainNameAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((DomainNameEvent.SqlDomainNameEvent)stateCreated).getDomainNameEventId().getVersion(), aggregate, state);
     }
 
     protected boolean isDuplicateCommand(DomainNameCommand command, EventStoreAggregateId eventStoreAggregateId, DomainNameState state) {

@@ -46,8 +46,8 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(ProductCommand.CreateProduct c) {
-        update(c, ar -> ar.create(c));
+    public void when(ProductCommands.Create c) {
+        update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public ProductState get(String id) {
@@ -124,18 +124,6 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
         }
-    }
-
-    public void initialize(ProductEvent.ProductStateCreated stateCreated) {
-        String aggregateId = ((ProductEvent.SqlProductEvent)stateCreated).getProductEventId().getProductId();
-        ProductState.SqlProductState state = new AbstractProductState.SimpleProductState();
-        state.setProductId(aggregateId);
-
-        ProductAggregate aggregate = getProductAggregate(state);
-        ((AbstractProductAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((ProductEvent.SqlProductEvent)stateCreated).getProductEventId().getVersion(), aggregate, state);
     }
 
     protected boolean isDuplicateCommand(ProductCommand command, EventStoreAggregateId eventStoreAggregateId, ProductState state) {

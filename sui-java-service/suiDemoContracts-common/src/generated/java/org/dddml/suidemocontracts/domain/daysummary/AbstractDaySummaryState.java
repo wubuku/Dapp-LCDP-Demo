@@ -190,31 +190,13 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof DaySummaryStateCreated) {
-            when((DaySummaryStateCreated) e);
-        } else if (e instanceof DaySummaryStateMergePatched) {
-            when((DaySummaryStateMergePatched) e);
-        } else if (e instanceof DaySummaryStateDeleted) {
-            when((DaySummaryStateDeleted) e);
+        if (false) { 
+            ;
+        } else if (e instanceof AbstractDaySummaryEvent.DaySummaryCreated) {
+            when((AbstractDaySummaryEvent.DaySummaryCreated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
-    }
-
-    public void when(DaySummaryStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setDescription(e.getDescription());
-        this.setMetadata(e.getMetadata());
-        this.setArrayData(e.getArrayData());
-        this.setOptionalData(e.getOptionalData());
-        this.setActive(e.getActive());
-
-        this.setDeleted(false);
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
     }
 
     protected void merge(DaySummaryState s) {
@@ -228,56 +210,42 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.setActive(s.getActive());
     }
 
-    public void when(DaySummaryStateMergePatched e) {
+    public void when(AbstractDaySummaryEvent.DaySummaryCreated e) {
         throwOnWrongEvent(e);
 
-        if (e.getDescription() == null) {
-            if (e.getIsPropertyDescriptionRemoved() != null && e.getIsPropertyDescriptionRemoved()) {
-                this.setDescription(null);
-            }
-        } else {
-            this.setDescription(e.getDescription());
-        }
-        if (e.getMetadata() == null) {
-            if (e.getIsPropertyMetadataRemoved() != null && e.getIsPropertyMetadataRemoved()) {
-                this.setMetadata(null);
-            }
-        } else {
-            this.setMetadata(e.getMetadata());
-        }
-        if (e.getArrayData() == null) {
-            if (e.getIsPropertyArrayDataRemoved() != null && e.getIsPropertyArrayDataRemoved()) {
-                this.setArrayData(null);
-            }
-        } else {
-            this.setArrayData(e.getArrayData());
-        }
-        if (e.getOptionalData() == null) {
-            if (e.getIsPropertyOptionalDataRemoved() != null && e.getIsPropertyOptionalDataRemoved()) {
-                this.setOptionalData(null);
-            }
-        } else {
-            this.setOptionalData(e.getOptionalData());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
-        }
+        String description = e.getDescription();
+        String Description = description;
+        int[] metaData = e.getMetaData();
+        int[] MetaData = metaData;
+        String[] arrayData = e.getArrayData();
+        String[] ArrayData = arrayData;
+        int[] optionalData = e.getOptionalData();
+        int[] OptionalData = optionalData;
 
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-    }
+        DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
+                    "mutate",
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, MutationContext.class},
+                    new Object[]{this, description, metaData, arrayData, optionalData, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
 
-    public void when(DaySummaryStateDeleted e) {
-        throwOnWrongEvent(e);
+//package org.dddml.suidemocontracts.domain.daysummary;
+//
+//public class CreateLogic {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    }
+//}
 
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
+        if (this != updatedDaySummaryState) { merge(updatedDaySummaryState); } //else do nothing
 
     }
 

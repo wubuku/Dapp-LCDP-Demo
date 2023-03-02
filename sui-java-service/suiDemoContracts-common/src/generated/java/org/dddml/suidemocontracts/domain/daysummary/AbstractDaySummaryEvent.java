@@ -40,6 +40,16 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         getDaySummaryEventId().setVersion(version);
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()
@@ -75,6 +85,16 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         this.commandId = commandId;
     }
 
+    private String commandType;
+
+    public String getCommandType() {
+        return commandType;
+    }
+
+    public void setCommandType(String commandType) {
+        this.commandType = commandType;
+    }
+
     protected AbstractDaySummaryEvent() {
     }
 
@@ -85,203 +105,99 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     public abstract String getEventType();
 
+    public static class DaySummaryClobEvent extends  AbstractDaySummaryEvent {
 
-    public static abstract class AbstractDaySummaryStateEvent extends AbstractDaySummaryEvent implements DaySummaryEvent.DaySummaryStateEvent {
-        private String description;
-
-        public String getDescription()
-        {
-            return this.description;
+        protected Map<String, Object> getLobProperties() {
+            return lobProperties;
         }
 
-        public void setDescription(String description)
-        {
-            this.description = description;
+        protected void setLobProperties(Map<String, Object> lobProperties) {
+            if (lobProperties == null) {
+                throw new IllegalArgumentException("lobProperties is null.");
+            }
+            this.lobProperties = lobProperties;
         }
 
-        private int[] metadata;
+        private Map<String, Object> lobProperties = new HashMap<>();
 
-        public int[] getMetadata()
-        {
-            return this.metadata;
+        protected String getLobText() {
+            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
         }
 
-        public void setMetadata(int[] metadata)
-        {
-            this.metadata = metadata;
+        protected void setLobText(String text) {
+            getLobProperties().clear();
+            Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
+            if (ps != null) {
+                for (Map.Entry<String, Object> kv : ps.entrySet()) {
+                    getLobProperties().put(kv.getKey(), kv.getValue());
+                }
+            }
         }
 
-        private int[] optionalData;
-
-        public int[] getOptionalData()
-        {
-            return this.optionalData;
-        }
-
-        public void setOptionalData(int[] optionalData)
-        {
-            this.optionalData = optionalData;
-        }
-
-        private Boolean active;
-
-        public Boolean getActive()
-        {
-            return this.active;
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.active = active;
-        }
-
-        private Set<String> arrayData;
-
-        public Set<String> getArrayData()
-        {
-            return this.arrayData;
-        }
-
-        public void setArrayData(Set<String> arrayData)
-        {
-            this.arrayData = arrayData;
-        }
-
-        protected AbstractDaySummaryStateEvent(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static abstract class AbstractDaySummaryStateCreated extends AbstractDaySummaryStateEvent implements DaySummaryEvent.DaySummaryStateCreated
-    {
-        public AbstractDaySummaryStateCreated() {
-            this(new DaySummaryEventId());
-        }
-
-        public AbstractDaySummaryStateCreated(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.CREATED;
+            return "DaySummaryClobEvent";
         }
 
     }
 
+    public static class DaySummaryCreated extends DaySummaryClobEvent {
 
-    public static abstract class AbstractDaySummaryStateMergePatched extends AbstractDaySummaryStateEvent implements DaySummaryEvent.DaySummaryStateMergePatched
-    {
-        public AbstractDaySummaryStateMergePatched() {
-            this(new DaySummaryEventId());
-        }
-
-        public AbstractDaySummaryStateMergePatched(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.MERGE_PATCHED;
+            return "DaySummaryCreated";
         }
 
-        private Boolean isPropertyDescriptionRemoved;
-
-        public Boolean getIsPropertyDescriptionRemoved() {
-            return this.isPropertyDescriptionRemoved;
+        public String getDescription() {
+            Object val = getLobProperties().get("description");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setIsPropertyDescriptionRemoved(Boolean removed) {
-            this.isPropertyDescriptionRemoved = removed;
+        public void setDescription(String value) {
+            getLobProperties().put("description", value);
         }
 
-        private Boolean isPropertyMetadataRemoved;
-
-        public Boolean getIsPropertyMetadataRemoved() {
-            return this.isPropertyMetadataRemoved;
+        public int[] getMetaData() {
+            Object val = getLobProperties().get("metaData");
+            if (val instanceof int[]) {
+                return (int[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, int[].class);
         }
 
-        public void setIsPropertyMetadataRemoved(Boolean removed) {
-            this.isPropertyMetadataRemoved = removed;
+        public void setMetaData(int[] value) {
+            getLobProperties().put("metaData", value);
         }
 
-        private Boolean isPropertyArrayDataRemoved;
-
-        public Boolean getIsPropertyArrayDataRemoved() {
-            return this.isPropertyArrayDataRemoved;
+        public String[] getArrayData() {
+            Object val = getLobProperties().get("arrayData");
+            if (val instanceof String[]) {
+                return (String[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String[].class);
         }
 
-        public void setIsPropertyArrayDataRemoved(Boolean removed) {
-            this.isPropertyArrayDataRemoved = removed;
+        public void setArrayData(String[] value) {
+            getLobProperties().put("arrayData", value);
         }
 
-        private Boolean isPropertyOptionalDataRemoved;
-
-        public Boolean getIsPropertyOptionalDataRemoved() {
-            return this.isPropertyOptionalDataRemoved;
+        public int[] getOptionalData() {
+            Object val = getLobProperties().get("optionalData");
+            if (val instanceof int[]) {
+                return (int[]) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, int[].class);
         }
 
-        public void setIsPropertyOptionalDataRemoved(Boolean removed) {
-            this.isPropertyOptionalDataRemoved = removed;
-        }
-
-        private Boolean isPropertyActiveRemoved;
-
-        public Boolean getIsPropertyActiveRemoved() {
-            return this.isPropertyActiveRemoved;
-        }
-
-        public void setIsPropertyActiveRemoved(Boolean removed) {
-            this.isPropertyActiveRemoved = removed;
-        }
-
-
-    }
-
-
-    public static abstract class AbstractDaySummaryStateDeleted extends AbstractDaySummaryStateEvent implements DaySummaryEvent.DaySummaryStateDeleted
-    {
-        public AbstractDaySummaryStateDeleted() {
-            this(new DaySummaryEventId());
-        }
-
-        public AbstractDaySummaryStateDeleted(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-
-        public String getEventType() {
-            return StateEventType.DELETED;
+        public void setOptionalData(int[] value) {
+            getLobProperties().put("optionalData", value);
         }
 
     }
 
-    public static class SimpleDaySummaryStateCreated extends AbstractDaySummaryStateCreated
-    {
-        public SimpleDaySummaryStateCreated() {
-        }
-
-        public SimpleDaySummaryStateCreated(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleDaySummaryStateMergePatched extends AbstractDaySummaryStateMergePatched
-    {
-        public SimpleDaySummaryStateMergePatched() {
-        }
-
-        public SimpleDaySummaryStateMergePatched(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-    }
-
-    public static class SimpleDaySummaryStateDeleted extends AbstractDaySummaryStateDeleted
-    {
-        public SimpleDaySummaryStateDeleted() {
-        }
-
-        public SimpleDaySummaryStateDeleted(DaySummaryEventId eventId) {
-            super(eventId);
-        }
-    }
 
 }
 

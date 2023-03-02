@@ -46,6 +46,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
         getProductEventId().setVersion(version);
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getCreatedBy()
     {
         return this.state.getCreatedBy();
@@ -92,82 +102,75 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     public abstract String getEventType();
 
+    public static class ProductClobEvent extends  AbstractProductEvent {
 
-    public static abstract class AbstractProductStateEvent extends AbstractProductEvent implements ProductEvent.ProductStateEvent {
-        public String getName()
-        {
-            return this.getProductState().getName();
+        protected Map<String, Object> getLobProperties() {
+            return lobProperties;
         }
 
-        public void setName(String name)
-        {
-            this.getProductState().setName(name);
+        protected void setLobProperties(Map<String, Object> lobProperties) {
+            if (lobProperties == null) {
+                throw new IllegalArgumentException("lobProperties is null.");
+            }
+            this.lobProperties = lobProperties;
         }
 
-        public BigInteger getUnitPrice()
-        {
-            return this.getProductState().getUnitPrice();
+        private Map<String, Object> lobProperties = new HashMap<>();
+
+        protected String getLobText() {
+            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
         }
 
-        public void setUnitPrice(BigInteger unitPrice)
-        {
-            this.getProductState().setUnitPrice(unitPrice);
+        protected void setLobText(String text) {
+            getLobProperties().clear();
+            Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
+            if (ps != null) {
+                for (Map.Entry<String, Object> kv : ps.entrySet()) {
+                    getLobProperties().put(kv.getKey(), kv.getValue());
+                }
+            }
         }
 
-        public Boolean getActive()
-        {
-            return this.getProductState().getActive();
-        }
-
-        public void setActive(Boolean active)
-        {
-            this.getProductState().setActive(active);
-        }
-
-        protected AbstractProductStateEvent(ProductEventId eventId) {
-            super(eventId);
-        }
-
-        public AbstractProductStateEvent(ProductState s) {
-            super(s);
-        }
-    }
-
-    public static abstract class AbstractProductStateCreated extends AbstractProductStateEvent implements ProductEvent.ProductStateCreated
-    {
-        public AbstractProductStateCreated() {
-            this(new ProductEventId());
-        }
-
-        public AbstractProductStateCreated(ProductEventId eventId) {
-            super(eventId);
-        }
-
-        public AbstractProductStateCreated(ProductState s) {
-            super(s);
-        }
-
+        @Override
         public String getEventType() {
-            return StateEventType.CREATED;
+            return "ProductClobEvent";
         }
 
     }
 
+    public static class ProductCreated extends ProductClobEvent {
 
-
-    public static class SimpleProductStateCreated extends AbstractProductStateCreated
-    {
-        public SimpleProductStateCreated() {
+        @Override
+        public String getEventType() {
+            return "ProductCreated";
         }
 
-        public SimpleProductStateCreated(ProductEventId eventId) {
-            super(eventId);
+        public String getName() {
+            Object val = getLobProperties().get("name");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public SimpleProductStateCreated(ProductState s) {
-            super(s);
+        public void setName(String value) {
+            getLobProperties().put("name", value);
         }
+
+        public BigInteger getUnitPrice() {
+            Object val = getLobProperties().get("unitPrice");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setUnitPrice(BigInteger value) {
+            getLobProperties().put("unitPrice", value);
+        }
+
     }
+
 
 }
 

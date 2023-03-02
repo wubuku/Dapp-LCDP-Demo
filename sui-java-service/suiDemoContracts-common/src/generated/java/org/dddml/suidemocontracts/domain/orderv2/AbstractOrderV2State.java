@@ -182,32 +182,18 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof OrderV2StateCreated) {
-            when((OrderV2StateCreated) e);
-        } else if (e instanceof OrderV2StateMergePatched) {
-            when((OrderV2StateMergePatched) e);
-        } else if (e instanceof OrderV2StateDeleted) {
-            when((OrderV2StateDeleted) e);
+        if (false) { 
+            ;
+        } else if (e instanceof AbstractOrderV2Event.OrderV2Created) {
+            when((AbstractOrderV2Event.OrderV2Created)e);
+        } else if (e instanceof AbstractOrderV2Event.OrderV2ItemRemoved) {
+            when((AbstractOrderV2Event.OrderV2ItemRemoved)e);
+        } else if (e instanceof AbstractOrderV2Event.OrderV2ItemQuantityUpdated) {
+            when((AbstractOrderV2Event.OrderV2ItemQuantityUpdated)e);
+        } else if (e instanceof AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated) {
+            when((AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
-        }
-    }
-
-    public void when(OrderV2StateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setTotalAmount(e.getTotalAmount());
-        this.setEstimatedShipDate(e.getEstimatedShipDate());
-        this.setActive(e.getActive());
-
-        this.setDeleted(false);
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
-        for (OrderV2ItemEvent.OrderV2ItemStateCreated innerEvent : e.getOrderV2ItemEvents()) {
-            OrderV2ItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(((OrderV2ItemEvent.SqlOrderV2ItemEvent)innerEvent).getOrderV2ItemEventId().getProductId());
-            ((OrderV2ItemState.SqlOrderV2ItemState)innerState).mutate(innerEvent);
         }
     }
 
@@ -254,60 +240,146 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
     }
 
-    public void when(OrderV2StateMergePatched e) {
+    public void when(AbstractOrderV2Event.OrderV2Created e) {
         throwOnWrongEvent(e);
 
-        if (e.getTotalAmount() == null) {
-            if (e.getIsPropertyTotalAmountRemoved() != null && e.getIsPropertyTotalAmountRemoved()) {
-                this.setTotalAmount(null);
-            }
-        } else {
-            this.setTotalAmount(e.getTotalAmount());
-        }
-        if (e.getEstimatedShipDate() == null) {
-            if (e.getIsPropertyEstimatedShipDateRemoved() != null && e.getIsPropertyEstimatedShipDateRemoved()) {
-                this.setEstimatedShipDate(null);
-            }
-        } else {
-            this.setEstimatedShipDate(e.getEstimatedShipDate());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
-        }
+        String product = e.getProduct();
+        String Product = product;
+        BigInteger quantity = e.getQuantity();
+        BigInteger Quantity = quantity;
+        BigInteger unitPrice = e.getUnitPrice();
+        BigInteger UnitPrice = unitPrice;
+        BigInteger totalAmount = e.getTotalAmount();
+        BigInteger TotalAmount = totalAmount;
+        String owner = e.getOwner();
+        String Owner = owner;
 
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        for (OrderV2ItemEvent innerEvent : e.getOrderV2ItemEvents()) {
-            OrderV2ItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(((OrderV2ItemEvent.SqlOrderV2ItemEvent)innerEvent).getOrderV2ItemEventId().getProductId());
-            ((OrderV2ItemState.SqlOrderV2ItemState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderV2ItemEvent.OrderV2ItemStateRemoved) {
-                //OrderV2ItemEvent.OrderV2ItemStateRemoved removed = (OrderV2ItemEvent.OrderV2ItemStateRemoved)innerEvent;
-                ((AbstractOrderV2ItemStateCollection)this.getItems()).remove(innerState);
-            }
-        }
+        OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, MutationContext.class},
+                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class CreateLogic {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+
     }
 
-    public void when(OrderV2StateDeleted e) {
+    public void when(AbstractOrderV2Event.OrderV2ItemRemoved e) {
         throwOnWrongEvent(e);
 
-        this.setDeleted(true);
+        String productId = e.getProductId();
+        String ProductId = productId;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        for (OrderV2ItemState innerState : this.getItems()) {
-            ((AbstractOrderV2ItemStateCollection)this.getItems()).remove(innerState);
-        
-            OrderV2ItemEvent.OrderV2ItemStateRemoved innerE = e.newOrderV2ItemStateRemoved(innerState.getProductId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderV2ItemState.MutableOrderV2ItemState)innerState).mutate(innerE);
-            //e.addOrderV2ItemEvent(innerE);
+        OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, String.class, MutationContext.class},
+                    new Object[]{this, productId, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class RemoveItemLogic {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+
+    }
+
+    public void when(AbstractOrderV2Event.OrderV2ItemQuantityUpdated e) {
+        throwOnWrongEvent(e);
+
+        String productId = e.getProductId();
+        String ProductId = productId;
+        BigInteger quantity = e.getQuantity();
+        BigInteger Quantity = quantity;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
         }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, productId, quantity, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class UpdateItemQuantityLogic {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, BigInteger quantity, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+
+    }
+
+    public void when(AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated e) {
+        throwOnWrongEvent(e);
+
+        Day estimatedShipDate = e.getEstimatedShipDate();
+        Day EstimatedShipDate = estimatedShipDate;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, Day.class, MutationContext.class},
+                    new Object[]{this, estimatedShipDate, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class UpdateEstimatedShipDateLogic {
+//    public static OrderV2State mutate(OrderV2State orderV2State, Day estimatedShipDate, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+
     }
 
     public void save() {

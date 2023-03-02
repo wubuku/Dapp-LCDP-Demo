@@ -32,53 +32,6 @@ public interface OrderV2ItemEvent extends Event {
 
     void setCommandId(String commandId);
 
-    interface OrderV2ItemStateEvent extends OrderV2ItemEvent {
-        Long getVersion();
-
-        void setVersion(Long version);
-
-        BigInteger getQuantity();
-
-        void setQuantity(BigInteger quantity);
-
-        BigInteger getItemAmount();
-
-        void setItemAmount(BigInteger itemAmount);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface OrderV2ItemStateCreated extends OrderV2ItemStateEvent
-    {
-    
-    }
-
-
-    interface OrderV2ItemStateMergePatched extends OrderV2ItemStateEvent
-    {
-        Boolean getIsPropertyQuantityRemoved();
-
-        void setIsPropertyQuantityRemoved(Boolean removed);
-
-        Boolean getIsPropertyItemAmountRemoved();
-
-        void setIsPropertyItemAmountRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-
-    }
-
-    interface OrderV2ItemStateRemoved extends OrderV2ItemStateEvent
-    {
-    }
-
 
 }
 

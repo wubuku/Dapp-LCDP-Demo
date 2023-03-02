@@ -11,78 +11,45 @@ import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.dddml.suidemocontracts.domain.product.*;
-import java.util.function.Consumer;
 
-public class HibernateProductEventStore implements EventStore {
-    private SessionFactory sessionFactory;
-
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
-
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
-
-    protected Session getCurrentSession() {
-        return this.sessionFactory.getCurrentSession();
+public class HibernateProductEventStore extends AbstractHibernateEventStore
+{
+    @Override
+    protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
+    {
+        return new ProductEventId((String) eventStoreAggregateId.getId(), version);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public EventStream loadEventStream(EventStoreAggregateId aggregateId) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Transactional
-    @Override
-    public void appendEvents(EventStoreAggregateId aggregateId, long version, Collection<Event> events, Consumer<Collection<Event>> afterEventsAppended) {
-        for (Event e : events) {
-            if (e instanceof AbstractProductEvent.AbstractProductStateCreated) {
-                ProductState s = ((AbstractProductEvent.AbstractProductStateCreated)e).getProductState();
-                getCurrentSession().save(s);
-            } else {
-                getCurrentSession().save(e);
-            }
-            if (e instanceof Saveable) {
-                Saveable saveable = (Saveable) e;
-                saveable.save();
-            }
-        }
-        //System.out.println("####################################################");
-        afterEventsAppended.accept(events);
-        //System.out.println("####################################################");
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Event getEvent(Class eventType, EventStoreAggregateId eventStoreAggregateId, long version) {
-        Class supportedEventType = AbstractProductEvent.SimpleProductStateCreated.class;
-        if (!eventType.isAssignableFrom(supportedEventType)) {
-            throw new UnsupportedOperationException();
-        }
-        return getEvent(eventStoreAggregateId, version);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Event getEvent(EventStoreAggregateId eventStoreAggregateId, long version) {
-        String idObj = (String) eventStoreAggregateId.getId();
-        ProductState state = getCurrentSession().get(AbstractProductState.SimpleProductState.class, idObj);
-        return new AbstractProductEvent.SimpleProductStateCreated(state);
+    protected Class getSupportedEventType()
+    {
+        return AbstractProductEvent.class;
     }
 
     @Transactional(readOnly = true)
     @Override
     public EventStream loadEventStream(Class eventType, EventStoreAggregateId eventStoreAggregateId, long version) {
-        Class supportedEventType = AbstractProductEvent.SimpleProductStateCreated.class;
+        Class supportedEventType = AbstractProductEvent.class;
         if (!eventType.isAssignableFrom(supportedEventType)) {
             throw new UnsupportedOperationException();
         }
-        Event e = getEvent(eventStoreAggregateId, version);
-        EventStream es = new EventStream();
-        es.setEvents(e != null ? Collections.singletonList(e) : Collections.EMPTY_LIST);
-        return es;
-    }
-
-    public boolean isEventWithCommandIdExisted(Class eventType, EventStoreAggregateId eventStoreAggregateId, String commandId) {
-        throw new UnsupportedOperationException();
+        String idObj = (String) eventStoreAggregateId.getId();
+        Criteria criteria = getCurrentSession().createCriteria(AbstractProductEvent.class);
+        criteria.add(Restrictions.eq("productEventId.productId", idObj));
+        criteria.add(Restrictions.le("productEventId.version", version));
+        criteria.addOrder(Order.asc("productEventId.version"));
+        List es = criteria.list();
+        for (Object e : es) {
+            ((AbstractProductEvent) e).setEventReadOnly(true);
+        }
+        EventStream eventStream = new EventStream();
+        if (es.size() > 0) {
+            eventStream.setSteamVersion(((AbstractProductEvent) es.get(es.size() - 1)).getProductEventId().getVersion());
+        } else {
+            //todo?
+        }
+        eventStream.setEvents(es);
+        return eventStream;
     }
 
 }

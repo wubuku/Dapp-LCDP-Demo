@@ -11,11 +11,7 @@ import org.dddml.suidemocontracts.domain.Command;
 
 public interface OrderV2ApplicationService
 {
-    void when(OrderV2Command.CreateOrderV2 c);
-
-    void when(OrderV2Command.MergePatchOrderV2 c);
-
-    void when(OrderV2Command.DeleteOrderV2 c);
+    void when(OrderV2Commands.Create c);
 
     void when(OrderV2Commands.RemoveItem c);
 

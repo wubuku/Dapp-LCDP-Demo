@@ -24,6 +24,10 @@ public interface OrderV2Event extends Event {
     
     //void setVersion(Long version);
 
+    String getId();
+    
+    //void setId(String id);
+
     String getCreatedBy();
 
     void setCreatedBy(String createdBy);
@@ -35,71 +39,6 @@ public interface OrderV2Event extends Event {
     String getCommandId();
 
     void setCommandId(String commandId);
-
-    interface OrderV2StateEvent extends OrderV2Event {
-        BigInteger getTotalAmount();
-
-        void setTotalAmount(BigInteger totalAmount);
-
-        Day getEstimatedShipDate();
-
-        void setEstimatedShipDate(Day estimatedShipDate);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface OrderV2StateCreated extends OrderV2StateEvent
-    {
-        Iterable<OrderV2ItemEvent.OrderV2ItemStateCreated> getOrderV2ItemEvents();
-        
-        void addOrderV2ItemEvent(OrderV2ItemEvent.OrderV2ItemStateCreated e);
-
-        OrderV2ItemEvent.OrderV2ItemStateCreated newOrderV2ItemStateCreated(String productId);
-
-    
-    }
-
-
-    interface OrderV2StateMergePatched extends OrderV2StateEvent
-    {
-        Boolean getIsPropertyTotalAmountRemoved();
-
-        void setIsPropertyTotalAmountRemoved(Boolean removed);
-
-        Boolean getIsPropertyEstimatedShipDateRemoved();
-
-        void setIsPropertyEstimatedShipDateRemoved(Boolean removed);
-
-        Boolean getIsPropertyActiveRemoved();
-
-        void setIsPropertyActiveRemoved(Boolean removed);
-
-
-        Iterable<OrderV2ItemEvent> getOrderV2ItemEvents();
-        
-        void addOrderV2ItemEvent(OrderV2ItemEvent e);
-
-        OrderV2ItemEvent.OrderV2ItemStateCreated newOrderV2ItemStateCreated(String productId);
-
-        OrderV2ItemEvent.OrderV2ItemStateMergePatched newOrderV2ItemStateMergePatched(String productId);
-
-        OrderV2ItemEvent.OrderV2ItemStateRemoved newOrderV2ItemStateRemoved(String productId);
-
-
-    }
-
-    interface OrderV2StateDeleted extends OrderV2StateEvent
-    {
-        Iterable<OrderV2ItemEvent.OrderV2ItemStateRemoved> getOrderV2ItemEvents();
-        
-        void addOrderV2ItemEvent(OrderV2ItemEvent.OrderV2ItemStateRemoved e);
-        
-        OrderV2ItemEvent.OrderV2ItemStateRemoved newOrderV2ItemStateRemoved(String productId);
-
-    }
 
 
 }

@@ -161,28 +161,15 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof DomainNameStateCreated) {
-            when((DomainNameStateCreated) e);
-        } else if (e instanceof DomainNameStateMergePatched) {
-            when((DomainNameStateMergePatched) e);
-        } else if (e instanceof DomainNameStateDeleted) {
-            when((DomainNameStateDeleted) e);
+        if (false) { 
+            ;
+        } else if (e instanceof AbstractDomainNameEvent.Registered) {
+            when((AbstractDomainNameEvent.Registered)e);
+        } else if (e instanceof AbstractDomainNameEvent.Renewed) {
+            when((AbstractDomainNameEvent.Renewed)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
-    }
-
-    public void when(DomainNameStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setExpirationDate(e.getExpirationDate());
-        this.setActive(e.getActive());
-
-        this.setDeleted(false);
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
     }
 
     protected void merge(DomainNameState s) {
@@ -193,35 +180,73 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         this.setActive(s.getActive());
     }
 
-    public void when(DomainNameStateMergePatched e) {
+    public void when(AbstractDomainNameEvent.Registered e) {
         throwOnWrongEvent(e);
 
-        if (e.getExpirationDate() == null) {
-            if (e.getIsPropertyExpirationDateRemoved() != null && e.getIsPropertyExpirationDateRemoved()) {
-                this.setExpirationDate(null);
-            }
-        } else {
-            this.setExpirationDate(e.getExpirationDate());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
-        }
+        BigInteger registrationPeriod = e.getRegistrationPeriod();
+        BigInteger RegistrationPeriod = registrationPeriod;
+        String owner = e.getOwner();
+        String Owner = owner;
 
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
+
+        DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
+                    "mutate",
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, MutationContext.class},
+                    new Object[]{this, registrationPeriod, owner, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.domainname;
+//
+//public class RegisterLogic {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedDomainNameState) { merge(updatedDomainNameState); } //else do nothing
 
     }
 
-    public void when(DomainNameStateDeleted e) {
+    public void when(AbstractDomainNameEvent.Renewed e) {
         throwOnWrongEvent(e);
 
-        this.setDeleted(true);
+        BigInteger renewPeriod = e.getRenewPeriod();
+        BigInteger RenewPeriod = renewPeriod;
+        String account = e.getAccount();
+        String Account = account;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
+
+        DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
+                    "mutate",
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, MutationContext.class},
+                    new Object[]{this, renewPeriod, account, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.domainname;
+//
+//public class RenewLogic {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedDomainNameState) { merge(updatedDomainNameState); } //else do nothing
 
     }
 

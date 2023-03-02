@@ -24,22 +24,6 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
         return this.changes;
     }
 
-    public void create(DomainNameCommand.CreateDomainName c) {
-        if (c.getVersion() == null) { c.setVersion(DomainNameState.VERSION_NULL); }
-        DomainNameEvent e = map(c);
-        apply(e);
-    }
-
-    public void mergePatch(DomainNameCommand.MergePatchDomainName c) {
-        DomainNameEvent e = map(c);
-        apply(e);
-    }
-
-    public void delete(DomainNameCommand.DeleteDomainName c) {
-        DomainNameEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         DomainNameCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -50,81 +34,8 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
         changes.add(e);
     }
 
-    protected DomainNameEvent map(DomainNameCommand.CreateDomainName c) {
-        DomainNameEventId stateEventId = new DomainNameEventId(c.getDomainNameId(), c.getVersion());
-        DomainNameEvent.DomainNameStateCreated e = newDomainNameStateCreated(stateEventId);
-        e.setExpirationDate(c.getExpirationDate());
-        e.setActive(c.getActive());
-        ((AbstractDomainNameEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DomainNameEvent map(DomainNameCommand.MergePatchDomainName c) {
-        DomainNameEventId stateEventId = new DomainNameEventId(c.getDomainNameId(), c.getVersion());
-        DomainNameEvent.DomainNameStateMergePatched e = newDomainNameStateMergePatched(stateEventId);
-        e.setExpirationDate(c.getExpirationDate());
-        e.setActive(c.getActive());
-        e.setIsPropertyExpirationDateRemoved(c.getIsPropertyExpirationDateRemoved());
-        e.setIsPropertyActiveRemoved(c.getIsPropertyActiveRemoved());
-        ((AbstractDomainNameEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DomainNameEvent map(DomainNameCommand.DeleteDomainName c) {
-        DomainNameEventId stateEventId = new DomainNameEventId(c.getDomainNameId(), c.getVersion());
-        DomainNameEvent.DomainNameStateDeleted e = newDomainNameStateDeleted(stateEventId);
-        ((AbstractDomainNameEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
 
     ////////////////////////
-
-    protected DomainNameEvent.DomainNameStateCreated newDomainNameStateCreated(Long version, String commandId, String requesterId) {
-        DomainNameEventId stateEventId = new DomainNameEventId(this.state.getDomainNameId(), version);
-        DomainNameEvent.DomainNameStateCreated e = newDomainNameStateCreated(stateEventId);
-        ((AbstractDomainNameEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DomainNameEvent.DomainNameStateMergePatched newDomainNameStateMergePatched(Long version, String commandId, String requesterId) {
-        DomainNameEventId stateEventId = new DomainNameEventId(this.state.getDomainNameId(), version);
-        DomainNameEvent.DomainNameStateMergePatched e = newDomainNameStateMergePatched(stateEventId);
-        ((AbstractDomainNameEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DomainNameEvent.DomainNameStateDeleted newDomainNameStateDeleted(Long version, String commandId, String requesterId) {
-        DomainNameEventId stateEventId = new DomainNameEventId(this.state.getDomainNameId(), version);
-        DomainNameEvent.DomainNameStateDeleted e = newDomainNameStateDeleted(stateEventId);
-        ((AbstractDomainNameEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected DomainNameEvent.DomainNameStateCreated newDomainNameStateCreated(DomainNameEventId stateEventId) {
-        return new AbstractDomainNameEvent.SimpleDomainNameStateCreated(stateEventId);
-    }
-
-    protected DomainNameEvent.DomainNameStateMergePatched newDomainNameStateMergePatched(DomainNameEventId stateEventId) {
-        return new AbstractDomainNameEvent.SimpleDomainNameStateMergePatched(stateEventId);
-    }
-
-    protected DomainNameEvent.DomainNameStateDeleted newDomainNameStateDeleted(DomainNameEventId stateEventId) {
-        return new AbstractDomainNameEvent.SimpleDomainNameStateDeleted(stateEventId);
-    }
-
 
     public static class SimpleDomainNameAggregate extends AbstractDomainNameAggregate {
         public SimpleDomainNameAggregate(DomainNameState state) {
@@ -133,12 +44,96 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
 
         @Override
         public void register(BigInteger registrationPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Register c) {
-            throw new UnsupportedOperationException();
+            try {
+                verifyRegister(registrationPeriod, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newRegistered(registrationPeriod, version, commandId, requesterId);
+            apply(e);
         }
 
         @Override
         public void renew(BigInteger renewPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Renew c) {
-            throw new UnsupportedOperationException();
+            try {
+                verifyRenew(renewPeriod, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newRenewed(renewPeriod, version, commandId, requesterId);
+            apply(e);
+        }
+
+        protected void verifyRegister(BigInteger registrationPeriod, DomainNameCommands.Register c) {
+            BigInteger RegistrationPeriod = registrationPeriod;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
+                    "verify",
+                    new Class[]{DomainNameState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), registrationPeriod, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.domainname;
+//
+//public class RegisterLogic {
+//    public static void verify(DomainNameState domainNameState, BigInteger registrationPeriod, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyRenew(BigInteger renewPeriod, DomainNameCommands.Renew c) {
+            BigInteger RenewPeriod = renewPeriod;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
+                    "verify",
+                    new Class[]{DomainNameState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), renewPeriod, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.domainname;
+//
+//public class RenewLogic {
+//    public static void verify(DomainNameState domainNameState, BigInteger renewPeriod, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected AbstractDomainNameEvent.Registered newRegistered(BigInteger registrationPeriod, Long version, String commandId, String requesterId) {
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), version);
+            AbstractDomainNameEvent.Registered e = new AbstractDomainNameEvent.Registered();
+
+            e.setRegistrationPeriod(registrationPeriod);
+            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setDomainNameEventId(eventId);
+            return e;
+        }
+
+        protected AbstractDomainNameEvent.Renewed newRenewed(BigInteger renewPeriod, Long version, String commandId, String requesterId) {
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), version);
+            AbstractDomainNameEvent.Renewed e = new AbstractDomainNameEvent.Renewed();
+
+            e.setRenewPeriod(renewPeriod);
+            e.setAccount(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setDomainNameEventId(eventId);
+            return e;
         }
 
     }

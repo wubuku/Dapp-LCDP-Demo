@@ -13,12 +13,6 @@ public interface DomainNameAggregate
 
     List<Event> getChanges();
 
-    void create(DomainNameCommand.CreateDomainName c);
-
-    void mergePatch(DomainNameCommand.MergePatchDomainName c);
-
-    void delete(DomainNameCommand.DeleteDomainName c);
-
     void register(BigInteger registrationPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Register c);
 
     void renew(BigInteger renewPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Renew c);

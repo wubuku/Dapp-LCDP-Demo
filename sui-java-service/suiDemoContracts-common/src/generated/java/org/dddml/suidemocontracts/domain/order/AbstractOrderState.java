@@ -172,31 +172,16 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof OrderStateCreated) {
-            when((OrderStateCreated) e);
-        } else if (e instanceof OrderStateMergePatched) {
-            when((OrderStateMergePatched) e);
-        } else if (e instanceof OrderStateDeleted) {
-            when((OrderStateDeleted) e);
+        if (false) { 
+            ;
+        } else if (e instanceof AbstractOrderEvent.OrderCreated) {
+            when((AbstractOrderEvent.OrderCreated)e);
+        } else if (e instanceof AbstractOrderEvent.OrderItemRemoved) {
+            when((AbstractOrderEvent.OrderItemRemoved)e);
+        } else if (e instanceof AbstractOrderEvent.OrderItemQuantityUpdated) {
+            when((AbstractOrderEvent.OrderItemQuantityUpdated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
-        }
-    }
-
-    public void when(OrderStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setTotalAmount(e.getTotalAmount());
-        this.setActive(e.getActive());
-
-        this.setDeleted(false);
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
-        for (OrderItemEvent.OrderItemStateCreated innerEvent : e.getOrderItemEvents()) {
-            OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAdd(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getProductId());
-            ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
         }
     }
 
@@ -242,53 +227,113 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         }
     }
 
-    public void when(OrderStateMergePatched e) {
+    public void when(AbstractOrderEvent.OrderCreated e) {
         throwOnWrongEvent(e);
 
-        if (e.getTotalAmount() == null) {
-            if (e.getIsPropertyTotalAmountRemoved() != null && e.getIsPropertyTotalAmountRemoved()) {
-                this.setTotalAmount(null);
-            }
-        } else {
-            this.setTotalAmount(e.getTotalAmount());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
-        }
+        String product = e.getProduct();
+        String Product = product;
+        BigInteger quantity = e.getQuantity();
+        BigInteger Quantity = quantity;
+        BigInteger unitPrice = e.getUnitPrice();
+        BigInteger UnitPrice = unitPrice;
+        BigInteger totalAmount = e.getTotalAmount();
+        BigInteger TotalAmount = totalAmount;
+        String owner = e.getOwner();
+        String Owner = owner;
 
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        for (OrderItemEvent innerEvent : e.getOrderItemEvents()) {
-            OrderItemState innerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAdd(((OrderItemEvent.SqlOrderItemEvent)innerEvent).getOrderItemEventId().getProductId());
-            ((OrderItemState.SqlOrderItemState)innerState).mutate(innerEvent);
-            if (innerEvent instanceof OrderItemEvent.OrderItemStateRemoved) {
-                //OrderItemEvent.OrderItemStateRemoved removed = (OrderItemEvent.OrderItemStateRemoved)innerEvent;
-                ((AbstractOrderItemStateCollection)this.getItems()).remove(innerState);
-            }
-        }
+        OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.CreateLogic",
+                    "mutate",
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, MutationContext.class},
+                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class CreateLogic {
+//    public static OrderState mutate(OrderState orderState, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderState) { merge(updatedOrderState); } //else do nothing
+
     }
 
-    public void when(OrderStateDeleted e) {
+    public void when(AbstractOrderEvent.OrderItemRemoved e) {
         throwOnWrongEvent(e);
 
-        this.setDeleted(true);
+        String productId = e.getProductId();
+        String ProductId = productId;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
-        for (OrderItemState innerState : this.getItems()) {
-            ((AbstractOrderItemStateCollection)this.getItems()).remove(innerState);
-        
-            OrderItemEvent.OrderItemStateRemoved innerE = e.newOrderItemStateRemoved(innerState.getProductId());
-            innerE.setCreatedAt(e.getCreatedAt());
-            innerE.setCreatedBy(e.getCreatedBy());
-            ((OrderItemState.MutableOrderItemState)innerState).mutate(innerE);
-            //e.addOrderItemEvent(innerE);
+        OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
+                    "mutate",
+                    new Class[]{OrderState.class, String.class, MutationContext.class},
+                    new Object[]{this, productId, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class RemoveItemLogic {
+//    public static OrderState mutate(OrderState orderState, String productId, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderState) { merge(updatedOrderState); } //else do nothing
+
+    }
+
+    public void when(AbstractOrderEvent.OrderItemQuantityUpdated e) {
+        throwOnWrongEvent(e);
+
+        String productId = e.getProductId();
+        String ProductId = productId;
+        BigInteger quantity = e.getQuantity();
+        BigInteger Quantity = quantity;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
         }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
+                    "mutate",
+                    new Class[]{OrderState.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, productId, quantity, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class UpdateItemQuantityLogic {
+//    public static OrderState mutate(OrderState orderState, String productId, BigInteger quantity, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderState) { merge(updatedOrderState); } //else do nothing
+
     }
 
     public void save() {

@@ -46,16 +46,8 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         this.stateQueryRepository = stateQueryRepository;
     }
 
-    public void when(OrderCommand.CreateOrder c) {
-        update(c, ar -> ar.create(c));
-    }
-
-    public void when(OrderCommand.MergePatchOrder c) {
-        update(c, ar -> ar.mergePatch(c));
-    }
-
-    public void when(OrderCommand.DeleteOrder c) {
-        update(c, ar -> ar.delete(c));
+    public void when(OrderCommands.Create c) {
+        update(c, ar -> ar.create(c.getProduct(), c.getQuantity(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderCommands.RemoveItem c) {
@@ -149,18 +141,6 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));
         }
-    }
-
-    public void initialize(OrderEvent.OrderStateCreated stateCreated) {
-        String aggregateId = ((OrderEvent.SqlOrderEvent)stateCreated).getOrderEventId().getId();
-        OrderState.SqlOrderState state = new AbstractOrderState.SimpleOrderState();
-        state.setId(aggregateId);
-
-        OrderAggregate aggregate = getOrderAggregate(state);
-        ((AbstractOrderAggregate) aggregate).apply(stateCreated);
-
-        EventStoreAggregateId eventStoreAggregateId = toEventStoreAggregateId(aggregateId);
-        persist(eventStoreAggregateId, ((OrderEvent.SqlOrderEvent)stateCreated).getOrderEventId().getVersion(), aggregate, state);
     }
 
     protected boolean isDuplicateCommand(OrderCommand command, EventStoreAggregateId eventStoreAggregateId, OrderState state) {

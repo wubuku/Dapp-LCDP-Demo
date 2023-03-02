@@ -186,29 +186,11 @@ public abstract class AbstractOrderV2ItemState implements OrderV2ItemState.SqlOr
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof OrderV2ItemStateCreated) {
-            when((OrderV2ItemStateCreated) e);
-        } else if (e instanceof OrderV2ItemStateMergePatched) {
-            when((OrderV2ItemStateMergePatched) e);
-        } else if (e instanceof OrderV2ItemStateRemoved) {
-            when((OrderV2ItemStateRemoved) e);
+        if (false) { 
+            ;
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
-    }
-
-    public void when(OrderV2ItemStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setQuantity(e.getQuantity());
-        this.setItemAmount(e.getItemAmount());
-        this.setActive(e.getActive());
-
-        this.setDeleted(false);
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
     }
 
     protected void merge(OrderV2ItemState s) {
@@ -218,45 +200,6 @@ public abstract class AbstractOrderV2ItemState implements OrderV2ItemState.SqlOr
         this.setQuantity(s.getQuantity());
         this.setItemAmount(s.getItemAmount());
         this.setActive(s.getActive());
-    }
-
-    public void when(OrderV2ItemStateMergePatched e) {
-        throwOnWrongEvent(e);
-
-        if (e.getQuantity() == null) {
-            if (e.getIsPropertyQuantityRemoved() != null && e.getIsPropertyQuantityRemoved()) {
-                this.setQuantity(null);
-            }
-        } else {
-            this.setQuantity(e.getQuantity());
-        }
-        if (e.getItemAmount() == null) {
-            if (e.getIsPropertyItemAmountRemoved() != null && e.getIsPropertyItemAmountRemoved()) {
-                this.setItemAmount(null);
-            }
-        } else {
-            this.setItemAmount(e.getItemAmount());
-        }
-        if (e.getActive() == null) {
-            if (e.getIsPropertyActiveRemoved() != null && e.getIsPropertyActiveRemoved()) {
-                this.setActive(null);
-            }
-        } else {
-            this.setActive(e.getActive());
-        }
-
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-    }
-
-    public void when(OrderV2ItemStateRemoved e) {
-        throwOnWrongEvent(e);
-
-        this.setDeleted(true);
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
     }
 
     public void save() {
@@ -277,20 +220,6 @@ public abstract class AbstractOrderV2ItemState implements OrderV2ItemState.SqlOr
 
 
         if (getForReapplying()) { return; }
-
-        OrderV2ItemStateEvent stateEvent = event instanceof OrderV2ItemStateEvent ? (OrderV2ItemStateEvent)event : null;
-        if (stateEvent == null) { return; }
-
-        Long stateVersion = this.getVersion();
-        Long stateEventStateVersion = stateEvent.getVersion();
-        //if (stateEventStateVersion == null) {
-        stateEventStateVersion = stateVersion == null ? OrderV2ItemState.VERSION_NULL : stateVersion;
-        stateEvent.setVersion(stateEventStateVersion);
-        //}
-        //if (!(stateVersion == null && stateEventStateVersion.equals(OrderV2ItemState.VERSION_NULL)) && !stateEventStateVersion.equals(stateVersion))
-        //{
-        //    throw DomainError.named("concurrencyConflict", "Conflict between stateVersion (%1$s) and stateEventStateVersion (%2$s)", stateVersion, stateEventStateVersion);
-        //}
 
     }
 

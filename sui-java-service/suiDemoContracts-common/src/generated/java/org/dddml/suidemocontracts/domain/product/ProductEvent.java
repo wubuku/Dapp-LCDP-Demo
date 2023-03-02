@@ -24,6 +24,10 @@ public interface ProductEvent extends Event {
     
     //void setVersion(Long version);
 
+    String getId();
+    
+    //void setId(String id);
+
     String getCreatedBy();
 
     void setCreatedBy(String createdBy);
@@ -35,26 +39,6 @@ public interface ProductEvent extends Event {
     String getCommandId();
 
     void setCommandId(String commandId);
-
-    interface ProductStateEvent extends ProductEvent {
-        String getName();
-
-        void setName(String name);
-
-        BigInteger getUnitPrice();
-
-        void setUnitPrice(BigInteger unitPrice);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface ProductStateCreated extends ProductStateEvent
-    {
-    
-    }
 
 
 }

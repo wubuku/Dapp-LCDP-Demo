@@ -24,12 +24,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         return this.changes;
     }
 
-    public void create(ProductCommand.CreateProduct c) {
-        if (c.getVersion() == null) { c.setVersion(ProductState.VERSION_NULL); }
-        ProductEvent e = map(c);
-        apply(e);
-    }
-
     public void throwOnInvalidStateTransition(Command c) {
         ProductCommand.throwOnInvalidStateTransition(this.state, c);
     }
@@ -40,38 +34,60 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         changes.add(e);
     }
 
-    protected ProductEvent map(ProductCommand.CreateProduct c) {
-        ProductEventId stateEventId = new ProductEventId(c.getProductId(), c.getVersion());
-        ProductEvent.ProductStateCreated e = newProductStateCreated(stateEventId);
-        e.setName(c.getName());
-        e.setUnitPrice(c.getUnitPrice());
-        e.setActive(c.getActive());
-        ((AbstractProductEvent)e).setCommandId(c.getCommandId());
-        e.setCreatedBy(c.getRequesterId());
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
 
     ////////////////////////
-
-    protected ProductEvent.ProductStateCreated newProductStateCreated(Long version, String commandId, String requesterId) {
-        ProductEventId stateEventId = new ProductEventId(this.state.getProductId(), version);
-        ProductEvent.ProductStateCreated e = newProductStateCreated(stateEventId);
-        ((AbstractProductEvent)e).setCommandId(commandId);
-        e.setCreatedBy(requesterId);
-        e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-        return e;
-    }
-
-    protected ProductEvent.ProductStateCreated newProductStateCreated(ProductEventId stateEventId) {
-        return new AbstractProductEvent.SimpleProductStateCreated(stateEventId);
-    }
-
 
     public static class SimpleProductAggregate extends AbstractProductAggregate {
         public SimpleProductAggregate(ProductState state) {
             super(state);
+        }
+
+        @Override
+        public void create(String name, BigInteger unitPrice, Long version, String commandId, String requesterId, ProductCommands.Create c) {
+            try {
+                verifyCreate(name, unitPrice, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newProductCreated(name, unitPrice, version, commandId, requesterId);
+            apply(e);
+        }
+
+        protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
+            String Name = name;
+            BigInteger UnitPrice = unitPrice;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.CreateLogic",
+                    "verify",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class CreateLogic {
+//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long version, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), version);
+            AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
         }
 
     }

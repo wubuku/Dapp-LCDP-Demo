@@ -171,23 +171,13 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (e instanceof ProductStateCreated) {
-            when((ProductStateCreated) e);
+        if (false) { 
+            ;
+        } else if (e instanceof AbstractProductEvent.ProductCreated) {
+            when((AbstractProductEvent.ProductCreated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
-    }
-
-    public void when(ProductStateCreated e) {
-        throwOnWrongEvent(e);
-
-        this.setName(e.getName());
-        this.setUnitPrice(e.getUnitPrice());
-        this.setActive(e.getActive());
-
-        this.setCreatedBy(e.getCreatedBy());
-        this.setCreatedAt(e.getCreatedAt());
-
     }
 
     protected void merge(ProductState s) {
@@ -197,6 +187,41 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setName(s.getName());
         this.setUnitPrice(s.getUnitPrice());
         this.setActive(s.getActive());
+    }
+
+    public void when(AbstractProductEvent.ProductCreated e) {
+        throwOnWrongEvent(e);
+
+        String name = e.getName();
+        String Name = name;
+        BigInteger unitPrice = e.getUnitPrice();
+        BigInteger UnitPrice = unitPrice;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.CreateLogic",
+                    "mutate",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class CreateLogic {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedProductState) { merge(updatedProductState); } //else do nothing
+
     }
 
     public void save() {

@@ -162,87 +162,19 @@ public class OrderResource {
     }
 
 
-    /**
-     * 新建.
-     * 新建 Order
-     */
-    @PostMapping @ResponseBody @ResponseStatus(HttpStatus.CREATED)
-    public String post(@RequestBody CreateOrMergePatchOrderDto.CreateOrderDto value,  HttpServletResponse response) {
+    @PutMapping("{id}/_commands/Create")
+    public void create(@PathVariable("id") String id, @RequestBody OrderCommands.Create content) {
         try {
-            OrderCommand.CreateOrder cmd = value;//.toCreateOrder();
+
+            OrderCommands.Create cmd = content;//.toCreate();
+            String idObj = id;
             if (cmd.getId() == null) {
-                throw DomainError.named("nullId", "Aggregate Id in cmd is null, aggregate name: %1$s.", "Order");
+                cmd.setId(idObj);
+            } else if (!cmd.getId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", id, cmd.getId());
             }
-            String idObj = cmd.getId();
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
-
-            return idObj;
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * 创建 or 修改.
-     * 创建 or 修改 Order
-     */
-    @PutMapping("{id}")
-    public void put(@PathVariable("id") String id, @RequestBody CreateOrMergePatchOrderDto value) {
-        try {
-            if (value.getVersion() != null) {
-                value.setCommandType(Command.COMMAND_TYPE_MERGE_PATCH);
-                OrderCommand.MergePatchOrder cmd = (OrderCommand.MergePatchOrder) value.toSubclass();
-                OrderResourceUtils.setNullIdOrThrowOnInconsistentIds(id, cmd);
-                cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-                orderApplicationService.when(cmd);
-                return;
-            }
-
-            value.setCommandType(Command.COMMAND_TYPE_CREATE);
-            OrderCommand.CreateOrder cmd = (OrderCommand.CreateOrder) value.toSubclass();
-            OrderResourceUtils.setNullIdOrThrowOnInconsistentIds(id, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-
-    /**
-     * 修改.
-     * 修改 Order
-     */
-    @PatchMapping("{id}")
-    public void patch(@PathVariable("id") String id, @RequestBody CreateOrMergePatchOrderDto.MergePatchOrderDto value) {
-        try {
-
-            OrderCommand.MergePatchOrder cmd = value;//.toMergePatchOrder();
-            OrderResourceUtils.setNullIdOrThrowOnInconsistentIds(id, cmd);
-            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(cmd);
-
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    /**
-     * 删除.
-     * 删除 Order
-     */
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") String id,
-                       @NotNull @RequestParam(value = "commandId", required = false) String commandId,
-                       @NotNull @RequestParam(value = "version", required = false) @Min(value = -1) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-
-            OrderCommand.DeleteOrder deleteCmd = new DeleteOrderDto();
-
-            deleteCmd.setCommandId(commandId);
-            deleteCmd.setRequesterId(requesterId);
-            deleteCmd.setVersion(version);
-            OrderResourceUtils.setNullIdOrThrowOnInconsistentIds(id, deleteCmd);
-            deleteCmd.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(deleteCmd);
 
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
@@ -342,57 +274,6 @@ public class OrderResource {
     }
 
     /**
-     * 创建 or 修改.
-     * 创建 or 修改 OrderItem
-     */
-    @PutMapping(path = "{id}/OrderItems/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void putOrderItem(@PathVariable("id") String id, @PathVariable("productId") String productId,
-                       @RequestParam(value = "commandId", required = false) String commandId,
-                       @RequestParam(value = "version", required = false) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId,
-                       @RequestBody CreateOrMergePatchOrderItemDto.MergePatchOrderItemDto body) {
-        try {
-            OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
-            mergePatchOrder.setId(id);
-            mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
-            if (version != null) { mergePatchOrder.setVersion(version); }
-            mergePatchOrder.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
-            OrderItemCommand.MergePatchOrderItem mergePatchOrderItem = body;//.toMergePatchOrderItem();
-            mergePatchOrderItem.setProductId(productId);
-            mergePatchOrder.getOrderItemCommands().add(mergePatchOrderItem);
-            mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(mergePatchOrder);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    /**
-     * 移除.
-     * 移除 OrderItem
-     */
-    @DeleteMapping("{id}/OrderItems/{productId}")
-    public void deleteOrderItem(@PathVariable("id") String id, @PathVariable("productId") String productId,
-                       @RequestParam(value = "commandId", required = false) String commandId,
-                       @RequestParam(value = "version", required = false) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId) {
-        try {
-            OrderCommand.MergePatchOrder mergePatchOrder = new CreateOrMergePatchOrderDto.MergePatchOrderDto();
-            mergePatchOrder.setId(id);
-            mergePatchOrder.setCommandId(commandId);// != null && !commandId.isEmpty() ? commandId : body.getCommandId());
-            if (version != null) { 
-                mergePatchOrder.setVersion(version); 
-            } else {
-                mergePatchOrder.setVersion(orderApplicationService.get(id).getVersion());
-            }
-            mergePatchOrder.setRequesterId(requesterId);// != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
-            OrderItemCommand.RemoveOrderItem removeOrderItem = new RemoveOrderItemDto();
-            removeOrderItem.setProductId(productId);
-            mergePatchOrder.getOrderItemCommands().add(removeOrderItem);
-            mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(mergePatchOrder);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    /**
      * OrderItem List
      */
     @GetMapping("{id}/OrderItems")
@@ -422,29 +303,6 @@ public class OrderResource {
                 dtoConverter.setReturnedFieldsString(fields);
             }
             return dtoConverter.toOrderItemStateDtoArray(states);
-        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
-    }
-
-    /**
-     * 新建.
-     * 新建 OrderItem
-     */
-    @PostMapping(path = "{id}/OrderItems", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void postOrderItems(@PathVariable("id") String id,
-                       @RequestParam(value = "commandId", required = false) String commandId,
-                       @RequestParam(value = "version", required = false) Long version,
-                       @RequestParam(value = "requesterId", required = false) String requesterId,
-                       @RequestBody CreateOrMergePatchOrderItemDto.CreateOrderItemDto body) {
-        try {
-            OrderCommand.MergePatchOrder mergePatchOrder = new AbstractOrderCommand.SimpleMergePatchOrder();
-            mergePatchOrder.setId(id);
-            mergePatchOrder.setCommandId(commandId != null && !commandId.isEmpty() ? commandId : body.getCommandId());
-            if (version != null) { mergePatchOrder.setVersion(version); }
-            mergePatchOrder.setRequesterId(requesterId != null && !requesterId.isEmpty() ? requesterId : body.getRequesterId());
-            OrderItemCommand.CreateOrderItem createOrderItem = body.toCreateOrderItem();
-            mergePatchOrder.getOrderItemCommands().add(createOrderItem);
-            mergePatchOrder.setRequesterId(SecurityContextUtil.getRequesterId());
-            orderApplicationService.when(mergePatchOrder);
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 

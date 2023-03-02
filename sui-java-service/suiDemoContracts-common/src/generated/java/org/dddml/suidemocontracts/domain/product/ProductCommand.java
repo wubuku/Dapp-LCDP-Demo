@@ -14,6 +14,10 @@ public interface ProductCommand extends Command
 
     void setProductId(String productId);
 
+    String getId();
+
+    void setId(String id);
+
     Long getVersion();
 
     void setVersion(Long version);
@@ -30,33 +34,9 @@ public interface ProductCommand extends Command
     }
 
     static boolean isCommandCreate(ProductCommand c) {
-        if ((c instanceof ProductCommand.CreateProduct) 
-            && (COMMAND_TYPE_CREATE.equals(c.getCommandType()) || c.getVersion().equals(ProductState.VERSION_NULL)))
-            return true;
         if (c.getVersion().equals(ProductState.VERSION_NULL))
             return true;
         return false;
-    }
-
-    interface CreateOrMergePatchProduct extends ProductCommand
-    {
-
-        String getName();
-
-        void setName(String name);
-
-        BigInteger getUnitPrice();
-
-        void setUnitPrice(BigInteger unitPrice);
-
-        Boolean getActive();
-
-        void setActive(Boolean active);
-
-    }
-
-    interface CreateProduct extends CreateOrMergePatchProduct
-    {
     }
 
 }

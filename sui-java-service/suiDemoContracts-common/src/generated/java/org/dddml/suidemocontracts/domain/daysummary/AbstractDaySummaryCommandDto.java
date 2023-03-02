@@ -23,6 +23,21 @@ public abstract class AbstractDaySummaryCommandDto extends AbstractCommand
     }
 
     /**
+     * Id
+     */
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    /**
      * Version
      */
     private Long version;
@@ -40,6 +55,7 @@ public abstract class AbstractDaySummaryCommandDto extends AbstractCommand
 
     public void copyTo(DaySummaryCommand command) {
         command.setDay(this.getDay());
+        command.setId(this.getId());
         command.setVersion(this.getVersion());
         
         command.setRequesterId(this.getRequesterId());
