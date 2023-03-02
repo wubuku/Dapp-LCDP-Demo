@@ -14,6 +14,8 @@ public interface ProductState
 
     String getProductId();
 
+    String getId();
+
     String getName();
 
     BigInteger getUnitPrice();
@@ -34,6 +36,8 @@ public interface ProductState
 
     interface MutableProductState extends ProductState {
         void setProductId(String productId);
+
+        void setId(String id);
 
         void setName(String name);
 

@@ -14,6 +14,8 @@ public interface OrderV2State
 
     String getOrderId();
 
+    String getId();
+
     BigInteger getTotalAmount();
 
     Day getEstimatedShipDate();
@@ -36,6 +38,8 @@ public interface OrderV2State
 
     interface MutableOrderV2State extends OrderV2State {
         void setOrderId(String orderId);
+
+        void setId(String id);
 
         void setTotalAmount(BigInteger totalAmount);
 

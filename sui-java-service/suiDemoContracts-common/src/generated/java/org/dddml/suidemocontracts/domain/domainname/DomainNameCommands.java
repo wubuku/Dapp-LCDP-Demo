@@ -10,7 +10,7 @@ public class DomainNameCommands
     private DomainNameCommands() {
     }
 
-    public static class Register extends org.dddml.suidemocontracts.domain.domainname.AbstractDomainNameCommand implements DomainNameCommand {
+    public static class Register extends AbstractDomainNameCommand implements DomainNameCommand {
 
         public String getCommandType() {
             return "Register";
@@ -61,7 +61,7 @@ public class DomainNameCommands
 
     }
 
-    public static class Renew extends org.dddml.suidemocontracts.domain.domainname.AbstractDomainNameCommand implements DomainNameCommand {
+    public static class Renew extends AbstractDomainNameCommand implements DomainNameCommand {
 
         public String getCommandType() {
             return "Renew";

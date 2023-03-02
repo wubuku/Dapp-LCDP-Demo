@@ -21,6 +21,18 @@ public class DaySummaryStateDto
         this.day = day;
     }
 
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     private String description;
 
     public String getDescription()
@@ -170,6 +182,9 @@ public class DaySummaryStateDto
             DaySummaryStateDto dto = new DaySummaryStateDto();
             if (returnedFieldsContains("Day")) {
                 dto.setDay(state.getDay());
+            }
+            if (returnedFieldsContains("Id")) {
+                dto.setId(state.getId());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

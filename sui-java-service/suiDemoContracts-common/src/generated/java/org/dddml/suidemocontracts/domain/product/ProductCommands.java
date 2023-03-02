@@ -10,7 +10,7 @@ public class ProductCommands
     private ProductCommands() {
     }
 
-    public static class Create extends org.dddml.suidemocontracts.domain.product.AbstractProductCommand implements ProductCommand {
+    public static class Create extends AbstractProductCommand implements ProductCommand {
 
         public String getCommandType() {
             return "Create";

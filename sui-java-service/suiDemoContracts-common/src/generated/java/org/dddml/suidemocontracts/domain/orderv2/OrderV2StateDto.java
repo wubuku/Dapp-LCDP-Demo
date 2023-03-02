@@ -22,6 +22,18 @@ public class OrderV2StateDto
         this.orderId = orderId;
     }
 
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     private BigInteger totalAmount;
 
     public BigInteger getTotalAmount()
@@ -161,6 +173,9 @@ public class OrderV2StateDto
             OrderV2StateDto dto = new OrderV2StateDto();
             if (returnedFieldsContains("OrderId")) {
                 dto.setOrderId(state.getOrderId());
+            }
+            if (returnedFieldsContains("Id")) {
+                dto.setId(state.getId());
             }
             if (returnedFieldsContains("TotalAmount")) {
                 dto.setTotalAmount(state.getTotalAmount());

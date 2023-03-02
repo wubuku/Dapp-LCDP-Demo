@@ -22,6 +22,18 @@ public class DomainNameStateDto
         this.domainNameId = domainNameId;
     }
 
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     private BigInteger expirationDate;
 
     public BigInteger getExpirationDate()
@@ -137,6 +149,9 @@ public class DomainNameStateDto
             DomainNameStateDto dto = new DomainNameStateDto();
             if (returnedFieldsContains("DomainNameId")) {
                 dto.setDomainNameId(state.getDomainNameId());
+            }
+            if (returnedFieldsContains("Id")) {
+                dto.setId(state.getId());
             }
             if (returnedFieldsContains("ExpirationDate")) {
                 dto.setExpirationDate(state.getExpirationDate());

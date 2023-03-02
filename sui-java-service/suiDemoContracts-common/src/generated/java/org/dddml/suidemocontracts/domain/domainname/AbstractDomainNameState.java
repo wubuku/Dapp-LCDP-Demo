@@ -19,6 +19,16 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         this.domainNameId = domainNameId;
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private BigInteger expirationDate;
 
     public BigInteger getExpirationDate() {

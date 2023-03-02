@@ -18,6 +18,16 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.day = day;
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String description;
 
     public String getDescription() {

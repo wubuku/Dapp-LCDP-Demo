@@ -9,7 +9,7 @@ public class DaySummaryCommands
     private DaySummaryCommands() {
     }
 
-    public static class Create extends org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryCommand implements DaySummaryCommand {
+    public static class Create extends AbstractDaySummaryCommand implements DaySummaryCommand {
 
         public String getCommandType() {
             return "Create";

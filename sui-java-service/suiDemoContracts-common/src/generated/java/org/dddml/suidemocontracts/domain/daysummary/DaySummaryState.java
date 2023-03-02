@@ -13,6 +13,8 @@ public interface DaySummaryState
 
     Day getDay();
 
+    String getId();
+
     String getDescription();
 
     int[] getMetadata();
@@ -37,6 +39,8 @@ public interface DaySummaryState
 
     interface MutableDaySummaryState extends DaySummaryState {
         void setDay(Day day);
+
+        void setId(String id);
 
         void setDescription(String description);
 

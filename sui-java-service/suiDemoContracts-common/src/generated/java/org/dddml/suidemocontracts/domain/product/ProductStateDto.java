@@ -22,6 +22,18 @@ public class ProductStateDto
         this.productId = productId;
     }
 
+    private String id;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
     private String name;
 
     public String getName()
@@ -149,6 +161,9 @@ public class ProductStateDto
             ProductStateDto dto = new ProductStateDto();
             if (returnedFieldsContains("ProductId")) {
                 dto.setProductId(state.getProductId());
+            }
+            if (returnedFieldsContains("Id")) {
+                dto.setId(state.getId());
             }
             if (returnedFieldsContains("Name")) {
                 dto.setName(state.getName());

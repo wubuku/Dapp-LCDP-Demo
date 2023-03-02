@@ -19,6 +19,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.productId = productId;
     }
 
+    private String id;
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String name;
 
     public String getName() {

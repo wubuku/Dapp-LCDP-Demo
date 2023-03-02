@@ -10,7 +10,7 @@ public class OrderCommands
     private OrderCommands() {
     }
 
-    public static class Create extends org.dddml.suidemocontracts.domain.order.AbstractOrderCommand implements OrderCommand {
+    public static class Create extends AbstractOrderCommand implements OrderCommand {
 
         public String getCommandType() {
             return "Create";
@@ -74,7 +74,7 @@ public class OrderCommands
 
     }
 
-    public static class RemoveItem extends org.dddml.suidemocontracts.domain.order.AbstractOrderCommand implements OrderCommand {
+    public static class RemoveItem extends AbstractOrderCommand implements OrderCommand {
 
         public String getCommandType() {
             return "RemoveItem";
@@ -125,7 +125,7 @@ public class OrderCommands
 
     }
 
-    public static class UpdateItemQuantity extends org.dddml.suidemocontracts.domain.order.AbstractOrderCommand implements OrderCommand {
+    public static class UpdateItemQuantity extends AbstractOrderCommand implements OrderCommand {
 
         public String getCommandType() {
             return "UpdateItemQuantity";

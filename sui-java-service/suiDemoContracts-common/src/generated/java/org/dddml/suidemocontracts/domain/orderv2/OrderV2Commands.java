@@ -10,7 +10,7 @@ public class OrderV2Commands
     private OrderV2Commands() {
     }
 
-    public static class Create extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
+    public static class Create extends AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "Create";
@@ -74,7 +74,7 @@ public class OrderV2Commands
 
     }
 
-    public static class RemoveItem extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
+    public static class RemoveItem extends AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "RemoveItem";
@@ -125,7 +125,7 @@ public class OrderV2Commands
 
     }
 
-    public static class UpdateItemQuantity extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
+    public static class UpdateItemQuantity extends AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "UpdateItemQuantity";
@@ -189,7 +189,7 @@ public class OrderV2Commands
 
     }
 
-    public static class UpdateEstimatedShipDate extends org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Command implements OrderV2Command {
+    public static class UpdateEstimatedShipDate extends AbstractOrderV2Command implements OrderV2Command {
 
         public String getCommandType() {
             return "UpdateEstimatedShipDate";
