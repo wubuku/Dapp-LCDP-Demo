@@ -226,4 +226,12 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <repositories>
+        <repository>
+            <id>sui-java-sdk-github</id>
+            <name>sui-java-sdk-bot</name>
+            <url>https://maven.pkg.github.com/wubuku/sui-java-sdk</url>
+        </repository>
+    </repositories>
 </project>

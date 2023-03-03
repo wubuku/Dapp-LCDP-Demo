@@ -98,7 +98,7 @@ configuration:
     AutoAggregateMethodJavaDefaultLogicEnabled: true
     AutoGeneratingCrUDCommandsDisabled: true
     OptimisticLockingVersionDisabled: true
-    JavaSuiContractPackage: "com.github.wubuku.sui.tests"
+    # JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
   sui:
     boundedContextPackage: "sui_contracts"
