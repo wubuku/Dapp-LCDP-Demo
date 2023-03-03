@@ -11,6 +11,7 @@
 	<id name="orderId" length="50" column="order_id"><generator class="assigned"/></id>
 	<property name="version" column="version" type="long" />
 
+	<property name="id_" ><column name="id" unique-key="unique_orderv2_sid" sql-type="VARCHAR(42)" /></property>
 	<property name="totalAmount" ><column name="total_amount" /></property>
 	<component name="estimatedShipDate" class="org.dddml.suidemocontracts.domain.Day">
 		<property name="monthYearNumber" ><column name="estimated_ship_date_month_year_number" /></property>

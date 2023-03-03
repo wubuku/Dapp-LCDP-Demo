@@ -22,16 +22,16 @@ public class OrderV2StateDto
         this.orderId = orderId;
     }
 
-    private String surrogateId;
+    private String id_;
 
-    public String getSurrogateId()
+    public String getId_()
     {
-        return this.surrogateId;
+        return this.id_;
     }
 
-    public void setSurrogateId(String id)
+    public void setId_(String id)
     {
-        this.surrogateId = id;
+        this.id_ = id;
     }
 
     private BigInteger totalAmount;
@@ -174,8 +174,8 @@ public class OrderV2StateDto
             if (returnedFieldsContains("OrderId")) {
                 dto.setOrderId(state.getOrderId());
             }
-            if (returnedFieldsContains("SurrogateId")) {
-                dto.setSurrogateId(state.getSurrogateId());
+            if (returnedFieldsContains("Id_")) {
+                dto.setId_(state.getId_());
             }
             if (returnedFieldsContains("TotalAmount")) {
                 dto.setTotalAmount(state.getTotalAmount());

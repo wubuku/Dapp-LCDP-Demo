@@ -20,6 +20,7 @@
 
     <discriminator column="event_type" type="string" />
 
+	<property name="id_" ><column name="id" sql-type="VARCHAR(42)" /></property>
 
     <property name="createdBy" column="created_by"/>
 
@@ -34,52 +35,6 @@
     </subclass>
 
 
-        <subclass name="AbstractDaySummaryEvent$AbstractDaySummaryStateEvent" abstract="true">
-
-	<property name="description" ><column name="description" /></property>
-	<property name="metadata" ><column name="metadata" /></property>
-	<property name="optionalData" ><column name="optional_data" /></property>
-	<property name="active" ><column name="active" /></property>
-
-      <set name="arrayData" table="day_summary_state_event_array_data" lazy="false">
-        <key>
-
-<column name="day_month_year_number" />
-<column name="day_month_year_calendar" />
-<column name="day_month_number" />
-<column name="day_month_is_leap" />
-<column name="day_number" />
-<column name="day_time_zone" />
-<column name="version" />
-</key>
-				
-<element column="ArrayDataItem" type="string" not-null="true" />
-
-      </set>
-
-    <subclass name="AbstractDaySummaryEvent$SimpleDaySummaryStateCreated" discriminator-value="Created">
-    	
-    </subclass>
-
-    <subclass name="AbstractDaySummaryEvent$SimpleDaySummaryStateMergePatched" discriminator-value="MergePatched">
-
-        <property name="isPropertyDescriptionRemoved" column="is_property_description_removed"/>
-
-        <property name="isPropertyMetadataRemoved" column="is_property_metadata_removed"/>
-
-        <property name="isPropertyOptionalDataRemoved" column="is_property_optional_data_removed"/>
-
-        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
-
-
-    </subclass>
-
-    <subclass name="AbstractDaySummaryEvent$SimpleDaySummaryStateDeleted" discriminator-value="Deleted">
-
-    </subclass>
-
-
-        </subclass>
 
   </class>
   

@@ -25,16 +25,16 @@ public abstract class AbstractDaySummaryCommandDto extends AbstractCommand
     /**
      * Id
      */
-    private String surrogateId;
+    private String id_;
 
-    public String getSurrogateId()
+    public String getId_()
     {
-        return this.surrogateId;
+        return this.id_;
     }
 
-    public void setSurrogateId(String id)
+    public void setId_(String id)
     {
-        this.surrogateId = id;
+        this.id_ = id;
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class AbstractDaySummaryCommandDto extends AbstractCommand
 
     public void copyTo(DaySummaryCommand command) {
         command.setDay(this.getDay());
-        command.setSurrogateId(this.getSurrogateId());
+        command.setId_(this.getId_());
         command.setVersion(this.getVersion());
         
         command.setRequesterId(this.getRequesterId());

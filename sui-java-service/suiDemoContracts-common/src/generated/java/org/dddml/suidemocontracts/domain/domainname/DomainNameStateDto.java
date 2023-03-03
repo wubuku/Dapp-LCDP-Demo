@@ -22,16 +22,16 @@ public class DomainNameStateDto
         this.domainNameId = domainNameId;
     }
 
-    private String surrogateId;
+    private String id_;
 
-    public String getSurrogateId()
+    public String getId_()
     {
-        return this.surrogateId;
+        return this.id_;
     }
 
-    public void setSurrogateId(String id)
+    public void setId_(String id)
     {
-        this.surrogateId = id;
+        this.id_ = id;
     }
 
     private BigInteger expirationDate;
@@ -150,8 +150,8 @@ public class DomainNameStateDto
             if (returnedFieldsContains("DomainNameId")) {
                 dto.setDomainNameId(state.getDomainNameId());
             }
-            if (returnedFieldsContains("SurrogateId")) {
-                dto.setSurrogateId(state.getSurrogateId());
+            if (returnedFieldsContains("Id_")) {
+                dto.setId_(state.getId_());
             }
             if (returnedFieldsContains("ExpirationDate")) {
                 dto.setExpirationDate(state.getExpirationDate());

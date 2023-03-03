@@ -16,6 +16,7 @@
 
     <discriminator column="event_type" type="string" />
 
+	<property name="id_" ><column name="id" sql-type="VARCHAR(42)" /></property>
 
     <property name="createdBy" column="created_by"/>
 
@@ -31,30 +32,6 @@
     </subclass>
 
 
-        <subclass name="AbstractDomainNameEvent$AbstractDomainNameStateEvent" abstract="true">
-
-	<property name="expirationDate" ><column name="expiration_date" /></property>
-	<property name="active" ><column name="active" /></property>
-
-    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateCreated" discriminator-value="Created">
-    	
-    </subclass>
-
-    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateMergePatched" discriminator-value="MergePatched">
-
-        <property name="isPropertyExpirationDateRemoved" column="is_property_expiration_date_removed"/>
-
-        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
-
-
-    </subclass>
-
-    <subclass name="AbstractDomainNameEvent$SimpleDomainNameStateDeleted" discriminator-value="Deleted">
-
-    </subclass>
-
-
-        </subclass>
 
   </class>
   

@@ -14,6 +14,7 @@
 	</composite-id>
 	<property name="version" column="version" type="long" />
 
+	<property name="id_" ><column name="id" unique-key="unique_domainname_sid" sql-type="VARCHAR(42)" /></property>
 	<property name="expirationDate" ><column name="expiration_date" /></property>
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>

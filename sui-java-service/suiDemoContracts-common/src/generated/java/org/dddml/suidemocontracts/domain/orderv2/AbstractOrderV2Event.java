@@ -41,14 +41,14 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         getOrderV2EventId().setVersion(version);
     }
 
-    private String surrogateId;
+    private String id_;
 
-    public String getSurrogateId() {
-        return this.surrogateId;
+    public String getId_() {
+        return this.id_;
     }
     
-    public void setSurrogateId(String id) {
-        this.surrogateId = id;
+    public void setId_(String id) {
+        this.id_ = id;
     }
 
     private String createdBy;

@@ -14,9 +14,9 @@ public interface ProductCommand extends Command
 
     void setProductId(String productId);
 
-    String getSurrogateId();
+    String getId_();
 
-    void setSurrogateId(String id);
+    void setId_(String id);
 
     Long getVersion();
 

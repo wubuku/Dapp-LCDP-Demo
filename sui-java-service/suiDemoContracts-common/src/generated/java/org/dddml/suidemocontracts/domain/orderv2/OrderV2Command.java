@@ -14,9 +14,9 @@ public interface OrderV2Command extends Command
 
     void setOrderId(String orderId);
 
-    String getSurrogateId();
+    String getId_();
 
-    void setSurrogateId(String id);
+    void setId_(String id);
 
     Long getVersion();
 

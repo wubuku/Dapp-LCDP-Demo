@@ -24,9 +24,9 @@ public interface ProductEvent extends Event {
     
     //void setVersion(Long version);
 
-    String getSurrogateId();
+    String getId_();
     
-    //void setSurrogateId(String id);
+    //void setId_(String id);
 
     String getCreatedBy();
 

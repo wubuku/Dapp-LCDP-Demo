@@ -1,7 +1,6 @@
 drop table if exists day_summary;
 drop table if exists day_summary_array_data;
 drop table if exists day_summary_event;
-drop table if exists day_summary_state_event_array_data;
 drop table if exists domain_name;
 drop table if exists domain_name_event;
 drop table if exists HIBERNATE_HELLO;

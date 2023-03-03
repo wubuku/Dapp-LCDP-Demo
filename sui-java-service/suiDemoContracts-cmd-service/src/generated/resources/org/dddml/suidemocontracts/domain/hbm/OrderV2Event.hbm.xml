@@ -15,6 +15,7 @@
 
     <discriminator column="event_type" type="string" />
 
+	<property name="id_" ><column name="id" sql-type="VARCHAR(42)" /></property>
 
     <property name="createdBy" column="created_by"/>
 
@@ -32,40 +33,6 @@
     </subclass>
 
 
-        <subclass name="AbstractOrderV2Event$AbstractOrderV2StateEvent" abstract="true">
-
-	<property name="totalAmount" ><column name="total_amount" /></property>
-	<component name="estimatedShipDate" class="org.dddml.suidemocontracts.domain.Day">
-		<property name="monthYearNumber" ><column name="estimated_ship_date_month_year_number" /></property>
-		<property name="monthYearCalendar" ><column name="estimated_ship_date_month_year_calendar" length="20" /></property>
-		<property name="monthNumber" ><column name="estimated_ship_date_month_number" /></property>
-		<property name="monthIsLeap" ><column name="estimated_ship_date_month_is_leap" /></property>
-		<property name="number" ><column name="estimated_ship_date_number" /></property>
-		<property name="timeZone" ><column name="estimated_ship_date_time_zone" length="20" /></property>
-	</component>
-	<property name="active" ><column name="active" /></property>
-
-    <subclass name="AbstractOrderV2Event$SimpleOrderV2StateCreated" discriminator-value="Created">
-    	
-    </subclass>
-
-    <subclass name="AbstractOrderV2Event$SimpleOrderV2StateMergePatched" discriminator-value="MergePatched">
-
-        <property name="isPropertyTotalAmountRemoved" column="is_property_total_amount_removed"/>
-
-        <property name="isPropertyEstimatedShipDateRemoved" column="is_property_estimated_ship_date_removed"/>
-
-        <property name="isPropertyActiveRemoved" column="is_property_active_removed"/>
-
-
-    </subclass>
-
-    <subclass name="AbstractOrderV2Event$SimpleOrderV2StateDeleted" discriminator-value="Deleted">
-
-    </subclass>
-
-
-        </subclass>
 
   </class>
   

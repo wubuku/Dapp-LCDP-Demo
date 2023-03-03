@@ -14,7 +14,7 @@ public interface DomainNameState
 
     DomainNameId getDomainNameId();
 
-    String getSurrogateId();
+    String getId_();
 
     BigInteger getExpirationDate();
 
@@ -35,7 +35,7 @@ public interface DomainNameState
     interface MutableDomainNameState extends DomainNameState {
         void setDomainNameId(DomainNameId domainNameId);
 
-        void setSurrogateId(String id);
+        void setId_(String id);
 
         void setExpirationDate(BigInteger expirationDate);
 

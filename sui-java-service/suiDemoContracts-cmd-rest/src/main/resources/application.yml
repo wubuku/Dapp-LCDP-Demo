@@ -50,16 +50,6 @@ spring:
     url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
     username: root
     password: 123456
-server:
-  port: 1023
-
----
-spring:
-  profiles: yang
-  datasource:
-    url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
-    username: root
-    password: 123456
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
@@ -67,7 +57,6 @@ spring:
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
       - com.syj.security.resourceserver.OAuth2ResourceServerSecurityConfig
-
 server:
   port: 1023
 

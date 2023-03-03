@@ -21,16 +21,16 @@ public abstract class AbstractOrderV2Command extends AbstractCommand implements 
         this.orderId = orderId;
     }
 
-    private String surrogateId;
+    private String id_;
 
-    public String getSurrogateId()
+    public String getId_()
     {
-        return this.surrogateId;
+        return this.id_;
     }
 
-    public void setSurrogateId(String id)
+    public void setId_(String id)
     {
-        this.surrogateId = id;
+        this.id_ = id;
     }
 
     private Long version;
