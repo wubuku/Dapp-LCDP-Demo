@@ -5,7 +5,14 @@ spring:
     allow-bean-definition-overriding: true
 
   jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
+
   jackson:
     time-zone: UTC
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSX
@@ -52,11 +59,24 @@ spring:
     password: 123456
   autoconfigure:
     exclude:
-      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
       - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
       - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
       - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
-      - com.syj.security.resourceserver.OAuth2ResourceServerSecurityConfig
+#      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+#      - com.syj.security.resourceserver.OAuth2ResourceServerSecurityConfig
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
 server:
   port: 1023
 
+sui:
+  contract:
+    jsonrpc:
+      url: "https://fullnode.devnet.sui.io/"
+    package-publish-transaction: "9omdX43d7aSy676bLSCRCmicHpYQjbvrFkzMg9Qa1U7k"

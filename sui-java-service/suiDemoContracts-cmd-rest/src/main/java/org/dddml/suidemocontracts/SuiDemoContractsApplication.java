@@ -6,13 +6,17 @@ package org.dddml.suidemocontracts;
 
 import org.dddml.suidemocontracts.specialization.ApplicationContext;
 import org.dddml.suidemocontracts.specialization.spring.SpringApplicationContext;
+import org.dddml.suidemocontracts.sui.contract.service.SuiIdGeneratorDataObjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -36,10 +40,19 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 //@EnableAutoConfiguration
 public class SuiDemoContractsApplication {
+
+    @Autowired
+    private SuiIdGeneratorDataObjectService suiIdGeneratorDataObjectService;
+
     public static void main(String[] args) {
         //StaticMethodConstraints.assertStaticVerificationAndMutationMethods();
         ConfigurableApplicationContext ctx = SpringApplication.run(SuiDemoContractsApplication.class, args);
         ApplicationContext.current = new SpringApplicationContext(ctx);
         ctx.publishEvent(new ContextStartedEvent(ctx));
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void initSuiIdGeneratorDataObjects() {
+        suiIdGeneratorDataObjectService.initSuiIdGeneratorDataObjects();
     }
 }
