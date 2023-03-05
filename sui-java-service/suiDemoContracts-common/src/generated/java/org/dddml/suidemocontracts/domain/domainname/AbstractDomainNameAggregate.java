@@ -43,26 +43,26 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
         }
 
         @Override
-        public void register(BigInteger registrationPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Register c) {
+        public void register(BigInteger registrationPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Register c) {
             try {
                 verifyRegister(registrationPeriod, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newRegistered(registrationPeriod, version, commandId, requesterId);
+            Event e = newRegistered(registrationPeriod, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
-        public void renew(BigInteger renewPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Renew c) {
+        public void renew(BigInteger renewPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Renew c) {
             try {
                 verifyRenew(renewPeriod, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newRenewed(renewPeriod, version, commandId, requesterId);
+            Event e = newRenewed(renewPeriod, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -106,12 +106,13 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
         }
            
 
-        protected AbstractDomainNameEvent.Registered newRegistered(BigInteger registrationPeriod, Long version, String commandId, String requesterId) {
-            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), version);
+        protected AbstractDomainNameEvent.Registered newRegistered(BigInteger registrationPeriod, Long offChainVersion, String commandId, String requesterId) {
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), offChainVersion);
             AbstractDomainNameEvent.Registered e = new AbstractDomainNameEvent.Registered();
 
             e.setRegistrationPeriod(registrationPeriod);
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -121,12 +122,13 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
             return e;
         }
 
-        protected AbstractDomainNameEvent.Renewed newRenewed(BigInteger renewPeriod, Long version, String commandId, String requesterId) {
-            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), version);
+        protected AbstractDomainNameEvent.Renewed newRenewed(BigInteger renewPeriod, Long offChainVersion, String commandId, String requesterId) {
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), offChainVersion);
             AbstractDomainNameEvent.Renewed e = new AbstractDomainNameEvent.Renewed();
 
             e.setRenewPeriod(renewPeriod);
             e.setAccount(null); // todo Need to update 'verify' method to return event properties.
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

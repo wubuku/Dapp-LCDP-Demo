@@ -21,6 +21,8 @@ public class ProductCreated {
 
     private BigInteger unitPrice;
 
+    private BigInteger version;
+
     public String getId() {
         return id;
     }
@@ -53,6 +55,14 @@ public class ProductCreated {
         this.unitPrice = unitPrice;
     }
 
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "ProductCreated{" +
@@ -60,6 +70,7 @@ public class ProductCreated {
                 ", productId=" + '\'' + productId + '\'' +
                 ", name=" + '\'' + name + '\'' +
                 ", unitPrice=" + unitPrice +
+                ", version=" + version +
                 '}';
     }
 

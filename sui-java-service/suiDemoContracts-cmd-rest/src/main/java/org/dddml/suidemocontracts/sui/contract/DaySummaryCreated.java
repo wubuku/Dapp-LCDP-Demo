@@ -25,6 +25,8 @@ public class DaySummaryCreated {
 
     private int[] optionalData;
 
+    private BigInteger version;
+
     public String getId() {
         return id;
     }
@@ -73,6 +75,14 @@ public class DaySummaryCreated {
         this.optionalData = optionalData;
     }
 
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "DaySummaryCreated{" +
@@ -82,6 +92,7 @@ public class DaySummaryCreated {
                 ", metaData=" + Arrays.toString(metaData) +
                 ", arrayData=" + Arrays.toString(arrayData) +
                 ", optionalData=" + Arrays.toString(optionalData) +
+                ", version=" + version +
                 '}';
     }
 

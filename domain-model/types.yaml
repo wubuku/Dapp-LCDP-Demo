@@ -154,16 +154,6 @@ typeDefinitions:
     sqlType: VARCHAR(60)
     cSharpType: string
     javaType: String
-  UID: #0x100475c96f65a7ffad0b4233eea7bfe4df15ca1e
-    sqlType: VARCHAR(42)
-    cSharpType: string
-    javaType: String
-  address:
-    sqlType: VARCHAR(42)
-    cSharpType: string
-    javaType: String
-
-
 
     
     

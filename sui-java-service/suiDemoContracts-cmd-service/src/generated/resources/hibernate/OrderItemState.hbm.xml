@@ -12,10 +12,10 @@
 		<key-property name="orderId" ><column name="order_item_id_order_id" sql-type="VARCHAR(42)" /></key-property>
 		<key-property name="productId" ><column name="order_item_id_product_id" length="50" /></key-property>
 	</composite-id>
-	<property name="version" column="version" type="long" />
+	<version name="offChainVersion" column="off_chain_version" type="long" />
 
-	<property name="quantity" ><column name="quantity" /></property>
-	<property name="itemAmount" ><column name="item_amount" /></property>
+	<property name="quantity" ><column name="quantity" sql-type="DECIMAL(20,0)" /></property>
+	<property name="itemAmount" ><column name="item_amount" sql-type="DECIMAL(20,0)" /></property>
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>
 	<property name="active" ><column name="active" /></property>

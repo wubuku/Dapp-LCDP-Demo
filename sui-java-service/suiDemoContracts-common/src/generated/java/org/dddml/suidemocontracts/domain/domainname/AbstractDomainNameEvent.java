@@ -33,12 +33,12 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getVersion() {
-        return getDomainNameEventId().getVersion();
+    public Long getOffChainVersion() {
+        return getDomainNameEventId().getOffChainVersion();
     }
     
-    public void setVersion(Long version) {
-        getDomainNameEventId().setVersion(version);
+    public void setOffChainVersion(Long offChainVersion) {
+        getDomainNameEventId().setOffChainVersion(offChainVersion);
     }
 
     private String id_;
@@ -49,6 +49,16 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
     
     public void setId_(String id) {
         this.id_ = id;
+    }
+
+    private BigInteger version;
+
+    public BigInteger getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     private String createdBy;

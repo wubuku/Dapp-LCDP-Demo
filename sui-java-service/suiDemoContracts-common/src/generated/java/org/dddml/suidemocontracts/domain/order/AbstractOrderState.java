@@ -29,14 +29,24 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         this.totalAmount = totalAmount;
     }
 
-    private Long version;
+    private BigInteger version;
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return this.version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
+    }
+
+    private Long offChainVersion;
+
+    public Long getOffChainVersion() {
+        return this.offChainVersion;
+    }
+
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -100,7 +110,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
     }
 
     public boolean isStateUnsaved() {
-        return this.getVersion() == null;
+        return this.getOffChainVersion() == null;
     }
 
     private EntityStateCollection<String, OrderItemState> items;
@@ -135,7 +145,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
             this.setId(((OrderEvent.SqlOrderEvent) events.get(0)).getOrderEventId().getId());
             for (Event e : events) {
                 mutate(e);
-                this.setVersion((this.getVersion() == null ? OrderState.VERSION_NULL : this.getVersion()) + 1);
+                this.setOffChainVersion((this.getOffChainVersion() == null ? OrderState.VERSION_NULL : this.getOffChainVersion()) + 1);
             }
         }
     }
@@ -190,6 +200,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
             return;
         }
         this.setTotalAmount(s.getTotalAmount());
+        this.setVersion(s.getVersion());
         this.setActive(s.getActive());
 
         if (s.getItems() != null) {
@@ -240,6 +251,8 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         BigInteger TotalAmount = totalAmount;
         String owner = e.getOwner();
         String Owner = owner;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -253,14 +266,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.CreateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, MutationContext.class},
-                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class CreateLogic {
-//    public static OrderState mutate(OrderState orderState, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -273,6 +286,8 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
         String productId = e.getProductId();
         String ProductId = productId;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -286,14 +301,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, MutationContext.class},
-                    new Object[]{this, productId, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, productId, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class RemoveItemLogic {
-//    public static OrderState mutate(OrderState orderState, String productId, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productId, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -308,6 +323,8 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         String ProductId = productId;
         BigInteger quantity = e.getQuantity();
         BigInteger Quantity = quantity;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -321,14 +338,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, productId, quantity, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, productId, quantity, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class UpdateItemQuantityLogic {
-//    public static OrderState mutate(OrderState orderState, String productId, BigInteger quantity, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productId, BigInteger quantity, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -349,10 +366,10 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         }
 
 
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((OrderEvent.SqlOrderEvent)event).getOrderEventId().getVersion();// Aggregate Version
+        Long stateVersion = this.getOffChainVersion();
+        Long eventVersion = ((OrderEvent.SqlOrderEvent)event).getOrderEventId().getOffChainVersion();// Aggregate Version
         if (eventVersion == null) {
-            throw new NullPointerException("event.getOrderEventId().getVersion() == null");
+            throw new NullPointerException("event.getOrderEventId().getOffChainVersion() == null");
         }
         if (!(stateVersion == null && eventVersion.equals(OrderState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
             throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);

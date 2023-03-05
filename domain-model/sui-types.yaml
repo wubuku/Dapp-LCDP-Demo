@@ -1,0 +1,23 @@
+typeDefinitions:
+
+  UID: #0x100475c96f65a7ffad0b4233eea7bfe4df15ca1e
+    sqlType: VARCHAR(42)
+    cSharpType: string
+    javaType: String
+
+  address:
+    sqlType: VARCHAR(42)
+    cSharpType: string
+    javaType: String
+
+  u64:
+    sqlType: DECIMAL(20,0)
+  u128:
+    sqlType: DECIMAL(20,0)
+
+  U64:
+    sqlType: DECIMAL(20,0)
+  U128:
+    sqlType: DECIMAL(20,0)
+
+

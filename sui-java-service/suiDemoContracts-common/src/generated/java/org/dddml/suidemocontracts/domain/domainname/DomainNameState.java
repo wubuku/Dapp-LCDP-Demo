@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DomainNameState
+public interface DomainNameState extends VersionedSuiMoveObject
 {
     Long VERSION_ZERO = 0L;
 
@@ -18,7 +18,7 @@ public interface DomainNameState
 
     BigInteger getExpirationDate();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -32,14 +32,14 @@ public interface DomainNameState
 
     Boolean getDeleted();
 
-    interface MutableDomainNameState extends DomainNameState {
+    interface MutableDomainNameState extends DomainNameState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setDomainNameId(DomainNameId domainNameId);
 
         void setId_(String id);
 
         void setExpirationDate(BigInteger expirationDate);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

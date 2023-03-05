@@ -39,25 +39,25 @@ public abstract class AbstractOrderV2CommandDto extends AbstractCommand
     }
 
     /**
-     * Version
+     * Off Chain Version
      */
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
 
     public void copyTo(OrderV2Command command) {
         command.setOrderId(this.getOrderId());
         command.setId_(this.getId_());
-        command.setVersion(this.getVersion());
+        command.setOffChainVersion(this.getOffChainVersion());
         
         command.setRequesterId(this.getRequesterId());
         command.setCommandId(this.getCommandId());

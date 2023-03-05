@@ -15,7 +15,7 @@
 		<key-property name="dayMonthIsLeap" ><column name="day_month_is_leap" /></key-property>
 		<key-property name="dayNumber" ><column name="day_number" /></key-property>
 		<key-property name="dayTimeZone" ><column name="day_time_zone" length="20" /></key-property>
-		<key-property name="version" ><column name="version" /></key-property>
+		<key-property name="offChainVersion" ><column name="off_chain_version" /></key-property>
 	</composite-id>
 
     <discriminator column="event_type" type="string" />
@@ -27,6 +27,7 @@
     <property name="createdAt" column="created_at" />
 
     <property name="commandId" column="command_id"/>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractDaySummaryEvent$DaySummaryClobEvent" discriminator-value="DaySummaryClobEvent">

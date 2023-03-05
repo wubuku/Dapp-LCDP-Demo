@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.domain.Command;
 import org.dddml.suidemocontracts.specialization.DomainError;
@@ -17,12 +18,12 @@ public interface DaySummaryCommand extends Command
 
     void setId_(String id);
 
-    Long getVersion();
+    Long getOffChainVersion();
 
-    void setVersion(Long version);
+    void setOffChainVersion(Long offChainVersion);
 
     static void throwOnInvalidStateTransition(DaySummaryState state, Command c) {
-        if (state.getVersion() == null) {
+        if (state.getOffChainVersion() == null) {
             if (isCommandCreate((DaySummaryCommand)c)) {
                 return;
             }
@@ -36,7 +37,7 @@ public interface DaySummaryCommand extends Command
     }
 
     static boolean isCommandCreate(DaySummaryCommand c) {
-        if (c.getVersion().equals(DaySummaryState.VERSION_NULL))
+        if (c.getOffChainVersion().equals(DaySummaryState.VERSION_NULL))
             return true;
         return false;
     }

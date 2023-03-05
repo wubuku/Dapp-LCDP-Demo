@@ -29,27 +29,27 @@ public class OrderV2ItemEventId implements Serializable
         this.productId = productId;
     }
 
-    private Long orderV2Version;
+    private Long orderV2OffChainVersion;
 
-    public Long getOrderV2Version()
+    public Long getOrderV2OffChainVersion()
     {
-        return this.orderV2Version;
+        return this.orderV2OffChainVersion;
     }
 
-    public void setOrderV2Version(Long orderV2Version)
+    public void setOrderV2OffChainVersion(Long orderV2OffChainVersion)
     {
-        this.orderV2Version = orderV2Version;
+        this.orderV2OffChainVersion = orderV2OffChainVersion;
     }
 
     public OrderV2ItemEventId()
     {
     }
 
-    public OrderV2ItemEventId(String orderV2OrderId, String productId, Long orderV2Version)
+    public OrderV2ItemEventId(String orderV2OrderId, String productId, Long orderV2OffChainVersion)
     {
         this.orderV2OrderId = orderV2OrderId;
         this.productId = productId;
-        this.orderV2Version = orderV2Version;
+        this.orderV2OffChainVersion = orderV2OffChainVersion;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class OrderV2ItemEventId implements Serializable
         return true 
             && (orderV2OrderId == other.orderV2OrderId || (orderV2OrderId != null && orderV2OrderId.equals(other.orderV2OrderId)))
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
-            && (orderV2Version == other.orderV2Version || (orderV2Version != null && orderV2Version.equals(other.orderV2Version)))
+            && (orderV2OffChainVersion == other.orderV2OffChainVersion || (orderV2OffChainVersion != null && orderV2OffChainVersion.equals(other.orderV2OffChainVersion)))
             ;
     }
 
@@ -80,8 +80,8 @@ public class OrderV2ItemEventId implements Serializable
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
         }
-        if (this.orderV2Version != null) {
-            hash += 13 * this.orderV2Version.hashCode();
+        if (this.orderV2OffChainVersion != null) {
+            hash += 13 * this.orderV2OffChainVersion.hashCode();
         }
         return hash;
     }
@@ -90,7 +90,7 @@ public class OrderV2ItemEventId implements Serializable
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderV2OrderId",
             "productId",
-            "orderV2Version",
+            "orderV2OffChainVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

@@ -47,15 +47,15 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
     }
 
     public void when(OrderCommands.Create c) {
-        update(c, ar -> ar.create(c.getProduct(), c.getQuantity(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.create(c.getProduct(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderCommands.RemoveItem c) {
-        update(c, ar -> ar.removeItem(c.getProductId(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.removeItem(c.getProductId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderCommands.UpdateItemQuantity c) {
-        update(c, ar -> ar.updateItemQuantity(c.getProductId(), c.getQuantity(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.updateItemQuantity(c.getProductId(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public OrderState get(String id) {
@@ -129,7 +129,7 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         OrderAggregate aggregate = getOrderAggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
         action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? OrderState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        persist(eventStoreAggregateId, c.getOffChainVersion() == null ? OrderState.VERSION_NULL : c.getOffChainVersion(), aggregate, state); // State version may be null!
 
     }
 
@@ -145,9 +145,9 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
 
     protected boolean isDuplicateCommand(OrderCommand command, EventStoreAggregateId eventStoreAggregateId, OrderState state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) { command.setVersion(OrderState.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractOrderEvent.class, eventStoreAggregateId, command.getVersion());
+        if (command.getOffChainVersion() == null) { command.setOffChainVersion(OrderState.VERSION_NULL); }
+        if (state.getOffChainVersion() != null && state.getOffChainVersion() > command.getOffChainVersion()) {
+            Event lastEvent = getEventStore().getEvent(AbstractOrderEvent.class, eventStoreAggregateId, command.getOffChainVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
                && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;

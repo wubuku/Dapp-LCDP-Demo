@@ -58,16 +58,16 @@ public class OrderItemStateDto
         this.active = active;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     private String orderId;
@@ -171,8 +171,8 @@ public class OrderItemStateDto
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
             }
-            if (returnedFieldsContains("Version")) {
-                dto.setVersion(state.getVersion());
+            if (returnedFieldsContains("OffChainVersion")) {
+                dto.setOffChainVersion(state.getOffChainVersion());
             }
             if (returnedFieldsContains("OrderId")) {
                 dto.setOrderId(state.getOrderId());

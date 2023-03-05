@@ -19,7 +19,7 @@ public class DaySummary {
 
     private Day day;
 
-    private Long version;
+    private Long offChainVersion;
 
     private String description;
 
@@ -28,6 +28,8 @@ public class DaySummary {
     private String[] arrayData;
 
     private int[] optionalData;
+
+    private BigInteger version;
 
     public UID getId() {
         return id;
@@ -45,12 +47,12 @@ public class DaySummary {
         this.day = day;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getOffChainVersion() {
+        return offChainVersion;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     public String getDescription() {
@@ -85,16 +87,25 @@ public class DaySummary {
         this.optionalData = optionalData;
     }
 
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "DaySummary{" +
                 "id=" + id +
                 ", day=" + day +
-                ", version=" + version +
+                ", offChainVersion=" + offChainVersion +
                 ", description=" + '\'' + description + '\'' +
                 ", metadata=" + Arrays.toString(metadata) +
                 ", arrayData=" + Arrays.toString(arrayData) +
                 ", optionalData=" + Arrays.toString(optionalData) +
+                ", version=" + version +
                 '}';
     }
 }

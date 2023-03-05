@@ -27,7 +27,7 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "TotalAmount", "EstimatedShipDate", "Items", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "TotalAmount", "EstimatedShipDate", "Items", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -58,7 +58,7 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository
         if (getReadOnlyProxyGenerator() != null) {
             s = (OrderV2State) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getVersion() == null) {
+        if(s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
         }else {
             getCurrentSession().update(s);

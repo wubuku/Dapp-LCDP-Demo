@@ -43,14 +43,14 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
 
         @Override
-        public void create(String name, BigInteger unitPrice, Long version, String commandId, String requesterId, ProductCommands.Create c) {
+        public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
             try {
                 verifyCreate(name, unitPrice, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newProductCreated(name, unitPrice, version, commandId, requesterId);
+            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -75,12 +75,13 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
            
 
-        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long version, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), version);
+        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), offChainVersion);
             AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
 
             e.setName(name);
             e.setUnitPrice(unitPrice);
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.dddml.support.criterion.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.daysummary.*;

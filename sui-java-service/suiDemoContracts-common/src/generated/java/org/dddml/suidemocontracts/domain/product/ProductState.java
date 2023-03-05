@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface ProductState
+public interface ProductState extends VersionedSuiMoveObject
 {
     Long VERSION_ZERO = 0L;
 
@@ -20,7 +20,7 @@ public interface ProductState
 
     BigInteger getUnitPrice();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -34,7 +34,7 @@ public interface ProductState
 
     String getCommandId();
 
-    interface MutableProductState extends ProductState {
+    interface MutableProductState extends ProductState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setProductId(String productId);
 
         void setId_(String id);
@@ -43,7 +43,7 @@ public interface ProductState
 
         void setUnitPrice(BigInteger unitPrice);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.daysummary.DaySummaryEvent.*;
@@ -58,14 +59,24 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.optionalData = optionalData;
     }
 
-    private Long version;
+    private BigInteger version;
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return this.version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
+    }
+
+    private Long offChainVersion;
+
+    public Long getOffChainVersion() {
+        return this.offChainVersion;
+    }
+
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -139,7 +150,7 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
     }
 
     public boolean isStateUnsaved() {
-        return this.getVersion() == null;
+        return this.getOffChainVersion() == null;
     }
 
     private Boolean stateReadOnly;
@@ -164,7 +175,7 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
             this.setDay(((DaySummaryEvent.SqlDaySummaryEvent) events.get(0)).getDaySummaryEventId().getDay());
             for (Event e : events) {
                 mutate(e);
-                this.setVersion((this.getVersion() == null ? DaySummaryState.VERSION_NULL : this.getVersion()) + 1);
+                this.setOffChainVersion((this.getOffChainVersion() == null ? DaySummaryState.VERSION_NULL : this.getOffChainVersion()) + 1);
             }
         }
     }
@@ -217,6 +228,7 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.setMetadata(s.getMetadata());
         this.setArrayData(s.getArrayData());
         this.setOptionalData(s.getOptionalData());
+        this.setVersion(s.getVersion());
         this.setActive(s.getActive());
     }
 
@@ -231,6 +243,8 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         String[] ArrayData = arrayData;
         int[] optionalData = e.getOptionalData();
         int[] OptionalData = optionalData;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -244,14 +258,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, MutationContext.class},
-                    new Object[]{this, description, metaData, arrayData, optionalData, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, description, metaData, arrayData, optionalData, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, BigInteger version, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 
@@ -270,10 +284,10 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         }
 
 
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((DaySummaryEvent.SqlDaySummaryEvent)event).getDaySummaryEventId().getVersion();// Aggregate Version
+        Long stateVersion = this.getOffChainVersion();
+        Long eventVersion = ((DaySummaryEvent.SqlDaySummaryEvent)event).getDaySummaryEventId().getOffChainVersion();// Aggregate Version
         if (eventVersion == null) {
-            throw new NullPointerException("event.getDaySummaryEventId().getVersion() == null");
+            throw new NullPointerException("event.getDaySummaryEventId().getOffChainVersion() == null");
         }
         if (!(stateVersion == null && eventVersion.equals(DaySummaryState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
             throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);

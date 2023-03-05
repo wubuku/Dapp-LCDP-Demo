@@ -17,26 +17,26 @@ public class ProductEventId implements Serializable
         this.productId = productId;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     public ProductEventId()
     {
     }
 
-    public ProductEventId(String productId, Long version)
+    public ProductEventId(String productId, Long offChainVersion)
     {
         this.productId = productId;
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ProductEventId implements Serializable
         ProductEventId other = (ProductEventId)obj;
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
-            && (version == other.version || (version != null && version.equals(other.version)))
+            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
             ;
     }
 
@@ -63,8 +63,8 @@ public class ProductEventId implements Serializable
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
         }
-        if (this.version != null) {
-            hash += 13 * this.version.hashCode();
+        if (this.offChainVersion != null) {
+            hash += 13 * this.offChainVersion.hashCode();
         }
         return hash;
     }
@@ -72,7 +72,7 @@ public class ProductEventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "productId",
-            "version",
+            "offChainVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

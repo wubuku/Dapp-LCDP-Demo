@@ -18,7 +18,7 @@ public interface OrderV2ItemState
 
     BigInteger getItemAmount();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -41,7 +41,7 @@ public interface OrderV2ItemState
 
         void setItemAmount(BigInteger itemAmount);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

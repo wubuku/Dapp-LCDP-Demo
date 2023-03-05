@@ -58,6 +58,18 @@ public class ProductStateDto
         this.unitPrice = unitPrice;
     }
 
+    private BigInteger version;
+
+    public BigInteger getVersion()
+    {
+        return this.version;
+    }
+
+    public void setVersion(BigInteger version)
+    {
+        this.version = version;
+    }
+
     private Boolean active;
 
     public Boolean getActive()
@@ -70,16 +82,16 @@ public class ProductStateDto
         this.active = active;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -171,11 +183,14 @@ public class ProductStateDto
             if (returnedFieldsContains("UnitPrice")) {
                 dto.setUnitPrice(state.getUnitPrice());
             }
+            if (returnedFieldsContains("Version")) {
+                dto.setVersion(state.getVersion());
+            }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
             }
-            if (returnedFieldsContains("Version")) {
-                dto.setVersion(state.getVersion());
+            if (returnedFieldsContains("OffChainVersion")) {
+                dto.setOffChainVersion(state.getOffChainVersion());
             }
             if (returnedFieldsContains("CreatedBy")) {
                 dto.setCreatedBy(state.getCreatedBy());

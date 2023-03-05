@@ -12,10 +12,11 @@
 		<key-property name="topLevelDomain" ><column name="domain_name_id_top_level_domain" /></key-property>
 		<key-property name="secondLevelDomain" ><column name="domain_name_id_second_level_domain" /></key-property>
 	</composite-id>
-	<property name="version" column="version" type="long" />
+	<version name="offChainVersion" column="off_chain_version" type="long" />
 
 	<property name="id_" ><column name="id" unique-key="unique_domainname_sid" sql-type="VARCHAR(42)" /></property>
-	<property name="expirationDate" ><column name="expiration_date" /></property>
+	<property name="expirationDate" ><column name="expiration_date" sql-type="DECIMAL(20,0)" /></property>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>
 	<property name="active" ><column name="active" /></property>

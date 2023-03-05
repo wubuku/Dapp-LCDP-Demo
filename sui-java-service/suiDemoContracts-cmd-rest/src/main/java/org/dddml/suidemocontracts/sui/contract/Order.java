@@ -17,9 +17,11 @@ public class Order {
 
     private UID id;
 
-    private Long version;
+    private Long offChainVersion;
 
     private BigInteger totalAmount;
+
+    private BigInteger version;
 
     private Table items;
 
@@ -31,12 +33,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getOffChainVersion() {
+        return offChainVersion;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     public BigInteger getTotalAmount() {
@@ -45,6 +47,14 @@ public class Order {
 
     public void setTotalAmount(BigInteger totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     public Table getItems() {
@@ -59,8 +69,9 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", version=" + version +
+                ", offChainVersion=" + offChainVersion +
                 ", totalAmount=" + totalAmount +
+                ", version=" + version +
                 ", items=" + items +
                 '}';
     }

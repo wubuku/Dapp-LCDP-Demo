@@ -14,12 +14,12 @@ public interface OrderCommand extends Command
 
     void setId(String id);
 
-    Long getVersion();
+    Long getOffChainVersion();
 
-    void setVersion(Long version);
+    void setOffChainVersion(Long offChainVersion);
 
     static void throwOnInvalidStateTransition(OrderState state, Command c) {
-        if (state.getVersion() == null) {
+        if (state.getOffChainVersion() == null) {
             if (isCommandCreate((OrderCommand)c)) {
                 return;
             }
@@ -33,7 +33,7 @@ public interface OrderCommand extends Command
     }
 
     static boolean isCommandCreate(OrderCommand c) {
-        if (c.getVersion().equals(OrderState.VERSION_NULL))
+        if (c.getOffChainVersion().equals(OrderState.VERSION_NULL))
             return true;
         return false;
     }

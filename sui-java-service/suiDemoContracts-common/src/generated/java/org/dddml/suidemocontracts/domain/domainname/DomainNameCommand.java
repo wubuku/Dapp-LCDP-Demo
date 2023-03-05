@@ -18,12 +18,12 @@ public interface DomainNameCommand extends Command
 
     void setId_(String id);
 
-    Long getVersion();
+    Long getOffChainVersion();
 
-    void setVersion(Long version);
+    void setOffChainVersion(Long offChainVersion);
 
     static void throwOnInvalidStateTransition(DomainNameState state, Command c) {
-        if (state.getVersion() == null) {
+        if (state.getOffChainVersion() == null) {
             if (isCommandCreate((DomainNameCommand)c)) {
                 return;
             }
@@ -37,7 +37,7 @@ public interface DomainNameCommand extends Command
     }
 
     static boolean isCommandCreate(DomainNameCommand c) {
-        if (c.getVersion().equals(DomainNameState.VERSION_NULL))
+        if (c.getOffChainVersion().equals(DomainNameState.VERSION_NULL))
             return true;
         return false;
     }

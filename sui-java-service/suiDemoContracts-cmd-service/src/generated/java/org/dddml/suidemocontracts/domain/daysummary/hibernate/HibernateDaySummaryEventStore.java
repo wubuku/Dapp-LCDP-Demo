@@ -3,6 +3,7 @@ package org.dddml.suidemocontracts.domain.daysummary.hibernate;
 import java.io.Serializable;
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.specialization.hibernate.AbstractHibernateEventStore;
@@ -40,15 +41,15 @@ public class HibernateDaySummaryEventStore extends AbstractHibernateEventStore
         criteria.add(Restrictions.eq("daySummaryEventId.dayMonthIsLeap", idObj.getMonth().getIsLeap()));
         criteria.add(Restrictions.eq("daySummaryEventId.dayNumber", idObj.getNumber()));
         criteria.add(Restrictions.eq("daySummaryEventId.dayTimeZone", idObj.getTimeZone()));
-        criteria.add(Restrictions.le("daySummaryEventId.version", version));
-        criteria.addOrder(Order.asc("daySummaryEventId.version"));
+        criteria.add(Restrictions.le("daySummaryEventId.offChainVersion", version));
+        criteria.addOrder(Order.asc("daySummaryEventId.offChainVersion"));
         List es = criteria.list();
         for (Object e : es) {
             ((AbstractDaySummaryEvent) e).setEventReadOnly(true);
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractDaySummaryEvent) es.get(es.size() - 1)).getDaySummaryEventId().getVersion());
+            eventStream.setSteamVersion(((AbstractDaySummaryEvent) es.get(es.size() - 1)).getDaySummaryEventId().getOffChainVersion());
         } else {
             //todo?
         }

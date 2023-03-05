@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import org.dddml.support.criterion.Criterion;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 
@@ -46,7 +47,7 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
     }
 
     public void when(DaySummaryCommands.Create c) {
-        update(c, ar -> ar.create(c.getDescription(), c.getMetaData(), c.getArrayData(), c.getOptionalData(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.create(c.getDescription(), c.getMetaData(), c.getArrayData(), c.getOptionalData(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public DaySummaryState get(Day id) {
@@ -112,7 +113,7 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
         DaySummaryAggregate aggregate = getDaySummaryAggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
         action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? DaySummaryState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        persist(eventStoreAggregateId, c.getOffChainVersion() == null ? DaySummaryState.VERSION_NULL : c.getOffChainVersion(), aggregate, state); // State version may be null!
 
     }
 
@@ -128,9 +129,9 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
 
     protected boolean isDuplicateCommand(DaySummaryCommand command, EventStoreAggregateId eventStoreAggregateId, DaySummaryState state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) { command.setVersion(DaySummaryState.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractDaySummaryEvent.class, eventStoreAggregateId, command.getVersion());
+        if (command.getOffChainVersion() == null) { command.setOffChainVersion(DaySummaryState.VERSION_NULL); }
+        if (state.getOffChainVersion() != null && state.getOffChainVersion() > command.getOffChainVersion()) {
+            Event lastEvent = getEventStore().getEvent(AbstractDaySummaryEvent.class, eventStoreAggregateId, command.getOffChainVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
                && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;

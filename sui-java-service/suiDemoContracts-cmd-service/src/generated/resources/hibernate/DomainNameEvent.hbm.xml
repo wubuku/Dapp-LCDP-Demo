@@ -11,7 +11,7 @@
 	<composite-id name="domainNameEventId" class="org.dddml.suidemocontracts.domain.domainname.DomainNameEventId">
 		<key-property name="domainNameIdTopLevelDomain" ><column name="domain_name_id_top_level_domain" /></key-property>
 		<key-property name="domainNameIdSecondLevelDomain" ><column name="domain_name_id_second_level_domain" /></key-property>
-		<key-property name="version" ><column name="version" /></key-property>
+		<key-property name="offChainVersion" ><column name="off_chain_version" /></key-property>
 	</composite-id>
 
     <discriminator column="event_type" type="string" />
@@ -23,6 +23,7 @@
     <property name="createdAt" column="created_at" />
 
     <property name="commandId" column="command_id"/>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractDomainNameEvent$DomainNameClobEvent" discriminator-value="DomainNameClobEvent">

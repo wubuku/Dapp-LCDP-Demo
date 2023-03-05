@@ -39,14 +39,24 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         this.expirationDate = expirationDate;
     }
 
-    private Long version;
+    private BigInteger version;
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return this.version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
+    }
+
+    private Long offChainVersion;
+
+    public Long getOffChainVersion() {
+        return this.offChainVersion;
+    }
+
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -110,7 +120,7 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
     }
 
     public boolean isStateUnsaved() {
-        return this.getVersion() == null;
+        return this.getOffChainVersion() == null;
     }
 
     private Boolean stateReadOnly;
@@ -135,7 +145,7 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
             this.setDomainNameId(((DomainNameEvent.SqlDomainNameEvent) events.get(0)).getDomainNameEventId().getDomainNameId());
             for (Event e : events) {
                 mutate(e);
-                this.setVersion((this.getVersion() == null ? DomainNameState.VERSION_NULL : this.getVersion()) + 1);
+                this.setOffChainVersion((this.getOffChainVersion() == null ? DomainNameState.VERSION_NULL : this.getOffChainVersion()) + 1);
             }
         }
     }
@@ -187,6 +197,7 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
             return;
         }
         this.setExpirationDate(s.getExpirationDate());
+        this.setVersion(s.getVersion());
         this.setActive(s.getActive());
     }
 
@@ -197,6 +208,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         BigInteger RegistrationPeriod = registrationPeriod;
         String owner = e.getOwner();
         String Owner = owner;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -210,14 +223,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, MutationContext.class},
-                    new Object[]{this, registrationPeriod, owner, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, registrationPeriod, owner, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RegisterLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, BigInteger version, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 
@@ -232,6 +245,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         BigInteger RenewPeriod = renewPeriod;
         String account = e.getAccount();
         String Account = account;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -245,14 +260,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, MutationContext.class},
-                    new Object[]{this, renewPeriod, account, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, renewPeriod, account, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RenewLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, BigInteger version, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 
@@ -271,10 +286,10 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         }
 
 
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((DomainNameEvent.SqlDomainNameEvent)event).getDomainNameEventId().getVersion();// Aggregate Version
+        Long stateVersion = this.getOffChainVersion();
+        Long eventVersion = ((DomainNameEvent.SqlDomainNameEvent)event).getDomainNameEventId().getOffChainVersion();// Aggregate Version
         if (eventVersion == null) {
-            throw new NullPointerException("event.getDomainNameEventId().getVersion() == null");
+            throw new NullPointerException("event.getDomainNameEventId().getOffChainVersion() == null");
         }
         if (!(stateVersion == null && eventVersion.equals(DomainNameState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
             throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);

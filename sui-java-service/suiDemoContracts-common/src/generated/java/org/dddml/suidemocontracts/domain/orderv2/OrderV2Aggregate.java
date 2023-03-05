@@ -13,13 +13,13 @@ public interface OrderV2Aggregate
 
     List<Event> getChanges();
 
-    void create(String product, BigInteger quantity, Long version, String commandId, String requesterId, OrderV2Commands.Create c);
+    void create(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.Create c);
 
-    void removeItem(String productId, Long version, String commandId, String requesterId, OrderV2Commands.RemoveItem c);
+    void removeItem(String productId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveItem c);
 
-    void updateItemQuantity(String productId, BigInteger quantity, Long version, String commandId, String requesterId, OrderV2Commands.UpdateItemQuantity c);
+    void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateItemQuantity c);
 
-    void updateEstimatedShipDate(Day estimatedShipDate, Long version, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c);
+    void updateEstimatedShipDate(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c);
 
     void throwOnInvalidStateTransition(Command c);
 }

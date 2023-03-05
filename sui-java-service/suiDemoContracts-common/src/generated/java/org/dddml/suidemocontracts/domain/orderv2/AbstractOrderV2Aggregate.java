@@ -43,50 +43,50 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
         }
 
         @Override
-        public void create(String product, BigInteger quantity, Long version, String commandId, String requesterId, OrderV2Commands.Create c) {
+        public void create(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.Create c) {
             try {
                 verifyCreate(product, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2Created(product, quantity, version, commandId, requesterId);
+            Event e = newOrderV2Created(product, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
-        public void removeItem(String productId, Long version, String commandId, String requesterId, OrderV2Commands.RemoveItem c) {
+        public void removeItem(String productId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveItem c) {
             try {
                 verifyRemoveItem(productId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2ItemRemoved(productId, version, commandId, requesterId);
+            Event e = newOrderV2ItemRemoved(productId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
-        public void updateItemQuantity(String productId, BigInteger quantity, Long version, String commandId, String requesterId, OrderV2Commands.UpdateItemQuantity c) {
+        public void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateItemQuantity c) {
             try {
                 verifyUpdateItemQuantity(productId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2ItemQuantityUpdated(productId, quantity, version, commandId, requesterId);
+            Event e = newOrderV2ItemQuantityUpdated(productId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
-        public void updateEstimatedShipDate(Day estimatedShipDate, Long version, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c) {
+        public void updateEstimatedShipDate(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c) {
             try {
                 verifyUpdateEstimatedShipDate(estimatedShipDate, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2EstimatedShipDateUpdated(estimatedShipDate, version, commandId, requesterId);
+            Event e = newOrderV2EstimatedShipDateUpdated(estimatedShipDate, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -172,8 +172,8 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
         }
            
 
-        protected AbstractOrderV2Event.OrderV2Created newOrderV2Created(String product, BigInteger quantity, Long version, String commandId, String requesterId) {
-            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), version);
+        protected AbstractOrderV2Event.OrderV2Created newOrderV2Created(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
+            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), offChainVersion);
             AbstractOrderV2Event.OrderV2Created e = new AbstractOrderV2Event.OrderV2Created();
 
             e.setProduct(product);
@@ -181,6 +181,7 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
             e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -190,11 +191,12 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             return e;
         }
 
-        protected AbstractOrderV2Event.OrderV2ItemRemoved newOrderV2ItemRemoved(String productId, Long version, String commandId, String requesterId) {
-            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), version);
+        protected AbstractOrderV2Event.OrderV2ItemRemoved newOrderV2ItemRemoved(String productId, Long offChainVersion, String commandId, String requesterId) {
+            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), offChainVersion);
             AbstractOrderV2Event.OrderV2ItemRemoved e = new AbstractOrderV2Event.OrderV2ItemRemoved();
 
             e.setProductId(productId);
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -204,12 +206,13 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             return e;
         }
 
-        protected AbstractOrderV2Event.OrderV2ItemQuantityUpdated newOrderV2ItemQuantityUpdated(String productId, BigInteger quantity, Long version, String commandId, String requesterId) {
-            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), version);
+        protected AbstractOrderV2Event.OrderV2ItemQuantityUpdated newOrderV2ItemQuantityUpdated(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
+            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), offChainVersion);
             AbstractOrderV2Event.OrderV2ItemQuantityUpdated e = new AbstractOrderV2Event.OrderV2ItemQuantityUpdated();
 
             e.setProductId(productId);
             e.setQuantity(quantity);
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -219,11 +222,12 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             return e;
         }
 
-        protected AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated newOrderV2EstimatedShipDateUpdated(Day estimatedShipDate, Long version, String commandId, String requesterId) {
-            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), version);
+        protected AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated newOrderV2EstimatedShipDateUpdated(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId) {
+            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), offChainVersion);
             AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated e = new AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated();
 
             e.setEstimatedShipDate(estimatedShipDate);
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

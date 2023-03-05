@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.daysummary;
 
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.domain.AbstractCommand;
 
@@ -38,25 +39,25 @@ public abstract class AbstractDaySummaryCommandDto extends AbstractCommand
     }
 
     /**
-     * Version
+     * Off Chain Version
      */
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
 
     public void copyTo(DaySummaryCommand command) {
         command.setDay(this.getDay());
         command.setId_(this.getId_());
-        command.setVersion(this.getVersion());
+        command.setOffChainVersion(this.getOffChainVersion());
         
         command.setRequesterId(this.getRequesterId());
         command.setCommandId(this.getCommandId());

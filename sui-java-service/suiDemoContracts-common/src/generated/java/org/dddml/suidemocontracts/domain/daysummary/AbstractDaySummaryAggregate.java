@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 
@@ -42,14 +43,14 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         }
 
         @Override
-        public void create(String description, int[] metaData, String[] arrayData, int[] optionalData, Long version, String commandId, String requesterId, DaySummaryCommands.Create c) {
+        public void create(String description, int[] metaData, String[] arrayData, int[] optionalData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
             try {
                 verifyCreate(description, metaData, arrayData, optionalData, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, version, commandId, requesterId);
+            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -76,14 +77,15 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         }
            
 
-        protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, int[] optionalData, Long version, String commandId, String requesterId) {
-            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), version);
+        protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, int[] optionalData, Long offChainVersion, String commandId, String requesterId) {
+            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), offChainVersion);
             AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
 
             e.setDescription(description);
             e.setMetaData(metaData);
             e.setArrayData(arrayData);
             e.setOptionalData(optionalData);
+            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

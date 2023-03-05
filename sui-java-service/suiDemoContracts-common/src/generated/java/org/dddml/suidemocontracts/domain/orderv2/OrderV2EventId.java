@@ -17,26 +17,26 @@ public class OrderV2EventId implements Serializable
         this.orderId = orderId;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     public OrderV2EventId()
     {
     }
 
-    public OrderV2EventId(String orderId, Long version)
+    public OrderV2EventId(String orderId, Long offChainVersion)
     {
         this.orderId = orderId;
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class OrderV2EventId implements Serializable
         OrderV2EventId other = (OrderV2EventId)obj;
         return true 
             && (orderId == other.orderId || (orderId != null && orderId.equals(other.orderId)))
-            && (version == other.version || (version != null && version.equals(other.version)))
+            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
             ;
     }
 
@@ -63,8 +63,8 @@ public class OrderV2EventId implements Serializable
         if (this.orderId != null) {
             hash += 13 * this.orderId.hashCode();
         }
-        if (this.version != null) {
-            hash += 13 * this.version.hashCode();
+        if (this.offChainVersion != null) {
+            hash += 13 * this.offChainVersion.hashCode();
         }
         return hash;
     }
@@ -72,7 +72,7 @@ public class OrderV2EventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderId",
-            "version",
+            "offChainVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

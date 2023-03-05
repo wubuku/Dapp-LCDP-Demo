@@ -27,7 +27,7 @@ public class HibernateProductStateRepository implements ProductStateRepository
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "Name", "UnitPrice", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "Name", "UnitPrice", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -58,7 +58,7 @@ public class HibernateProductStateRepository implements ProductStateRepository
         if (getReadOnlyProxyGenerator() != null) {
             s = (ProductState) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getVersion() == null) {
+        if(s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
         }else {
             getCurrentSession().update(s);

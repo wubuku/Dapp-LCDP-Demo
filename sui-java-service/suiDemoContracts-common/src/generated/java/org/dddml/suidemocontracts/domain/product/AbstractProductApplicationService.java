@@ -47,7 +47,7 @@ public abstract class AbstractProductApplicationService implements ProductApplic
     }
 
     public void when(ProductCommands.Create c) {
-        update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public ProductState get(String id) {
@@ -113,7 +113,7 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         ProductAggregate aggregate = getProductAggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
         action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? ProductState.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        persist(eventStoreAggregateId, c.getOffChainVersion() == null ? ProductState.VERSION_NULL : c.getOffChainVersion(), aggregate, state); // State version may be null!
 
     }
 
@@ -128,9 +128,9 @@ public abstract class AbstractProductApplicationService implements ProductApplic
 
     protected boolean isDuplicateCommand(ProductCommand command, EventStoreAggregateId eventStoreAggregateId, ProductState state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) { command.setVersion(ProductState.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractProductEvent.class, eventStoreAggregateId, command.getVersion());
+        if (command.getOffChainVersion() == null) { command.setOffChainVersion(ProductState.VERSION_NULL); }
+        if (state.getOffChainVersion() != null && state.getOffChainVersion() > command.getOffChainVersion()) {
+            Event lastEvent = getEventStore().getEvent(AbstractProductEvent.class, eventStoreAggregateId, command.getOffChainVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
                && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;

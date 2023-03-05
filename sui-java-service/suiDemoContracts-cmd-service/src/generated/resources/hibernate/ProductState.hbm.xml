@@ -10,11 +10,12 @@
 
     <cache usage="read-only"/>
 	<id name="productId" length="20" column="product_id"><generator class="assigned"/></id>
-	<property name="version" column="version" type="long" />
+	<version name="offChainVersion" column="off_chain_version" type="long" />
 
 	<property name="id_" ><column name="id" unique-key="unique_product_sid" sql-type="VARCHAR(42)" /></property>
 	<property name="name" ><column name="name" /></property>
-	<property name="unitPrice" ><column name="unit_price" /></property>
+	<property name="unitPrice" ><column name="unit_price" sql-type="DECIMAL(20,0)" /></property>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>
 	<property name="active" ><column name="active" /></property>

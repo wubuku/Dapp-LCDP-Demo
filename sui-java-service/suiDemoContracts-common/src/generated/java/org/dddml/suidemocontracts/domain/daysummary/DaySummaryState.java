@@ -2,10 +2,11 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.Set;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DaySummaryState
+public interface DaySummaryState extends VersionedSuiMoveObject
 {
     Long VERSION_ZERO = 0L;
 
@@ -21,7 +22,7 @@ public interface DaySummaryState
 
     int[] getOptionalData();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -37,7 +38,7 @@ public interface DaySummaryState
 
     Set<String> getArrayData();
 
-    interface MutableDaySummaryState extends DaySummaryState {
+    interface MutableDaySummaryState extends DaySummaryState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setDay(Day day);
 
         void setId_(String id);
@@ -48,7 +49,7 @@ public interface DaySummaryState
 
         void setOptionalData(int[] optionalData);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary.hibernate;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.hibernate.Session;
 import org.hibernate.Criteria;
@@ -26,7 +27,7 @@ public class HibernateDaySummaryStateQueryRepository implements DaySummaryStateQ
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Day", "Description", "Metadata", "ArrayData", "OptionalData", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("Day", "Description", "Metadata", "ArrayData", "OptionalData", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

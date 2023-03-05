@@ -65,14 +65,14 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         this.itemAmount = itemAmount;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion() {
-        return this.version;
+    public Long getOffChainVersion() {
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -136,7 +136,7 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
     }
 
     public boolean isStateUnsaved() {
-        return this.getVersion() == null;
+        return this.getOffChainVersion() == null;
     }
 
     private Boolean stateReadOnly;

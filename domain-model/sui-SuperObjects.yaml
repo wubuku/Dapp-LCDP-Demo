@@ -1,0 +1,12 @@
+superObjects:
+
+  VersionedSuiMoveObject:
+    properties:
+      Version:
+        type: u64
+
+  VersionedSuiMoveEvent:
+    properties:
+      Version:
+        type: u64
+

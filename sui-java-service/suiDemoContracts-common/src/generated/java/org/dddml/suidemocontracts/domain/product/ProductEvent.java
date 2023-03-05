@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface ProductEvent extends Event {
+public interface ProductEvent extends Event, VersionedSuiMoveEvent {
 
     interface SqlProductEvent extends ProductEvent {
         ProductEventId getProductEventId();
@@ -20,9 +20,9 @@ public interface ProductEvent extends Event {
 
     //void setProductId(String productId);
 
-    Long getVersion();
+    Long getOffChainVersion();
     
-    //void setVersion(Long version);
+    //void setOffChainVersion(Long offChainVersion);
 
     String getId_();
     

@@ -27,7 +27,7 @@ public class HibernateDomainNameStateRepository implements DomainNameStateReposi
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DomainNameId", "ExpirationDate", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("DomainNameId", "ExpirationDate", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -58,7 +58,7 @@ public class HibernateDomainNameStateRepository implements DomainNameStateReposi
         if (getReadOnlyProxyGenerator() != null) {
             s = (DomainNameState) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getVersion() == null) {
+        if(s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
         }else {
             getCurrentSession().update(s);

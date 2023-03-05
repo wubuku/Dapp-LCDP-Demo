@@ -17,16 +17,16 @@ public class DomainNameEventId implements Serializable
         this.domainNameId = domainNameId;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     protected String getDomainNameIdTopLevelDomain()
@@ -53,10 +53,10 @@ public class DomainNameEventId implements Serializable
     {
     }
 
-    public DomainNameEventId(DomainNameId domainNameId, Long version)
+    public DomainNameEventId(DomainNameId domainNameId, Long offChainVersion)
     {
         this.domainNameId = domainNameId;
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class DomainNameEventId implements Serializable
         DomainNameEventId other = (DomainNameEventId)obj;
         return true 
             && (domainNameId == other.domainNameId || (domainNameId != null && domainNameId.equals(other.domainNameId)))
-            && (version == other.version || (version != null && version.equals(other.version)))
+            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
             ;
     }
 
@@ -83,8 +83,8 @@ public class DomainNameEventId implements Serializable
         if (this.domainNameId != null) {
             hash += 13 * this.domainNameId.hashCode();
         }
-        if (this.version != null) {
-            hash += 13 * this.version.hashCode();
+        if (this.offChainVersion != null) {
+            hash += 13 * this.offChainVersion.hashCode();
         }
         return hash;
     }
@@ -93,7 +93,7 @@ public class DomainNameEventId implements Serializable
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "domainNameIdTopLevelDomain",
             "domainNameIdSecondLevelDomain",
-            "version",
+            "offChainVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

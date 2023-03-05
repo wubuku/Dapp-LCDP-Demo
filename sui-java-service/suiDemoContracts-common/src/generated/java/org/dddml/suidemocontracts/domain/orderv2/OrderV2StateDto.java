@@ -58,6 +58,18 @@ public class OrderV2StateDto
         this.estimatedShipDate = estimatedShipDate;
     }
 
+    private BigInteger version;
+
+    public BigInteger getVersion()
+    {
+        return this.version;
+    }
+
+    public void setVersion(BigInteger version)
+    {
+        this.version = version;
+    }
+
     private Boolean active;
 
     public Boolean getActive()
@@ -70,16 +82,16 @@ public class OrderV2StateDto
         this.active = active;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -183,11 +195,14 @@ public class OrderV2StateDto
             if (returnedFieldsContains("EstimatedShipDate")) {
                 dto.setEstimatedShipDate(state.getEstimatedShipDate());
             }
+            if (returnedFieldsContains("Version")) {
+                dto.setVersion(state.getVersion());
+            }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
             }
-            if (returnedFieldsContains("Version")) {
-                dto.setVersion(state.getVersion());
+            if (returnedFieldsContains("OffChainVersion")) {
+                dto.setOffChainVersion(state.getOffChainVersion());
             }
             if (returnedFieldsContains("CreatedBy")) {
                 dto.setCreatedBy(state.getCreatedBy());

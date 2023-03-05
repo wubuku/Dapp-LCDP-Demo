@@ -47,19 +47,19 @@ public abstract class AbstractOrderV2ApplicationService implements OrderV2Applic
     }
 
     public void when(OrderV2Commands.Create c) {
-        update(c, ar -> ar.create(c.getProduct(), c.getQuantity(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.create(c.getProduct(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderV2Commands.RemoveItem c) {
-        update(c, ar -> ar.removeItem(c.getProductId(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.removeItem(c.getProductId(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderV2Commands.UpdateItemQuantity c) {
-        update(c, ar -> ar.updateItemQuantity(c.getProductId(), c.getQuantity(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.updateItemQuantity(c.getProductId(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(OrderV2Commands.UpdateEstimatedShipDate c) {
-        update(c, ar -> ar.updateEstimatedShipDate(c.getEstimatedShipDate(), c.getVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.updateEstimatedShipDate(c.getEstimatedShipDate(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public OrderV2State get(String id) {
@@ -133,7 +133,7 @@ public abstract class AbstractOrderV2ApplicationService implements OrderV2Applic
         OrderV2Aggregate aggregate = getOrderV2Aggregate(state);
         aggregate.throwOnInvalidStateTransition(c);
         action.accept(aggregate);
-        persist(eventStoreAggregateId, c.getVersion() == null ? OrderV2State.VERSION_NULL : c.getVersion(), aggregate, state); // State version may be null!
+        persist(eventStoreAggregateId, c.getOffChainVersion() == null ? OrderV2State.VERSION_NULL : c.getOffChainVersion(), aggregate, state); // State version may be null!
 
     }
 
@@ -149,9 +149,9 @@ public abstract class AbstractOrderV2ApplicationService implements OrderV2Applic
 
     protected boolean isDuplicateCommand(OrderV2Command command, EventStoreAggregateId eventStoreAggregateId, OrderV2State state) {
         boolean duplicate = false;
-        if (command.getVersion() == null) { command.setVersion(OrderV2State.VERSION_NULL); }
-        if (state.getVersion() != null && state.getVersion() > command.getVersion()) {
-            Event lastEvent = getEventStore().getEvent(AbstractOrderV2Event.class, eventStoreAggregateId, command.getVersion());
+        if (command.getOffChainVersion() == null) { command.setOffChainVersion(OrderV2State.VERSION_NULL); }
+        if (state.getOffChainVersion() != null && state.getOffChainVersion() > command.getOffChainVersion()) {
+            Event lastEvent = getEventStore().getEvent(AbstractOrderV2Event.class, eventStoreAggregateId, command.getOffChainVersion());
             if (lastEvent != null && lastEvent instanceof AbstractEvent
                && command.getCommandId() != null && command.getCommandId().equals(((AbstractEvent) lastEvent).getCommandId())) {
                 duplicate = true;

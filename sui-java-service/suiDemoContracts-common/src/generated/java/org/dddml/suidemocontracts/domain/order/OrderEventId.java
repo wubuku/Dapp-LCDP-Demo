@@ -17,26 +17,26 @@ public class OrderEventId implements Serializable
         this.id = id;
     }
 
-    private Long version;
+    private Long offChainVersion;
 
-    public Long getVersion()
+    public Long getOffChainVersion()
     {
-        return this.version;
+        return this.offChainVersion;
     }
 
-    public void setVersion(Long version)
+    public void setOffChainVersion(Long offChainVersion)
     {
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     public OrderEventId()
     {
     }
 
-    public OrderEventId(String id, Long version)
+    public OrderEventId(String id, Long offChainVersion)
     {
         this.id = id;
-        this.version = version;
+        this.offChainVersion = offChainVersion;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class OrderEventId implements Serializable
         OrderEventId other = (OrderEventId)obj;
         return true 
             && (id == other.id || (id != null && id.equals(other.id)))
-            && (version == other.version || (version != null && version.equals(other.version)))
+            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
             ;
     }
 
@@ -63,8 +63,8 @@ public class OrderEventId implements Serializable
         if (this.id != null) {
             hash += 13 * this.id.hashCode();
         }
-        if (this.version != null) {
-            hash += 13 * this.version.hashCode();
+        if (this.offChainVersion != null) {
+            hash += 13 * this.offChainVersion.hashCode();
         }
         return hash;
     }
@@ -72,7 +72,7 @@ public class OrderEventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "id",
-            "version",
+            "offChainVersion",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{

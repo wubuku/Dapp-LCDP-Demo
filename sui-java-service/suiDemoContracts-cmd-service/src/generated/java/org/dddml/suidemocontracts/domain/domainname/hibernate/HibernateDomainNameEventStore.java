@@ -37,15 +37,15 @@ public class HibernateDomainNameEventStore extends AbstractHibernateEventStore
         Criteria criteria = getCurrentSession().createCriteria(AbstractDomainNameEvent.class);
         criteria.add(Restrictions.eq("domainNameEventId.domainNameIdTopLevelDomain", idObj.getTopLevelDomain()));
         criteria.add(Restrictions.eq("domainNameEventId.domainNameIdSecondLevelDomain", idObj.getSecondLevelDomain()));
-        criteria.add(Restrictions.le("domainNameEventId.version", version));
-        criteria.addOrder(Order.asc("domainNameEventId.version"));
+        criteria.add(Restrictions.le("domainNameEventId.offChainVersion", version));
+        criteria.addOrder(Order.asc("domainNameEventId.offChainVersion"));
         List es = criteria.list();
         for (Object e : es) {
             ((AbstractDomainNameEvent) e).setEventReadOnly(true);
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractDomainNameEvent) es.get(es.size() - 1)).getDomainNameEventId().getVersion());
+            eventStream.setSteamVersion(((AbstractDomainNameEvent) es.get(es.size() - 1)).getDomainNameEventId().getOffChainVersion());
         } else {
             //todo?
         }

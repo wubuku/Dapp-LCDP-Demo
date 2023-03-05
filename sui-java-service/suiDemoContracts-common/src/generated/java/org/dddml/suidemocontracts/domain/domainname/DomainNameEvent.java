@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DomainNameEvent extends Event {
+public interface DomainNameEvent extends Event, VersionedSuiMoveEvent {
 
     interface SqlDomainNameEvent extends DomainNameEvent {
         DomainNameEventId getDomainNameEventId();
@@ -20,9 +20,9 @@ public interface DomainNameEvent extends Event {
 
     //void setDomainNameId(DomainNameId domainNameId);
 
-    Long getVersion();
+    Long getOffChainVersion();
     
-    //void setVersion(Long version);
+    //void setOffChainVersion(Long offChainVersion);
 
     String getId_();
     

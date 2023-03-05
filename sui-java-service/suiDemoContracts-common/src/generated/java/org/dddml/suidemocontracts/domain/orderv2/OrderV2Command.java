@@ -18,12 +18,12 @@ public interface OrderV2Command extends Command
 
     void setId_(String id);
 
-    Long getVersion();
+    Long getOffChainVersion();
 
-    void setVersion(Long version);
+    void setOffChainVersion(Long offChainVersion);
 
     static void throwOnInvalidStateTransition(OrderV2State state, Command c) {
-        if (state.getVersion() == null) {
+        if (state.getOffChainVersion() == null) {
             if (isCommandCreate((OrderV2Command)c)) {
                 return;
             }
@@ -37,7 +37,7 @@ public interface OrderV2Command extends Command
     }
 
     static boolean isCommandCreate(OrderV2Command c) {
-        if (c.getVersion().equals(OrderV2State.VERSION_NULL))
+        if (c.getOffChainVersion().equals(OrderV2State.VERSION_NULL))
             return true;
         return false;
     }

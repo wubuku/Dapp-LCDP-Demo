@@ -275,8 +275,9 @@ public class SchemaTool {
 
     private List<String> getHbmResourceNames() {
         String[] locationPatterns = new String[] {
-                "classpath:/org/dddml/suidemocontracts/domain/hbm/*.hbm.xml",
-                "classpath:/org/dddml/suidemocontracts/tool/hibernate/hbm/*.hbm.xml"
+//                "classpath:/org/dddml/suidemocontracts/domain/hbm/*.hbm.xml",
+//                "classpath:/org/dddml/suidemocontracts/tool/hibernate/hbm/*.hbm.xml"
+                "classpath:/hibernate/*.hbm.xml"
         };
         List<String> resourceNames = new ArrayList<String>();
         for (String locationPattern : locationPatterns) {

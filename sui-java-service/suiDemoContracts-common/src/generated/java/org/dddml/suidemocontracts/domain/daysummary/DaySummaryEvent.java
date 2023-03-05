@@ -2,10 +2,11 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DaySummaryEvent extends Event {
+public interface DaySummaryEvent extends Event, VersionedSuiMoveEvent {
 
     interface SqlDaySummaryEvent extends DaySummaryEvent {
         DaySummaryEventId getDaySummaryEventId();
@@ -19,9 +20,9 @@ public interface DaySummaryEvent extends Event {
 
     //void setDay(Day day);
 
-    Long getVersion();
+    Long getOffChainVersion();
     
-    //void setVersion(Long version);
+    //void setOffChainVersion(Long offChainVersion);
 
     String getId_();
     

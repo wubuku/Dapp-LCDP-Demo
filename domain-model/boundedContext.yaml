@@ -12,7 +12,9 @@ configuration:
   defaultSurrogateId:
       name: Id
       type: UID
-      
+  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
+  mandatoryAggregateEventImplements: ["VersionedSuiMoveEvent"]
+
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
   baseUri: "/api"
@@ -31,7 +33,7 @@ configuration:
     updatedBy: UpdatedBy
     updatedAt: UpdatedAt
     deleted: Deleted
-    version: Version
+    version: OffChainVersion
     
   sqlTypes:
     DateTime: DATETIME
@@ -97,11 +99,12 @@ configuration:
     # --------------------------------------------------------------
     AutoAggregateMethodJavaDefaultLogicEnabled: true
     AutoGeneratingCrUDCommandsDisabled: true
-    OptimisticLockingVersionDisabled: true
+    # OptimisticLockingVersionDisabled: true
     # JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
   sui:
     boundedContextPackage: "sui_contracts"
+    moveObjectVersionPropertyName: "Version"
 
     typeMappings:
       "U8": "u8"

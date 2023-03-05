@@ -49,14 +49,24 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.unitPrice = unitPrice;
     }
 
-    private Long version;
+    private BigInteger version;
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return this.version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
+    }
+
+    private Long offChainVersion;
+
+    public Long getOffChainVersion() {
+        return this.offChainVersion;
+    }
+
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     private String createdBy;
@@ -110,7 +120,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
     }
 
     public boolean isStateUnsaved() {
-        return this.getVersion() == null;
+        return this.getOffChainVersion() == null;
     }
 
     private Boolean stateReadOnly;
@@ -145,7 +155,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             this.setProductId(((ProductEvent.SqlProductEvent) events.get(0)).getProductEventId().getProductId());
             for (Event e : events) {
                 mutate(e);
-                this.setVersion((this.getVersion() == null ? ProductState.VERSION_NULL : this.getVersion()) + 1);
+                this.setOffChainVersion((this.getOffChainVersion() == null ? ProductState.VERSION_NULL : this.getOffChainVersion()) + 1);
             }
         }
     }
@@ -196,6 +206,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         }
         this.setName(s.getName());
         this.setUnitPrice(s.getUnitPrice());
+        this.setVersion(s.getVersion());
         this.setActive(s.getActive());
     }
 
@@ -206,6 +217,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String Name = name;
         BigInteger unitPrice = e.getUnitPrice();
         BigInteger UnitPrice = unitPrice;
+        BigInteger version = e.getVersion();
+        BigInteger Version = version;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -219,14 +232,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, BigInteger version, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 
@@ -245,10 +258,10 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         }
 
 
-        Long stateVersion = this.getVersion();
-        Long eventVersion = ((ProductEvent.SqlProductEvent)event).getProductEventId().getVersion();// Aggregate Version
+        Long stateVersion = this.getOffChainVersion();
+        Long eventVersion = ((ProductEvent.SqlProductEvent)event).getProductEventId().getOffChainVersion();// Aggregate Version
         if (eventVersion == null) {
-            throw new NullPointerException("event.getProductEventId().getVersion() == null");
+            throw new NullPointerException("event.getProductEventId().getOffChainVersion() == null");
         }
         if (!(stateVersion == null && eventVersion.equals(ProductState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
             throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);

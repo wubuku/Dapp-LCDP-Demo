@@ -6,7 +6,7 @@ import org.dddml.suidemocontracts.domain.*;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface OrderV2State
+public interface OrderV2State extends VersionedSuiMoveObject
 {
     Long VERSION_ZERO = 0L;
 
@@ -20,7 +20,7 @@ public interface OrderV2State
 
     Day getEstimatedShipDate();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -36,7 +36,7 @@ public interface OrderV2State
 
     EntityStateCollection<String, OrderV2ItemState> getItems();
 
-    interface MutableOrderV2State extends OrderV2State {
+    interface MutableOrderV2State extends OrderV2State, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setOrderId(String orderId);
 
         void setId_(String id);
@@ -45,7 +45,7 @@ public interface OrderV2State
 
         void setEstimatedShipDate(Day estimatedShipDate);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

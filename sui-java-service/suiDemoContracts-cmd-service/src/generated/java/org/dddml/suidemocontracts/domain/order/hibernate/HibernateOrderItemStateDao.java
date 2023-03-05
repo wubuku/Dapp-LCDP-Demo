@@ -22,7 +22,7 @@ public class HibernateOrderItemStateDao implements OrderItemStateDao
         return this.sessionFactory.getCurrentSession();
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "Quantity", "ItemAmount", "Version", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderId"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "Quantity", "ItemAmount", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderId"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -38,7 +38,7 @@ public class HibernateOrderItemStateDao implements OrderItemStateDao
     @Override
     public OrderItemState get(OrderItemId id, boolean nullAllowed, OrderState aggregateState)
     {
-        Long aggregateVersion = aggregateState.getVersion();
+        Long aggregateVersion = aggregateState.getOffChainVersion();
         OrderItemState.SqlOrderItemState state = (OrderItemState.SqlOrderItemState) getCurrentSession().get(AbstractOrderItemState.SimpleOrderItemState.class, id);
         if (!nullAllowed && state == null) {
             state = new AbstractOrderItemState.SimpleOrderItemState();
@@ -54,7 +54,7 @@ public class HibernateOrderItemStateDao implements OrderItemStateDao
 
     private void assertNoConcurrencyConflict(String aggregateId, Long aggregateVersion) {
         Criteria crit = getCurrentSession().createCriteria(AbstractOrderState.SimpleOrderState.class);
-        crit.setProjection(Projections.property("version"));
+        crit.setProjection(Projections.property("offChainVersion"));
         crit.add(Restrictions.eq("id", aggregateId));
         Long v = (Long) crit.uniqueResult();
         if (!aggregateVersion.equals(v)) {
@@ -69,7 +69,7 @@ public class HibernateOrderItemStateDao implements OrderItemStateDao
         if (getReadOnlyProxyGenerator() != null) {
             s = (OrderItemState) getReadOnlyProxyGenerator().getTarget(state);
         }
-        if(s.getVersion() == null) {
+        if(s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
         }else {
             getCurrentSession().update(s);
@@ -86,7 +86,7 @@ public class HibernateOrderItemStateDao implements OrderItemStateDao
     @Override
     public Iterable<OrderItemState> findByOrderId(String orderId, OrderState aggregateState)
     {
-        Long aggregateVersion = aggregateState.getVersion();
+        Long aggregateVersion = aggregateState.getOffChainVersion();
         Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemState.SimpleOrderItemState.class);
         Junction partIdCondition = Restrictions.conjunction()
             .add(Restrictions.eq("orderItemId.orderId", orderId))

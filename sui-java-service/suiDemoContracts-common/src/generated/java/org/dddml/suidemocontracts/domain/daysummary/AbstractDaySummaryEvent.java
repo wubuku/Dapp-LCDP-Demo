@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.util.*;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
@@ -32,12 +33,12 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getVersion() {
-        return getDaySummaryEventId().getVersion();
+    public Long getOffChainVersion() {
+        return getDaySummaryEventId().getOffChainVersion();
     }
     
-    public void setVersion(Long version) {
-        getDaySummaryEventId().setVersion(version);
+    public void setOffChainVersion(Long offChainVersion) {
+        getDaySummaryEventId().setOffChainVersion(offChainVersion);
     }
 
     private String id_;
@@ -48,6 +49,16 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
     
     public void setId_(String id) {
         this.id_ = id;
+    }
+
+    private BigInteger version;
+
+    public BigInteger getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     private String createdBy;

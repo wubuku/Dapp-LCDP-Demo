@@ -33,12 +33,22 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getVersion() {
-        return getOrderEventId().getVersion();
+    public Long getOffChainVersion() {
+        return getOrderEventId().getOffChainVersion();
     }
     
-    public void setVersion(Long version) {
-        getOrderEventId().setVersion(version);
+    public void setOffChainVersion(Long offChainVersion) {
+        getOrderEventId().setOffChainVersion(offChainVersion);
+    }
+
+    private BigInteger version;
+
+    public BigInteger getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     private String createdBy;
@@ -101,7 +111,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
     {
         OrderItemEventId eventId = new OrderItemEventId(this.getOrderEventId().getId(), 
             productId, 
-            this.getOrderEventId().getVersion());
+            this.getOrderEventId().getOffChainVersion());
         return eventId;
     }
 

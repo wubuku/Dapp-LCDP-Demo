@@ -13,11 +13,11 @@ public interface OrderAggregate
 
     List<Event> getChanges();
 
-    void create(String product, BigInteger quantity, Long version, String commandId, String requesterId, OrderCommands.Create c);
+    void create(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.Create c);
 
-    void removeItem(String productId, Long version, String commandId, String requesterId, OrderCommands.RemoveItem c);
+    void removeItem(String productId, Long offChainVersion, String commandId, String requesterId, OrderCommands.RemoveItem c);
 
-    void updateItemQuantity(String productId, BigInteger quantity, Long version, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c);
+    void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c);
 
     void throwOnInvalidStateTransition(Command c);
 }

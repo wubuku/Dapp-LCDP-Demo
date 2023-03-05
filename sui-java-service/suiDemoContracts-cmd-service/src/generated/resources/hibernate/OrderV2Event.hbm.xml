@@ -10,7 +10,7 @@
 
 	<composite-id name="orderV2EventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2EventId">
 		<key-property name="orderId" ><column name="order_id" length="50" /></key-property>
-		<key-property name="version" ><column name="version" /></key-property>
+		<key-property name="offChainVersion" ><column name="off_chain_version" /></key-property>
 	</composite-id>
 
     <discriminator column="event_type" type="string" />
@@ -22,6 +22,7 @@
     <property name="createdAt" column="created_at" />
 
     <property name="commandId" column="command_id"/>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractOrderV2Event$OrderV2ClobEvent" discriminator-value="OrderV2ClobEvent">

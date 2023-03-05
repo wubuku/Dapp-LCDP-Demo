@@ -15,9 +15,11 @@ import java.util.*;
 public class OrderItemRemoved {
     private String id;
 
-    private Long version;
+    private Long offChainVersion;
 
     private String productId;
+
+    private BigInteger version;
 
     public String getId() {
         return id;
@@ -27,12 +29,12 @@ public class OrderItemRemoved {
         this.id = id;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getOffChainVersion() {
+        return offChainVersion;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     public String getProductId() {
@@ -43,12 +45,21 @@ public class OrderItemRemoved {
         this.productId = productId;
     }
 
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "OrderItemRemoved{" +
                 "id='" + id + '\'' +
-                ", version=" + version +
+                ", offChainVersion=" + offChainVersion +
                 ", productId=" + '\'' + productId + '\'' +
+                ", version=" + version +
                 '}';
     }
 

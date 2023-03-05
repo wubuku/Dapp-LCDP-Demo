@@ -36,15 +36,15 @@ public class HibernateOrderEventStore extends AbstractHibernateEventStore
         String idObj = (String) eventStoreAggregateId.getId();
         Criteria criteria = getCurrentSession().createCriteria(AbstractOrderEvent.class);
         criteria.add(Restrictions.eq("orderEventId.id", idObj));
-        criteria.add(Restrictions.le("orderEventId.version", version));
-        criteria.addOrder(Order.asc("orderEventId.version"));
+        criteria.add(Restrictions.le("orderEventId.offChainVersion", version));
+        criteria.addOrder(Order.asc("orderEventId.offChainVersion"));
         List es = criteria.list();
         for (Object e : es) {
             ((AbstractOrderEvent) e).setEventReadOnly(true);
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractOrderEvent) es.get(es.size() - 1)).getOrderEventId().getVersion());
+            eventStream.setSteamVersion(((AbstractOrderEvent) es.get(es.size() - 1)).getOrderEventId().getOffChainVersion());
         } else {
             //todo?
         }

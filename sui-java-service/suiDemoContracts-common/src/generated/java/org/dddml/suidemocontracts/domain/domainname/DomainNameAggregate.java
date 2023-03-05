@@ -13,9 +13,9 @@ public interface DomainNameAggregate
 
     List<Event> getChanges();
 
-    void register(BigInteger registrationPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Register c);
+    void register(BigInteger registrationPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Register c);
 
-    void renew(BigInteger renewPeriod, Long version, String commandId, String requesterId, DomainNameCommands.Renew c);
+    void renew(BigInteger renewPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Renew c);
 
     void throwOnInvalidStateTransition(Command c);
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.List;
 import org.dddml.support.criterion.Criterion;
 import org.dddml.suidemocontracts.domain.*;
+import java.math.BigInteger;
 import java.util.Date;
 
 public interface DaySummaryStateQueryRepository

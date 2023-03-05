@@ -18,12 +18,12 @@ public interface ProductCommand extends Command
 
     void setId_(String id);
 
-    Long getVersion();
+    Long getOffChainVersion();
 
-    void setVersion(Long version);
+    void setOffChainVersion(Long offChainVersion);
 
     static void throwOnInvalidStateTransition(ProductState state, Command c) {
-        if (state.getVersion() == null) {
+        if (state.getOffChainVersion() == null) {
             if (isCommandCreate((ProductCommand)c)) {
                 return;
             }
@@ -34,7 +34,7 @@ public interface ProductCommand extends Command
     }
 
     static boolean isCommandCreate(ProductCommand c) {
-        if (c.getVersion().equals(ProductState.VERSION_NULL))
+        if (c.getOffChainVersion().equals(ProductState.VERSION_NULL))
             return true;
         return false;
     }

@@ -33,12 +33,12 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getVersion() {
-        return getOrderV2EventId().getVersion();
+    public Long getOffChainVersion() {
+        return getOrderV2EventId().getOffChainVersion();
     }
     
-    public void setVersion(Long version) {
-        getOrderV2EventId().setVersion(version);
+    public void setOffChainVersion(Long offChainVersion) {
+        getOrderV2EventId().setOffChainVersion(offChainVersion);
     }
 
     private String id_;
@@ -49,6 +49,16 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
     
     public void setId_(String id) {
         this.id_ = id;
+    }
+
+    private BigInteger version;
+
+    public BigInteger getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     private String createdBy;
@@ -111,7 +121,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
     {
         OrderV2ItemEventId eventId = new OrderV2ItemEventId(this.getOrderV2EventId().getOrderId(), 
             productId, 
-            this.getOrderV2EventId().getVersion());
+            this.getOrderV2EventId().getOffChainVersion());
         return eventId;
     }
 

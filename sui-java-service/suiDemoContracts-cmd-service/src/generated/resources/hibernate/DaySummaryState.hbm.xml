@@ -16,12 +16,13 @@
 		<key-property name="number" ><column name="day_number" /></key-property>
 		<key-property name="timeZone" ><column name="day_time_zone" length="20" /></key-property>
 	</composite-id>
-	<property name="version" column="version" type="long" />
+	<version name="offChainVersion" column="off_chain_version" type="long" />
 
 	<property name="id_" ><column name="id" unique-key="unique_daysummary_sid" sql-type="VARCHAR(42)" /></property>
 	<property name="description" ><column name="description" /></property>
 	<property name="metadata" ><column name="metadata" /></property>
 	<property name="optionalData" ><column name="optional_data" /></property>
+	<property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></property>
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>
 	<property name="active" ><column name="active" /></property>

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface OrderState
+public interface OrderState extends VersionedSuiMoveObject
 {
     Long VERSION_ZERO = 0L;
 
@@ -16,7 +16,7 @@ public interface OrderState
 
     BigInteger getTotalAmount();
 
-    Long getVersion();
+    Long getOffChainVersion();
 
     String getCreatedBy();
 
@@ -32,12 +32,12 @@ public interface OrderState
 
     EntityStateCollection<String, OrderItemState> getItems();
 
-    interface MutableOrderState extends OrderState {
+    interface MutableOrderState extends OrderState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setId(String id);
 
         void setTotalAmount(BigInteger totalAmount);
 
-        void setVersion(Long version);
+        void setOffChainVersion(Long offChainVersion);
 
         void setCreatedBy(String createdBy);
 

@@ -38,12 +38,12 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getVersion() {
-        return getProductEventId().getVersion();
+    public Long getOffChainVersion() {
+        return getProductEventId().getOffChainVersion();
     }
     
-    public void setVersion(Long version) {
-        getProductEventId().setVersion(version);
+    public void setOffChainVersion(Long offChainVersion) {
+        getProductEventId().setOffChainVersion(offChainVersion);
     }
 
     private String id_;
@@ -54,6 +54,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
     
     public void setId_(String id) {
         this.id_ = id;
+    }
+
+    private BigInteger version;
+
+    public BigInteger getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     public String getCreatedBy()

@@ -19,9 +19,11 @@ public class DomainName {
 
     private DomainNameId domainNameId;
 
-    private Long version;
+    private Long offChainVersion;
 
     private BigInteger expirationDate;
+
+    private BigInteger version;
 
     public UID getId() {
         return id;
@@ -39,12 +41,12 @@ public class DomainName {
         this.domainNameId = domainNameId;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getOffChainVersion() {
+        return offChainVersion;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setOffChainVersion(Long offChainVersion) {
+        this.offChainVersion = offChainVersion;
     }
 
     public BigInteger getExpirationDate() {
@@ -55,13 +57,22 @@ public class DomainName {
         this.expirationDate = expirationDate;
     }
 
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "DomainName{" +
                 "id=" + id +
                 ", domainNameId=" + domainNameId +
-                ", version=" + version +
+                ", offChainVersion=" + offChainVersion +
                 ", expirationDate=" + expirationDate +
+                ", version=" + version +
                 '}';
     }
 }

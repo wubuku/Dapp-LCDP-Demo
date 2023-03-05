@@ -4,6 +4,8 @@ project:
   files:
     - "boundedContext.yaml"
     - "types.yaml"
+    - "sui-types.yaml"
+    - "sui-SuperObjects.yaml"
     - "sui-DomainName.yaml"
     - "sui-Order.yaml"
     - "sui-Product.yaml"
