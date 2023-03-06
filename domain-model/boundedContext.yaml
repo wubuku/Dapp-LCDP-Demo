@@ -129,6 +129,9 @@ configuration:
     isUsingSeparatedDomainAggregatePackage: true
     defaultUserIdType: "string"
     #JavaSerializationAnnotationTypes: {}
+    eventLobPropertiesName: "LobProperties"
+    eventLobPropertiesPersistenceName: "LobText"
+    eventLobPropertiesSqlType: VARCHAR(2000)
     
     typeMappings: 
       "bool": "Boolean"

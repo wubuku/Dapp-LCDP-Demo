@@ -26,7 +26,7 @@
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractOrderV2Event$OrderV2ClobEvent" discriminator-value="OrderV2ClobEvent">
-      <property name="LobText" column="lob_text"/>
+      <property name="LobText"><column name="lob_text" sql-type="VARCHAR(2000)" /></property>
       <subclass name="AbstractOrderV2Event$OrderV2Created" discriminator-value="OrderV2Created"/>
       <subclass name="AbstractOrderV2Event$OrderV2ItemRemoved" discriminator-value="OrderV2ItemRemoved"/>
       <subclass name="AbstractOrderV2Event$OrderV2ItemQuantityUpdated" discriminator-value="OrderV2ItemQuantityUpdated"/>

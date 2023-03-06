@@ -27,7 +27,7 @@
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractDomainNameEvent$DomainNameClobEvent" discriminator-value="DomainNameClobEvent">
-      <property name="LobText" column="lob_text"/>
+      <property name="LobText"><column name="lob_text" sql-type="VARCHAR(2000)" /></property>
       <subclass name="AbstractDomainNameEvent$Registered" discriminator-value="Registered"/>
       <subclass name="AbstractDomainNameEvent$Renewed" discriminator-value="Renewed"/>
     </subclass>
