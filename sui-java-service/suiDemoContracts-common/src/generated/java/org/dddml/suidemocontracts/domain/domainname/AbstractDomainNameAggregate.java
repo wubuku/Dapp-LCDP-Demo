@@ -119,6 +119,7 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
             e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setNextCursor(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -141,6 +142,7 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
             e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setNextCursor(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

@@ -231,6 +231,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -244,14 +246,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 

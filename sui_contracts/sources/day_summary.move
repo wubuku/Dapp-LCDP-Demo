@@ -8,7 +8,6 @@ module sui_contracts::day_summary {
     use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
     friend sui_contracts::day_summary_create_logic;
-    
     friend sui_contracts::day_summary_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;

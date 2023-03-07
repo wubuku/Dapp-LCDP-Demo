@@ -1,17 +1,14 @@
 module sui_contracts::product {
     use std::string::{Self, String};
     use std::vector;
-
     use sui::event;
     use sui::object::{Self, UID};
     use sui::transfer;
     use sui::tx_context::TxContext;
-
     friend sui_contracts::product_create_logic;
-
     friend sui_contracts::product_aggregate;
 
-    const PRODUCT_ID_LENGTH: u64 = 32; // U128_MAX_LENGTH = 39
+    const PRODUCT_ID_LENGTH: u64 = 20;
 
     struct ProductIdGenerator has key {
         id: UID,
@@ -190,4 +187,5 @@ module sui_contracts::product {
     public fun test_init(ctx: &mut TxContext) {
         init(ctx)
     }
+
 }

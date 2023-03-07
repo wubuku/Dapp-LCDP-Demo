@@ -6,13 +6,12 @@ module sui_contracts::order_v2 {
     use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
-    use sui_contracts::order_v2_item::{Self, OrderV2Item};
     use sui_contracts::day::Day;
+    use sui_contracts::order_v2_item::{Self, OrderV2Item};
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
     friend sui_contracts::order_v2_update_item_quantity_logic;
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
-    
     friend sui_contracts::order_v2_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;

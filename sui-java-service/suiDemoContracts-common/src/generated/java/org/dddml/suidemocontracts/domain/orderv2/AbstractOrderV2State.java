@@ -288,6 +288,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -301,14 +303,14 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class CreateLogic {
-//    public static OrderV2State mutate(OrderV2State orderV2State, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
 //    }
 //}
 
@@ -335,6 +337,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -348,14 +352,14 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderV2State.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class RemoveItemLogic {
-//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
 //    }
 //}
 
@@ -384,6 +388,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -397,14 +403,14 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class UpdateItemQuantityLogic {
-//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, BigInteger quantity, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    public static OrderV2State mutate(OrderV2State orderV2State, String productId, BigInteger quantity, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
 //    }
 //}
 
@@ -431,6 +437,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -444,14 +452,14 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, Day.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, estimatedShipDate, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderV2State.class, Day.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, estimatedShipDate, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class UpdateEstimatedShipDateLogic {
-//    public static OrderV2State mutate(OrderV2State orderV2State, Day estimatedShipDate, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    public static OrderV2State mutate(OrderV2State orderV2State, Day estimatedShipDate, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
 //    }
 //}
 

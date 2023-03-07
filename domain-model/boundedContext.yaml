@@ -16,7 +16,7 @@ configuration:
     name: Version
     type: u64
   mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent"] # "VersionedSuiMoveEvent"
+  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasSuiEventNextCursor"] # "VersionedSuiMoveEvent"
 
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true

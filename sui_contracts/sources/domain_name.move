@@ -7,7 +7,6 @@ module sui_contracts::domain_name {
     use sui::tx_context::TxContext;
     friend sui_contracts::domain_name_register_logic;
     friend sui_contracts::domain_name_renew_logic;
-    
     friend sui_contracts::domain_name_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;

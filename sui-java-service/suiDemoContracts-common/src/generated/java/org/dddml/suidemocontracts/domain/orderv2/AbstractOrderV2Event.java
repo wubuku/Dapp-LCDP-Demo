@@ -121,6 +121,16 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         this.suiType = suiType;
     }
 
+    private SuiEventId nextCursor;
+
+    public SuiEventId getNextCursor() {
+        return this.nextCursor;
+    }
+    
+    public void setNextCursor(SuiEventId nextCursor) {
+        this.nextCursor = nextCursor;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()

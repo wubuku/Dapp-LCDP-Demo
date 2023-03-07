@@ -34,6 +34,10 @@
 	<property name="suiTransactionModule" ><column name="sui_transaction_module" length="100" /></property>
 	<property name="suiSender" ><column name="sui_sender" sql-type="VARCHAR(42)" /></property>
 	<property name="suiType" ><column name="sui_type" length="200" /></property>
+	<component name="nextCursor" class="org.dddml.suidemocontracts.domain.SuiEventId">
+		<property name="txDigest" ><column name="next_cursor_tx_digest" length="50" /></property>
+		<property name="eventSeq" ><column name="next_cursor_event_seq" /></property>
+	</component>
     <property name="commandType" column="command_type" length="50" />
 
     <subclass name="AbstractDaySummaryEvent$DaySummaryClobEvent" discriminator-value="DaySummaryClobEvent">

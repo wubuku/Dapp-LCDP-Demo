@@ -6,7 +6,7 @@ import org.dddml.suidemocontracts.domain.*;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface OrderV2Event extends Event, SuiEventEnvelope, SuiMoveEvent {
+public interface OrderV2Event extends Event, SuiEventEnvelope, SuiMoveEvent, HasSuiEventNextCursor {
 
     interface SqlOrderV2Event extends OrderV2Event {
         OrderV2EventId getOrderV2EventId();

@@ -126,6 +126,16 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
         this.suiType = suiType;
     }
 
+    private SuiEventId nextCursor;
+
+    public SuiEventId getNextCursor() {
+        return this.nextCursor;
+    }
+    
+    public void setNextCursor(SuiEventId nextCursor) {
+        this.nextCursor = nextCursor;
+    }
+
     public String getCreatedBy()
     {
         return this.state.getCreatedBy();

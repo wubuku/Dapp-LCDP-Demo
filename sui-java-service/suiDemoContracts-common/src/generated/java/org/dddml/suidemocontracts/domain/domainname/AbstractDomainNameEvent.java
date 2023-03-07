@@ -121,6 +121,16 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         this.suiType = suiType;
     }
 
+    private SuiEventId nextCursor;
+
+    public SuiEventId getNextCursor() {
+        return this.nextCursor;
+    }
+    
+    public void setNextCursor(SuiEventId nextCursor) {
+        this.nextCursor = nextCursor;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()

@@ -9,7 +9,6 @@ module sui_contracts::order {
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
-    
     friend sui_contracts::order_aggregate;
 
     struct Order has key {

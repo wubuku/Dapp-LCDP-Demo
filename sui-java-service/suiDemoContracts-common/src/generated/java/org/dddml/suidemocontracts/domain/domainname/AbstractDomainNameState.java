@@ -222,6 +222,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -235,14 +237,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, registrationPeriod, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, registrationPeriod, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RegisterLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 
@@ -271,6 +273,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         String SuiSender = suiSender;
         String suiType = e.getSuiType();
         String SuiType = suiType;
+        SuiEventId nextCursor = e.getNextCursor();
+        SuiEventId NextCursor = nextCursor;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -284,14 +288,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, renewPeriod, account, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, SuiEventId.class, MutationContext.class},
+                    new Object[]{this, renewPeriod, account, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, nextCursor, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RenewLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, SuiEventId nextCursor, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 
