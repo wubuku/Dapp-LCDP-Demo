@@ -108,6 +108,7 @@ configuration:
   sui:
     boundedContextPackage: "sui_contracts"
     moveObjectVersionPropertyName: "Version"
+    # ignoredMandatoryAggregateEventImplements: true
 
     typeMappings:
       "U8": "u8"
