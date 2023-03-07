@@ -1,15 +1,17 @@
 module sui_contracts::product {
-    use std::bcs;
-    use std::string;
-    use std::string::String;
+    use std::string::{Self, String};
+    use std::vector;
+
     use sui::event;
-    use sui::hex;
     use sui::object::{Self, UID};
     use sui::transfer;
     use sui::tx_context::TxContext;
+
     friend sui_contracts::product_create_logic;
-    
+
     friend sui_contracts::product_aggregate;
+
+    const PRODUCT_ID_LENGTH: u64 = 32; // U128_MAX_LENGTH = 39
 
     struct ProductIdGenerator has key {
         id: UID,
@@ -137,7 +139,22 @@ module sui_contracts::product {
     fun current_product_id(
         product_id_generator: &ProductIdGenerator,
     ): String {
-        string::utf8(hex::encode(bcs::to_bytes(&product_id_generator.sequence)))
+        string::utf8(u128_to_fixed_length_string(product_id_generator.sequence, PRODUCT_ID_LENGTH))
+    }
+
+    fun u128_to_fixed_length_string(n: u128, length: u64): vector<u8> {
+        let s = vector::empty<u8>();
+        let m = n;
+        while (m > 0) {
+            let digit = ((m % 10) as u8);
+            vector::push_back(&mut s, digit + 48);//b'0'
+            m = m / 10;
+        };
+        while (vector::length(&s) < length) {
+            vector::push_back(&mut s, 48);//b'0'
+        };
+        vector::reverse(&mut s);
+        s
     }
 
     fun next_product_id(
@@ -173,5 +190,4 @@ module sui_contracts::product {
     public fun test_init(ctx: &mut TxContext) {
         init(ctx)
     }
-
 }
