@@ -17,7 +17,7 @@ public class HibernateDaySummaryEventStore extends AbstractHibernateEventStore
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new DaySummaryEventId((Day) eventStoreAggregateId.getId(), version);
+        return new DaySummaryEventId((Day) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class HibernateDaySummaryEventStore extends AbstractHibernateEventStore
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractDaySummaryEvent) es.get(es.size() - 1)).getDaySummaryEventId().getOffChainVersion());
+            eventStream.setSteamVersion(((AbstractDaySummaryEvent) es.get(es.size() - 1)).getDaySummaryEventId().getVersion().longValue());
         } else {
             //todo?
         }

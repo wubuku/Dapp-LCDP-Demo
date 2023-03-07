@@ -107,12 +107,18 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
            
 
         protected AbstractDomainNameEvent.Registered newRegistered(BigInteger registrationPeriod, Long offChainVersion, String commandId, String requesterId) {
-            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), offChainVersion);
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), null);
             AbstractDomainNameEvent.Registered e = new AbstractDomainNameEvent.Registered();
 
             e.setRegistrationPeriod(registrationPeriod);
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -123,12 +129,18 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
         }
 
         protected AbstractDomainNameEvent.Renewed newRenewed(BigInteger renewPeriod, Long offChainVersion, String commandId, String requesterId) {
-            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), offChainVersion);
+            DomainNameEventId eventId = new DomainNameEventId(getState().getDomainNameId(), null);
             AbstractDomainNameEvent.Renewed e = new AbstractDomainNameEvent.Renewed();
 
             e.setRenewPeriod(renewPeriod);
             e.setAccount(null); // todo Need to update 'verify' method to return event properties.
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

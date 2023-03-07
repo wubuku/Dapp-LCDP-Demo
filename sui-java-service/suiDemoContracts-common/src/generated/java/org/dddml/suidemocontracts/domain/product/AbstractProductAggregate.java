@@ -76,12 +76,18 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
            
 
         protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), offChainVersion);
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
             AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
 
             e.setName(name);
             e.setUnitPrice(unitPrice);
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

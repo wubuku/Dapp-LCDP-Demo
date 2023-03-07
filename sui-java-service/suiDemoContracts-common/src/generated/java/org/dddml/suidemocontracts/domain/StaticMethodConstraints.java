@@ -107,88 +107,88 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "registrationPeriod", "owner", "version"}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "registrationPeriod", "owner", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "renewPeriod", "account", "version"}
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "renewPeriod", "account", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.order.CreateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "product", "quantity", "unitPrice", "totalAmount", "owner", "version"}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "product", "quantity", "unitPrice", "totalAmount", "owner", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "productId", "version"}
+                    new Class[]{OrderState.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "productId", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "productId", "quantity", "version"}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "productId", "quantity", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "name", "unitPrice", "version"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "unitPrice", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "product", "quantity", "unitPrice", "totalAmount", "owner", "version"}
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "product", "quantity", "unitPrice", "totalAmount", "owner", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "productId", "version"}
+                    new Class[]{OrderV2State.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "productId", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "productId", "quantity", "version"}
+                    new Class[]{OrderV2State.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "productId", "quantity", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
                     "mutate",
-                    new Class[]{OrderV2State.class, Day.class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "estimatedShipDate", "version"}
+                    new Class[]{OrderV2State.class, Day.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "estimatedShipDate", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, BigInteger.class, MutationContext.class},
-                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "version"}
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType"}
             );
 
 

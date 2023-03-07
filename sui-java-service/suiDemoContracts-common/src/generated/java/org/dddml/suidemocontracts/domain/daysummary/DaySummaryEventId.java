@@ -2,6 +2,7 @@ package org.dddml.suidemocontracts.domain.daysummary;
 
 import java.io.Serializable;
 import org.dddml.suidemocontracts.domain.Day;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class DaySummaryEventId implements Serializable
@@ -18,16 +19,16 @@ public class DaySummaryEventId implements Serializable
         this.day = day;
     }
 
-    private Long offChainVersion;
+    private BigInteger version;
 
-    public Long getOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.offChainVersion;
+        return this.version;
     }
 
-    public void setOffChainVersion(Long offChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     protected Integer getDayMonthYearNumber()
@@ -94,10 +95,10 @@ public class DaySummaryEventId implements Serializable
     {
     }
 
-    public DaySummaryEventId(Day day, Long offChainVersion)
+    public DaySummaryEventId(Day day, BigInteger version)
     {
         this.day = day;
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -113,7 +114,7 @@ public class DaySummaryEventId implements Serializable
         DaySummaryEventId other = (DaySummaryEventId)obj;
         return true 
             && (day == other.day || (day != null && day.equals(other.day)))
-            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -124,8 +125,8 @@ public class DaySummaryEventId implements Serializable
         if (this.day != null) {
             hash += 13 * this.day.hashCode();
         }
-        if (this.offChainVersion != null) {
-            hash += 13 * this.offChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -138,7 +139,7 @@ public class DaySummaryEventId implements Serializable
             "dayMonthIsLeap",
             "dayNumber",
             "dayTimeZone",
-            "offChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
@@ -148,7 +149,7 @@ public class DaySummaryEventId implements Serializable
             "Boolean",
             "Integer",
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

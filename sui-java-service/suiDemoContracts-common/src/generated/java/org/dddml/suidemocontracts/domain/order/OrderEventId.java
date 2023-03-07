@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.order;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class OrderEventId implements Serializable
@@ -17,26 +18,26 @@ public class OrderEventId implements Serializable
         this.id = id;
     }
 
-    private Long offChainVersion;
+    private BigInteger version;
 
-    public Long getOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.offChainVersion;
+        return this.version;
     }
 
-    public void setOffChainVersion(Long offChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     public OrderEventId()
     {
     }
 
-    public OrderEventId(String id, Long offChainVersion)
+    public OrderEventId(String id, BigInteger version)
     {
         this.id = id;
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class OrderEventId implements Serializable
         OrderEventId other = (OrderEventId)obj;
         return true 
             && (id == other.id || (id != null && id.equals(other.id)))
-            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -63,8 +64,8 @@ public class OrderEventId implements Serializable
         if (this.id != null) {
             hash += 13 * this.id.hashCode();
         }
-        if (this.offChainVersion != null) {
-            hash += 13 * this.offChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -72,12 +73,12 @@ public class OrderEventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "id",
-            "offChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

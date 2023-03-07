@@ -33,12 +33,12 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     public void setEventReadOnly(boolean readOnly) { this.eventReadOnly = readOnly; }
 
-    public Long getOffChainVersion() {
-        return getDomainNameEventId().getOffChainVersion();
+    public BigInteger getVersion() {
+        return getDomainNameEventId().getVersion();
     }
     
-    public void setOffChainVersion(Long offChainVersion) {
-        getDomainNameEventId().setOffChainVersion(offChainVersion);
+    public void setVersion(BigInteger version) {
+        getDomainNameEventId().setVersion(version);
     }
 
     private String id_;
@@ -51,14 +51,74 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         this.id_ = id;
     }
 
-    private BigInteger version;
+    private Long suiTimestamp;
 
-    public BigInteger getVersion() {
-        return this.version;
+    public Long getSuiTimestamp() {
+        return this.suiTimestamp;
     }
     
-    public void setVersion(BigInteger version) {
-        this.version = version;
+    public void setSuiTimestamp(Long suiTimestamp) {
+        this.suiTimestamp = suiTimestamp;
+    }
+
+    private String suiTxDigest;
+
+    public String getSuiTxDigest() {
+        return this.suiTxDigest;
+    }
+    
+    public void setSuiTxDigest(String suiTxDigest) {
+        this.suiTxDigest = suiTxDigest;
+    }
+
+    private Long suiEventSeq;
+
+    public Long getSuiEventSeq() {
+        return this.suiEventSeq;
+    }
+    
+    public void setSuiEventSeq(Long suiEventSeq) {
+        this.suiEventSeq = suiEventSeq;
+    }
+
+    private String suiPackageId;
+
+    public String getSuiPackageId() {
+        return this.suiPackageId;
+    }
+    
+    public void setSuiPackageId(String suiPackageId) {
+        this.suiPackageId = suiPackageId;
+    }
+
+    private String suiTransactionModule;
+
+    public String getSuiTransactionModule() {
+        return this.suiTransactionModule;
+    }
+    
+    public void setSuiTransactionModule(String suiTransactionModule) {
+        this.suiTransactionModule = suiTransactionModule;
+    }
+
+    private String suiSender;
+
+    public String getSuiSender() {
+        return this.suiSender;
+    }
+    
+    public void setSuiSender(String suiSender) {
+        this.suiSender = suiSender;
+    }
+
+    private String suiType;
+
+    public String getSuiType() {
+        return this.suiType;
+    }
+    
+    public void setSuiType(String suiType) {
+        this.suiType = suiType;
     }
 
     private String createdBy;

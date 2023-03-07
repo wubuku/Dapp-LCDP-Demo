@@ -243,8 +243,20 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         String[] ArrayData = arrayData;
         int[] optionalData = e.getOptionalData();
         int[] OptionalData = optionalData;
-        BigInteger version = e.getVersion();
-        BigInteger Version = version;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -258,14 +270,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, description, metaData, arrayData, optionalData, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, description, metaData, arrayData, optionalData, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, BigInteger version, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 
@@ -285,13 +297,6 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
 
 
         Long stateVersion = this.getOffChainVersion();
-        Long eventVersion = ((DaySummaryEvent.SqlDaySummaryEvent)event).getDaySummaryEventId().getOffChainVersion();// Aggregate Version
-        if (eventVersion == null) {
-            throw new NullPointerException("event.getDaySummaryEventId().getOffChainVersion() == null");
-        }
-        if (!(stateVersion == null && eventVersion.equals(DaySummaryState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);
-        }
 
     }
 

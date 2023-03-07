@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.order;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class OrderItemEventId implements Serializable
@@ -29,27 +30,27 @@ public class OrderItemEventId implements Serializable
         this.productId = productId;
     }
 
-    private Long orderOffChainVersion;
+    private BigInteger version;
 
-    public Long getOrderOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.orderOffChainVersion;
+        return this.version;
     }
 
-    public void setOrderOffChainVersion(Long orderOffChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.orderOffChainVersion = orderOffChainVersion;
+        this.version = version;
     }
 
     public OrderItemEventId()
     {
     }
 
-    public OrderItemEventId(String orderId, String productId, Long orderOffChainVersion)
+    public OrderItemEventId(String orderId, String productId, BigInteger version)
     {
         this.orderId = orderId;
         this.productId = productId;
-        this.orderOffChainVersion = orderOffChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class OrderItemEventId implements Serializable
         return true 
             && (orderId == other.orderId || (orderId != null && orderId.equals(other.orderId)))
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
-            && (orderOffChainVersion == other.orderOffChainVersion || (orderOffChainVersion != null && orderOffChainVersion.equals(other.orderOffChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -80,8 +81,8 @@ public class OrderItemEventId implements Serializable
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
         }
-        if (this.orderOffChainVersion != null) {
-            hash += 13 * this.orderOffChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -90,13 +91,13 @@ public class OrderItemEventId implements Serializable
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderId",
             "productId",
-            "orderOffChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
             "String",
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

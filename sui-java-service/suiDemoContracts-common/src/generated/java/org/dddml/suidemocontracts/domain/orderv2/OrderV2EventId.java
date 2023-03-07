@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class OrderV2EventId implements Serializable
@@ -17,26 +18,26 @@ public class OrderV2EventId implements Serializable
         this.orderId = orderId;
     }
 
-    private Long offChainVersion;
+    private BigInteger version;
 
-    public Long getOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.offChainVersion;
+        return this.version;
     }
 
-    public void setOffChainVersion(Long offChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     public OrderV2EventId()
     {
     }
 
-    public OrderV2EventId(String orderId, Long offChainVersion)
+    public OrderV2EventId(String orderId, BigInteger version)
     {
         this.orderId = orderId;
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class OrderV2EventId implements Serializable
         OrderV2EventId other = (OrderV2EventId)obj;
         return true 
             && (orderId == other.orderId || (orderId != null && orderId.equals(other.orderId)))
-            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -63,8 +64,8 @@ public class OrderV2EventId implements Serializable
         if (this.orderId != null) {
             hash += 13 * this.orderId.hashCode();
         }
-        if (this.offChainVersion != null) {
-            hash += 13 * this.offChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -72,12 +73,12 @@ public class OrderV2EventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderId",
-            "offChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

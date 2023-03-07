@@ -78,14 +78,20 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
            
 
         protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, int[] optionalData, Long offChainVersion, String commandId, String requesterId) {
-            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), offChainVersion);
+            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
 
             e.setDescription(description);
             e.setMetaData(metaData);
             e.setArrayData(arrayData);
             e.setOptionalData(optionalData);
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

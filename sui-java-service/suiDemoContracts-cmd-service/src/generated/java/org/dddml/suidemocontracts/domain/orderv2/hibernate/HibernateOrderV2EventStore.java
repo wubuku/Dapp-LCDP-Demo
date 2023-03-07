@@ -17,7 +17,7 @@ public class HibernateOrderV2EventStore extends AbstractHibernateEventStore
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new OrderV2EventId((String) eventStoreAggregateId.getId(), version);
+        return new OrderV2EventId((String) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class HibernateOrderV2EventStore extends AbstractHibernateEventStore
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractOrderV2Event) es.get(es.size() - 1)).getOrderV2EventId().getOffChainVersion());
+            eventStream.setSteamVersion(((AbstractOrderV2Event) es.get(es.size() - 1)).getOrderV2EventId().getVersion().longValue());
         } else {
             //todo?
         }

@@ -217,8 +217,20 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String Name = name;
         BigInteger unitPrice = e.getUnitPrice();
         BigInteger UnitPrice = unitPrice;
-        BigInteger version = e.getVersion();
-        BigInteger Version = version;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -232,14 +244,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, BigInteger version, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 
@@ -259,13 +271,6 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
 
 
         Long stateVersion = this.getOffChainVersion();
-        Long eventVersion = ((ProductEvent.SqlProductEvent)event).getProductEventId().getOffChainVersion();// Aggregate Version
-        if (eventVersion == null) {
-            throw new NullPointerException("event.getProductEventId().getOffChainVersion() == null");
-        }
-        if (!(stateVersion == null && eventVersion.equals(ProductState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);
-        }
 
     }
 

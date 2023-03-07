@@ -10,10 +10,13 @@ configuration:
   
   isSurrogateIdMandatory: true
   defaultSurrogateId:
-      name: Id
-      type: UID
+    name: Id
+    type: UID
+  aggregateEventVersionProperty:
+    name: Version
+    type: u64
   mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["VersionedSuiMoveEvent"]
+  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent"] # "VersionedSuiMoveEvent"
 
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
@@ -278,4 +281,3 @@ configuration:
         HttpPostCreationEnabled: true
         GeneratingAbstractIdGenerator: true
 
-        

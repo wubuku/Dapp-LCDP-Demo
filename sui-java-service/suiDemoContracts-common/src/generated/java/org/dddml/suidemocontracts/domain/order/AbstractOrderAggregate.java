@@ -141,7 +141,7 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
            
 
         protected AbstractOrderEvent.OrderCreated newOrderCreated(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
-            OrderEventId eventId = new OrderEventId(getState().getId(), offChainVersion);
+            OrderEventId eventId = new OrderEventId(getState().getId(), null);
             AbstractOrderEvent.OrderCreated e = new AbstractOrderEvent.OrderCreated();
 
             e.setProduct(product);
@@ -149,7 +149,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
             e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -160,11 +166,17 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         }
 
         protected AbstractOrderEvent.OrderItemRemoved newOrderItemRemoved(String productId, Long offChainVersion, String commandId, String requesterId) {
-            OrderEventId eventId = new OrderEventId(getState().getId(), offChainVersion);
+            OrderEventId eventId = new OrderEventId(getState().getId(), null);
             AbstractOrderEvent.OrderItemRemoved e = new AbstractOrderEvent.OrderItemRemoved();
 
             e.setProductId(productId);
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -175,12 +187,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         }
 
         protected AbstractOrderEvent.OrderItemQuantityUpdated newOrderItemQuantityUpdated(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
-            OrderEventId eventId = new OrderEventId(getState().getId(), offChainVersion);
+            OrderEventId eventId = new OrderEventId(getState().getId(), null);
             AbstractOrderEvent.OrderItemQuantityUpdated e = new AbstractOrderEvent.OrderItemQuantityUpdated();
 
             e.setProductId(productId);
             e.setQuantity(quantity);
-            e.setVersion(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

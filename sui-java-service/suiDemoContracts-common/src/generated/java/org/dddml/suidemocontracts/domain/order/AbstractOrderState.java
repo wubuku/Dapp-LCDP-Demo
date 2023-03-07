@@ -251,8 +251,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         BigInteger TotalAmount = totalAmount;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger version = e.getVersion();
-        BigInteger Version = version;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -266,14 +278,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.CreateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class CreateLogic {
-//    public static OrderState mutate(OrderState orderState, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String product, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -286,8 +298,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
         String productId = e.getProductId();
         String ProductId = productId;
-        BigInteger version = e.getVersion();
-        BigInteger Version = version;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -301,14 +325,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, productId, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class RemoveItemLogic {
-//    public static OrderState mutate(OrderState orderState, String productId, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productId, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -323,8 +347,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         String ProductId = productId;
         BigInteger quantity = e.getQuantity();
         BigInteger Quantity = quantity;
-        BigInteger version = e.getVersion();
-        BigInteger Version = version;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
 
         if (this.getCreatedBy() == null){
             this.setCreatedBy(e.getCreatedBy());
@@ -338,14 +374,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, MutationContext.class},
-                    new Object[]{this, productId, quantity, version, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class UpdateItemQuantityLogic {
-//    public static OrderState mutate(OrderState orderState, String productId, BigInteger quantity, BigInteger version, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productId, BigInteger quantity, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -367,13 +403,6 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
 
         Long stateVersion = this.getOffChainVersion();
-        Long eventVersion = ((OrderEvent.SqlOrderEvent)event).getOrderEventId().getOffChainVersion();// Aggregate Version
-        if (eventVersion == null) {
-            throw new NullPointerException("event.getOrderEventId().getOffChainVersion() == null");
-        }
-        if (!(stateVersion == null && eventVersion.equals(OrderState.VERSION_NULL)) && !eventVersion.equals(stateVersion)) {
-            throw DomainError.named("concurrencyConflict", "Conflict between state version (%1$s) and event version (%2$s)", stateVersion, eventVersion);
-        }
 
     }
 

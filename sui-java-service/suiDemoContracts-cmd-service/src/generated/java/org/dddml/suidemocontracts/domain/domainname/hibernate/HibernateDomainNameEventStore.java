@@ -17,7 +17,7 @@ public class HibernateDomainNameEventStore extends AbstractHibernateEventStore
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new DomainNameEventId((DomainNameId) eventStoreAggregateId.getId(), version);
+        return new DomainNameEventId((DomainNameId) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class HibernateDomainNameEventStore extends AbstractHibernateEventStore
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractDomainNameEvent) es.get(es.size() - 1)).getDomainNameEventId().getOffChainVersion());
+            eventStream.setSteamVersion(((AbstractDomainNameEvent) es.get(es.size() - 1)).getDomainNameEventId().getVersion().longValue());
         } else {
             //todo?
         }

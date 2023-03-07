@@ -17,7 +17,7 @@ public class HibernateProductEventStore extends AbstractHibernateEventStore
     @Override
     protected Serializable getEventId(EventStoreAggregateId eventStoreAggregateId, long version)
     {
-        return new ProductEventId((String) eventStoreAggregateId.getId(), version);
+        return new ProductEventId((String) eventStoreAggregateId.getId(), BigInteger.valueOf(version));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class HibernateProductEventStore extends AbstractHibernateEventStore
         }
         EventStream eventStream = new EventStream();
         if (es.size() > 0) {
-            eventStream.setSteamVersion(((AbstractProductEvent) es.get(es.size() - 1)).getProductEventId().getOffChainVersion());
+            eventStream.setSteamVersion(((AbstractProductEvent) es.get(es.size() - 1)).getProductEventId().getVersion().longValue());
         } else {
             //todo?
         }

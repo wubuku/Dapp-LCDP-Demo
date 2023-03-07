@@ -10,3 +10,38 @@ superObjects:
       Version:
         type: u64
 
+# SuiEventEnvelope<E> {
+#    private Long timestamp;
+#    private String txDigest;
+#    private EventId id; # txDigest & eventSeq
+#    private E event;
+  SuiEventEnvelope:
+    properties:
+      SuiTimestamp:
+        type: long
+      SuiTxDigest:
+        type: String
+        length: 50
+      SuiEventSeq:
+        type: long
+
+  SuiMoveEvent:
+    properties:
+      SuiPackageId:
+        type: address
+      SuiTransactionModule:
+        type: String
+        length: 100
+      SuiSender:
+        type: address
+      SuiType:
+        type: String
+        length: 200
+
+# For example, the following is a SuiMoveEvent json:
+#
+#           "moveEvent": {
+#            "packageId": "0x4c9edf32a36c6369ac859336672642b7c3140252",
+#            "transactionModule": "day_summary_aggregate",
+#            "sender": "0x29e076107fc5a7c5f7c179d4e5547674fb0a0a8e",
+#            "type": "0x4c9edf32a36c6369ac859336672642b7c3140252::day_summary::DaySummaryCreated",

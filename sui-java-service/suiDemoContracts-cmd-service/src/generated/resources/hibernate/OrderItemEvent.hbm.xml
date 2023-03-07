@@ -11,7 +11,7 @@
 	<composite-id name="orderItemEventId" class="org.dddml.suidemocontracts.domain.order.OrderItemEventId">
 		<key-property name="orderId" ><column name="order_item_id_order_id" sql-type="VARCHAR(42)" /></key-property>
 		<key-property name="productId" ><column name="order_item_id_product_id" length="50" /></key-property>
-		<key-property name="orderOffChainVersion" ><column name="order_off_chain_version" /></key-property>
+		<key-property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></key-property>
 	</composite-id>
 
     <discriminator column="event_type" type="string" />

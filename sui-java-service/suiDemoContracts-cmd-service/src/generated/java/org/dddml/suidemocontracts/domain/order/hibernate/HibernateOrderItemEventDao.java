@@ -40,7 +40,7 @@ public class HibernateOrderItemEventDao implements OrderItemEventDao
         Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemEvent.class);
         Junction partIdCondition = Restrictions.conjunction()
             .add(Restrictions.eq("orderItemEventId.orderId", orderEventId.getId()))
-            .add(Restrictions.eq("orderItemEventId.orderOffChainVersion", orderEventId.getOffChainVersion()))
+            .add(Restrictions.eq("orderItemEventId.version", orderEventId.getVersion()))
             ;
         return criteria.add(partIdCondition).list();
     }

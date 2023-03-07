@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.product;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class ProductEventId implements Serializable
@@ -17,26 +18,26 @@ public class ProductEventId implements Serializable
         this.productId = productId;
     }
 
-    private Long offChainVersion;
+    private BigInteger version;
 
-    public Long getOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.offChainVersion;
+        return this.version;
     }
 
-    public void setOffChainVersion(Long offChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     public ProductEventId()
     {
     }
 
-    public ProductEventId(String productId, Long offChainVersion)
+    public ProductEventId(String productId, BigInteger version)
     {
         this.productId = productId;
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ProductEventId implements Serializable
         ProductEventId other = (ProductEventId)obj;
         return true 
             && (productId == other.productId || (productId != null && productId.equals(other.productId)))
-            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -63,8 +64,8 @@ public class ProductEventId implements Serializable
         if (this.productId != null) {
             hash += 13 * this.productId.hashCode();
         }
-        if (this.offChainVersion != null) {
-            hash += 13 * this.offChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -72,12 +73,12 @@ public class ProductEventId implements Serializable
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "productId",
-            "offChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

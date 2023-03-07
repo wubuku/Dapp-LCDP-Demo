@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.domainname;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class DomainNameEventId implements Serializable
@@ -17,16 +18,16 @@ public class DomainNameEventId implements Serializable
         this.domainNameId = domainNameId;
     }
 
-    private Long offChainVersion;
+    private BigInteger version;
 
-    public Long getOffChainVersion()
+    public BigInteger getVersion()
     {
-        return this.offChainVersion;
+        return this.version;
     }
 
-    public void setOffChainVersion(Long offChainVersion)
+    public void setVersion(BigInteger version)
     {
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     protected String getDomainNameIdTopLevelDomain()
@@ -53,10 +54,10 @@ public class DomainNameEventId implements Serializable
     {
     }
 
-    public DomainNameEventId(DomainNameId domainNameId, Long offChainVersion)
+    public DomainNameEventId(DomainNameId domainNameId, BigInteger version)
     {
         this.domainNameId = domainNameId;
-        this.offChainVersion = offChainVersion;
+        this.version = version;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class DomainNameEventId implements Serializable
         DomainNameEventId other = (DomainNameEventId)obj;
         return true 
             && (domainNameId == other.domainNameId || (domainNameId != null && domainNameId.equals(other.domainNameId)))
-            && (offChainVersion == other.offChainVersion || (offChainVersion != null && offChainVersion.equals(other.offChainVersion)))
+            && (version == other.version || (version != null && version.equals(other.version)))
             ;
     }
 
@@ -83,8 +84,8 @@ public class DomainNameEventId implements Serializable
         if (this.domainNameId != null) {
             hash += 13 * this.domainNameId.hashCode();
         }
-        if (this.offChainVersion != null) {
-            hash += 13 * this.offChainVersion.hashCode();
+        if (this.version != null) {
+            hash += 13 * this.version.hashCode();
         }
         return hash;
     }
@@ -93,13 +94,13 @@ public class DomainNameEventId implements Serializable
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "domainNameIdTopLevelDomain",
             "domainNameIdSecondLevelDomain",
-            "offChainVersion",
+            "version",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
             "String",
             "String",
-            "Long",
+            "BigInteger",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

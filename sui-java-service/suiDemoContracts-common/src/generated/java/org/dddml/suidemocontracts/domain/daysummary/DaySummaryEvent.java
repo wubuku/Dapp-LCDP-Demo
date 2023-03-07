@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DaySummaryEvent extends Event, VersionedSuiMoveEvent {
+public interface DaySummaryEvent extends Event, SuiEventEnvelope, SuiMoveEvent {
 
     interface SqlDaySummaryEvent extends DaySummaryEvent {
         DaySummaryEventId getDaySummaryEventId();
@@ -20,9 +20,9 @@ public interface DaySummaryEvent extends Event, VersionedSuiMoveEvent {
 
     //void setDay(Day day);
 
-    Long getOffChainVersion();
+    BigInteger getVersion();
     
-    //void setOffChainVersion(Long offChainVersion);
+    //void setVersion(BigInteger version);
 
     String getId_();
     
