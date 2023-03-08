@@ -108,7 +108,8 @@ configuration:
   sui:
     boundedContextPackage: "sui_contracts"
     moveObjectVersionPropertyName: "Version"
-    # ignoredMandatoryAggregateEventImplements: true
+    # ignoredMandatoryAggregateEventImplements: ...
+    offChainObjectNames: ["SuiEventId"]
 
     typeMappings:
       "U8": "u8"
