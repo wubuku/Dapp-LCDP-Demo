@@ -7,7 +7,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractProductEvent extends AbstractEvent implements ProductEvent.SqlProductEvent 
+public abstract class AbstractProductEvent extends AbstractEvent implements ProductEvent.SqlProductEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
     private ProductState.MutableProductState state;
 

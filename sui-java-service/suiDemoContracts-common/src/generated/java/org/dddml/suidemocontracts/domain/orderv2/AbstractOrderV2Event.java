@@ -7,7 +7,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderV2Event extends AbstractEvent implements OrderV2Event.SqlOrderV2Event 
+public abstract class AbstractOrderV2Event extends AbstractEvent implements OrderV2Event.SqlOrderV2Event, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
     private OrderV2EventId orderV2EventId;
 

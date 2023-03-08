@@ -7,7 +7,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent 
+public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
     private OrderItemEventId orderItemEventId;
 
