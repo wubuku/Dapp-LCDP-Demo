@@ -9,6 +9,7 @@ import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 import org.dddml.suidemocontracts.sui.contract.repository.DaySummaryEventRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,29 +48,7 @@ public class DaySummaryEventService {
     }
 
     private void saveDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {
-        MoveEvent<DaySummaryCreated> moveEvent = eventEnvelope.getEvent().getMoveEvent();
-        DaySummaryCreated contractEvent = moveEvent.getFields();
-
-        AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = new AbstractDaySummaryEvent.DaySummaryCreated();
-        org.dddml.suidemocontracts.domain.Day day = DomainBeanUtils.toDay(contractEvent.getDay());
-        daySummaryCreated.setDay(day);
-
-        daySummaryCreated.setDescription(contractEvent.getDescription());
-        daySummaryCreated.setMetaData(contractEvent.getMetaData());
-        daySummaryCreated.setArrayData(contractEvent.getArrayData());
-        daySummaryCreated.setOptionalData(contractEvent.getOptionalData());
-
-        // --------- set event envelop info. ---------
-        daySummaryCreated.setSuiTimestamp(eventEnvelope.getTimestamp());
-        daySummaryCreated.setSuiTxDigest(eventEnvelope.getTxDigest());
-        daySummaryCreated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
-
-        // --------- set SuiEvent info. ---------
-        daySummaryCreated.setSuiPackageId(moveEvent.getPackageId());
-        daySummaryCreated.setSuiTransactionModule(moveEvent.getTransactionModule());
-        daySummaryCreated.setSuiSender(moveEvent.getSender());
-        // --------- set NextCursor info. ---------
-        //daySummaryCreated.setNextCursor(new SuiEventId(cursor.getTxDigest(), cursor.getEventSeq()));
+        AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = DomainBeanUtils.toDaySummaryCreated(eventEnvelope);
 
         daySummaryEventRepository.save(daySummaryCreated);
     }
