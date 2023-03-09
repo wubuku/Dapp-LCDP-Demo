@@ -17,7 +17,7 @@ import java.util.*;
 public class OrderItemQuantityUpdated {
     private String id;
 
-    private Long version;
+    private BigInteger version;
 
     private String productId;
 
@@ -31,11 +31,11 @@ public class OrderItemQuantityUpdated {
         this.id = id;
     }
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
     }
 

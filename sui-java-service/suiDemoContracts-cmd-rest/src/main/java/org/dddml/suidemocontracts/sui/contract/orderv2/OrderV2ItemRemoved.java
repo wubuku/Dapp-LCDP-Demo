@@ -19,7 +19,7 @@ public class OrderV2ItemRemoved {
 
     private String orderId;
 
-    private Long version;
+    private BigInteger version;
 
     private String productId;
 
@@ -39,11 +39,11 @@ public class OrderV2ItemRemoved {
         this.orderId = orderId;
     }
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
     }
 

@@ -108,6 +108,7 @@ configuration:
   sui:
     boundedContextPackage: "sui_contracts"
     moveObjectVersionPropertyName: "Version"
+    moveObjectVersionPropertyType: "u64"
     # ignoredMandatoryAggregateEventImplements: ...
     offChainObjectNames: ["SuiEventId"]
 

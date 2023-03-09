@@ -92,7 +92,7 @@ public class DomainBeanUtils {
         renewed.setId_(contractEvent.getId());
         renewed.setRenewPeriod(contractEvent.getRenewPeriod());
         renewed.setAccount(contractEvent.getAccount());
-        renewed.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        renewed.setVersion(contractEvent.getVersion());
 
         renewed.setSuiTimestamp(eventEnvelope.getTimestamp());
         renewed.setSuiTxDigest(eventEnvelope.getTxDigest());
@@ -136,7 +136,7 @@ public class DomainBeanUtils {
         AbstractOrderEvent.OrderItemRemoved orderItemRemoved = new AbstractOrderEvent.OrderItemRemoved();
         orderItemRemoved.setId(contractEvent.getId());
         orderItemRemoved.setProductId(contractEvent.getProductId());
-        orderItemRemoved.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        orderItemRemoved.setVersion(contractEvent.getVersion());
 
         orderItemRemoved.setSuiTimestamp(eventEnvelope.getTimestamp());
         orderItemRemoved.setSuiTxDigest(eventEnvelope.getTxDigest());
@@ -157,7 +157,7 @@ public class DomainBeanUtils {
         orderItemQuantityUpdated.setId(contractEvent.getId());
         orderItemQuantityUpdated.setProductId(contractEvent.getProductId());
         orderItemQuantityUpdated.setQuantity(contractEvent.getQuantity());
-        orderItemQuantityUpdated.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        orderItemQuantityUpdated.setVersion(contractEvent.getVersion());
 
         orderItemQuantityUpdated.setSuiTimestamp(eventEnvelope.getTimestamp());
         orderItemQuantityUpdated.setSuiTxDigest(eventEnvelope.getTxDigest());
@@ -225,7 +225,7 @@ public class DomainBeanUtils {
         orderV2ItemRemoved.setOrderId(contractEvent.getOrderId());
         orderV2ItemRemoved.setId_(contractEvent.getId());
         orderV2ItemRemoved.setProductId(contractEvent.getProductId());
-        orderV2ItemRemoved.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        orderV2ItemRemoved.setVersion(contractEvent.getVersion());
 
         orderV2ItemRemoved.setSuiTimestamp(eventEnvelope.getTimestamp());
         orderV2ItemRemoved.setSuiTxDigest(eventEnvelope.getTxDigest());
@@ -247,7 +247,7 @@ public class DomainBeanUtils {
         orderV2ItemQuantityUpdated.setId_(contractEvent.getId());
         orderV2ItemQuantityUpdated.setProductId(contractEvent.getProductId());
         orderV2ItemQuantityUpdated.setQuantity(contractEvent.getQuantity());
-        orderV2ItemQuantityUpdated.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        orderV2ItemQuantityUpdated.setVersion(contractEvent.getVersion());
 
         orderV2ItemQuantityUpdated.setSuiTimestamp(eventEnvelope.getTimestamp());
         orderV2ItemQuantityUpdated.setSuiTxDigest(eventEnvelope.getTxDigest());
@@ -268,7 +268,7 @@ public class DomainBeanUtils {
         orderV2EstimatedShipDateUpdated.setOrderId(contractEvent.getOrderId());
         orderV2EstimatedShipDateUpdated.setId_(contractEvent.getId());
         orderV2EstimatedShipDateUpdated.setEstimatedShipDate(DomainBeanUtils.toDay(contractEvent.getEstimatedShipDate()));
-        orderV2EstimatedShipDateUpdated.setVersion(BigInteger.valueOf(contractEvent.getVersion()));
+        orderV2EstimatedShipDateUpdated.setVersion(contractEvent.getVersion());
 
         orderV2EstimatedShipDateUpdated.setSuiTimestamp(eventEnvelope.getTimestamp());
         orderV2EstimatedShipDateUpdated.setSuiTxDigest(eventEnvelope.getTxDigest());

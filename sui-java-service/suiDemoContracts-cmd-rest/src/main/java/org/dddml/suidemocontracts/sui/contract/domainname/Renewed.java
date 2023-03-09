@@ -19,7 +19,7 @@ public class Renewed {
 
     private DomainNameId domainNameId;
 
-    private Long version;
+    private BigInteger version;
 
     private BigInteger renewPeriod;
 
@@ -41,11 +41,11 @@ public class Renewed {
         this.domainNameId = domainNameId;
     }
 
-    public Long getVersion() {
+    public BigInteger getVersion() {
         return version;
     }
 
-    public void setVersion(Long version) {
+    public void setVersion(BigInteger version) {
         this.version = version;
     }
 
