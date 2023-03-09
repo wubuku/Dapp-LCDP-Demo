@@ -9,7 +9,7 @@ import org.dddml.suidemocontracts.domain.AbstractEvent;
 
 public abstract class AbstractDomainNameEvent extends AbstractEvent implements DomainNameEvent.SqlDomainNameEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
-    private DomainNameEventId domainNameEventId;
+    private DomainNameEventId domainNameEventId = new DomainNameEventId();
 
     public DomainNameEventId getDomainNameEventId() {
         return this.domainNameEventId;

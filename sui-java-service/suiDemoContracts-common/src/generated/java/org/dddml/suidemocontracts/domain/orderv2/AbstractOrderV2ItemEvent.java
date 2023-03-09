@@ -9,7 +9,7 @@ import org.dddml.suidemocontracts.domain.AbstractEvent;
 
 public abstract class AbstractOrderV2ItemEvent extends AbstractEvent implements OrderV2ItemEvent.SqlOrderV2ItemEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
-    private OrderV2ItemEventId orderV2ItemEventId;
+    private OrderV2ItemEventId orderV2ItemEventId = new OrderV2ItemEventId();
 
     public OrderV2ItemEventId getOrderV2ItemEventId() {
         return this.orderV2ItemEventId;
