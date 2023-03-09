@@ -6,7 +6,7 @@ package org.dddml.suidemocontracts;
 
 import org.dddml.suidemocontracts.specialization.ApplicationContext;
 import org.dddml.suidemocontracts.specialization.spring.SpringApplicationContext;
-import org.dddml.suidemocontracts.sui.contract.service.SuiIdGeneratorDataObjectService;
+import org.dddml.suidemocontracts.sui.contract.service.MoveObjectIdGeneratorObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -42,7 +42,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SuiDemoContractsApplication {
 
     @Autowired
-    private SuiIdGeneratorDataObjectService suiIdGeneratorDataObjectService;
+    private MoveObjectIdGeneratorObjectService moveObjectIdGeneratorObjectService;
 
     public static void main(String[] args) {
         //StaticMethodConstraints.assertStaticVerificationAndMutationMethods();
@@ -52,7 +52,7 @@ public class SuiDemoContractsApplication {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void initSuiIdGeneratorDataObjects() {
-        suiIdGeneratorDataObjectService.initSuiIdGeneratorDataObjects();
+    public void initMoveObjectIdGeneratorObjects() {
+        moveObjectIdGeneratorObjectService.initMoveObjectIdGeneratorObjects();
     }
 }

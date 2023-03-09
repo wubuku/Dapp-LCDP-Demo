@@ -4,8 +4,10 @@ import com.github.wubuku.sui.bean.SuiEvent;
 import com.github.wubuku.sui.bean.SuiTransactionResponse;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
 import org.dddml.suidemocontracts.sui.contract.ContractConstants;
-import org.dddml.suidemocontracts.sui.contract.SuiIdGeneratorDataObject;
-import org.dddml.suidemocontracts.sui.contract.repository.SuiIdGeneratorDataObjectRepository;
+import org.dddml.suidemocontracts.sui.contract.MoveObjectIdGeneratorObject;
+import org.dddml.suidemocontracts.sui.contract.SuiPackage;
+import org.dddml.suidemocontracts.sui.contract.repository.MoveObjectIdGeneratorObjectRepository;
+import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,12 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
-public class SuiIdGeneratorDataObjectService {
+public class MoveObjectIdGeneratorObjectService {
     @Autowired
-    private SuiIdGeneratorDataObjectRepository suiIdGeneratorDataObjectRepository;
+    private MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository;
+
+    @Autowired
+    private SuiPackageRepository suiPackageRepository;
 
     @Autowired
     private SuiJsonRpcClient suiJsonRpcClient;
@@ -26,7 +31,7 @@ public class SuiIdGeneratorDataObjectService {
     private String packagePublishTransaction;
 
     @Transactional
-    public void initSuiIdGeneratorDataObjects() {
+    public void initMoveObjectIdGeneratorObjects() {
         SuiTransactionResponse suiTransactionResponse = suiJsonRpcClient.getTransaction(
                 packagePublishTransaction
         );
@@ -38,11 +43,15 @@ public class SuiIdGeneratorDataObjectService {
             SuiEvent.Publish publish = (SuiEvent.Publish) event;
             //System.out.println(publish);
             packageIdRef.set(publish.getPublish().getPackageId());
+            saveDefaultSuiPackageIfNotExists(
+                    publish.getPublish().getPackageId(),
+                    publish.getPublish().getSender()
+            );
         });
         //System.out.println("package Id: " + packageIdRef.get());
         String packageId = packageIdRef.get();
 
-        String[] idGeneratorDataObjTypes = ContractConstants.getIdGeneratorDataObjectTypes(packageId);
+        String[] idGeneratorDataObjTypes = ContractConstants.getMoveObjectIdGeneratorObjectTypes(packageId);
         //System.out.println(idGeneratorDataObjTypes.length);
         Arrays.stream(suiTransactionResponse.getEffects().getEvents()).filter(
                 event -> event instanceof SuiEvent.NewObject
@@ -54,26 +63,38 @@ public class SuiIdGeneratorDataObjectService {
                 if (Arrays.stream(idGeneratorDataObjTypes).anyMatch(t ->
                         t.equals(newObject.getNewObject().getObjectType()))) {
                     //System.out.println("new object Id: " + newObject.getNewObject().getObjectId() + ", type: " + newObject.getNewObject().getObjectType());
-                    saveSuiIdGeneratorDataObjectIfNotExists(
+                    saveMoveObjectIdGeneratorObjectIfNotExists(
                             newObject.getNewObject().getObjectType(), newObject.getNewObject().getObjectId());
                 }
             }
         });
     }
 
-    private void saveSuiIdGeneratorDataObjectIfNotExists(String suiObjectType, String suiObjectId) {
+    private void saveDefaultSuiPackageIfNotExists(String packageId, String publisher) {
+        if (suiPackageRepository.findById(ContractConstants.DEFAULT_SUI_PACKAGE_NAME).isPresent()) {
+            return;
+        }
+        SuiPackage suiPackage = new SuiPackage();
+        suiPackage.setName(ContractConstants.DEFAULT_SUI_PACKAGE_NAME);
+        suiPackage.setObjectId(packageId);
+        suiPackage.setPublisher(publisher);
+
+        suiPackageRepository.save(suiPackage);
+    }
+
+    private void saveMoveObjectIdGeneratorObjectIfNotExists(String suiObjectType, String suiObjectId) {
         int idx = suiObjectType.indexOf("::");
         if (idx < 0) {
             throw new IllegalArgumentException("Invalid sui object type: " + suiObjectType);
         }
         String objectName = suiObjectType.substring(idx + 2);
-        if (suiIdGeneratorDataObjectRepository.findById(objectName).orElse(null) != null) {
+        if (moveObjectIdGeneratorObjectRepository.findById(objectName).isPresent()) {
             return;
         }
-        SuiIdGeneratorDataObject suiIdGeneratorDataObject = new SuiIdGeneratorDataObject();
-        suiIdGeneratorDataObject.setObjectName(objectName);
-        suiIdGeneratorDataObject.setSuiObjectType(suiObjectType);
-        suiIdGeneratorDataObject.setSuiObjectId(suiObjectId);
-        suiIdGeneratorDataObjectRepository.save(suiIdGeneratorDataObject);
+        MoveObjectIdGeneratorObject moveObjectIdGeneratorObject = new MoveObjectIdGeneratorObject();
+        moveObjectIdGeneratorObject.setName(objectName);
+        moveObjectIdGeneratorObject.setObjectType(suiObjectType);
+        moveObjectIdGeneratorObject.setObjectId(suiObjectId);
+        moveObjectIdGeneratorObjectRepository.save(moveObjectIdGeneratorObject);
     }
 }

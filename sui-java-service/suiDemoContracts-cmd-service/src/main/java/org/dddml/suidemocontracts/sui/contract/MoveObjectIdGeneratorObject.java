@@ -3,34 +3,34 @@ package org.dddml.suidemocontracts.sui.contract;
 import java.util.Date;
 import java.util.Objects;
 
-public class SuiIdGeneratorDataObject {
-    private String objectName;
+public class MoveObjectIdGeneratorObject {
+    private String name;
 
-    private String suiObjectType;
-    private String suiObjectId;
+    private String objectType;
+    private String objectId;
 
-    public String getObjectName() {
-        return objectName;
+    public String getName() {
+        return name;
     }
 
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSuiObjectType() {
-        return suiObjectType;
+    public String getObjectType() {
+        return objectType;
     }
 
-    public void setSuiObjectType(String suiObjectType) {
-        this.suiObjectType = suiObjectType;
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
     }
 
-    public String getSuiObjectId() {
-        return suiObjectId;
+    public String getObjectId() {
+        return objectId;
     }
 
-    public void setSuiObjectId(String suiObjectId) {
-        this.suiObjectId = suiObjectId;
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
 
@@ -78,21 +78,21 @@ public class SuiIdGeneratorDataObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SuiIdGeneratorDataObject that = (SuiIdGeneratorDataObject) o;
-        return Objects.equals(objectName, that.objectName);
+        MoveObjectIdGeneratorObject that = (MoveObjectIdGeneratorObject) o;
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(objectName);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return "SuiIdGeneratorDataObject{" +
-                "objectName='" + objectName + '\'' +
-                ", suiObjectType='" + suiObjectType + '\'' +
-                ", suiObjectId='" + suiObjectId + '\'' +
+        return "MoveObjectIdGeneratorObject{" +
+                "name='" + name + '\'' +
+                ", objectType='" + objectType + '\'' +
+                ", objectId='" + objectId + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedBy='" + updatedBy + '\'' +

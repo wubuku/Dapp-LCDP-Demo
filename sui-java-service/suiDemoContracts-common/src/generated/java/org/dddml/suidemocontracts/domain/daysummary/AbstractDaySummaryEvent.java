@@ -9,7 +9,7 @@ import org.dddml.suidemocontracts.domain.AbstractEvent;
 
 public abstract class AbstractDaySummaryEvent extends AbstractEvent implements DaySummaryEvent.SqlDaySummaryEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
 {
-    private DaySummaryEventId daySummaryEventId;
+    private DaySummaryEventId daySummaryEventId = new DaySummaryEventId();
 
     public DaySummaryEventId getDaySummaryEventId() {
         return this.daySummaryEventId;

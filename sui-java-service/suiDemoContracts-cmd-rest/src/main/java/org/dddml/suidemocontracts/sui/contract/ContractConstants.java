@@ -6,6 +6,8 @@
 package org.dddml.suidemocontracts.sui.contract;
 
 public class ContractConstants {
+    public static final String DEFAULT_SUI_PACKAGE_NAME = "DEFAULT_SUI_PACKAGE";
+
     public static final String DOMAIN_NAME_MODULE_DOMAIN_NAME_ID_TABLE = "domain_name::DomainNameIdTable";
 
     public static final String PRODUCT_MODULE_PRODUCT_ID_GENERATOR = "product::ProductIdGenerator";
@@ -37,7 +39,7 @@ public class ContractConstants {
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
 
-    public static String[] getIdGeneratorDataObjectTypes(String packageId) {
+    public static String[] getMoveObjectIdGeneratorObjectTypes(String packageId) {
         return new String[]{
                 packageId + "::" + DOMAIN_NAME_MODULE_DOMAIN_NAME_ID_TABLE,
                 packageId + "::" + PRODUCT_MODULE_PRODUCT_ID_GENERATOR,

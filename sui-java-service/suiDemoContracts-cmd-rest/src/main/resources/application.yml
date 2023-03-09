@@ -79,4 +79,4 @@ sui:
   contract:
     jsonrpc:
       url: "https://fullnode.devnet.sui.io/"
-    package-publish-transaction: "9omdX43d7aSy676bLSCRCmicHpYQjbvrFkzMg9Qa1U7k"
+    package-publish-transaction: "2uBnVXCipDtsEZvA5E4qXb1gHj5Mqnn8KC7Ji7Bgozr7"

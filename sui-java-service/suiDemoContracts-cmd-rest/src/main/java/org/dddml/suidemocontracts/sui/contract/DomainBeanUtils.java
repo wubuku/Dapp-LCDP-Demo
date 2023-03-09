@@ -24,6 +24,8 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateU
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
+import java.math.BigInteger;
+
 public class DomainBeanUtils {
     private DomainBeanUtils() {
     }
@@ -276,6 +278,7 @@ public class DomainBeanUtils {
         AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = new AbstractDaySummaryEvent.DaySummaryCreated();
         daySummaryCreated.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryCreated.setId_(contractEvent.getId());
+        daySummaryCreated.setVersion(BigInteger.valueOf(0));//todo (contractEvent.getVersion());
         daySummaryCreated.setDescription(contractEvent.getDescription());
         daySummaryCreated.setMetaData(contractEvent.getMetaData());
         daySummaryCreated.setArrayData(contractEvent.getArrayData());

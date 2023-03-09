@@ -1,19 +1,19 @@
 package org.dddml.suidemocontracts.taskservice;
 
+import org.dddml.suidemocontracts.sui.contract.service.DaySummaryEventService;
 import org.dddml.suidemocontracts.sui.contract.service.SuiOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UpdateOrderStateTaskService {
+public class PullDaySummaryEventTaskService {
 
     @Autowired
-    private SuiOrderService suiOrderService;
+    private DaySummaryEventService daySummaryEventService;
 
-    @Scheduled(fixedDelay = 10000L)
+    @Scheduled(fixedDelay = 5000L)
     public void task() {
-        //todo get order id need to update from database
-        suiOrderService.updateOrderState("0x8134656922ebdfdd67a4e6a3da444d53c997c196");
+        daySummaryEventService.pullDaySummaryCreatedEvents();
     }
 }
