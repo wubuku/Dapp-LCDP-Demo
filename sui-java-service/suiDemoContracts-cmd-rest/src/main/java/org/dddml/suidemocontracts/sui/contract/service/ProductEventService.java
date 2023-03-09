@@ -9,19 +9,19 @@ import com.github.wubuku.sui.bean.EventId;
 import com.github.wubuku.sui.bean.PaginatedMoveEvents;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
-import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
+import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
-import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
-import org.dddml.suidemocontracts.sui.contract.repository.DaySummaryEventRepository;
+import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
+import org.dddml.suidemocontracts.sui.contract.repository.ProductEventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class DaySummaryEventService {
+public class ProductEventService {
 
     @Autowired
     private SuiPackageRepository suiPackageRepository;
@@ -30,25 +30,25 @@ public class DaySummaryEventService {
     private SuiJsonRpcClient suiJsonRpcClient;
 
     @Autowired
-    private DaySummaryEventRepository daySummaryEventRepository;
+    private ProductEventRepository productEventRepository;
 
     @Transactional
-    public void pullDaySummaryCreatedEvents() {
+    public void pullProductCreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {
             return;
         }
         int limit = 1;
-        EventId cursor = getDaySummaryCreatedEventNextCursor();
+        EventId cursor = getProductCreatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<DaySummaryCreated> eventPage = suiJsonRpcClient.getMoveEvents(
-                    packageId + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED,
-                    cursor, limit, false, DaySummaryCreated.class);
+            PaginatedMoveEvents<ProductCreated> eventPage = suiJsonRpcClient.getMoveEvents(
+                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED,
+                    cursor, limit, false, ProductCreated.class);
 
             if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
                 cursor = eventPage.getNextCursor();
-                for (SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope : eventPage.getData()) {
-                    saveDaySummaryCreated(eventEnvelope);
+                for (SuiMoveEventEnvelope<ProductCreated> eventEnvelope : eventPage.getData()) {
+                    saveProductCreated(eventEnvelope);
                 }
             } else {
                 break;
@@ -59,17 +59,17 @@ public class DaySummaryEventService {
         }
     }
 
-    private EventId getDaySummaryCreatedEventNextCursor() {
-        AbstractDaySummaryEvent lastEvent = daySummaryEventRepository.findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
+    private EventId getProductCreatedEventNextCursor() {
+        AbstractProductEvent lastEvent = productEventRepository.findFirstProductCreatedByOrderBySuiTimestampDesc();
         return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
     }
 
-    private void saveDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {
-        AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = DomainBeanUtils.toDaySummaryCreated(eventEnvelope);
-        if (daySummaryEventRepository.findById(daySummaryCreated.getDaySummaryEventId()).isPresent()) {
+    private void saveProductCreated(SuiMoveEventEnvelope<ProductCreated> eventEnvelope) {
+        AbstractProductEvent.ProductCreated productCreated = DomainBeanUtils.toProductCreated(eventEnvelope);
+        if (productEventRepository.findById(productCreated.getProductEventId()).isPresent()) {
             return;
         }
-        daySummaryEventRepository.save(daySummaryCreated);
+        productEventRepository.save(productCreated);
     }
 
 
