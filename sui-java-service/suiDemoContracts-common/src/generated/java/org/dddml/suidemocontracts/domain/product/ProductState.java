@@ -32,7 +32,7 @@ public interface ProductState extends VersionedSuiMoveObject
 
     Boolean getActive();
 
-    String getCommandId();
+    Boolean getDeleted();
 
     interface MutableProductState extends ProductState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setProductId(String productId);
@@ -55,13 +55,16 @@ public interface ProductState extends VersionedSuiMoveObject
 
         void setActive(Boolean active);
 
-        void setCommandId(String commandId);
+        void setDeleted(Boolean deleted);
 
 
         void mutate(Event e);
 
         //void when(ProductEvent.ProductStateCreated e);
 
+        //void when(ProductEvent.ProductStateMergePatched e);
+
+        //void when(ProductEvent.ProductStateDeleted e);
     }
 
     interface SqlProductState extends MutableProductState {

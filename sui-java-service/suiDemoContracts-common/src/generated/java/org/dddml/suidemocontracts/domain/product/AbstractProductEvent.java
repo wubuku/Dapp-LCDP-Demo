@@ -9,21 +9,16 @@ import org.dddml.suidemocontracts.domain.AbstractEvent;
 
 public abstract class AbstractProductEvent extends AbstractEvent implements ProductEvent.SqlProductEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus 
 {
-    private ProductState.MutableProductState state;
-
-    public ProductState.MutableProductState getProductState() {
-        return state;
-    }
+    private ProductEventId productEventId = new ProductEventId();
 
     public ProductEventId getProductEventId() {
-        ProductEventId eventId = new ProductEventId(state.getProductId(), null);
-        return eventId;
+        return this.productEventId;
     }
 
     public void setProductEventId(ProductEventId eventId) {
-        this.state.setProductId(eventId.getProductId());
+        this.productEventId = eventId;
     }
-
+    
     public String getProductId() {
         return getProductEventId().getProductId();
     }
@@ -136,47 +131,56 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
         this.status = status;
     }
 
+    private String createdBy;
+
     public String getCreatedBy()
     {
-        return this.state.getCreatedBy();
+        return this.createdBy;
     }
 
     public void setCreatedBy(String createdBy)
     {
-        this.state.setCreatedBy(createdBy);
+        this.createdBy = createdBy;
     }
+
+    private Date createdAt;
 
     public Date getCreatedAt()
     {
-        return this.state.getCreatedAt();
+        return this.createdAt;
     }
 
     public void setCreatedAt(Date createdAt)
     {
-        this.state.setCreatedAt(createdAt);
+        this.createdAt = createdAt;
     }
 
 
+    private String commandId;
+
     public String getCommandId() {
-        return this.state.getCommandId();
+        return commandId;
     }
 
     public void setCommandId(String commandId) {
-        this.state.setCommandId(commandId);
+        this.commandId = commandId;
+    }
+
+    private String commandType;
+
+    public String getCommandType() {
+        return commandType;
+    }
+
+    public void setCommandType(String commandType) {
+        this.commandType = commandType;
     }
 
     protected AbstractProductEvent() {
-        this(new AbstractProductState.SimpleProductState());
     }
 
     protected AbstractProductEvent(ProductEventId eventId) {
-        this(new AbstractProductState.SimpleProductState());
-        setProductEventId(eventId);
-    }
-
-    protected AbstractProductEvent(ProductState s) {
-        if (s == null) { throw new IllegalArgumentException(); }
-        this.state = (ProductState.MutableProductState)s;
+        this.productEventId = eventId;
     }
 
 

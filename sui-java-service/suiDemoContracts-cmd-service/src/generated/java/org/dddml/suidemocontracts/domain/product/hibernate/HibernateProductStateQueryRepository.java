@@ -135,6 +135,7 @@ public class HibernateProductStateQueryRepository implements ProductStateQueryRe
 
 
     protected static void addNotDeletedRestriction(Criteria criteria) {
+        criteria.add(org.hibernate.criterion.Restrictions.eq("deleted", false));
     }
 
 }

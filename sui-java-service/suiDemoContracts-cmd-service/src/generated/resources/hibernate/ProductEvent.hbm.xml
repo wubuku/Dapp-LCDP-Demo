@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.product">
+  
+  <class name="AbstractProductEvent" table="product_event" mutable="false" abstract="true">
+
+	<composite-id name="productEventId" class="org.dddml.suidemocontracts.domain.product.ProductEventId">
+		<key-property name="productId" ><column name="product_id" length="20" /></key-property>
+		<key-property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></key-property>
+	</composite-id>
+
+    <discriminator column="event_type" type="string" />
+
+	<property name="id_" ><column name="id" sql-type="VARCHAR(42)" /></property>
+
+    <property name="createdBy" column="created_by"/>
+
+    <property name="createdAt" column="created_at" />
+
+    <property name="commandId" column="command_id"/>
+	<property name="suiTimestamp" ><column name="sui_timestamp" /></property>
+	<property name="suiTxDigest" ><column name="sui_tx_digest" length="50" /></property>
+	<property name="suiEventSeq" ><column name="sui_event_seq" /></property>
+	<property name="suiPackageId" ><column name="sui_package_id" sql-type="VARCHAR(42)" /></property>
+	<property name="suiTransactionModule" ><column name="sui_transaction_module" length="100" /></property>
+	<property name="suiSender" ><column name="sui_sender" sql-type="VARCHAR(42)" /></property>
+	<property name="suiType" ><column name="sui_type" length="200" /></property>
+	<property name="status" ><column name="status" sql-type="CHAR(1)" /></property>
+    <property name="commandType" column="command_type" length="50" />
+
+    <subclass name="AbstractProductEvent$ProductClobEvent" discriminator-value="ProductClobEvent">
+      <property name="DynamicPropertiesLob"><column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" /></property>
+      <subclass name="AbstractProductEvent$ProductCreated" discriminator-value="ProductCreated"/>
+    </subclass>
+
+
+
+  </class>
+  
+</hibernate-mapping>

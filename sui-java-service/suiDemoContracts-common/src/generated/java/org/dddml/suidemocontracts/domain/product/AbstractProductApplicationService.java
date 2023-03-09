@@ -120,6 +120,7 @@ public abstract class AbstractProductApplicationService implements ProductApplic
     private void persist(EventStoreAggregateId eventStoreAggregateId, long version, ProductAggregate aggregate, ProductState state) {
         getEventStore().appendEvents(eventStoreAggregateId, version, 
             aggregate.getChanges(), (events) -> { 
+                getStateRepository().save(state); 
             });
         if (aggregateEventListener != null) {
             aggregateEventListener.eventAppended(new AggregateEvent<>(aggregate, state, aggregate.getChanges()));

@@ -6,9 +6,8 @@
 
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.product">
   
-  <class name="org.dddml.suidemocontracts.domain.product.AbstractProductState$SimpleProductState" mutable="false" table="product">
+  <class name="org.dddml.suidemocontracts.domain.product.AbstractProductState$SimpleProductState" table="product">
 
-    <cache usage="read-only"/>
 	<id name="productId" length="20" column="product_id"><generator class="assigned"/></id>
 	<version name="offChainVersion" column="off_chain_version" type="long" />
 
@@ -19,12 +18,11 @@
 	<property name="createdBy" ><column name="created_by" /></property>
 	<property name="updatedBy" ><column name="updated_by" /></property>
 	<property name="active" ><column name="active" /></property>
+	<property name="deleted" ><column name="deleted" /></property>
 
     <property name="createdAt" column="created_at" />
 
     <property name="updatedAt" column="updated_at" />
-
-    <property name="commandId" column="command_id"/>
 
 
   </class>

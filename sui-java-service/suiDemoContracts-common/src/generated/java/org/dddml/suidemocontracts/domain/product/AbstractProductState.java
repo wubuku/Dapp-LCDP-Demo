@@ -119,6 +119,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.active = active;
     }
 
+    private Boolean deleted;
+
+    public Boolean getDeleted() {
+        return this.deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public boolean isStateUnsaved() {
         return this.getOffChainVersion() == null;
     }
@@ -137,16 +147,6 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
 
     public void setForReapplying(boolean forReapplying) {
         this.forReapplying = forReapplying;
-    }
-
-    private String commandId;
-
-    public String getCommandId() {
-        return this.commandId;
-    }
-
-    public void setCommandId(String commandId) {
-        this.commandId = commandId;
     }
 
     public AbstractProductState(List<Event> events) {

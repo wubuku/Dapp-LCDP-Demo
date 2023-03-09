@@ -1,6 +1,6 @@
 aggregates:
   Product:
-    immutable: true
+    #immutable: true todo need ignore this setting when generate off-chain service
     id:
       name: ProductId
       type: String

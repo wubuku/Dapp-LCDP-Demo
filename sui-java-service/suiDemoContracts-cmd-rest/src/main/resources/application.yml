@@ -80,3 +80,7 @@ sui:
     jsonrpc:
       url: "https://fullnode.devnet.sui.io/"
     package-publish-transaction: "2uBnVXCipDtsEZvA5E4qXb1gHj5Mqnn8KC7Ji7Bgozr7"
+    pull-day-summary-events:
+      day-summary-created-fixed-delay: 6000
+    pull-order-v2-events:
+      order-v2-created-fixed-delay: 6000
