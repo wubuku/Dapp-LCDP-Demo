@@ -6,7 +6,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DomainNameEvent extends Event, SuiEventEnvelope, SuiMoveEvent, HasSuiEventNextCursor {
+public interface DomainNameEvent extends Event, SuiEventEnvelope, SuiMoveEvent, HasStatus {
 
     interface SqlDomainNameEvent extends DomainNameEvent {
         DomainNameEventId getDomainNameEventId();

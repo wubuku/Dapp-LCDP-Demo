@@ -7,7 +7,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractDaySummaryEvent extends AbstractEvent implements DaySummaryEvent.SqlDaySummaryEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
+public abstract class AbstractDaySummaryEvent extends AbstractEvent implements DaySummaryEvent.SqlDaySummaryEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus 
 {
     private DaySummaryEventId daySummaryEventId = new DaySummaryEventId();
 
@@ -121,14 +121,14 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         this.suiType = suiType;
     }
 
-    private SuiEventId nextCursor;
+    private String status;
 
-    public SuiEventId getNextCursor() {
-        return this.nextCursor;
+    public String getStatus() {
+        return this.status;
     }
     
-    public void setNextCursor(SuiEventId nextCursor) {
-        this.nextCursor = nextCursor;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     private String createdBy;
@@ -188,29 +188,29 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     public static class DaySummaryClobEvent extends  AbstractDaySummaryEvent {
 
-        protected Map<String, Object> getLobProperties() {
-            return lobProperties;
+        protected Map<String, Object> getDynamicProperties() {
+            return dynamicProperties;
         }
 
-        protected void setLobProperties(Map<String, Object> lobProperties) {
-            if (lobProperties == null) {
-                throw new IllegalArgumentException("lobProperties is null.");
+        protected void setDynamicProperties(Map<String, Object> dynamicProperties) {
+            if (dynamicProperties == null) {
+                throw new IllegalArgumentException("dynamicProperties is null.");
             }
-            this.lobProperties = lobProperties;
+            this.dynamicProperties = dynamicProperties;
         }
 
-        private Map<String, Object> lobProperties = new HashMap<>();
+        private Map<String, Object> dynamicProperties = new HashMap<>();
 
-        protected String getLobText() {
-            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
+        protected String getDynamicPropertiesLob() {
+            return ApplicationContext.current.getClobConverter().toString(getDynamicProperties());
         }
 
-        protected void setLobText(String text) {
-            getLobProperties().clear();
+        protected void setDynamicPropertiesLob(String text) {
+            getDynamicProperties().clear();
             Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
             if (ps != null) {
                 for (Map.Entry<String, Object> kv : ps.entrySet()) {
-                    getLobProperties().put(kv.getKey(), kv.getValue());
+                    getDynamicProperties().put(kv.getKey(), kv.getValue());
                 }
             }
         }
@@ -230,7 +230,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         public String getDescription() {
-            Object val = getLobProperties().get("description");
+            Object val = getDynamicProperties().get("description");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -238,11 +238,11 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         public void setDescription(String value) {
-            getLobProperties().put("description", value);
+            getDynamicProperties().put("description", value);
         }
 
         public int[] getMetaData() {
-            Object val = getLobProperties().get("metaData");
+            Object val = getDynamicProperties().get("metaData");
             if (val instanceof int[]) {
                 return (int[]) val;
             }
@@ -250,11 +250,11 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         public void setMetaData(int[] value) {
-            getLobProperties().put("metaData", value);
+            getDynamicProperties().put("metaData", value);
         }
 
         public String[] getArrayData() {
-            Object val = getLobProperties().get("arrayData");
+            Object val = getDynamicProperties().get("arrayData");
             if (val instanceof String[]) {
                 return (String[]) val;
             }
@@ -262,11 +262,11 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         public void setArrayData(String[] value) {
-            getLobProperties().put("arrayData", value);
+            getDynamicProperties().put("arrayData", value);
         }
 
         public int[] getOptionalData() {
-            Object val = getLobProperties().get("optionalData");
+            Object val = getDynamicProperties().get("optionalData");
             if (val instanceof int[]) {
                 return (int[]) val;
             }
@@ -274,7 +274,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         public void setOptionalData(int[] value) {
-            getLobProperties().put("optionalData", value);
+            getDynamicProperties().put("optionalData", value);
         }
 
     }

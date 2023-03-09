@@ -16,7 +16,8 @@ configuration:
     name: Version
     type: u64
   mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasSuiEventNextCursor"] # "VersionedSuiMoveEvent"
+  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
+  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
 
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
@@ -135,8 +136,8 @@ configuration:
     isUsingSeparatedDomainAggregatePackage: true
     defaultUserIdType: "string"
     #JavaSerializationAnnotationTypes: {}
-    eventLobPropertiesName: "LobProperties"
-    eventLobPropertiesPersistenceName: "LobText"
+    eventLobPropertiesName: "DynamicProperties"
+    eventLobPropertiesPersistenceName: "DynamicPropertiesLob"
     eventLobPropertiesSqlType: VARCHAR(2000)
     
     typeMappings: 

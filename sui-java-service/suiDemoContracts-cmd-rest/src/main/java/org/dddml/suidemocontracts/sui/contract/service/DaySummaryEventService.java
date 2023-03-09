@@ -1,15 +1,19 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
-import com.github.wubuku.sui.bean.*;
+import com.github.wubuku.sui.bean.EventId;
+import com.github.wubuku.sui.bean.PaginatedMoveEvents;
+import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
-import org.dddml.suidemocontracts.sui.contract.repository.*;
+import org.dddml.suidemocontracts.sui.contract.repository.DaySummaryEventRepository;
+import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DaySummaryEventService {
@@ -23,13 +27,15 @@ public class DaySummaryEventService {
     @Autowired
     private DaySummaryEventRepository daySummaryEventRepository;
 
+
+    @Transactional
     public void pullDaySummaryCreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {
             return;
         }
         int limit = 1; //todo let be configurable
-        EventId cursor = null; //todo get from DB?
+        EventId cursor = getDaySummaryCreatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<DaySummaryCreated> eventPage = suiJsonRpcClient.getMoveEvents(
                     packageId + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED,
@@ -49,6 +55,11 @@ public class DaySummaryEventService {
                 break;
             }
         }
+    }
+
+    private EventId getDaySummaryCreatedEventNextCursor() {
+        AbstractDaySummaryEvent lastEvent = daySummaryEventRepository.findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
     }
 
     private void saveDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {

@@ -4,11 +4,13 @@ import com.github.wubuku.sui.bean.DynamicFieldInfo;
 import com.github.wubuku.sui.bean.DynamicFieldPage;
 import com.github.wubuku.sui.bean.GetMoveObjectDataResponse;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
-import org.dddml.suidemocontracts.domain.order.*;
+import org.dddml.suidemocontracts.domain.order.AbstractOrderItemStateCollection;
+import org.dddml.suidemocontracts.domain.order.OrderItemState;
+import org.dddml.suidemocontracts.domain.order.OrderState;
+import org.dddml.suidemocontracts.domain.order.OrderStateRepository;
 import org.dddml.suidemocontracts.sui.contract.Order;
 import org.dddml.suidemocontracts.sui.contract.OrderItem;
 import org.dddml.suidemocontracts.sui.contract.OrderItemDynamicField;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,6 @@ public class SuiOrderService {
         orderStateRepository.save(orderState);
     }
 
-    @NotNull
     private OrderState toOrderState(Order order) {
         // new aggregate root state instance
         OrderState.MutableOrderState orderState = (OrderState.MutableOrderState)

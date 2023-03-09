@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface DaySummaryEvent extends Event, SuiEventEnvelope, SuiMoveEvent, HasSuiEventNextCursor {
+public interface DaySummaryEvent extends Event, SuiEventEnvelope, SuiMoveEvent, HasStatus {
 
     interface SqlDaySummaryEvent extends DaySummaryEvent {
         DaySummaryEventId getDaySummaryEventId();

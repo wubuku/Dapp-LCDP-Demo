@@ -7,7 +7,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderEvent extends AbstractEvent implements OrderEvent.SqlOrderEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
+public abstract class AbstractOrderEvent extends AbstractEvent implements OrderEvent.SqlOrderEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus 
 {
     private OrderEventId orderEventId = new OrderEventId();
 
@@ -111,14 +111,14 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         this.suiType = suiType;
     }
 
-    private SuiEventId nextCursor;
+    private String status;
 
-    public SuiEventId getNextCursor() {
-        return this.nextCursor;
+    public String getStatus() {
+        return this.status;
     }
     
-    public void setNextCursor(SuiEventId nextCursor) {
-        this.nextCursor = nextCursor;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     private String createdBy;
@@ -204,29 +204,29 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     public static class OrderClobEvent extends  AbstractOrderEvent {
 
-        protected Map<String, Object> getLobProperties() {
-            return lobProperties;
+        protected Map<String, Object> getDynamicProperties() {
+            return dynamicProperties;
         }
 
-        protected void setLobProperties(Map<String, Object> lobProperties) {
-            if (lobProperties == null) {
-                throw new IllegalArgumentException("lobProperties is null.");
+        protected void setDynamicProperties(Map<String, Object> dynamicProperties) {
+            if (dynamicProperties == null) {
+                throw new IllegalArgumentException("dynamicProperties is null.");
             }
-            this.lobProperties = lobProperties;
+            this.dynamicProperties = dynamicProperties;
         }
 
-        private Map<String, Object> lobProperties = new HashMap<>();
+        private Map<String, Object> dynamicProperties = new HashMap<>();
 
-        protected String getLobText() {
-            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
+        protected String getDynamicPropertiesLob() {
+            return ApplicationContext.current.getClobConverter().toString(getDynamicProperties());
         }
 
-        protected void setLobText(String text) {
-            getLobProperties().clear();
+        protected void setDynamicPropertiesLob(String text) {
+            getDynamicProperties().clear();
             Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
             if (ps != null) {
                 for (Map.Entry<String, Object> kv : ps.entrySet()) {
-                    getLobProperties().put(kv.getKey(), kv.getValue());
+                    getDynamicProperties().put(kv.getKey(), kv.getValue());
                 }
             }
         }
@@ -246,7 +246,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public String getProduct() {
-            Object val = getLobProperties().get("product");
+            Object val = getDynamicProperties().get("product");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -254,11 +254,11 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setProduct(String value) {
-            getLobProperties().put("product", value);
+            getDynamicProperties().put("product", value);
         }
 
         public BigInteger getQuantity() {
-            Object val = getLobProperties().get("quantity");
+            Object val = getDynamicProperties().get("quantity");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -266,11 +266,11 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setQuantity(BigInteger value) {
-            getLobProperties().put("quantity", value);
+            getDynamicProperties().put("quantity", value);
         }
 
         public BigInteger getUnitPrice() {
-            Object val = getLobProperties().get("unitPrice");
+            Object val = getDynamicProperties().get("unitPrice");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -278,11 +278,11 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setUnitPrice(BigInteger value) {
-            getLobProperties().put("unitPrice", value);
+            getDynamicProperties().put("unitPrice", value);
         }
 
         public BigInteger getTotalAmount() {
-            Object val = getLobProperties().get("totalAmount");
+            Object val = getDynamicProperties().get("totalAmount");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -290,11 +290,11 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setTotalAmount(BigInteger value) {
-            getLobProperties().put("totalAmount", value);
+            getDynamicProperties().put("totalAmount", value);
         }
 
         public String getOwner() {
-            Object val = getLobProperties().get("owner");
+            Object val = getDynamicProperties().get("owner");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -302,7 +302,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setOwner(String value) {
-            getLobProperties().put("owner", value);
+            getDynamicProperties().put("owner", value);
         }
 
     }
@@ -315,7 +315,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public String getProductId() {
-            Object val = getLobProperties().get("productId");
+            Object val = getDynamicProperties().get("productId");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -323,7 +323,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setProductId(String value) {
-            getLobProperties().put("productId", value);
+            getDynamicProperties().put("productId", value);
         }
 
     }
@@ -336,7 +336,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public String getProductId() {
-            Object val = getLobProperties().get("productId");
+            Object val = getDynamicProperties().get("productId");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -344,11 +344,11 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setProductId(String value) {
-            getLobProperties().put("productId", value);
+            getDynamicProperties().put("productId", value);
         }
 
         public BigInteger getQuantity() {
-            Object val = getLobProperties().get("quantity");
+            Object val = getDynamicProperties().get("quantity");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -356,7 +356,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
         }
 
         public void setQuantity(BigInteger value) {
-            getLobProperties().put("quantity", value);
+            getDynamicProperties().put("quantity", value);
         }
 
     }

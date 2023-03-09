@@ -7,7 +7,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractDomainNameEvent extends AbstractEvent implements DomainNameEvent.SqlDomainNameEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasSuiEventNextCursor.MutableHasSuiEventNextCursor 
+public abstract class AbstractDomainNameEvent extends AbstractEvent implements DomainNameEvent.SqlDomainNameEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus 
 {
     private DomainNameEventId domainNameEventId = new DomainNameEventId();
 
@@ -121,14 +121,14 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         this.suiType = suiType;
     }
 
-    private SuiEventId nextCursor;
+    private String status;
 
-    public SuiEventId getNextCursor() {
-        return this.nextCursor;
+    public String getStatus() {
+        return this.status;
     }
     
-    public void setNextCursor(SuiEventId nextCursor) {
-        this.nextCursor = nextCursor;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     private String createdBy;
@@ -188,29 +188,29 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     public static class DomainNameClobEvent extends  AbstractDomainNameEvent {
 
-        protected Map<String, Object> getLobProperties() {
-            return lobProperties;
+        protected Map<String, Object> getDynamicProperties() {
+            return dynamicProperties;
         }
 
-        protected void setLobProperties(Map<String, Object> lobProperties) {
-            if (lobProperties == null) {
-                throw new IllegalArgumentException("lobProperties is null.");
+        protected void setDynamicProperties(Map<String, Object> dynamicProperties) {
+            if (dynamicProperties == null) {
+                throw new IllegalArgumentException("dynamicProperties is null.");
             }
-            this.lobProperties = lobProperties;
+            this.dynamicProperties = dynamicProperties;
         }
 
-        private Map<String, Object> lobProperties = new HashMap<>();
+        private Map<String, Object> dynamicProperties = new HashMap<>();
 
-        protected String getLobText() {
-            return ApplicationContext.current.getClobConverter().toString(getLobProperties());
+        protected String getDynamicPropertiesLob() {
+            return ApplicationContext.current.getClobConverter().toString(getDynamicProperties());
         }
 
-        protected void setLobText(String text) {
-            getLobProperties().clear();
+        protected void setDynamicPropertiesLob(String text) {
+            getDynamicProperties().clear();
             Map<String, Object> ps = ApplicationContext.current.getClobConverter().parseLobProperties(text);
             if (ps != null) {
                 for (Map.Entry<String, Object> kv : ps.entrySet()) {
-                    getLobProperties().put(kv.getKey(), kv.getValue());
+                    getDynamicProperties().put(kv.getKey(), kv.getValue());
                 }
             }
         }
@@ -230,7 +230,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public BigInteger getRegistrationPeriod() {
-            Object val = getLobProperties().get("registrationPeriod");
+            Object val = getDynamicProperties().get("registrationPeriod");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -238,11 +238,11 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public void setRegistrationPeriod(BigInteger value) {
-            getLobProperties().put("registrationPeriod", value);
+            getDynamicProperties().put("registrationPeriod", value);
         }
 
         public String getOwner() {
-            Object val = getLobProperties().get("owner");
+            Object val = getDynamicProperties().get("owner");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -250,7 +250,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public void setOwner(String value) {
-            getLobProperties().put("owner", value);
+            getDynamicProperties().put("owner", value);
         }
 
     }
@@ -263,7 +263,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public BigInteger getRenewPeriod() {
-            Object val = getLobProperties().get("renewPeriod");
+            Object val = getDynamicProperties().get("renewPeriod");
             if (val instanceof BigInteger) {
                 return (BigInteger) val;
             }
@@ -271,11 +271,11 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public void setRenewPeriod(BigInteger value) {
-            getLobProperties().put("renewPeriod", value);
+            getDynamicProperties().put("renewPeriod", value);
         }
 
         public String getAccount() {
-            Object val = getLobProperties().get("account");
+            Object val = getDynamicProperties().get("account");
             if (val instanceof String) {
                 return (String) val;
             }
@@ -283,7 +283,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
         }
 
         public void setAccount(String value) {
-            getLobProperties().put("account", value);
+            getDynamicProperties().put("account", value);
         }
 
     }

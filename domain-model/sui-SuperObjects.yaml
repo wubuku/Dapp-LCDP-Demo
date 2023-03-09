@@ -51,6 +51,11 @@ superObjects:
       NextCursor:
         type: SuiEventId
 
+  HasStatus:
+    properties:
+      Status:
+        type: indicator
+
 
 valueObjects:
 
