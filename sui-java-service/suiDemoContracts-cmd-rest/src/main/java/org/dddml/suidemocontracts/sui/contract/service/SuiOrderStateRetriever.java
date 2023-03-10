@@ -39,38 +39,30 @@ public class SuiOrderStateRetriever {
         return toOrderState(order);
     }
 
-
     private OrderState toOrderState(Order order) {
-        // new aggregate root state instance
         OrderState.MutableOrderState orderState = orderStateFactory.apply(order.getId().getId());
-        orderState.setVersion(order.getVersion()); // on-chain version
+        orderState.setVersion(order.getVersion());
         orderState.setTotalAmount(order.getTotalAmount());
 
-        // /////////// get inner entity items /////////////
-        String itemsTableId = order.getItems().getFields().getId().getId();
-        List<OrderItem> items = getItems(itemsTableId);
-        for (OrderItem item : items) {
-            orderState.getItems().add(toOrderItemState(orderState, item));
+        String orderItemTableId = order.getItems().getFields().getId().getId();
+        List<OrderItem> items = getOrderItems(orderItemTableId);
+        for (OrderItem i : items) {
+            orderState.getItems().add(toOrderItemState(orderState, i));
         }
-        // ///////////////////////////////////////////////
 
         return orderState;
     }
 
-    private OrderItemState toOrderItemState(OrderState orderState, OrderItem item) {
-        // new inner entity state instance
-        OrderItemState.MutableOrderItemState orderItemState = orderItemStateFactory.apply(orderState, item.getProductId());
-        orderItemState.setProductId(item.getProductId());
-        orderItemState.setQuantity(item.getQuantity());
-        orderItemState.setItemAmount(item.getItemAmount());
+    private OrderItemState toOrderItemState(OrderState orderState, OrderItem orderItem) {
+        OrderItemState.MutableOrderItemState orderItemState = orderItemStateFactory.apply(orderState, orderItem.getProductId());
+        orderItemState.setQuantity(orderItem.getQuantity());
 
-        // ////// no inner entity in the entity //////
-        // ///////////////////////////////////////////
+        orderItemState.setItemAmount(orderItem.getItemAmount());
 
         return orderItemState;
     }
 
-    private List<OrderItem> getItems(String orderItemTableId) {
+    private List<OrderItem> getOrderItems(String orderItemTableId) {
         List<OrderItem> orderItems = new ArrayList<>();
         String cursor = null;
         while (true) {
@@ -84,12 +76,14 @@ public class SuiOrderStateRetriever {
                         .getDetails().getData().getFields().getValue().getFields();
                 orderItems.add(orderItem);
             }
-            cursor = orderItemFieldPage.getNextCursor();
+            cursor =orderItemFieldPage.getNextCursor();
             if (cursor == null) {
                 break;
             }
         }
         return orderItems;
     }
+
+    
 }
 
