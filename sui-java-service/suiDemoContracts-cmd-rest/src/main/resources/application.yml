@@ -24,8 +24,9 @@ spring:
   mvc:
     static-path-pattern: /**
     servlet:
-      load-on-startup: -1
       path: /api
+      #load-on-startup: -1
+
   security:
     oauth2:
       resourceserver:
@@ -33,12 +34,16 @@ spring:
           jwk-set-uri: http://localhost:8020/api/.well-known/jwks.json # 1
         authorities-store:
           url: http://localhost:8020/api/.well-known/dddml-wms-restful/authorities # 2
+
 server:
   compression:
     enabled: true
     min-response-size: 20480  #20K more with gzip on
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
   max-http-header-size: 81920
+#  error:
+#    whitelabel:
+#      enabled: false
 
 ---
 spring:
