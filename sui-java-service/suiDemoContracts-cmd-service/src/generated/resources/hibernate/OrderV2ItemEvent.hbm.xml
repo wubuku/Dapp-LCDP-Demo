@@ -1,29 +1,21 @@
-<?xml version="1.0"?>
-
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
-  
   <class name="AbstractOrderV2ItemEvent" table="order_v2_item_event" mutable="false" abstract="true">
-
-	<composite-id name="orderV2ItemEventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemEventId">
-		<key-property name="orderV2OrderId" ><column name="order_v2_item_id_order_v2_order_id" length="50" /></key-property>
-		<key-property name="productId" ><column name="order_v2_item_id_product_id" length="50" /></key-property>
-		<key-property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></key-property>
-	</composite-id>
-
+    <composite-id name="orderV2ItemEventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemEventId">
+      <key-property name="orderV2OrderId">
+        <column name="order_v2_item_id_order_v2_order_id" length="50" />
+      </key-property>
+      <key-property name="productId">
+        <column name="order_v2_item_id_product_id" length="50" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
     <discriminator column="event_type" type="string" />
-
-
-    <property name="createdBy" column="created_by"/>
-
+    <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
-
-    <property name="commandId" column="command_id"/>
-
-
+    <property name="commandId" column="command_id" />
   </class>
-  
 </hibernate-mapping>

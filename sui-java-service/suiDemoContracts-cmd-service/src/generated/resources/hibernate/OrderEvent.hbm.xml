@@ -1,45 +1,51 @@
-<?xml version="1.0"?>
-
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.order">
-  
   <class name="AbstractOrderEvent" table="order_event" mutable="false" abstract="true">
-
-	<composite-id name="orderEventId" class="org.dddml.suidemocontracts.domain.order.OrderEventId">
-		<key-property name="id" ><column name="id" sql-type="VARCHAR(42)" /></key-property>
-		<key-property name="version" ><column name="version" sql-type="DECIMAL(20,0)" /></key-property>
-	</composite-id>
-
+    <composite-id name="orderEventId" class="org.dddml.suidemocontracts.domain.order.OrderEventId">
+      <key-property name="id">
+        <column name="id" sql-type="VARCHAR(42)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
     <discriminator column="event_type" type="string" />
-
-
-    <property name="createdBy" column="created_by"/>
-
+    <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
-
-    <property name="commandId" column="command_id"/>
-	<property name="suiTimestamp" ><column name="sui_timestamp" /></property>
-	<property name="suiTxDigest" ><column name="sui_tx_digest" length="50" /></property>
-	<property name="suiEventSeq" ><column name="sui_event_seq" /></property>
-	<property name="suiPackageId" ><column name="sui_package_id" sql-type="VARCHAR(42)" /></property>
-	<property name="suiTransactionModule" ><column name="sui_transaction_module" length="100" /></property>
-	<property name="suiSender" ><column name="sui_sender" sql-type="VARCHAR(42)" /></property>
-	<property name="suiType" ><column name="sui_type" length="200" /></property>
-	<property name="status" ><column name="status" sql-type="CHAR(1)" /></property>
+    <property name="commandId" column="command_id" />
+    <property name="suiTimestamp">
+      <column name="sui_timestamp" />
+    </property>
+    <property name="suiTxDigest">
+      <column name="sui_tx_digest" length="50" />
+    </property>
+    <property name="suiEventSeq">
+      <column name="sui_event_seq" />
+    </property>
+    <property name="suiPackageId">
+      <column name="sui_package_id" sql-type="VARCHAR(42)" />
+    </property>
+    <property name="suiTransactionModule">
+      <column name="sui_transaction_module" length="100" />
+    </property>
+    <property name="suiSender">
+      <column name="sui_sender" sql-type="VARCHAR(42)" />
+    </property>
+    <property name="suiType">
+      <column name="sui_type" length="200" />
+    </property>
+    <property name="status">
+      <column name="status" sql-type="CHAR(1)" />
+    </property>
     <property name="commandType" column="command_type" length="50" />
-
     <subclass name="AbstractOrderEvent$OrderClobEvent" discriminator-value="OrderClobEvent">
-      <property name="DynamicPropertiesLob"><column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" /></property>
-      <subclass name="AbstractOrderEvent$OrderCreated" discriminator-value="OrderCreated"/>
-      <subclass name="AbstractOrderEvent$OrderItemRemoved" discriminator-value="OrderItemRemoved"/>
-      <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated"/>
+      <property name="DynamicPropertiesLob">
+        <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
+      </property>
+      <subclass name="AbstractOrderEvent$OrderCreated" discriminator-value="OrderCreated" />
+      <subclass name="AbstractOrderEvent$OrderItemRemoved" discriminator-value="OrderItemRemoved" />
+      <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated" />
     </subclass>
-
-
-
   </class>
-  
 </hibernate-mapping>
