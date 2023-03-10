@@ -1,4 +1,4 @@
-package org.dddml.suidemocontracts.taskservice;
+package org.dddml.suidemocontracts.sui.contract.taskservice;
 
 import org.dddml.suidemocontracts.sui.contract.service.SuiOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
