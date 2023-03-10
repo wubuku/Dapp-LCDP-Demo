@@ -5,14 +5,21 @@
 
 package org.dddml.suidemocontracts.sui.contract.service;
 
-import com.github.wubuku.sui.bean.*;
-import com.github.wubuku.sui.utils.*;
-import org.dddml.suidemocontracts.domain.orderv2.*;
-import org.dddml.suidemocontracts.sui.contract.*;
+import com.github.wubuku.sui.bean.DynamicFieldInfo;
+import com.github.wubuku.sui.bean.DynamicFieldPage;
+import com.github.wubuku.sui.bean.GetMoveObjectDataResponse;
+import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemState;
+import org.dddml.suidemocontracts.domain.orderv2.OrderV2State;
+import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
+import org.dddml.suidemocontracts.sui.contract.OrderV2;
+import org.dddml.suidemocontracts.sui.contract.OrderV2Item;
+import org.dddml.suidemocontracts.sui.contract.OrderV2ItemDynamicField;
 
-import java.util.*;
-import java.math.*;
-import java.util.function.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class SuiOrderV2StateRetriever {
 
@@ -22,8 +29,8 @@ public class SuiOrderV2StateRetriever {
     private BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory;
 
     public SuiOrderV2StateRetriever(SuiJsonRpcClient suiJsonRpcClient,
-                                  Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory,
-                                  BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory
+                                    Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory,
+                                    BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory
     ) {
         this.suiJsonRpcClient = suiJsonRpcClient;
         this.orderV2StateFactory = orderV2StateFactory;
@@ -44,9 +51,7 @@ public class SuiOrderV2StateRetriever {
         orderV2State.setId_(orderV2.getId().getId());
         orderV2State.setVersion(orderV2.getVersion());
         orderV2State.setTotalAmount(orderV2.getTotalAmount());
-
         orderV2State.setEstimatedShipDate(DomainBeanUtils.toDay(orderV2.getEstimatedShipDate()));
-
         String orderV2ItemTableId = orderV2.getItems().getFields().getId().getId();
         List<OrderV2Item> items = getOrderV2Items(orderV2ItemTableId);
         for (OrderV2Item i : items) {
@@ -59,9 +64,7 @@ public class SuiOrderV2StateRetriever {
     private OrderV2ItemState toOrderV2ItemState(OrderV2State orderV2State, OrderV2Item orderV2Item) {
         OrderV2ItemState.MutableOrderV2ItemState orderV2ItemState = orderV2ItemStateFactory.apply(orderV2State, orderV2Item.getProductId());
         orderV2ItemState.setQuantity(orderV2Item.getQuantity());
-
         orderV2ItemState.setItemAmount(orderV2Item.getItemAmount());
-
         return orderV2ItemState;
     }
 
@@ -71,7 +74,7 @@ public class SuiOrderV2StateRetriever {
         while (true) {
             DynamicFieldPage orderV2ItemFieldPage = suiJsonRpcClient.getDynamicFields(orderV2ItemTableId, cursor, null);
             for (DynamicFieldInfo orderV2ItemFieldInfo : orderV2ItemFieldPage.getData()) {
-            
+
                 String fieldObjectId = orderV2ItemFieldInfo.getObjectId();
                 GetMoveObjectDataResponse<OrderV2ItemDynamicField> getOrderV2ItemFieldResponse
                         = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderV2ItemDynamicField.class);
@@ -79,7 +82,7 @@ public class SuiOrderV2StateRetriever {
                         .getDetails().getData().getFields().getValue().getFields();
                 orderV2Items.add(orderV2Item);
             }
-            cursor =orderV2ItemFieldPage.getNextCursor();
+            cursor = orderV2ItemFieldPage.getNextCursor();
             if (cursor == null) {
                 break;
             }
@@ -87,6 +90,6 @@ public class SuiOrderV2StateRetriever {
         return orderV2Items;
     }
 
-    
+
 }
 

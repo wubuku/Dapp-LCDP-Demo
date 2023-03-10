@@ -43,7 +43,6 @@ public class SuiOrderStateRetriever {
         OrderState.MutableOrderState orderState = orderStateFactory.apply(order.getId().getId());
         orderState.setVersion(order.getVersion());
         orderState.setTotalAmount(order.getTotalAmount());
-
         String orderItemTableId = order.getItems().getFields().getId().getId();
         List<OrderItem> items = getOrderItems(orderItemTableId);
         for (OrderItem i : items) {
@@ -56,9 +55,7 @@ public class SuiOrderStateRetriever {
     private OrderItemState toOrderItemState(OrderState orderState, OrderItem orderItem) {
         OrderItemState.MutableOrderItemState orderItemState = orderItemStateFactory.apply(orderState, orderItem.getProductId());
         orderItemState.setQuantity(orderItem.getQuantity());
-
         orderItemState.setItemAmount(orderItem.getItemAmount());
-
         return orderItemState;
     }
 
@@ -76,7 +73,7 @@ public class SuiOrderStateRetriever {
                         .getDetails().getData().getFields().getValue().getFields();
                 orderItems.add(orderItem);
             }
-            cursor =orderItemFieldPage.getNextCursor();
+            cursor = orderItemFieldPage.getNextCursor();
             if (cursor == null) {
                 break;
             }
