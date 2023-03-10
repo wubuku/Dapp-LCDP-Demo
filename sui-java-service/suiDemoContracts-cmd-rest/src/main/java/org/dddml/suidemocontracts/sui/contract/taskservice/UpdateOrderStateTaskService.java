@@ -1,5 +1,6 @@
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.sui.contract.repository.OrderEventRepository;
 import org.dddml.suidemocontracts.sui.contract.service.SuiOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,9 +12,15 @@ public class UpdateOrderStateTaskService {
     @Autowired
     private SuiOrderService suiOrderService;
 
+    @Autowired
+    private OrderEventRepository orderEventRepository;
+
     @Scheduled(fixedDelay = 10000L)
     public void task() {
-        //todo get order id need to update from database
-        suiOrderService.updateOrderState("0x8134656922ebdfdd67a4e6a3da444d53c997c196");
+        orderEventRepository.findAll().forEach(orderEvent -> {
+            String objectId = orderEvent.getId();
+            suiOrderService.updateOrderState(objectId);
+            //todo update event status...
+        });
     }
 }
