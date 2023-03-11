@@ -94,7 +94,7 @@ sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function up
 
 ```shell
 sui client call --package _PACKAGE_ID_ --module day_summary_aggregate --function create \
---args u16_day_month_year_number 'string_day_month_year_calendar' u8_day_month_number bool_day_month_is_leap u8_day_number 'string_day_time_zone' 'string_description' 'vector_u8_meta_data' vector<string>_array_data option<vector<u8>>_optional_data '_DAY_SUMMARY_DAY_SUMMARY_ID_TABLE_OBJECT_ID_' \
+--args u16_day_month_year_number 'string_day_month_year_calendar' u8_day_month_number bool_day_month_is_leap u8_day_number 'string_day_time_zone' 'string_description' 'vector_u8_meta_data' ['string_array_data_item'] ['vector_u8_optional_data'] '_DAY_SUMMARY_DAY_SUMMARY_ID_TABLE_OBJECT_ID_' \
 --gas-budget 100000
 ```
 
