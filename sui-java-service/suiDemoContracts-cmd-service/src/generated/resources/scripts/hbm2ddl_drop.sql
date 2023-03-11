@@ -15,4 +15,5 @@ drop table if exists order_v2_event;
 drop table if exists order_v2_item;
 drop table if exists order_v2_item_event;
 drop table if exists product;
+drop table if exists product_event;
 drop table if exists sui_package;

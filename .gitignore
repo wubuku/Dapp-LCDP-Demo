@@ -18,3 +18,4 @@ sui-java-service/suiDemoContracts-cmd-rest/target/
 sui-java-service/*/target/
 sui-java-service/**/*.tc
 sui-java-service/**/*.tt
+sui_contracts/.idea
