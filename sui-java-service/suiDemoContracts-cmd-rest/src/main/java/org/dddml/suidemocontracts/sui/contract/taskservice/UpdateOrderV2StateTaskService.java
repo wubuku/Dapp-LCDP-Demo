@@ -19,7 +19,7 @@ public class UpdateOrderV2StateTaskService {
     public void task() {
         orderV2EventRepository.findAll().forEach(orderEvent -> {
             String objectId = orderEvent.getId_();
-            suiOrderV2Service.updateOrderState(objectId);
+            suiOrderV2Service.updateOrderV2State(objectId);
             //todo update event status...
         });
     }
