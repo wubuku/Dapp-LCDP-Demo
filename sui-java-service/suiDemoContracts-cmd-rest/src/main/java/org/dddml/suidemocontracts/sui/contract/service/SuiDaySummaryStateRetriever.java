@@ -5,14 +5,16 @@
 
 package org.dddml.suidemocontracts.sui.contract.service;
 
-import com.github.wubuku.sui.bean.GetMoveObjectDataResponse;
-import com.github.wubuku.sui.utils.SuiJsonRpcClient;
-import org.dddml.suidemocontracts.domain.Day;
-import org.dddml.suidemocontracts.domain.daysummary.DaySummaryState;
-import org.dddml.suidemocontracts.sui.contract.DaySummary;
+import com.github.wubuku.sui.bean.*;
+import com.github.wubuku.sui.utils.*;
+import org.dddml.suidemocontracts.domain.daysummary.*;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
+import org.dddml.suidemocontracts.sui.contract.DaySummary;
 
-import java.util.function.Function;
+import java.util.*;
+import java.math.*;
+import java.util.function.*;
 
 public class SuiDaySummaryStateRetriever {
 
@@ -21,7 +23,7 @@ public class SuiDaySummaryStateRetriever {
     private Function<Day, DaySummaryState.MutableDaySummaryState> daySummaryStateFactory;
 
     public SuiDaySummaryStateRetriever(SuiJsonRpcClient suiJsonRpcClient,
-                                       Function<Day, DaySummaryState.MutableDaySummaryState> daySummaryStateFactory
+                                  Function<Day, DaySummaryState.MutableDaySummaryState> daySummaryStateFactory
     ) {
         this.suiJsonRpcClient = suiJsonRpcClient;
         this.daySummaryStateFactory = daySummaryStateFactory;
@@ -42,11 +44,11 @@ public class SuiDaySummaryStateRetriever {
         daySummaryState.setVersion(daySummary.getVersion());
         daySummaryState.setDescription(daySummary.getDescription());
         daySummaryState.setMetadata(daySummary.getMetadata());
-        //todo daySummaryState.setArrayData(daySummary.getArrayData());
+        daySummaryState.setArrayData(new HashSet<>(Arrays.asList(daySummary.getArrayData())));
         daySummaryState.setOptionalData(daySummary.getOptionalData());
         return daySummaryState;
     }
 
-
+    
 }
 
