@@ -1,5 +1,7 @@
 # Sui Client CLI Cheatsheet
 
+[ToC]
+
 ## DomainName aggregate
 
 ### Register method
