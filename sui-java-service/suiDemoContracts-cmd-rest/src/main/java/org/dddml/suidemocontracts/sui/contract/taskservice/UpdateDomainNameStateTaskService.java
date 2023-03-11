@@ -12,20 +12,20 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UpdateOrderStateTaskService {
+public class UpdateDomainNameStateTaskService {
 
     @Autowired
-    private SuiOrderService suiOrderService;
+    private SuiDomainNameService suiDomainNameService;
 
     @Autowired
-    private OrderEventRepository orderEventRepository;
+    private DomainNameEventRepository domainNameEventRepository;
 
     @Scheduled(fixedDelay = 10000L)
     public void task() {
         //todo filter by event status...
-        orderEventRepository.findAll().forEach(e -> {
-            String objectId = e.getId();
-            suiOrderService.updateOrderState(objectId);
+        domainNameEventRepository.findAll().forEach(e -> {
+            String objectId = e.getId_();
+            suiDomainNameService.updateDomainNameState(objectId);
             //todo update event status...
         });
     }
