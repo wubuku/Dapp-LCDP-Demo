@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.product;
 
 import java.util.*;
+import java.math.*;
 import java.math.BigInteger;
 import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;

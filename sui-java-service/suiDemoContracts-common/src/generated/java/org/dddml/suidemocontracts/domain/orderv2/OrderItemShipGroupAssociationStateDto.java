@@ -1,7 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
-import java.math.BigInteger;
 import java.util.*;
+import java.math.*;
 import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
