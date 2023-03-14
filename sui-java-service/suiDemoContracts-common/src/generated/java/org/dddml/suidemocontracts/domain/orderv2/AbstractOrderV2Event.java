@@ -418,6 +418,63 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
+    public static class OrderShipGroupAdded extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderShipGroupAdded";
+        }
+
+        public Integer getShipGroupSeqId() {
+            Object val = getDynamicProperties().get("shipGroupSeqId");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setShipGroupSeqId(Integer value) {
+            getDynamicProperties().put("shipGroupSeqId", value);
+        }
+
+        public String getShipmentMethod() {
+            Object val = getDynamicProperties().get("shipmentMethod");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setShipmentMethod(String value) {
+            getDynamicProperties().put("shipmentMethod", value);
+        }
+
+        public String getProductId() {
+            Object val = getDynamicProperties().get("productId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setProductId(String value) {
+            getDynamicProperties().put("productId", value);
+        }
+
+        public BigInteger getQuantity() {
+            Object val = getDynamicProperties().get("quantity");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setQuantity(BigInteger value) {
+            getDynamicProperties().put("quantity", value);
+        }
+
+    }
+
 
 }
 

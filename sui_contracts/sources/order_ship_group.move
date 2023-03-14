@@ -1,12 +1,13 @@
 module sui_contracts::order_ship_group {
     use std::string::String;
-    use sui_contracts::order_item_ship_group_association::{Self, OrderItemShipGroupAssociation};
     use sui::table;
     use sui::tx_context::TxContext;
+    use sui_contracts::order_item_ship_group_association::{Self, OrderItemShipGroupAssociation};
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
     friend sui_contracts::order_v2_update_item_quantity_logic;
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
+    friend sui_contracts::order_v2_add_order_ship_group_logic;
     friend sui_contracts::order_v2;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -35,8 +36,8 @@ module sui_contracts::order_ship_group {
     }
 
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
-        let _order_item_ship_group_association = table::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
-        //order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
+        let order_item_ship_group_association = table::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
+        order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }
 
     public(friend) fun borrow_mut_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String): &mut OrderItemShipGroupAssociation {
@@ -73,7 +74,6 @@ module sui_contracts::order_ship_group {
             shipment_method: _,
             order_item_ship_group_associations,
         } = order_ship_group;
-        //todo let OrderItemShipGroupAssociation has drop abliity?
         table::drop<String, OrderItemShipGroupAssociation>(order_item_ship_group_associations);
     }
 

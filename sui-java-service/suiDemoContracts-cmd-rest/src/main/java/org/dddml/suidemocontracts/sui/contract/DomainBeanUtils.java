@@ -23,6 +23,7 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2Created;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateUpdated;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupAdded;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
@@ -291,6 +292,30 @@ public class DomainBeanUtils {
         orderV2EstimatedShipDateUpdated.setSuiSender(moveEvent.getSender());
 
         return orderV2EstimatedShipDateUpdated;
+    }
+
+    public static AbstractOrderV2Event.OrderShipGroupAdded toOrderShipGroupAdded(SuiMoveEventEnvelope<OrderShipGroupAdded> eventEnvelope) {
+        MoveEvent<OrderShipGroupAdded> moveEvent = eventEnvelope.getEvent().getMoveEvent();
+        OrderShipGroupAdded contractEvent = moveEvent.getFields();
+
+        AbstractOrderV2Event.OrderShipGroupAdded orderShipGroupAdded = new AbstractOrderV2Event.OrderShipGroupAdded();
+        orderShipGroupAdded.setOrderId(contractEvent.getOrderId());
+        orderShipGroupAdded.setId_(contractEvent.getId());
+        orderShipGroupAdded.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
+        orderShipGroupAdded.setShipmentMethod(contractEvent.getShipmentMethod());
+        orderShipGroupAdded.setProductId(contractEvent.getProductId());
+        orderShipGroupAdded.setQuantity(contractEvent.getQuantity());
+        orderShipGroupAdded.setVersion(contractEvent.getVersion());
+
+        orderShipGroupAdded.setSuiTimestamp(eventEnvelope.getTimestamp());
+        orderShipGroupAdded.setSuiTxDigest(eventEnvelope.getTxDigest());
+        orderShipGroupAdded.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+
+        orderShipGroupAdded.setSuiPackageId(moveEvent.getPackageId());
+        orderShipGroupAdded.setSuiTransactionModule(moveEvent.getTransactionModule());
+        orderShipGroupAdded.setSuiSender(moveEvent.getSender());
+
+        return orderShipGroupAdded;
     }
 
     public static AbstractDaySummaryEvent.DaySummaryCreated toDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {

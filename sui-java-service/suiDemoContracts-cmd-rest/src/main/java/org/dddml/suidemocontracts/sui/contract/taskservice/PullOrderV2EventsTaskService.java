@@ -36,4 +36,9 @@ public class PullOrderV2EventsTaskService {
         orderV2EventService.pullOrderV2EstimatedShipDateUpdatedEvents();
     }
 
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-added-fixed-delay:5000}")
+    public void pullOrderShipGroupAddedEvents() {
+        orderV2EventService.pullOrderShipGroupAddedEvents();
+    }
+
 }

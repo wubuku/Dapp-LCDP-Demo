@@ -17,6 +17,7 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2Created;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateUpdated;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupAdded;
 import org.dddml.suidemocontracts.sui.contract.repository.OrderV2EventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -193,6 +194,46 @@ public class OrderV2EventService {
             return;
         }
         orderV2EventRepository.save(orderV2EstimatedShipDateUpdated);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupAddedEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getOrderShipGroupAddedEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<OrderShipGroupAdded> eventPage = suiJsonRpcClient.getMoveEvents(
+                    packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_ADDED,
+                    cursor, limit, false, OrderShipGroupAdded.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<OrderShipGroupAdded> eventEnvelope : eventPage.getData()) {
+                    saveOrderShipGroupAdded(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (cursor == null) {
+                break;
+            }
+        }
+    }
+
+    private EventId getOrderShipGroupAddedEventNextCursor() {
+        AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupAddedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+    }
+
+    private void saveOrderShipGroupAdded(SuiMoveEventEnvelope<OrderShipGroupAdded> eventEnvelope) {
+        AbstractOrderV2Event.OrderShipGroupAdded orderShipGroupAdded = DomainBeanUtils.toOrderShipGroupAdded(eventEnvelope);
+        if (orderV2EventRepository.findById(orderShipGroupAdded.getOrderV2EventId()).isPresent()) {
+            return;
+        }
+        orderV2EventRepository.save(orderShipGroupAdded);
     }
 
 

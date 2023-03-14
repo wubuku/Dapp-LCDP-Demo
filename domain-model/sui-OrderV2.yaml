@@ -102,3 +102,16 @@ aggregates:
             type: Day
         event:
           name: OrderV2EstimatedShipDateUpdated
+
+      AddOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ShipmentMethod:
+            type: String
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderShipGroupAdded

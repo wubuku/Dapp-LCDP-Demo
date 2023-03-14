@@ -21,6 +21,8 @@ public interface OrderV2Aggregate
 
     void updateEstimatedShipDate(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c);
 
+    void addOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.AddOrderShipGroup c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

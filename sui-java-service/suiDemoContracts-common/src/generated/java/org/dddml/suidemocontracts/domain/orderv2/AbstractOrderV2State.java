@@ -224,6 +224,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
             when((AbstractOrderV2Event.OrderV2ItemQuantityUpdated)e);
         } else if (e instanceof AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated) {
             when((AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated)e);
+        } else if (e instanceof AbstractOrderV2Event.OrderShipGroupAdded) {
+            when((AbstractOrderV2Event.OrderShipGroupAdded)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -506,6 +508,61 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //
 //public class UpdateEstimatedShipDateLogic {
 //    public static OrderV2State mutate(OrderV2State orderV2State, Day estimatedShipDate, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+
+    }
+
+    public void when(AbstractOrderV2Event.OrderShipGroupAdded e) {
+        throwOnWrongEvent(e);
+
+        Integer shipGroupSeqId = e.getShipGroupSeqId();
+        Integer ShipGroupSeqId = shipGroupSeqId;
+        String shipmentMethod = e.getShipmentMethod();
+        String ShipmentMethod = shipmentMethod;
+        String productId = e.getProductId();
+        String ProductId = productId;
+        BigInteger quantity = e.getQuantity();
+        BigInteger Quantity = quantity;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        Long suiEventSeq = e.getSuiEventSeq();
+        Long SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.AddOrderShipGroupLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, shipGroupSeqId, shipmentMethod, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class AddOrderShipGroupLogic {
+//    public static OrderV2State mutate(OrderV2State orderV2State, Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<OrderV2State, OrderV2State.MutableOrderV2State> mutationContext) {
 //    }
 //}
 

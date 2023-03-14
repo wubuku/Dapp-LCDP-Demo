@@ -19,6 +19,8 @@ public interface OrderV2ApplicationService
 
     void when(OrderV2Commands.UpdateEstimatedShipDate c);
 
+    void when(OrderV2Commands.AddOrderShipGroup c);
+
     OrderV2State get(String id);
 
     Iterable<OrderV2State> getAll(Integer firstResult, Integer maxResults);

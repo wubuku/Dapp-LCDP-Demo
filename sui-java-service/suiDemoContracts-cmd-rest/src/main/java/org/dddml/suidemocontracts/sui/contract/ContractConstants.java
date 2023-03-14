@@ -36,6 +36,8 @@ public class ContractConstants {
 
     public static final String ORDER_V2_MODULE_ORDER_V2_ESTIMATED_SHIP_DATE_UPDATED = "order_v2::OrderV2EstimatedShipDateUpdated";
 
+    public static final String ORDER_V2_MODULE_ORDER_SHIP_GROUP_ADDED = "order_v2::OrderShipGroupAdded";
+
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
 

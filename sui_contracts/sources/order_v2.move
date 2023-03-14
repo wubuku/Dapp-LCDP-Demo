@@ -7,13 +7,13 @@ module sui_contracts::order_v2 {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
-    //use sui_contracts::order_item_ship_group_association::OrderItemShipGroupAssociation;
     use sui_contracts::order_ship_group::{Self, OrderShipGroup};
     use sui_contracts::order_v2_item::{Self, OrderV2Item};
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
     friend sui_contracts::order_v2_update_item_quantity_logic;
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
+    friend sui_contracts::order_v2_add_order_ship_group_logic;
     friend sui_contracts::order_v2_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -289,6 +289,54 @@ module sui_contracts::order_v2 {
         }
     }
 
+    struct OrderShipGroupAdded has copy, drop {
+        id: object::ID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_id: String,
+        quantity: u64,
+    }
+
+    public fun order_ship_group_added_order_id(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.order_id
+    }
+
+    public fun order_ship_group_added_ship_group_seq_id(order_ship_group_added: &OrderShipGroupAdded): u8 {
+        order_ship_group_added.ship_group_seq_id
+    }
+
+    public fun order_ship_group_added_shipment_method(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.shipment_method
+    }
+
+    public fun order_ship_group_added_product_id(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.product_id
+    }
+
+    public fun order_ship_group_added_quantity(order_ship_group_added: &OrderShipGroupAdded): u64 {
+        order_ship_group_added.quantity
+    }
+
+    public(friend) fun new_order_ship_group_added(
+        order_v2: &OrderV2,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_id: String,
+        quantity: u64,
+    ): OrderShipGroupAdded {
+        OrderShipGroupAdded {
+            id: id(order_v2),
+            order_id: order_id(order_v2),
+            version: version(order_v2),
+            ship_group_seq_id,
+            shipment_method,
+            product_id,
+            quantity,
+        }
+    }
+
 
     public(friend) fun create_order_v2(
         id: UID,
@@ -356,6 +404,10 @@ module sui_contracts::order_v2 {
 
     public(friend) fun emit_order_v2_estimated_ship_date_updated(order_v2_estimated_ship_date_updated: OrderV2EstimatedShipDateUpdated) {
         event::emit(order_v2_estimated_ship_date_updated);
+    }
+
+    public(friend) fun emit_order_ship_group_added(order_ship_group_added: OrderShipGroupAdded) {
+        event::emit(order_ship_group_added);
     }
 
     #[test_only]

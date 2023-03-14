@@ -4,6 +4,7 @@ module sui_contracts::order_v2_aggregate {
     use sui_contracts::day::{Self, Day};
     use sui_contracts::month;
     use sui_contracts::order_v2;
+    use sui_contracts::order_v2_add_order_ship_group_logic;
     use sui_contracts::order_v2_create_logic;
     use sui_contracts::order_v2_remove_item_logic;
     use sui_contracts::order_v2_update_estimated_ship_date_logic;
@@ -112,6 +113,32 @@ module sui_contracts::order_v2_aggregate {
         );
         order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
         order_v2::emit_order_v2_estimated_ship_date_updated(order_v2_estimated_ship_date_updated);
+    }
+
+
+    public entry fun add_order_ship_group(
+        order_v2: order_v2::OrderV2,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_id: String,
+        quantity: u64,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        let order_ship_group_added = order_v2_add_order_ship_group_logic::verify(
+            ship_group_seq_id,
+            shipment_method,
+            product_id,
+            quantity,
+            &order_v2,
+            ctx,
+        );
+        let updated_order_v2 = order_v2_add_order_ship_group_logic::mutate(
+            &order_ship_group_added,
+            order_v2,
+            ctx,
+        );
+        order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
+        order_v2::emit_order_ship_group_added(order_ship_group_added);
     }
 
 }

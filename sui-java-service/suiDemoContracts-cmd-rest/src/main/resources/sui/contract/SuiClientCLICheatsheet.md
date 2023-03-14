@@ -90,6 +90,14 @@ sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function up
 --gas-budget 100000
 ```
 
+### AddOrderShipGroup method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function add_order_ship_group \
+--args order_v2::orderv2_order_v2 u8_ship_group_seq_id \"string_shipment_method\" \"string_product_id\" \"u64_quantity\" \
+--gas-budget 100000
+```
+
 ## DaySummary aggregate
 
 ### Create method

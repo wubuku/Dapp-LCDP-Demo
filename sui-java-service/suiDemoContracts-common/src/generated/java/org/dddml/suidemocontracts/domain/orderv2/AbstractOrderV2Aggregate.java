@@ -90,6 +90,18 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             apply(e);
         }
 
+        @Override
+        public void addOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.AddOrderShipGroup c) {
+            try {
+                verifyAddOrderShipGroup(shipGroupSeqId, shipmentMethod, productId, quantity, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderShipGroupAdded(shipGroupSeqId, shipmentMethod, productId, quantity, offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
         protected void verifyCreate(String product, BigInteger quantity, OrderV2Commands.Create c) {
             String Product = product;
             BigInteger Quantity = quantity;
@@ -172,6 +184,29 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
         }
            
 
+        protected void verifyAddOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, OrderV2Commands.AddOrderShipGroup c) {
+            Integer ShipGroupSeqId = shipGroupSeqId;
+            String ShipmentMethod = shipmentMethod;
+            String ProductId = productId;
+            BigInteger Quantity = quantity;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.orderv2.AddOrderShipGroupLogic",
+                    "verify",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), shipGroupSeqId, shipmentMethod, productId, quantity, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.orderv2;
+//
+//public class AddOrderShipGroupLogic {
+//    public static void verify(OrderV2State orderV2State, Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
         protected AbstractOrderV2Event.OrderV2Created newOrderV2Created(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
             OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), null);
             AbstractOrderV2Event.OrderV2Created e = new AbstractOrderV2Event.OrderV2Created();
@@ -248,6 +283,31 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated e = new AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated();
 
             e.setEstimatedShipDate(estimatedShipDate);
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderV2EventId(eventId);
+            return e;
+        }
+
+        protected AbstractOrderV2Event.OrderShipGroupAdded newOrderShipGroupAdded(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
+            OrderV2EventId eventId = new OrderV2EventId(getState().getOrderId(), null);
+            AbstractOrderV2Event.OrderShipGroupAdded e = new AbstractOrderV2Event.OrderShipGroupAdded();
+
+            e.setShipGroupSeqId(shipGroupSeqId);
+            e.setShipmentMethod(shipmentMethod);
+            e.setProductId(productId);
+            e.setQuantity(quantity);
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
