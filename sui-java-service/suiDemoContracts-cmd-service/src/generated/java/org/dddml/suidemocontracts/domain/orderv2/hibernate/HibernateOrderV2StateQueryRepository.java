@@ -27,7 +27,7 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
         return this.sessionFactory.getCurrentSession();
     }
     
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "TotalAmount", "EstimatedShipDate", "Items", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderId", "TotalAmount", "EstimatedShipDate", "Items", "OrderShipGroups", "Version", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -144,6 +144,39 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
         Criteria criteria = getCurrentSession().createCriteria(AbstractOrderV2ItemState.SimpleOrderV2ItemState.class);
         org.hibernate.criterion.Junction partIdCondition = org.hibernate.criterion.Restrictions.conjunction()
             .add(org.hibernate.criterion.Restrictions.eq("orderV2ItemId.orderV2OrderId", orderV2OrderId))
+            ;
+        HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, 0, Integer.MAX_VALUE);
+        return criteria.add(partIdCondition).list();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderShipGroupState getOrderShipGroup(String orderV2OrderId, Integer shipGroupSeqId) {
+        OrderV2OrderShipGroupId entityId = new OrderV2OrderShipGroupId(orderV2OrderId, shipGroupSeqId);
+        return (OrderShipGroupState) getCurrentSession().get(AbstractOrderShipGroupState.SimpleOrderShipGroupState.class, entityId);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<OrderShipGroupState> getOrderShipGroups(String orderV2OrderId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        Criteria criteria = getCurrentSession().createCriteria(AbstractOrderShipGroupState.SimpleOrderShipGroupState.class);
+        org.hibernate.criterion.Junction partIdCondition = org.hibernate.criterion.Restrictions.conjunction()
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderShipGroupId.orderV2OrderId", orderV2OrderId))
+            ;
+        HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, 0, Integer.MAX_VALUE);
+        return criteria.add(partIdCondition).list();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderItemShipGroupAssociationState getOrderItemShipGroupAssociation(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String productId) {
+        OrderV2OrderItemShipGroupAssociationId entityId = new OrderV2OrderItemShipGroupAssociationId(orderV2OrderId, orderShipGroupShipGroupSeqId, productId);
+        return (OrderItemShipGroupAssociationState) getCurrentSession().get(AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState.class, entityId);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<OrderItemShipGroupAssociationState> getOrderItemShipGroupAssociations(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState.class);
+        org.hibernate.criterion.Junction partIdCondition = org.hibernate.criterion.Restrictions.conjunction()
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderItemShipGroupAssociationId.orderV2OrderId", orderV2OrderId))
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId", orderShipGroupShipGroupSeqId))
             ;
         HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, 0, Integer.MAX_VALUE);
         return criteria.add(partIdCondition).list();

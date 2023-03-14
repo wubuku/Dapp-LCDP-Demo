@@ -31,5 +31,13 @@ public interface OrderV2StateQueryRepository
 
     Iterable<OrderV2ItemState> getOrderV2Items(String orderV2OrderId, Criterion filter, List<String> orders);
 
+    OrderShipGroupState getOrderShipGroup(String orderV2OrderId, Integer shipGroupSeqId);
+
+    Iterable<OrderShipGroupState> getOrderShipGroups(String orderV2OrderId, Criterion filter, List<String> orders);
+
+    OrderItemShipGroupAssociationState getOrderItemShipGroupAssociation(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String productId);
+
+    Iterable<OrderItemShipGroupAssociationState> getOrderItemShipGroupAssociations(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, Criterion filter, List<String> orders);
+
 }
 

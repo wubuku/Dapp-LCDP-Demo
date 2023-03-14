@@ -7,6 +7,8 @@ module sui_contracts::order_v2 {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
+    //use sui_contracts::order_item_ship_group_association::OrderItemShipGroupAssociation;
+    use sui_contracts::order_ship_group::{Self, OrderShipGroup};
     use sui_contracts::order_v2_item::{Self, OrderV2Item};
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
@@ -43,7 +45,8 @@ module sui_contracts::order_v2 {
         version: u64,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
-        items: table::Table<String, OrderV2Item>
+        items: table::Table<String, OrderV2Item>,
+        order_ship_groups: table::Table<u8, OrderShipGroup>,
     }
 
     public fun id(order_v2: &OrderV2): object::ID {
@@ -100,6 +103,32 @@ module sui_contracts::order_v2 {
         table::length(&order_v2.items)
     }
 
+    public(friend) fun add_order_ship_group(order_v2: &mut OrderV2, order_ship_group: OrderShipGroup) {
+        let key = order_ship_group::ship_group_seq_id(&order_ship_group);
+        table::add(&mut order_v2.order_ship_groups, key, order_ship_group);
+    }
+
+    public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
+        let order_ship_group = table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id);
+        order_ship_group::drop_order_ship_group(order_ship_group);
+    }
+
+    public(friend) fun borrow_mut_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8): &mut OrderShipGroup {
+        table::borrow_mut(&mut order_v2.order_ship_groups, ship_group_seq_id)
+    }
+
+    public fun borrow_order_ship_group(order_v2: &OrderV2, ship_group_seq_id: u8): &OrderShipGroup {
+        table::borrow(&order_v2.order_ship_groups, ship_group_seq_id)
+    }
+
+    public fun order_ship_groups_contains(order_v2: &OrderV2, ship_group_seq_id: u8): bool {
+        table::contains(&order_v2.order_ship_groups, ship_group_seq_id)
+    }
+
+    public fun order_ship_groups_length(order_v2: &OrderV2): u64 {
+        table::length(&order_v2.order_ship_groups)
+    }
+
     fun new_order_v2(
         id: UID,
         order_id: String,
@@ -114,6 +143,7 @@ module sui_contracts::order_v2 {
             total_amount,
             estimated_ship_date,
             items: table::new<String, OrderV2Item>(ctx),
+            order_ship_groups: table::new<u8, OrderShipGroup>(ctx),
         }
     }
 

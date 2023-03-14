@@ -143,6 +143,16 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.items = items;
     }
 
+    private EntityStateCollection<Integer, OrderShipGroupState> orderShipGroups;
+
+    public EntityStateCollection<Integer, OrderShipGroupState> getOrderShipGroups() {
+        return this.orderShipGroups;
+    }
+
+    public void setOrderShipGroups(EntityStateCollection<Integer, OrderShipGroupState> orderShipGroups) {
+        this.orderShipGroups = orderShipGroups;
+    }
+
     private Boolean stateReadOnly;
 
     public Boolean getStateReadOnly() { return this.stateReadOnly; }
@@ -183,6 +193,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     
     protected void initializeProperties() {
         items = new SimpleOrderV2ItemStateCollection(this);
+        orderShipGroups = new SimpleOrderShipGroupStateCollection(this);
     }
 
     @Override
@@ -255,6 +266,40 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                     for (String i : removedStateIds) {
                         OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(i);
                         ((AbstractOrderV2ItemStateCollection)this.getItems()).remove(thisInnerState);
+                    }
+                }
+            }
+        }
+
+        if (s.getOrderShipGroups() != null) {
+            Iterable<OrderShipGroupState> iterable;
+            if (s.getOrderShipGroups().isLazy()) {
+                iterable = s.getOrderShipGroups().getLoadedStates();
+            } else {
+                iterable = s.getOrderShipGroups();
+            }
+            if (iterable != null) {
+                for (OrderShipGroupState ss : iterable) {
+                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
+                    ((AbstractOrderShipGroupState) thisInnerState).merge(ss);
+                }
+            }
+        }
+        if (s.getOrderShipGroups() != null) {
+            if (s.getOrderShipGroups() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
+                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getOrderShipGroups()).getRemovedStates() != null) {
+                    for (OrderShipGroupState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)s.getOrderShipGroups()).getRemovedStates()) {
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
+                        ((AbstractOrderShipGroupStateCollection)this.getOrderShipGroups()).remove(thisInnerState);
+                    }
+                }
+            } else {
+                if (s.getOrderShipGroups().isAllLoaded()) {
+                    Set<Integer> removedStateIds = new HashSet<>(this.getOrderShipGroups().stream().map(i -> i.getShipGroupSeqId()).collect(java.util.stream.Collectors.toList()));
+                    s.getOrderShipGroups().forEach(i -> removedStateIds.remove(i.getShipGroupSeqId()));
+                    for (Integer i : removedStateIds) {
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(i);
+                        ((AbstractOrderShipGroupStateCollection)this.getOrderShipGroups()).remove(thisInnerState);
                     }
                 }
             }
@@ -470,6 +515,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void save() {
         ((Saveable)items).save();
 
+        ((Saveable)orderShipGroups).save();
+
     }
 
     protected void throwOnWrongEvent(OrderV2Event event) {
@@ -505,6 +552,12 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
     static class SimpleOrderV2ItemStateCollection extends AbstractOrderV2ItemStateCollection {
         public SimpleOrderV2ItemStateCollection(AbstractOrderV2State outerState) {
+            super(outerState);
+        }
+    }
+
+    static class SimpleOrderShipGroupStateCollection extends AbstractOrderShipGroupStateCollection {
+        public SimpleOrderShipGroupStateCollection(AbstractOrderV2State outerState) {
             super(outerState);
         }
     }

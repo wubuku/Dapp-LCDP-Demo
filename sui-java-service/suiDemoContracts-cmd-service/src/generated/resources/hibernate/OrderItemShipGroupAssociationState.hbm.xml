@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
-  <class name="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2ItemState$SimpleOrderV2ItemState" table="order_v2_item">
-    <composite-id name="orderV2ItemId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2ItemId">
+  <class name="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" table="order_item_ship_group_association">
+    <composite-id name="orderV2OrderItemShipGroupAssociationId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2OrderItemShipGroupAssociationId">
       <key-property name="orderV2OrderId">
-        <column name="order_v2_item_id_order_v2_order_id" length="50" />
+        <column name="order_v2_order_item_ship_group_association_id_order_v2_order_id" length="50" />
+      </key-property>
+      <key-property name="orderShipGroupShipGroupSeqId">
+        <column name="order_v2_ship_group_seq_id" />
       </key-property>
       <key-property name="productId">
-        <column name="order_v2_item_id_product_id" length="100" />
+        <column name="order_v2_item_ship_group_assoc_product_id" length="100" />
       </key-property>
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(20,0)" />
     </property>
-    <property name="itemAmount">
-      <column name="item_amount" sql-type="DECIMAL(20,0)" />
+    <property name="cancelQuantity">
+      <column name="cancel_quantity" sql-type="DECIMAL(20,0)" />
     </property>
     <property name="createdBy">
       <column name="created_by" />

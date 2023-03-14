@@ -13,6 +13,10 @@ import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.OrderV2;
 import org.dddml.suidemocontracts.sui.contract.OrderV2Item;
 import org.dddml.suidemocontracts.sui.contract.OrderV2ItemDynamicField;
+import org.dddml.suidemocontracts.sui.contract.OrderShipGroup;
+import org.dddml.suidemocontracts.sui.contract.OrderShipGroupDynamicField;
+import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssociation;
+import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssociationDynamicField;
 
 import java.util.*;
 import java.math.*;
@@ -24,14 +28,20 @@ public class SuiOrderV2StateRetriever {
 
     private Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory;
     private BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory;
+    private BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory;
+    private BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory;
 
     public SuiOrderV2StateRetriever(SuiJsonRpcClient suiJsonRpcClient,
                                   Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory,
-                                  BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory
+                                  BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory,
+                                  BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory,
+                                  BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory
     ) {
         this.suiJsonRpcClient = suiJsonRpcClient;
         this.orderV2StateFactory = orderV2StateFactory;
         this.orderV2ItemStateFactory = orderV2ItemStateFactory;
+        this.orderShipGroupStateFactory = orderShipGroupStateFactory;
+        this.orderItemShipGroupAssociationStateFactory = orderItemShipGroupAssociationStateFactory;
     }
 
     public OrderV2State retrieveOrderV2State(String objectId) {
@@ -55,6 +65,12 @@ public class SuiOrderV2StateRetriever {
             orderV2State.getItems().add(toOrderV2ItemState(orderV2State, i));
         }
 
+        String orderShipGroupTableId = orderV2.getOrderShipGroups().getFields().getId().getId();
+        List<OrderShipGroup> orderShipGroups = getOrderShipGroups(orderShipGroupTableId);
+        for (OrderShipGroup i : orderShipGroups) {
+            orderV2State.getOrderShipGroups().add(toOrderShipGroupState(orderV2State, i));
+        }
+
         return orderV2State;
     }
 
@@ -63,6 +79,25 @@ public class SuiOrderV2StateRetriever {
         orderV2ItemState.setQuantity(orderV2Item.getQuantity());
         orderV2ItemState.setItemAmount(orderV2Item.getItemAmount());
         return orderV2ItemState;
+    }
+
+    private OrderShipGroupState toOrderShipGroupState(OrderV2State orderV2State, OrderShipGroup orderShipGroup) {
+        OrderShipGroupState.MutableOrderShipGroupState orderShipGroupState = orderShipGroupStateFactory.apply(orderV2State, orderShipGroup.getShipGroupSeqId());
+        orderShipGroupState.setShipmentMethod(orderShipGroup.getShipmentMethod());
+        String orderItemShipGroupAssociationTableId = orderShipGroup.getOrderItemShipGroupAssociations().getFields().getId().getId();
+        List<OrderItemShipGroupAssociation> orderItemShipGroupAssociations = getOrderItemShipGroupAssociations(orderItemShipGroupAssociationTableId);
+        for (OrderItemShipGroupAssociation i : orderItemShipGroupAssociations) {
+            orderShipGroupState.getOrderItemShipGroupAssociations().add(toOrderItemShipGroupAssociationState(orderShipGroupState, i));
+        }
+
+        return orderShipGroupState;
+    }
+
+    private OrderItemShipGroupAssociationState toOrderItemShipGroupAssociationState(OrderShipGroupState orderShipGroupState, OrderItemShipGroupAssociation orderItemShipGroupAssociation) {
+        OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState orderItemShipGroupAssociationState = orderItemShipGroupAssociationStateFactory.apply(orderShipGroupState, orderItemShipGroupAssociation.getProductId());
+        orderItemShipGroupAssociationState.setQuantity(orderItemShipGroupAssociation.getQuantity());
+        orderItemShipGroupAssociationState.setCancelQuantity(orderItemShipGroupAssociation.getCancelQuantity());
+        return orderItemShipGroupAssociationState;
     }
 
     private List<OrderV2Item> getOrderV2Items(String orderV2ItemTableId) {
@@ -85,6 +120,50 @@ public class SuiOrderV2StateRetriever {
             }
         }
         return orderV2Items;
+    }
+
+    private List<OrderShipGroup> getOrderShipGroups(String orderShipGroupTableId) {
+        List<OrderShipGroup> orderShipGroups = new ArrayList<>();
+        String cursor = null;
+        while (true) {
+            DynamicFieldPage orderShipGroupFieldPage = suiJsonRpcClient.getDynamicFields(orderShipGroupTableId, cursor, null);
+            for (DynamicFieldInfo orderShipGroupFieldInfo : orderShipGroupFieldPage.getData()) {
+            
+                String fieldObjectId = orderShipGroupFieldInfo.getObjectId();
+                GetMoveObjectDataResponse<OrderShipGroupDynamicField> getOrderShipGroupFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderShipGroupDynamicField.class);
+                OrderShipGroup orderShipGroup = getOrderShipGroupFieldResponse
+                        .getDetails().getData().getFields().getValue().getFields();
+                orderShipGroups.add(orderShipGroup);
+            }
+            cursor = orderShipGroupFieldPage.getNextCursor();
+            if (cursor == null) {
+                break;
+            }
+        }
+        return orderShipGroups;
+    }
+
+    private List<OrderItemShipGroupAssociation> getOrderItemShipGroupAssociations(String orderItemShipGroupAssociationTableId) {
+        List<OrderItemShipGroupAssociation> orderItemShipGroupAssociations = new ArrayList<>();
+        String cursor = null;
+        while (true) {
+            DynamicFieldPage orderItemShipGroupAssociationFieldPage = suiJsonRpcClient.getDynamicFields(orderItemShipGroupAssociationTableId, cursor, null);
+            for (DynamicFieldInfo orderItemShipGroupAssociationFieldInfo : orderItemShipGroupAssociationFieldPage.getData()) {
+            
+                String fieldObjectId = orderItemShipGroupAssociationFieldInfo.getObjectId();
+                GetMoveObjectDataResponse<OrderItemShipGroupAssociationDynamicField> getOrderItemShipGroupAssociationFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderItemShipGroupAssociationDynamicField.class);
+                OrderItemShipGroupAssociation orderItemShipGroupAssociation = getOrderItemShipGroupAssociationFieldResponse
+                        .getDetails().getData().getFields().getValue().getFields();
+                orderItemShipGroupAssociations.add(orderItemShipGroupAssociation);
+            }
+            cursor = orderItemShipGroupAssociationFieldPage.getNextCursor();
+            if (cursor == null) {
+                break;
+            }
+        }
+        return orderItemShipGroupAssociations;
     }
 
     

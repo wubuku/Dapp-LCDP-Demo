@@ -324,6 +324,108 @@ public class OrderV2Resource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    /**
+     * 查看.
+     * 获取指定 ShipGroupSeqId 的 OrderShipGroup
+     */
+    @GetMapping("{orderId}/OrderShipGroups/{shipGroupSeqId}")
+    public OrderShipGroupStateDto getOrderShipGroup(@PathVariable("orderId") String orderId, @PathVariable("shipGroupSeqId") Integer shipGroupSeqId) {
+        try {
+
+            OrderShipGroupState state = orderV2ApplicationService.getOrderShipGroup(orderId, shipGroupSeqId);
+            if (state == null) { return null; }
+            OrderShipGroupStateDto.DtoConverter dtoConverter = new OrderShipGroupStateDto.DtoConverter();
+            OrderShipGroupStateDto stateDto = dtoConverter.toOrderShipGroupStateDto(state);
+            dtoConverter.setAllFieldsReturned(true);
+            return stateDto;
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * OrderShipGroup List
+     */
+    @GetMapping("{orderId}/OrderShipGroups")
+    public OrderShipGroupStateDto[] getOrderShipGroups(@PathVariable("orderId") String orderId,
+                    @RequestParam(value = "sort", required = false) String sort,
+                    @RequestParam(value = "fields", required = false) String fields,
+                    @RequestParam(value = "filter", required = false) String filter,
+                     HttpServletRequest request) {
+        try {
+            CriterionDto criterion = null;
+            if (!StringHelper.isNullOrEmpty(filter)) {
+                criterion = JSON.parseObject(filter, CriterionDto.class);
+            } else {
+                criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
+                    .filter(kv -> OrderV2ResourceUtils.getOrderShipGroupFilterPropertyName(kv.getKey()) != null)
+                    .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
+            }
+            Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
+                n -> (OrderShipGroupMetadata.aliasMap.containsKey(n) ? OrderShipGroupMetadata.aliasMap.get(n) : n));
+            Iterable<OrderShipGroupState> states = orderV2ApplicationService.getOrderShipGroups(orderId, c,
+                    OrderV2ResourceUtils.getOrderShipGroupQuerySorts(request.getParameterMap()));
+            if (states == null) { return null; }
+            OrderShipGroupStateDto.DtoConverter dtoConverter = new OrderShipGroupStateDto.DtoConverter();
+            if (StringHelper.isNullOrEmpty(fields)) {
+                dtoConverter.setAllFieldsReturned(true);
+            } else {
+                dtoConverter.setReturnedFieldsString(fields);
+            }
+            return dtoConverter.toOrderShipGroupStateDtoArray(states);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * 查看.
+     * 获取指定 ProductId 的 OrderItemShipGroupAssociation
+     */
+    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{productId}")
+    public OrderItemShipGroupAssociationStateDto getOrderItemShipGroupAssociation(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("productId") String productId) {
+        try {
+
+            OrderItemShipGroupAssociationState state = orderV2ApplicationService.getOrderItemShipGroupAssociation(orderId, orderShipGroupShipGroupSeqId, productId);
+            if (state == null) { return null; }
+            OrderItemShipGroupAssociationStateDto.DtoConverter dtoConverter = new OrderItemShipGroupAssociationStateDto.DtoConverter();
+            OrderItemShipGroupAssociationStateDto stateDto = dtoConverter.toOrderItemShipGroupAssociationStateDto(state);
+            dtoConverter.setAllFieldsReturned(true);
+            return stateDto;
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * OrderItemShipGroupAssociation List
+     */
+    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations")
+    public OrderItemShipGroupAssociationStateDto[] getOrderItemShipGroupAssociations(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId,
+                    @RequestParam(value = "sort", required = false) String sort,
+                    @RequestParam(value = "fields", required = false) String fields,
+                    @RequestParam(value = "filter", required = false) String filter,
+                     HttpServletRequest request) {
+        try {
+            CriterionDto criterion = null;
+            if (!StringHelper.isNullOrEmpty(filter)) {
+                criterion = JSON.parseObject(filter, CriterionDto.class);
+            } else {
+                criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
+                    .filter(kv -> OrderV2ResourceUtils.getOrderItemShipGroupAssociationFilterPropertyName(kv.getKey()) != null)
+                    .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
+            }
+            Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
+                n -> (OrderItemShipGroupAssociationMetadata.aliasMap.containsKey(n) ? OrderItemShipGroupAssociationMetadata.aliasMap.get(n) : n));
+            Iterable<OrderItemShipGroupAssociationState> states = orderV2ApplicationService.getOrderItemShipGroupAssociations(orderId, orderShipGroupShipGroupSeqId, c,
+                    OrderV2ResourceUtils.getOrderItemShipGroupAssociationQuerySorts(request.getParameterMap()));
+            if (states == null) { return null; }
+            OrderItemShipGroupAssociationStateDto.DtoConverter dtoConverter = new OrderItemShipGroupAssociationStateDto.DtoConverter();
+            if (StringHelper.isNullOrEmpty(fields)) {
+                dtoConverter.setAllFieldsReturned(true);
+            } else {
+                dtoConverter.setReturnedFieldsString(fields);
+            }
+            return dtoConverter.toOrderItemShipGroupAssociationStateDtoArray(states);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 
 
     //protected  OrderV2StateEventDtoConverter getOrderV2StateEventDtoConverter() {
@@ -348,6 +450,24 @@ public class OrderV2Resource {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
                 return OrderV2ResourceUtils.getOrderV2ItemFilterPropertyType(propertyName);
+            }
+        };
+    }
+
+    protected PropertyTypeResolver getOrderShipGroupPropertyTypeResolver() {
+        return new PropertyTypeResolver() {
+            @Override
+            public Class resolveTypeByPropertyName(String propertyName) {
+                return OrderV2ResourceUtils.getOrderShipGroupFilterPropertyType(propertyName);
+            }
+        };
+    }
+
+    protected PropertyTypeResolver getOrderItemShipGroupAssociationPropertyTypeResolver() {
+        return new PropertyTypeResolver() {
+            @Override
+            public Class resolveTypeByPropertyName(String propertyName) {
+                return OrderV2ResourceUtils.getOrderItemShipGroupAssociationFilterPropertyType(propertyName);
             }
         };
     }
@@ -454,6 +574,102 @@ public class OrderV2Resource {
                     String pName = getOrderV2ItemFilterPropertyName(key);
                     if (!StringHelper.isNullOrEmpty(pName)) {
                         Class pClass = getOrderV2ItemFilterPropertyType(pName);
+                        filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
+                    }
+                }
+            });
+            return filter.entrySet();
+        }
+
+        public static List<String> getOrderShipGroupQueryOrders(String str, String separator) {
+            return QueryParamUtils.getQueryOrders(str, separator, OrderShipGroupMetadata.aliasMap);
+        }
+
+        public static List<String> getOrderShipGroupQuerySorts(Map<String, String[]> queryNameValuePairs) {
+            String[] values = queryNameValuePairs.get("sort");
+            return QueryParamUtils.getQuerySorts(values, OrderShipGroupMetadata.aliasMap);
+        }
+
+        public static String getOrderShipGroupFilterPropertyName(String fieldName) {
+            if ("sort".equalsIgnoreCase(fieldName)
+                    || "firstResult".equalsIgnoreCase(fieldName)
+                    || "maxResults".equalsIgnoreCase(fieldName)
+                    || "fields".equalsIgnoreCase(fieldName)) {
+                return null;
+            }
+            if (OrderShipGroupMetadata.aliasMap.containsKey(fieldName)) {
+                return OrderShipGroupMetadata.aliasMap.get(fieldName);
+            }
+            return null;
+        }
+
+        public static Class getOrderShipGroupFilterPropertyType(String propertyName) {
+            if (OrderShipGroupMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = OrderShipGroupMetadata.propertyTypeMap.get(propertyName);
+                if (!StringHelper.isNullOrEmpty(propertyType)) {
+                    if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
+                        return BoundedContextMetadata.CLASS_MAP.get(propertyType);
+                    }
+                }
+            }
+            return String.class;
+        }
+
+        public static Iterable<Map.Entry<String, Object>> getOrderShipGroupQueryFilterMap(Map<String, String[]> queryNameValuePairs) {
+            Map<String, Object> filter = new HashMap<>();
+            queryNameValuePairs.forEach((key, values) -> {
+                if (values.length > 0) {
+                    String pName = getOrderShipGroupFilterPropertyName(key);
+                    if (!StringHelper.isNullOrEmpty(pName)) {
+                        Class pClass = getOrderShipGroupFilterPropertyType(pName);
+                        filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
+                    }
+                }
+            });
+            return filter.entrySet();
+        }
+
+        public static List<String> getOrderItemShipGroupAssociationQueryOrders(String str, String separator) {
+            return QueryParamUtils.getQueryOrders(str, separator, OrderItemShipGroupAssociationMetadata.aliasMap);
+        }
+
+        public static List<String> getOrderItemShipGroupAssociationQuerySorts(Map<String, String[]> queryNameValuePairs) {
+            String[] values = queryNameValuePairs.get("sort");
+            return QueryParamUtils.getQuerySorts(values, OrderItemShipGroupAssociationMetadata.aliasMap);
+        }
+
+        public static String getOrderItemShipGroupAssociationFilterPropertyName(String fieldName) {
+            if ("sort".equalsIgnoreCase(fieldName)
+                    || "firstResult".equalsIgnoreCase(fieldName)
+                    || "maxResults".equalsIgnoreCase(fieldName)
+                    || "fields".equalsIgnoreCase(fieldName)) {
+                return null;
+            }
+            if (OrderItemShipGroupAssociationMetadata.aliasMap.containsKey(fieldName)) {
+                return OrderItemShipGroupAssociationMetadata.aliasMap.get(fieldName);
+            }
+            return null;
+        }
+
+        public static Class getOrderItemShipGroupAssociationFilterPropertyType(String propertyName) {
+            if (OrderItemShipGroupAssociationMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = OrderItemShipGroupAssociationMetadata.propertyTypeMap.get(propertyName);
+                if (!StringHelper.isNullOrEmpty(propertyType)) {
+                    if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
+                        return BoundedContextMetadata.CLASS_MAP.get(propertyType);
+                    }
+                }
+            }
+            return String.class;
+        }
+
+        public static Iterable<Map.Entry<String, Object>> getOrderItemShipGroupAssociationQueryFilterMap(Map<String, String[]> queryNameValuePairs) {
+            Map<String, Object> filter = new HashMap<>();
+            queryNameValuePairs.forEach((key, values) -> {
+                if (values.length > 0) {
+                    String pName = getOrderItemShipGroupAssociationFilterPropertyName(key);
+                    if (!StringHelper.isNullOrEmpty(pName)) {
+                        Class pClass = getOrderItemShipGroupAssociationFilterPropertyType(pName);
                         filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
                     }
                 }

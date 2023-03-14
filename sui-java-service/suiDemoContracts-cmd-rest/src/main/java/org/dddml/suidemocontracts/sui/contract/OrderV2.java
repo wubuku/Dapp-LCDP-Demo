@@ -29,6 +29,8 @@ public class OrderV2 {
 
     private Table items;
 
+    private Table orderShipGroups;
+
     public UID getId() {
         return id;
     }
@@ -85,6 +87,14 @@ public class OrderV2 {
         this.items = items;
     }
 
+    public Table getOrderShipGroups() {
+        return orderShipGroups;
+    }
+
+    public void setOrderShipGroups(Table orderShipGroups) {
+        this.orderShipGroups = orderShipGroups;
+    }
+
     @Override
     public String toString() {
         return "OrderV2{" +
@@ -95,6 +105,7 @@ public class OrderV2 {
                 ", estimatedShipDate=" + estimatedShipDate +
                 ", version=" + version +
                 ", items=" + items +
+                ", orderShipGroups=" + orderShipGroups +
                 '}';
     }
 }

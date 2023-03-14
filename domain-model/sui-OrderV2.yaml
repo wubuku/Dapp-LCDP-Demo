@@ -14,17 +14,44 @@ aggregates:
         optional: true
       Items:
         itemType: OrderV2Item
+      OrderShipGroups:
+        itemType: OrderShipGroup
 
     entities:
       OrderV2Item:
         id:
           name: ProductId
           type: String
+          length: 100
         properties:
           Quantity:
             type: u64
           ItemAmount:
             type: u128
+
+      OrderShipGroup:
+        id:
+          name: ShipGroupSeqId
+          type: u8
+          columnName: order_v2_ship_group_seq_id
+        properties:
+          ShipmentMethod:
+            type: String
+          OrderItemShipGroupAssociations:
+            itemType: OrderItemShipGroupAssociation
+
+        entities:
+          OrderItemShipGroupAssociation:
+            id:
+              name: ProductId
+              type: String
+              length: 100
+              columnName: order_v2_item_ship_group_assoc_product_id
+            properties:
+              Quantity:
+                type: u64
+              CancelQuantity:
+                type: u64
 
     methods:
       Create:

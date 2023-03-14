@@ -154,10 +154,22 @@ public class OrderV2StateDto
         this.items = items;
     }
 
+    private OrderShipGroupStateDto[] orderShipGroups;
+
+    public OrderShipGroupStateDto[] getOrderShipGroups()
+    {
+        return this.orderShipGroups;
+    }	
+
+    public void setOrderShipGroups(OrderShipGroupStateDto[] orderShipGroups)
+    {
+        this.orderShipGroups = orderShipGroups;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
-        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"Items"});
+        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"Items", "OrderShipGroups"});
 
         @Override
         protected boolean isCollectionField(String fieldName) {
@@ -227,6 +239,18 @@ public class OrderV2StateDto
                     }
                 }
                 dto.setItems(arrayList.toArray(new OrderV2ItemStateDto[0]));
+            }
+            if (returnedFieldsContains("OrderShipGroups")) {
+                ArrayList<OrderShipGroupStateDto> arrayList = new ArrayList();
+                if (state.getOrderShipGroups() != null) {
+                    OrderShipGroupStateDto.DtoConverter conv = new OrderShipGroupStateDto.DtoConverter();
+                    String returnFS = CollectionUtils.mapGetValueIgnoringCase(getReturnedFields(), "OrderShipGroups");
+                    if(returnFS != null) { conv.setReturnedFieldsString(returnFS); } else { conv.setAllFieldsReturned(this.getAllFieldsReturned()); }
+                    for (OrderShipGroupState s : state.getOrderShipGroups()) {
+                        arrayList.add(conv.toOrderShipGroupStateDto(s));
+                    }
+                }
+                dto.setOrderShipGroups(arrayList.toArray(new OrderShipGroupStateDto[0]));
             }
             return dto;
         }

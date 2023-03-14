@@ -36,6 +36,8 @@ public interface OrderV2State extends VersionedSuiMoveObject
 
     EntityStateCollection<String, OrderV2ItemState> getItems();
 
+    EntityStateCollection<Integer, OrderShipGroupState> getOrderShipGroups();
+
     interface MutableOrderV2State extends OrderV2State, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setOrderId(String orderId);
 

@@ -209,6 +209,32 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         }
     }
 
+    protected OrderShipGroupEventDao getOrderShipGroupEventDao() {
+        return (OrderShipGroupEventDao)ApplicationContext.current.get("orderShipGroupEventDao");
+    }
+
+    protected OrderShipGroupEventId newOrderShipGroupEventId(Integer shipGroupSeqId)
+    {
+        OrderShipGroupEventId eventId = new OrderShipGroupEventId(this.getOrderV2EventId().getOrderId(), 
+            shipGroupSeqId, 
+            this.getOrderV2EventId().getVersion());
+        return eventId;
+    }
+
+    protected void throwOnInconsistentEventIds(OrderShipGroupEvent.SqlOrderShipGroupEvent e)
+    {
+        throwOnInconsistentEventIds(this, e);
+    }
+
+    public static void throwOnInconsistentEventIds(OrderV2Event.SqlOrderV2Event oe, OrderShipGroupEvent.SqlOrderShipGroupEvent e)
+    {
+        if (!oe.getOrderV2EventId().getOrderId().equals(e.getOrderShipGroupEventId().getOrderV2OrderId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id OrderId %1$s but inner id OrderV2OrderId %2$s", 
+                oe.getOrderV2EventId().getOrderId(), e.getOrderShipGroupEventId().getOrderV2OrderId());
+        }
+    }
+
 
     public abstract String getEventType();
 

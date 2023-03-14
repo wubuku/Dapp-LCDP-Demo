@@ -15,7 +15,7 @@ module sui_contracts::order {
         id: UID,
         version: u64,
         total_amount: u128,
-        items: table::Table<String, OrderItem>
+        items: table::Table<String, OrderItem>,
     }
 
     public fun id(order: &Order): object::ID {
