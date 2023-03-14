@@ -15,6 +15,8 @@ module sui_contracts::order_v2 {
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
     friend sui_contracts::order_v2_add_order_ship_group_logic;
     friend sui_contracts::order_v2_cancel_order_ship_group_quantity_logic;
+    friend sui_contracts::order_v2_remove_order_ship_group_item_logic;
+    friend sui_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_contracts::order_v2_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -379,6 +381,67 @@ module sui_contracts::order_v2 {
         }
     }
 
+    struct OrderShipGroupItemRemoved has copy, drop {
+        id: object::ID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_id: String,
+    }
+
+    public fun order_ship_group_item_removed_order_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
+        order_ship_group_item_removed.order_id
+    }
+
+    public fun order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): u8 {
+        order_ship_group_item_removed.ship_group_seq_id
+    }
+
+    public fun order_ship_group_item_removed_product_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
+        order_ship_group_item_removed.product_id
+    }
+
+    public(friend) fun new_order_ship_group_item_removed(
+        order_v2: &OrderV2,
+        ship_group_seq_id: u8,
+        product_id: String,
+    ): OrderShipGroupItemRemoved {
+        OrderShipGroupItemRemoved {
+            id: id(order_v2),
+            order_id: order_id(order_v2),
+            version: version(order_v2),
+            ship_group_seq_id,
+            product_id,
+        }
+    }
+
+    struct OrderShipGroupRemoved has copy, drop {
+        id: object::ID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+    }
+
+    public fun order_ship_group_removed_order_id(order_ship_group_removed: &OrderShipGroupRemoved): String {
+        order_ship_group_removed.order_id
+    }
+
+    public fun order_ship_group_removed_ship_group_seq_id(order_ship_group_removed: &OrderShipGroupRemoved): u8 {
+        order_ship_group_removed.ship_group_seq_id
+    }
+
+    public(friend) fun new_order_ship_group_removed(
+        order_v2: &OrderV2,
+        ship_group_seq_id: u8,
+    ): OrderShipGroupRemoved {
+        OrderShipGroupRemoved {
+            id: id(order_v2),
+            order_id: order_id(order_v2),
+            version: version(order_v2),
+            ship_group_seq_id,
+        }
+    }
+
 
     public(friend) fun create_order_v2(
         id: UID,
@@ -454,6 +517,14 @@ module sui_contracts::order_v2 {
 
     public(friend) fun emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) {
         event::emit(order_ship_group_quantity_canceled);
+    }
+
+    public(friend) fun emit_order_ship_group_item_removed(order_ship_group_item_removed: OrderShipGroupItemRemoved) {
+        event::emit(order_ship_group_item_removed);
+    }
+
+    public(friend) fun emit_order_ship_group_removed(order_ship_group_removed: OrderShipGroupRemoved) {
+        event::emit(order_ship_group_removed);
     }
 
     #[test_only]

@@ -21,4 +21,8 @@ public interface OrderV2EventRepository extends JpaRepository<AbstractOrderV2Eve
 
     AbstractOrderV2Event.OrderShipGroupQuantityCanceled findFirstOrderShipGroupQuantityCanceledByOrderBySuiTimestampDesc();
 
+    AbstractOrderV2Event.OrderShipGroupItemRemoved findFirstOrderShipGroupItemRemovedByOrderBySuiTimestampDesc();
+
+    AbstractOrderV2Event.OrderShipGroupRemoved findFirstOrderShipGroupRemovedByOrderBySuiTimestampDesc();
+
 }

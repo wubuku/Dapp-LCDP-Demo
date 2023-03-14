@@ -25,6 +25,10 @@ public interface OrderV2Aggregate
 
     void cancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.CancelOrderShipGroupQuantity c);
 
+    void removeOrderShipGroupItem(Integer shipGroupSeqId, String productId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveOrderShipGroupItem c);
+
+    void removeOrderShipGroup(Integer shipGroupSeqId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveOrderShipGroup c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

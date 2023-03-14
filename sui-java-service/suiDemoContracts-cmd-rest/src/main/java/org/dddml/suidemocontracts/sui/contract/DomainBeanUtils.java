@@ -25,6 +25,8 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemQuantityUpdate
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupAdded;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupQuantityCanceled;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupItemRemoved;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupRemoved;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
@@ -340,6 +342,49 @@ public class DomainBeanUtils {
         orderShipGroupQuantityCanceled.setSuiSender(moveEvent.getSender());
 
         return orderShipGroupQuantityCanceled;
+    }
+
+    public static AbstractOrderV2Event.OrderShipGroupItemRemoved toOrderShipGroupItemRemoved(SuiMoveEventEnvelope<OrderShipGroupItemRemoved> eventEnvelope) {
+        MoveEvent<OrderShipGroupItemRemoved> moveEvent = eventEnvelope.getEvent().getMoveEvent();
+        OrderShipGroupItemRemoved contractEvent = moveEvent.getFields();
+
+        AbstractOrderV2Event.OrderShipGroupItemRemoved orderShipGroupItemRemoved = new AbstractOrderV2Event.OrderShipGroupItemRemoved();
+        orderShipGroupItemRemoved.setOrderId(contractEvent.getOrderId());
+        orderShipGroupItemRemoved.setId_(contractEvent.getId());
+        orderShipGroupItemRemoved.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
+        orderShipGroupItemRemoved.setProductId(contractEvent.getProductId());
+        orderShipGroupItemRemoved.setVersion(contractEvent.getVersion());
+
+        orderShipGroupItemRemoved.setSuiTimestamp(eventEnvelope.getTimestamp());
+        orderShipGroupItemRemoved.setSuiTxDigest(eventEnvelope.getTxDigest());
+        orderShipGroupItemRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+
+        orderShipGroupItemRemoved.setSuiPackageId(moveEvent.getPackageId());
+        orderShipGroupItemRemoved.setSuiTransactionModule(moveEvent.getTransactionModule());
+        orderShipGroupItemRemoved.setSuiSender(moveEvent.getSender());
+
+        return orderShipGroupItemRemoved;
+    }
+
+    public static AbstractOrderV2Event.OrderShipGroupRemoved toOrderShipGroupRemoved(SuiMoveEventEnvelope<OrderShipGroupRemoved> eventEnvelope) {
+        MoveEvent<OrderShipGroupRemoved> moveEvent = eventEnvelope.getEvent().getMoveEvent();
+        OrderShipGroupRemoved contractEvent = moveEvent.getFields();
+
+        AbstractOrderV2Event.OrderShipGroupRemoved orderShipGroupRemoved = new AbstractOrderV2Event.OrderShipGroupRemoved();
+        orderShipGroupRemoved.setOrderId(contractEvent.getOrderId());
+        orderShipGroupRemoved.setId_(contractEvent.getId());
+        orderShipGroupRemoved.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
+        orderShipGroupRemoved.setVersion(contractEvent.getVersion());
+
+        orderShipGroupRemoved.setSuiTimestamp(eventEnvelope.getTimestamp());
+        orderShipGroupRemoved.setSuiTxDigest(eventEnvelope.getTxDigest());
+        orderShipGroupRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+
+        orderShipGroupRemoved.setSuiPackageId(moveEvent.getPackageId());
+        orderShipGroupRemoved.setSuiTransactionModule(moveEvent.getTransactionModule());
+        orderShipGroupRemoved.setSuiSender(moveEvent.getSender());
+
+        return orderShipGroupRemoved;
     }
 
     public static AbstractDaySummaryEvent.DaySummaryCreated toDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {

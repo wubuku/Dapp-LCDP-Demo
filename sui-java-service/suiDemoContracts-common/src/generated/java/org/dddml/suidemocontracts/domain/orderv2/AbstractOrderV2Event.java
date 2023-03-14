@@ -520,6 +520,60 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
+    public static class OrderShipGroupItemRemoved extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderShipGroupItemRemoved";
+        }
+
+        public Integer getShipGroupSeqId() {
+            Object val = getDynamicProperties().get("shipGroupSeqId");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setShipGroupSeqId(Integer value) {
+            getDynamicProperties().put("shipGroupSeqId", value);
+        }
+
+        public String getProductId() {
+            Object val = getDynamicProperties().get("productId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setProductId(String value) {
+            getDynamicProperties().put("productId", value);
+        }
+
+    }
+
+    public static class OrderShipGroupRemoved extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderShipGroupRemoved";
+        }
+
+        public Integer getShipGroupSeqId() {
+            Object val = getDynamicProperties().get("shipGroupSeqId");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setShipGroupSeqId(Integer value) {
+            getDynamicProperties().put("shipGroupSeqId", value);
+        }
+
+    }
+
 
 }
 

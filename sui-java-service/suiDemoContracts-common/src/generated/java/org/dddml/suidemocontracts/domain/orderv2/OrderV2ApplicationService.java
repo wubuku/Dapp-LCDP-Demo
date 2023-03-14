@@ -23,6 +23,10 @@ public interface OrderV2ApplicationService
 
     void when(OrderV2Commands.CancelOrderShipGroupQuantity c);
 
+    void when(OrderV2Commands.RemoveOrderShipGroupItem c);
+
+    void when(OrderV2Commands.RemoveOrderShipGroup c);
+
     OrderV2State get(String id);
 
     Iterable<OrderV2State> getAll(Integer firstResult, Integer maxResults);

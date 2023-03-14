@@ -407,5 +407,120 @@ public class OrderV2Commands
 
     }
 
+    public static class RemoveOrderShipGroupItem extends AbstractOrderV2Command implements OrderV2Command {
+
+        public String getCommandType() {
+            return "RemoveOrderShipGroupItem";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Ship Group Seq Id
+         */
+        private Integer shipGroupSeqId;
+
+        public Integer getShipGroupSeqId() {
+            return this.shipGroupSeqId;
+        }
+
+        public void setShipGroupSeqId(Integer shipGroupSeqId) {
+            this.shipGroupSeqId = shipGroupSeqId;
+        }
+
+        /**
+         * Product Id
+         */
+        private String productId;
+
+        public String getProductId() {
+            return this.productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
+    public static class RemoveOrderShipGroup extends AbstractOrderV2Command implements OrderV2Command {
+
+        public String getCommandType() {
+            return "RemoveOrderShipGroup";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Order Id
+         */
+        private String orderId;
+
+        public String getOrderId() {
+            return this.orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        /**
+         * Ship Group Seq Id
+         */
+        private Integer shipGroupSeqId;
+
+        public Integer getShipGroupSeqId() {
+            return this.shipGroupSeqId;
+        }
+
+        public void setShipGroupSeqId(Integer shipGroupSeqId) {
+            this.shipGroupSeqId = shipGroupSeqId;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
 }
 

@@ -46,4 +46,14 @@ public class PullOrderV2EventsTaskService {
         orderV2EventService.pullOrderShipGroupQuantityCanceledEvents();
     }
 
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-item-removed-fixed-delay:5000}")
+    public void pullOrderShipGroupItemRemovedEvents() {
+        orderV2EventService.pullOrderShipGroupItemRemovedEvents();
+    }
+
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-removed-fixed-delay:5000}")
+    public void pullOrderShipGroupRemovedEvents() {
+        orderV2EventService.pullOrderShipGroupRemovedEvents();
+    }
+
 }

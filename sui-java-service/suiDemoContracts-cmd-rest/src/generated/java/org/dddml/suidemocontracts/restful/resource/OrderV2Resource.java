@@ -269,6 +269,42 @@ public class OrderV2Resource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{orderId}/_commands/RemoveOrderShipGroupItem")
+    public void removeOrderShipGroupItem(@PathVariable("orderId") String orderId, @RequestBody OrderV2Commands.RemoveOrderShipGroupItem content) {
+        try {
+
+            OrderV2Commands.RemoveOrderShipGroupItem cmd = content;//.toRemoveOrderShipGroupItem();
+            String idObj = orderId;
+            if (cmd.getOrderId() == null) {
+                cmd.setOrderId(idObj);
+            } else if (!cmd.getOrderId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getOrderId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            orderV2ApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
+    @PutMapping("{orderId}/_commands/RemoveOrderShipGroup")
+    public void removeOrderShipGroup(@PathVariable("orderId") String orderId, @RequestBody OrderV2Commands.RemoveOrderShipGroup content) {
+        try {
+
+            OrderV2Commands.RemoveOrderShipGroup cmd = content;//.toRemoveOrderShipGroup();
+            String idObj = orderId;
+            if (cmd.getOrderId() == null) {
+                cmd.setOrderId(idObj);
+            } else if (!cmd.getOrderId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getOrderId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            orderV2ApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

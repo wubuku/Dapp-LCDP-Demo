@@ -106,6 +106,22 @@ sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function ca
 --gas-budget 100000
 ```
 
+### RemoveOrderShipGroupItem method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function remove_order_ship_group_item \
+--args order_v2::orderv2_order_v2 u8_ship_group_seq_id \"string_product_id\" \
+--gas-budget 100000
+```
+
+### RemoveOrderShipGroup method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function remove_order_ship_group \
+--args order_v2::orderv2_order_v2 u8_ship_group_seq_id \
+--gas-budget 100000
+```
+
 ## DaySummary aggregate
 
 ### Create method

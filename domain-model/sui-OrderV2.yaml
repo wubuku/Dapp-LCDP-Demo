@@ -126,3 +126,20 @@ aggregates:
             type: u64
         event:
           name: OrderShipGroupQuantityCanceled
+
+      RemoveOrderShipGroupItem:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ProductId:
+            type: String
+        event:
+          name: OrderShipGroupItemRemoved
+
+      RemoveOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+        event:
+          name: OrderShipGroupRemoved
+

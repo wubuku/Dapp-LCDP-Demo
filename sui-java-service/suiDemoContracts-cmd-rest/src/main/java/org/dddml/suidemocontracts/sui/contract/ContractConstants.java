@@ -40,6 +40,10 @@ public class ContractConstants {
 
     public static final String ORDER_V2_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED = "order_v2::OrderShipGroupQuantityCanceled";
 
+    public static final String ORDER_V2_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED = "order_v2::OrderShipGroupItemRemoved";
+
+    public static final String ORDER_V2_MODULE_ORDER_SHIP_GROUP_REMOVED = "order_v2::OrderShipGroupRemoved";
+
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
 

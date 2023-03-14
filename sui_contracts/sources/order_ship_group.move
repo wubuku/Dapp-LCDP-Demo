@@ -9,6 +9,8 @@ module sui_contracts::order_ship_group {
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
     friend sui_contracts::order_v2_add_order_ship_group_logic;
     friend sui_contracts::order_v2_cancel_order_ship_group_quantity_logic;
+    friend sui_contracts::order_v2_remove_order_ship_group_item_logic;
+    friend sui_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_contracts::order_v2;
 
     const EID_ALREADY_EXISTS: u64 = 101;

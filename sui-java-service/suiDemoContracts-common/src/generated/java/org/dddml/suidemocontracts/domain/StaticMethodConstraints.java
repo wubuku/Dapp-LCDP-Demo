@@ -113,6 +113,22 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupItemLogic",
+                    "verify",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, VerificationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productId"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupLogic",
+                    "verify",
+                    new Class[]{OrderV2State.class, Integer.class, VerificationContext.class},
+                    new String[]{"_", "shipGroupSeqId"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "verify",
                     new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, VerificationContext.class},
@@ -213,6 +229,22 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new String[]{"_", "shipGroupSeqId", "productId", "cancelQuantity", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupItemLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productId", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, Integer.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
 

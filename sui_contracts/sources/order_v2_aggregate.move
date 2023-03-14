@@ -8,6 +8,8 @@ module sui_contracts::order_v2_aggregate {
     use sui_contracts::order_v2_cancel_order_ship_group_quantity_logic;
     use sui_contracts::order_v2_create_logic;
     use sui_contracts::order_v2_remove_item_logic;
+    use sui_contracts::order_v2_remove_order_ship_group_item_logic;
+    use sui_contracts::order_v2_remove_order_ship_group_logic;
     use sui_contracts::order_v2_update_estimated_ship_date_logic;
     use sui_contracts::order_v2_update_item_quantity_logic;
     use sui_contracts::product::Product;
@@ -164,6 +166,48 @@ module sui_contracts::order_v2_aggregate {
         );
         order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
         order_v2::emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled);
+    }
+
+
+    public entry fun remove_order_ship_group_item(
+        order_v2: order_v2::OrderV2,
+        ship_group_seq_id: u8,
+        product_id: String,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        let order_ship_group_item_removed = order_v2_remove_order_ship_group_item_logic::verify(
+            ship_group_seq_id,
+            product_id,
+            &order_v2,
+            ctx,
+        );
+        let updated_order_v2 = order_v2_remove_order_ship_group_item_logic::mutate(
+            &order_ship_group_item_removed,
+            order_v2,
+            ctx,
+        );
+        order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
+        order_v2::emit_order_ship_group_item_removed(order_ship_group_item_removed);
+    }
+
+
+    public entry fun remove_order_ship_group(
+        order_v2: order_v2::OrderV2,
+        ship_group_seq_id: u8,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        let order_ship_group_removed = order_v2_remove_order_ship_group_logic::verify(
+            ship_group_seq_id,
+            &order_v2,
+            ctx,
+        );
+        let updated_order_v2 = order_v2_remove_order_ship_group_logic::mutate(
+            &order_ship_group_removed,
+            order_v2,
+            ctx,
+        );
+        order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
+        order_v2::emit_order_ship_group_removed(order_ship_group_removed);
     }
 
 }
