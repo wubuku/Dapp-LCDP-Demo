@@ -29,9 +29,9 @@ public class SuiOrderV2Service {
                 (orderV2State, productId) -> (OrderV2ItemState.MutableOrderV2ItemState)
                         ((AbstractOrderV2ItemStateCollection) orderV2State.getItems()).getOrAdd(productId),
                 (orderV2State, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
-                        ((AbstractOrderShipGroupStateCollection) orderV2State.getItems()).getOrAdd(shipGroupSeqId),
+                        ((AbstractOrderShipGroupStateCollection) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
-                        ((AbstractOrderItemShipGroupAssociationStateCollection) orderShipGroupState.getItems()).getOrAdd(productId)
+                        ((AbstractOrderItemShipGroupAssociationStateCollection) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId)
         );
     }
 

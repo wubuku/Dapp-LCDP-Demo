@@ -34,6 +34,8 @@ public class M {
         typeToAggMap.put("Product", "Product");
         typeToAggMap.put("OrderV2", "OrderV2");
         typeToAggMap.put("OrderV2Item", "OrderV2");
+        typeToAggMap.put("OrderShipGroup", "OrderV2");
+        typeToAggMap.put("OrderItemShipGroupAssociation", "OrderV2");
         typeToAggMap.put("DaySummary", "DaySummary");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
@@ -110,6 +112,7 @@ public class M {
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);
         clsMap.put("UID", String.class);
+        clsMap.put("address", String.class);
         CLASS_MAP = clsMap;
     }
 
@@ -124,7 +127,7 @@ public class M {
     private DomainNameMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -147,6 +150,7 @@ public class M {
     public static final String[] propertyNames = new String[] {
             "expirationDate",
             "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -158,6 +162,7 @@ public class M {
     };
 
     public static final String[] propertyTypes = new String[] {
+            "BigInteger",
             "BigInteger",
             "Long",
             "String",
@@ -186,6 +191,8 @@ public class M {
         aliasMap.put("ExpirationDate", "expirationDate");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -219,7 +226,7 @@ public class M {
     private OrderMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -233,6 +240,7 @@ public class M {
             "id",
             "totalAmount",
             "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -243,6 +251,7 @@ public class M {
 
     public static final String[] propertyTypes = new String[] {
             "String",
+            "BigInteger",
             "BigInteger",
             "Long",
             "String",
@@ -271,6 +280,8 @@ public class M {
         aliasMap.put("TotalAmount", "totalAmount");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -300,7 +311,7 @@ public class M {
     private OrderItemMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -312,7 +323,7 @@ public class M {
             "productId",
             "quantity",
             "itemAmount",
-            "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -358,8 +369,8 @@ public class M {
         aliasMap.put("Quantity", "quantity");
         aliasMap.put("itemAmount", "itemAmount");
         aliasMap.put("ItemAmount", "itemAmount");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -395,7 +406,7 @@ public class M {
     private ProductMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -410,6 +421,7 @@ public class M {
             "name",
             "unitPrice",
             "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -421,6 +433,7 @@ public class M {
     public static final String[] propertyTypes = new String[] {
             "String",
             "String",
+            "BigInteger",
             "BigInteger",
             "Long",
             "String",
@@ -451,6 +464,8 @@ public class M {
         aliasMap.put("UnitPrice", "unitPrice");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -480,7 +495,7 @@ public class M {
     private OrderV2Metadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -494,6 +509,7 @@ public class M {
             "orderId",
             "totalAmount",
             "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -510,6 +526,7 @@ public class M {
 
     public static final String[] propertyTypes = new String[] {
             "String",
+            "BigInteger",
             "BigInteger",
             "Long",
             "String",
@@ -544,6 +561,8 @@ public class M {
         aliasMap.put("TotalAmount", "totalAmount");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -593,7 +612,7 @@ public class M {
     private OrderV2ItemMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -605,7 +624,7 @@ public class M {
             "productId",
             "quantity",
             "itemAmount",
-            "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -651,8 +670,8 @@ public class M {
         aliasMap.put("Quantity", "quantity");
         aliasMap.put("itemAmount", "itemAmount");
         aliasMap.put("ItemAmount", "itemAmount");
-        aliasMap.put("version", "version");
-        aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
@@ -683,12 +702,206 @@ public class M {
 
 
   // /////////////////////////////////////////////////////////  
+  public static class OrderShipGroupMetadata {
+
+    private OrderShipGroupMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "shipGroupSeqId",
+            "shipmentMethod",
+            "offChainVersion",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "orderV2OrderId",
+            "orderV2OrderShipGroupId.orderV2OrderId",
+            "orderV2OrderShipGroupId.shipGroupSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "Integer",
+            "String",
+            "Long",
+            "String",
+            "Date",
+            "String",
+            "Date",
+            "Boolean",
+            "Boolean",
+            "String",
+            "String",
+            "Integer",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static  void initAliasMap() {
+        aliasMap.put("shipGroupSeqId", "orderV2OrderShipGroupId.shipGroupSeqId");
+        aliasMap.put("ShipGroupSeqId", "orderV2OrderShipGroupId.shipGroupSeqId");
+        aliasMap.put("shipmentMethod", "shipmentMethod");
+        aliasMap.put("ShipmentMethod", "shipmentMethod");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("orderV2OrderId", "orderV2OrderShipGroupId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderId", "orderV2OrderShipGroupId.orderV2OrderId");
+        aliasMap.put("orderV2OrderShipGroupId.orderV2OrderId", "orderV2OrderShipGroupId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderShipGroupId.OrderV2OrderId", "orderV2OrderShipGroupId.orderV2OrderId");
+        aliasMap.put("orderV2OrderShipGroupId.shipGroupSeqId", "orderV2OrderShipGroupId.shipGroupSeqId");
+        aliasMap.put("OrderV2OrderShipGroupId.ShipGroupSeqId", "orderV2OrderShipGroupId.shipGroupSeqId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class OrderItemShipGroupAssociationMetadata {
+
+    private OrderItemShipGroupAssociationMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "productId",
+            "quantity",
+            "cancelQuantity",
+            "offChainVersion",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "orderV2OrderId",
+            "orderShipGroupShipGroupSeqId",
+            "orderV2OrderItemShipGroupAssociationId.orderV2OrderId",
+            "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId",
+            "orderV2OrderItemShipGroupAssociationId.productId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "String",
+            "BigInteger",
+            "BigInteger",
+            "Long",
+            "String",
+            "Date",
+            "String",
+            "Date",
+            "Boolean",
+            "Boolean",
+            "String",
+            "Integer",
+            "String",
+            "Integer",
+            "String",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static  void initAliasMap() {
+        aliasMap.put("productId", "orderV2OrderItemShipGroupAssociationId.productId");
+        aliasMap.put("ProductId", "orderV2OrderItemShipGroupAssociationId.productId");
+        aliasMap.put("quantity", "quantity");
+        aliasMap.put("Quantity", "quantity");
+        aliasMap.put("cancelQuantity", "cancelQuantity");
+        aliasMap.put("CancelQuantity", "cancelQuantity");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("orderV2OrderId", "orderV2OrderItemShipGroupAssociationId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderId", "orderV2OrderItemShipGroupAssociationId.orderV2OrderId");
+        aliasMap.put("orderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("orderV2OrderItemShipGroupAssociationId.orderV2OrderId", "orderV2OrderItemShipGroupAssociationId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssociationId.OrderV2OrderId", "orderV2OrderItemShipGroupAssociationId.orderV2OrderId");
+        aliasMap.put("orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssociationId.OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("orderV2OrderItemShipGroupAssociationId.productId", "orderV2OrderItemShipGroupAssociationId.productId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssociationId.ProductId", "orderV2OrderItemShipGroupAssociationId.productId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
   public static class DaySummaryMetadata {
 
     private DaySummaryMetadata() {
     }
 
-    public static final String PROPERTY_NAME_VERSION      = "version";
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
     public static final String PROPERTY_NAME_ACTIVE       = "active";
     public static final String PROPERTY_NAME_DELETED      = "deleted";
     public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
@@ -713,6 +926,7 @@ public class M {
             "metadata",
             "optionalData",
             "version",
+            "offChainVersion",
             "createdBy",
             "createdAt",
             "updatedBy",
@@ -731,6 +945,7 @@ public class M {
             "String",
             "int[]",
             "int[]",
+            "BigInteger",
             "Long",
             "String",
             "Date",
@@ -766,6 +981,8 @@ public class M {
         aliasMap.put("OptionalData", "optionalData");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
         aliasMap.put("createdBy", "createdBy");
         aliasMap.put("CreatedBy", "createdBy");
         aliasMap.put("createdAt", "createdAt");
