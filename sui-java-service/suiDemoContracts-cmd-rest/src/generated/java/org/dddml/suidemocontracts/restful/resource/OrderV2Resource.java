@@ -251,6 +251,24 @@ public class OrderV2Resource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{orderId}/_commands/CancelOrderShipGroupQuantity")
+    public void cancelOrderShipGroupQuantity(@PathVariable("orderId") String orderId, @RequestBody OrderV2Commands.CancelOrderShipGroupQuantity content) {
+        try {
+
+            OrderV2Commands.CancelOrderShipGroupQuantity cmd = content;//.toCancelOrderShipGroupQuantity();
+            String idObj = orderId;
+            if (cmd.getOrderId() == null) {
+                cmd.setOrderId(idObj);
+            } else if (!cmd.getOrderId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getOrderId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            orderV2ApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

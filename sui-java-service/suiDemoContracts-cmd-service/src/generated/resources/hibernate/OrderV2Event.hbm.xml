@@ -51,6 +51,7 @@
       <subclass name="AbstractOrderV2Event$OrderV2ItemQuantityUpdated" discriminator-value="OrderV2ItemQuantityUpdated" />
       <subclass name="AbstractOrderV2Event$OrderV2EstimatedShipDateUpdated" discriminator-value="OrderV2EstimatedShipDateUpdated" />
       <subclass name="AbstractOrderV2Event$OrderShipGroupAdded" discriminator-value="OrderShipGroupAdded" />
+      <subclass name="AbstractOrderV2Event$OrderShipGroupQuantityCanceled" discriminator-value="OrderShipGroupQuantityCanceled" />
     </subclass>
   </class>
 </hibernate-mapping>

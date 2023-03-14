@@ -475,6 +475,51 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
+    public static class OrderShipGroupQuantityCanceled extends OrderV2ClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderShipGroupQuantityCanceled";
+        }
+
+        public Integer getShipGroupSeqId() {
+            Object val = getDynamicProperties().get("shipGroupSeqId");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setShipGroupSeqId(Integer value) {
+            getDynamicProperties().put("shipGroupSeqId", value);
+        }
+
+        public String getProductId() {
+            Object val = getDynamicProperties().get("productId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setProductId(String value) {
+            getDynamicProperties().put("productId", value);
+        }
+
+        public BigInteger getCancelQuantity() {
+            Object val = getDynamicProperties().get("cancelQuantity");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setCancelQuantity(BigInteger value) {
+            getDynamicProperties().put("cancelQuantity", value);
+        }
+
+    }
+
 
 }
 

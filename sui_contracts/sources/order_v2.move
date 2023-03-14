@@ -14,6 +14,7 @@ module sui_contracts::order_v2 {
     friend sui_contracts::order_v2_update_item_quantity_logic;
     friend sui_contracts::order_v2_update_estimated_ship_date_logic;
     friend sui_contracts::order_v2_add_order_ship_group_logic;
+    friend sui_contracts::order_v2_cancel_order_ship_group_quantity_logic;
     friend sui_contracts::order_v2_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -337,6 +338,47 @@ module sui_contracts::order_v2 {
         }
     }
 
+    struct OrderShipGroupQuantityCanceled has copy, drop {
+        id: object::ID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_id: String,
+        cancel_quantity: u64,
+    }
+
+    public fun order_ship_group_quantity_canceled_order_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
+        order_ship_group_quantity_canceled.order_id
+    }
+
+    public fun order_ship_group_quantity_canceled_ship_group_seq_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u8 {
+        order_ship_group_quantity_canceled.ship_group_seq_id
+    }
+
+    public fun order_ship_group_quantity_canceled_product_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
+        order_ship_group_quantity_canceled.product_id
+    }
+
+    public fun order_ship_group_quantity_canceled_cancel_quantity(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u64 {
+        order_ship_group_quantity_canceled.cancel_quantity
+    }
+
+    public(friend) fun new_order_ship_group_quantity_canceled(
+        order_v2: &OrderV2,
+        ship_group_seq_id: u8,
+        product_id: String,
+        cancel_quantity: u64,
+    ): OrderShipGroupQuantityCanceled {
+        OrderShipGroupQuantityCanceled {
+            id: id(order_v2),
+            order_id: order_id(order_v2),
+            version: version(order_v2),
+            ship_group_seq_id,
+            product_id,
+            cancel_quantity,
+        }
+    }
+
 
     public(friend) fun create_order_v2(
         id: UID,
@@ -408,6 +450,10 @@ module sui_contracts::order_v2 {
 
     public(friend) fun emit_order_ship_group_added(order_ship_group_added: OrderShipGroupAdded) {
         event::emit(order_ship_group_added);
+    }
+
+    public(friend) fun emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) {
+        event::emit(order_ship_group_quantity_canceled);
     }
 
     #[test_only]

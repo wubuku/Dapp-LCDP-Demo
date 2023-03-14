@@ -105,6 +105,14 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.CancelOrderShipGroupQuantityLogic",
+                    "verify",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productId", "cancelQuantity"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "verify",
                     new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, VerificationContext.class},
@@ -197,6 +205,14 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productId", "quantity", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.orderv2.CancelOrderShipGroupQuantityLogic",
+                    "mutate",
+                    new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productId", "cancelQuantity", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
 

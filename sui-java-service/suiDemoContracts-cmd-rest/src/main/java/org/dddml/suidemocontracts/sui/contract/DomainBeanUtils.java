@@ -24,6 +24,7 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupAdded;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupQuantityCanceled;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
@@ -316,6 +317,29 @@ public class DomainBeanUtils {
         orderShipGroupAdded.setSuiSender(moveEvent.getSender());
 
         return orderShipGroupAdded;
+    }
+
+    public static AbstractOrderV2Event.OrderShipGroupQuantityCanceled toOrderShipGroupQuantityCanceled(SuiMoveEventEnvelope<OrderShipGroupQuantityCanceled> eventEnvelope) {
+        MoveEvent<OrderShipGroupQuantityCanceled> moveEvent = eventEnvelope.getEvent().getMoveEvent();
+        OrderShipGroupQuantityCanceled contractEvent = moveEvent.getFields();
+
+        AbstractOrderV2Event.OrderShipGroupQuantityCanceled orderShipGroupQuantityCanceled = new AbstractOrderV2Event.OrderShipGroupQuantityCanceled();
+        orderShipGroupQuantityCanceled.setOrderId(contractEvent.getOrderId());
+        orderShipGroupQuantityCanceled.setId_(contractEvent.getId());
+        orderShipGroupQuantityCanceled.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
+        orderShipGroupQuantityCanceled.setProductId(contractEvent.getProductId());
+        orderShipGroupQuantityCanceled.setCancelQuantity(contractEvent.getCancelQuantity());
+        orderShipGroupQuantityCanceled.setVersion(contractEvent.getVersion());
+
+        orderShipGroupQuantityCanceled.setSuiTimestamp(eventEnvelope.getTimestamp());
+        orderShipGroupQuantityCanceled.setSuiTxDigest(eventEnvelope.getTxDigest());
+        orderShipGroupQuantityCanceled.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+
+        orderShipGroupQuantityCanceled.setSuiPackageId(moveEvent.getPackageId());
+        orderShipGroupQuantityCanceled.setSuiTransactionModule(moveEvent.getTransactionModule());
+        orderShipGroupQuantityCanceled.setSuiSender(moveEvent.getSender());
+
+        return orderShipGroupQuantityCanceled;
     }
 
     public static AbstractDaySummaryEvent.DaySummaryCreated toDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {

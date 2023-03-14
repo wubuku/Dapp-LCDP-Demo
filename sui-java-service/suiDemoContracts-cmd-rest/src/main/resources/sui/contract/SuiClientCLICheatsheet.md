@@ -98,6 +98,14 @@ sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function ad
 --gas-budget 100000
 ```
 
+### CancelOrderShipGroupQuantity method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module order_v2_aggregate --function cancel_order_ship_group_quantity \
+--args order_v2::orderv2_order_v2 u8_ship_group_seq_id \"string_product_id\" \"u64_cancel_quantity\" \
+--gas-budget 100000
+```
+
 ## DaySummary aggregate
 
 ### Create method

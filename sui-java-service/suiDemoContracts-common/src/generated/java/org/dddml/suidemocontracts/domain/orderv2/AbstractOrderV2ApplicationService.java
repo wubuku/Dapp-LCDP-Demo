@@ -66,6 +66,10 @@ public abstract class AbstractOrderV2ApplicationService implements OrderV2Applic
         update(c, ar -> ar.addOrderShipGroup(c.getShipGroupSeqId(), c.getShipmentMethod(), c.getProductId(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(OrderV2Commands.CancelOrderShipGroupQuantity c) {
+        update(c, ar -> ar.cancelOrderShipGroupQuantity(c.getShipGroupSeqId(), c.getProductId(), c.getCancelQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public OrderV2State get(String id) {
         OrderV2State state = getStateRepository().get(id, true);
         return state;

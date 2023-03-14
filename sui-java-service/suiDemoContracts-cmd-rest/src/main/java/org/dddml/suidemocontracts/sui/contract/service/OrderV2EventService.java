@@ -18,6 +18,7 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2EstimatedShipDateUpdated;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupAdded;
+import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupQuantityCanceled;
 import org.dddml.suidemocontracts.sui.contract.repository.OrderV2EventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -234,6 +235,46 @@ public class OrderV2EventService {
             return;
         }
         orderV2EventRepository.save(orderShipGroupAdded);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupQuantityCanceledEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getOrderShipGroupQuantityCanceledEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<OrderShipGroupQuantityCanceled> eventPage = suiJsonRpcClient.getMoveEvents(
+                    packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED,
+                    cursor, limit, false, OrderShipGroupQuantityCanceled.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<OrderShipGroupQuantityCanceled> eventEnvelope : eventPage.getData()) {
+                    saveOrderShipGroupQuantityCanceled(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (cursor == null) {
+                break;
+            }
+        }
+    }
+
+    private EventId getOrderShipGroupQuantityCanceledEventNextCursor() {
+        AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupQuantityCanceledByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+    }
+
+    private void saveOrderShipGroupQuantityCanceled(SuiMoveEventEnvelope<OrderShipGroupQuantityCanceled> eventEnvelope) {
+        AbstractOrderV2Event.OrderShipGroupQuantityCanceled orderShipGroupQuantityCanceled = DomainBeanUtils.toOrderShipGroupQuantityCanceled(eventEnvelope);
+        if (orderV2EventRepository.findById(orderShipGroupQuantityCanceled.getOrderV2EventId()).isPresent()) {
+            return;
+        }
+        orderV2EventRepository.save(orderShipGroupQuantityCanceled);
     }
 
 
