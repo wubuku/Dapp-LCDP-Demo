@@ -45,6 +45,7 @@ module sui_contracts::order_v2_add_order_ship_group_logic {
             order_v2::order_ship_group_added_product_id(order_ship_group_added),
             order_v2::order_ship_group_added_quantity(order_ship_group_added),
             0,
+            ctx,
         );
         order_ship_group::add_order_item_ship_group_association(&mut order_ship_group, assc);
         order_v2::add_order_ship_group(

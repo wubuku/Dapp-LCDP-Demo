@@ -111,10 +111,12 @@ module sui_contracts::order_v2 {
         table::add(&mut order_v2.order_ship_groups, key, order_ship_group);
     }
 
+    /*
     public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
         let order_ship_group = table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }
+    */
 
     public(friend) fun borrow_mut_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8): &mut OrderShipGroup {
         table::borrow_mut(&mut order_v2.order_ship_groups, ship_group_seq_id)

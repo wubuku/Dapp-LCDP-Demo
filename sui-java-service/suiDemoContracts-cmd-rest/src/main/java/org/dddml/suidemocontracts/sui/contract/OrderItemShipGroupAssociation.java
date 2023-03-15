@@ -21,6 +21,8 @@ public class OrderItemShipGroupAssociation {
 
     private BigInteger cancelQuantity;
 
+    private Table subitems;
+
     public String getProductId() {
         return productId;
     }
@@ -45,12 +47,21 @@ public class OrderItemShipGroupAssociation {
         this.cancelQuantity = cancelQuantity;
     }
 
+    public Table getSubitems() {
+        return subitems;
+    }
+
+    public void setSubitems(Table subitems) {
+        this.subitems = subitems;
+    }
+
     @Override
     public String toString() {
         return "OrderItemShipGroupAssociation{" +
                 "productId=" + '\'' + productId + '\'' +
                 ", quantity=" + quantity +
                 ", cancelQuantity=" + cancelQuantity +
+                ", subitems=" + subitems +
                 '}';
     }
 }

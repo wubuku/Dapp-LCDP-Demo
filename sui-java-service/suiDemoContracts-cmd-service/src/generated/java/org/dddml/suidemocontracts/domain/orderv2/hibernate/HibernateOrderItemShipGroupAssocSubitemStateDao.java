@@ -9,7 +9,7 @@ import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.springframework.transaction.annotation.Transactional;
 
-public class HibernateOrderItemShipGroupAssociationStateDao implements OrderItemShipGroupAssociationStateDao
+public class HibernateOrderItemShipGroupAssocSubitemStateDao implements OrderItemShipGroupAssocSubitemStateDao
 {
     private SessionFactory sessionFactory;
 
@@ -21,7 +21,7 @@ public class HibernateOrderItemShipGroupAssociationStateDao implements OrderItem
         return this.sessionFactory.getCurrentSession();
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("ProductId", "Quantity", "CancelQuantity", "Subitems", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderV2OrderId", "OrderShipGroupShipGroupSeqId"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderItemShipGroupAssocSubitemSeqId", "Description", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderV2OrderId", "OrderShipGroupShipGroupSeqId", "OrderItemShipGroupAssociationProductId"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     
@@ -35,18 +35,18 @@ public class HibernateOrderItemShipGroupAssociationStateDao implements OrderItem
 
     @Transactional(readOnly = true)
     @Override
-    public OrderItemShipGroupAssociationState get(OrderV2OrderItemShipGroupAssociationId id, boolean nullAllowed, OrderV2State aggregateState)
+    public OrderItemShipGroupAssocSubitemState get(OrderV2OrderItemShipGroupAssocSubitemId id, boolean nullAllowed, OrderV2State aggregateState)
     {
         Long aggregateVersion = aggregateState.getOffChainVersion();
-        OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState state = (OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState) getCurrentSession().get(AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState.class, id);
+        OrderItemShipGroupAssocSubitemState.SqlOrderItemShipGroupAssocSubitemState state = (OrderItemShipGroupAssocSubitemState.SqlOrderItemShipGroupAssocSubitemState) getCurrentSession().get(AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState.class, id);
         if (!nullAllowed && state == null) {
-            state = new AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState();
-            state.setOrderV2OrderItemShipGroupAssociationId(id);
+            state = new AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState();
+            state.setOrderV2OrderItemShipGroupAssocSubitemId(id);
         }
         //if (getReadOnlyProxyGenerator() != null && state != null) {
-        //    return (OrderItemShipGroupAssociationState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState.class, Saveable.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
+        //    return (OrderItemShipGroupAssocSubitemState) getReadOnlyProxyGenerator().createProxy(state, new Class[]{OrderItemShipGroupAssocSubitemState.SqlOrderItemShipGroupAssocSubitemState.class}, "getStateReadOnly", readOnlyPropertyPascalCaseNames);
         //}
-        if (state != null) { ((AbstractOrderItemShipGroupAssociationState)state).setOrderV2State(aggregateState); }
+        if (state != null) { ((AbstractOrderItemShipGroupAssocSubitemState)state).setOrderV2State(aggregateState); }
         if (nullAllowed && aggregateVersion != null) { assertNoConcurrencyConflict(id.getOrderV2OrderId(), aggregateVersion); }
         return state;
     }
@@ -62,11 +62,11 @@ public class HibernateOrderItemShipGroupAssociationStateDao implements OrderItem
     }
 
     @Override
-    public void save(OrderItemShipGroupAssociationState state)
+    public void save(OrderItemShipGroupAssocSubitemState state)
     {
-        OrderItemShipGroupAssociationState s = state;
+        OrderItemShipGroupAssocSubitemState s = state;
         if (getReadOnlyProxyGenerator() != null) {
-            s = (OrderItemShipGroupAssociationState) getReadOnlyProxyGenerator().getTarget(state);
+            s = (OrderItemShipGroupAssocSubitemState) getReadOnlyProxyGenerator().getTarget(state);
         }
         if(s.getOffChainVersion() == null) {
             getCurrentSession().save(s);
@@ -83,26 +83,27 @@ public class HibernateOrderItemShipGroupAssociationStateDao implements OrderItem
 
     @Transactional(readOnly = true)
     @Override
-    public Iterable<OrderItemShipGroupAssociationState> findByOrderV2OrderIdAndOrderShipGroupShipGroupSeqId(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, OrderV2State aggregateState)
+    public Iterable<OrderItemShipGroupAssocSubitemState> findByOrderV2OrderIdAndOrderShipGroupShipGroupSeqIdAndOrderItemShipGroupAssociationProductId(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, OrderV2State aggregateState)
     {
         Long aggregateVersion = aggregateState.getOffChainVersion();
-        Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState.class);
+        Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState.class);
         Junction partIdCondition = Restrictions.conjunction()
-            .add(Restrictions.eq("orderV2OrderItemShipGroupAssociationId.orderV2OrderId", orderV2OrderId))
-            .add(Restrictions.eq("orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId", orderShipGroupShipGroupSeqId))
+            .add(Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId", orderV2OrderId))
+            .add(Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId", orderShipGroupShipGroupSeqId))
+            .add(Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId", orderItemShipGroupAssociationProductId))
             ;
-        List<OrderItemShipGroupAssociationState> list = criteria.add(partIdCondition).list();
-        list.forEach(i -> ((AbstractOrderItemShipGroupAssociationState)i).setOrderV2State(aggregateState));
+        List<OrderItemShipGroupAssocSubitemState> list = criteria.add(partIdCondition).list();
+        list.forEach(i -> ((AbstractOrderItemShipGroupAssocSubitemState)i).setOrderV2State(aggregateState));
         if (aggregateVersion != null) { assertNoConcurrencyConflict(orderV2OrderId, aggregateVersion); }
         return list;
     }
 
     @Override
-    public void delete(OrderItemShipGroupAssociationState state)
+    public void delete(OrderItemShipGroupAssocSubitemState state)
     {
-        OrderItemShipGroupAssociationState s = state;
+        OrderItemShipGroupAssocSubitemState s = state;
         if (getReadOnlyProxyGenerator() != null) {
-            s = (OrderItemShipGroupAssociationState) getReadOnlyProxyGenerator().getTarget(state);
+            s = (OrderItemShipGroupAssocSubitemState) getReadOnlyProxyGenerator().getTarget(state);
         }
         if (s instanceof Saveable)
         {

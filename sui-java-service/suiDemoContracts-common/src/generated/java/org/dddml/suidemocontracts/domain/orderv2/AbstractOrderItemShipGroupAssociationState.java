@@ -7,7 +7,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.orderv2.OrderItemShipGroupAssociationEvent.*;
 
-public abstract class AbstractOrderItemShipGroupAssociationState implements OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState {
+public abstract class AbstractOrderItemShipGroupAssociationState implements OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState, Saveable {
 
     private OrderV2OrderItemShipGroupAssociationId orderV2OrderItemShipGroupAssociationId = new OrderV2OrderItemShipGroupAssociationId();
 
@@ -147,6 +147,16 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         return this.getOffChainVersion() == null;
     }
 
+    private EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> subitems;
+
+    public EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> getSubitems() {
+        return this.subitems;
+    }
+
+    public void setSubitems(EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> subitems) {
+        this.subitems = subitems;
+    }
+
     private Boolean stateReadOnly;
 
     public Boolean getStateReadOnly() { return this.stateReadOnly; }
@@ -175,6 +185,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
     }
     
     protected void initializeProperties() {
+        subitems = new SimpleOrderItemShipGroupAssocSubitemStateCollection(this);
     }
 
     @Override
@@ -208,9 +219,45 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         this.setQuantity(s.getQuantity());
         this.setCancelQuantity(s.getCancelQuantity());
         this.setActive(s.getActive());
+
+        if (s.getSubitems() != null) {
+            Iterable<OrderItemShipGroupAssocSubitemState> iterable;
+            if (s.getSubitems().isLazy()) {
+                iterable = s.getSubitems().getLoadedStates();
+            } else {
+                iterable = s.getSubitems();
+            }
+            if (iterable != null) {
+                for (OrderItemShipGroupAssocSubitemState ss : iterable) {
+                    OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemSeqId());
+                    ((AbstractOrderItemShipGroupAssocSubitemState) thisInnerState).merge(ss);
+                }
+            }
+        }
+        if (s.getSubitems() != null) {
+            if (s.getSubitems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
+                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getSubitems()).getRemovedStates() != null) {
+                    for (OrderItemShipGroupAssocSubitemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)s.getSubitems()).getRemovedStates()) {
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemSeqId());
+                        ((AbstractOrderItemShipGroupAssocSubitemStateCollection)this.getSubitems()).remove(thisInnerState);
+                    }
+                }
+            } else {
+                if (s.getSubitems().isAllLoaded()) {
+                    Set<Integer> removedStateIds = new HashSet<>(this.getSubitems().stream().map(i -> i.getOrderItemShipGroupAssocSubitemSeqId()).collect(java.util.stream.Collectors.toList()));
+                    s.getSubitems().forEach(i -> removedStateIds.remove(i.getOrderItemShipGroupAssocSubitemSeqId()));
+                    for (Integer i : removedStateIds) {
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(i);
+                        ((AbstractOrderItemShipGroupAssocSubitemStateCollection)this.getSubitems()).remove(thisInnerState);
+                    }
+                }
+            }
+        }
     }
 
     public void save() {
+        ((Saveable)subitems).save();
+
     }
 
     protected void throwOnWrongEvent(OrderItemShipGroupAssociationEvent event) {
@@ -251,6 +298,12 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
 
     }
 
+
+    static class SimpleOrderItemShipGroupAssocSubitemStateCollection extends AbstractOrderItemShipGroupAssocSubitemStateCollection {
+        public SimpleOrderItemShipGroupAssocSubitemStateCollection(AbstractOrderItemShipGroupAssociationState outerState) {
+            super(outerState);
+        }
+    }
 
 
 }

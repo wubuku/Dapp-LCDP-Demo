@@ -498,6 +498,57 @@ public class OrderV2Resource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+    /**
+     * 查看.
+     * 获取指定 OrderItemShipGroupAssocSubitemSeqId 的 OrderItemShipGroupAssocSubitem
+     */
+    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductId}/OrderItemShipGroupAssocSubitems/{orderItemShipGroupAssocSubitemSeqId}")
+    public OrderItemShipGroupAssocSubitemStateDto getOrderItemShipGroupAssocSubitem(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductId") String orderItemShipGroupAssociationProductId, @PathVariable("orderItemShipGroupAssocSubitemSeqId") Integer orderItemShipGroupAssocSubitemSeqId) {
+        try {
+
+            OrderItemShipGroupAssocSubitemState state = orderV2ApplicationService.getOrderItemShipGroupAssocSubitem(orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemSeqId);
+            if (state == null) { return null; }
+            OrderItemShipGroupAssocSubitemStateDto.DtoConverter dtoConverter = new OrderItemShipGroupAssocSubitemStateDto.DtoConverter();
+            OrderItemShipGroupAssocSubitemStateDto stateDto = dtoConverter.toOrderItemShipGroupAssocSubitemStateDto(state);
+            dtoConverter.setAllFieldsReturned(true);
+            return stateDto;
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+    /**
+     * OrderItemShipGroupAssocSubitem List
+     */
+    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductId}/OrderItemShipGroupAssocSubitems")
+    public OrderItemShipGroupAssocSubitemStateDto[] getOrderItemShipGroupAssocSubitems(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductId") String orderItemShipGroupAssociationProductId,
+                    @RequestParam(value = "sort", required = false) String sort,
+                    @RequestParam(value = "fields", required = false) String fields,
+                    @RequestParam(value = "filter", required = false) String filter,
+                     HttpServletRequest request) {
+        try {
+            CriterionDto criterion = null;
+            if (!StringHelper.isNullOrEmpty(filter)) {
+                criterion = JSON.parseObject(filter, CriterionDto.class);
+            } else {
+                criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
+                    .filter(kv -> OrderV2ResourceUtils.getOrderItemShipGroupAssocSubitemFilterPropertyName(kv.getKey()) != null)
+                    .collect(Collectors.toMap(kv -> kv.getKey(), kv -> kv.getValue())));
+            }
+            Criterion c = CriterionDto.toSubclass(criterion, getCriterionTypeConverter(), getPropertyTypeResolver(), 
+                n -> (OrderItemShipGroupAssocSubitemMetadata.aliasMap.containsKey(n) ? OrderItemShipGroupAssocSubitemMetadata.aliasMap.get(n) : n));
+            Iterable<OrderItemShipGroupAssocSubitemState> states = orderV2ApplicationService.getOrderItemShipGroupAssocSubitems(orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, c,
+                    OrderV2ResourceUtils.getOrderItemShipGroupAssocSubitemQuerySorts(request.getParameterMap()));
+            if (states == null) { return null; }
+            OrderItemShipGroupAssocSubitemStateDto.DtoConverter dtoConverter = new OrderItemShipGroupAssocSubitemStateDto.DtoConverter();
+            if (StringHelper.isNullOrEmpty(fields)) {
+                dtoConverter.setAllFieldsReturned(true);
+            } else {
+                dtoConverter.setReturnedFieldsString(fields);
+            }
+            return dtoConverter.toOrderItemShipGroupAssocSubitemStateDtoArray(states);
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
 
 
     //protected  OrderV2StateEventDtoConverter getOrderV2StateEventDtoConverter() {
@@ -540,6 +591,15 @@ public class OrderV2Resource {
             @Override
             public Class resolveTypeByPropertyName(String propertyName) {
                 return OrderV2ResourceUtils.getOrderItemShipGroupAssociationFilterPropertyType(propertyName);
+            }
+        };
+    }
+
+    protected PropertyTypeResolver getOrderItemShipGroupAssocSubitemPropertyTypeResolver() {
+        return new PropertyTypeResolver() {
+            @Override
+            public Class resolveTypeByPropertyName(String propertyName) {
+                return OrderV2ResourceUtils.getOrderItemShipGroupAssocSubitemFilterPropertyType(propertyName);
             }
         };
     }
@@ -742,6 +802,54 @@ public class OrderV2Resource {
                     String pName = getOrderItemShipGroupAssociationFilterPropertyName(key);
                     if (!StringHelper.isNullOrEmpty(pName)) {
                         Class pClass = getOrderItemShipGroupAssociationFilterPropertyType(pName);
+                        filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
+                    }
+                }
+            });
+            return filter.entrySet();
+        }
+
+        public static List<String> getOrderItemShipGroupAssocSubitemQueryOrders(String str, String separator) {
+            return QueryParamUtils.getQueryOrders(str, separator, OrderItemShipGroupAssocSubitemMetadata.aliasMap);
+        }
+
+        public static List<String> getOrderItemShipGroupAssocSubitemQuerySorts(Map<String, String[]> queryNameValuePairs) {
+            String[] values = queryNameValuePairs.get("sort");
+            return QueryParamUtils.getQuerySorts(values, OrderItemShipGroupAssocSubitemMetadata.aliasMap);
+        }
+
+        public static String getOrderItemShipGroupAssocSubitemFilterPropertyName(String fieldName) {
+            if ("sort".equalsIgnoreCase(fieldName)
+                    || "firstResult".equalsIgnoreCase(fieldName)
+                    || "maxResults".equalsIgnoreCase(fieldName)
+                    || "fields".equalsIgnoreCase(fieldName)) {
+                return null;
+            }
+            if (OrderItemShipGroupAssocSubitemMetadata.aliasMap.containsKey(fieldName)) {
+                return OrderItemShipGroupAssocSubitemMetadata.aliasMap.get(fieldName);
+            }
+            return null;
+        }
+
+        public static Class getOrderItemShipGroupAssocSubitemFilterPropertyType(String propertyName) {
+            if (OrderItemShipGroupAssocSubitemMetadata.propertyTypeMap.containsKey(propertyName)) {
+                String propertyType = OrderItemShipGroupAssocSubitemMetadata.propertyTypeMap.get(propertyName);
+                if (!StringHelper.isNullOrEmpty(propertyType)) {
+                    if (BoundedContextMetadata.CLASS_MAP.containsKey(propertyType)) {
+                        return BoundedContextMetadata.CLASS_MAP.get(propertyType);
+                    }
+                }
+            }
+            return String.class;
+        }
+
+        public static Iterable<Map.Entry<String, Object>> getOrderItemShipGroupAssocSubitemQueryFilterMap(Map<String, String[]> queryNameValuePairs) {
+            Map<String, Object> filter = new HashMap<>();
+            queryNameValuePairs.forEach((key, values) -> {
+                if (values.length > 0) {
+                    String pName = getOrderItemShipGroupAssocSubitemFilterPropertyName(key);
+                    if (!StringHelper.isNullOrEmpty(pName)) {
+                        Class pClass = getOrderItemShipGroupAssocSubitemFilterPropertyType(pName);
                         filter.put(pName, ApplicationContext.current.getTypeConverter().convertFromString(pClass, values[0]));
                     }
                 }

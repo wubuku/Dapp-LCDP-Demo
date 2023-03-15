@@ -146,6 +146,14 @@ public abstract class AbstractOrderV2ApplicationService implements OrderV2Applic
         return getStateQueryRepository().getOrderItemShipGroupAssociations(orderV2OrderId, orderShipGroupShipGroupSeqId, filter, orders);
     }
 
+    public OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Integer orderItemShipGroupAssocSubitemSeqId) {
+        return getStateQueryRepository().getOrderItemShipGroupAssocSubitem(orderV2OrderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemSeqId);
+    }
+
+    public Iterable<OrderItemShipGroupAssocSubitemState> getOrderItemShipGroupAssocSubitems(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Criterion filter, List<String> orders) {
+        return getStateQueryRepository().getOrderItemShipGroupAssocSubitems(orderV2OrderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, filter, orders);
+    }
+
 
     public OrderV2Aggregate getOrderV2Aggregate(OrderV2State state) {
         return new AbstractOrderV2Aggregate.SimpleOrderV2Aggregate(state);

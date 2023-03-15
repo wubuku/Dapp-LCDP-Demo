@@ -41,6 +41,7 @@ public class M {
         typeToAggMap.put("OrderV2Item", "OrderV2");
         typeToAggMap.put("OrderShipGroup", "OrderV2");
         typeToAggMap.put("OrderItemShipGroupAssociation", "OrderV2");
+        typeToAggMap.put("OrderItemShipGroupAssocSubitem", "OrderV2");
         typeToAggMap.put("DaySummary", "DaySummary");
         TYPE_NAME_TO_AGGREGATE_NAME_MAP = typeToAggMap;
 
@@ -889,6 +890,113 @@ public class M {
         aliasMap.put("OrderV2OrderItemShipGroupAssociationId.OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssociationId.orderShipGroupShipGroupSeqId");
         aliasMap.put("orderV2OrderItemShipGroupAssociationId.productId", "orderV2OrderItemShipGroupAssociationId.productId");
         aliasMap.put("OrderV2OrderItemShipGroupAssociationId.ProductId", "orderV2OrderItemShipGroupAssociationId.productId");
+    }
+
+    private static void initPropertyTypeMap() {
+        for (int i = 0; i < propertyNames.length; i++ ) {
+            propertyTypeMap.put(propertyNames[i], propertyTypes[i]);
+        }
+    }
+
+  }
+
+
+  // /////////////////////////////////////////////////////////  
+  public static class OrderItemShipGroupAssocSubitemMetadata {
+
+    private OrderItemShipGroupAssocSubitemMetadata() {
+    }
+
+    public static final String PROPERTY_NAME_VERSION      = "offChainVersion";
+    public static final String PROPERTY_NAME_ACTIVE       = "active";
+    public static final String PROPERTY_NAME_DELETED      = "deleted";
+    public static final String PROPERTY_NAME_CREATED_BY   = "createdBy";
+    public static final String PROPERTY_NAME_CREATED_AT   = "createdAt";
+    public static final String PROPERTY_NAME_UPDATED_BY   = "updatedBy";
+    public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
+
+    public static final String[] propertyNames = new String[] {
+            "orderItemShipGroupAssocSubitemSeqId",
+            "description",
+            "offChainVersion",
+            "createdBy",
+            "createdAt",
+            "updatedBy",
+            "updatedAt",
+            "active",
+            "deleted",
+            "orderV2OrderId",
+            "orderShipGroupShipGroupSeqId",
+            "orderItemShipGroupAssociationProductId",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId",
+    };
+
+    public static final String[] propertyTypes = new String[] {
+            "Integer",
+            "String",
+            "Long",
+            "String",
+            "Date",
+            "String",
+            "Date",
+            "Boolean",
+            "Boolean",
+            "String",
+            "Integer",
+            "String",
+            "String",
+            "Integer",
+            "String",
+            "Integer",
+    };
+
+    public static final Map<String, String> propertyTypeMap;
+
+    public static final Map<String, String> aliasMap;
+
+    static {
+        propertyTypeMap = new HashMap<String, String>();
+        initPropertyTypeMap();
+        aliasMap = new HashMap<String, String>();
+        initAliasMap();
+    }
+
+    private static  void initAliasMap() {
+        aliasMap.put("orderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
+        aliasMap.put("OrderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
+        aliasMap.put("description", "description");
+        aliasMap.put("Description", "description");
+        aliasMap.put("offChainVersion", "offChainVersion");
+        aliasMap.put("OffChainVersion", "offChainVersion");
+        aliasMap.put("createdBy", "createdBy");
+        aliasMap.put("CreatedBy", "createdBy");
+        aliasMap.put("createdAt", "createdAt");
+        aliasMap.put("CreatedAt", "createdAt");
+        aliasMap.put("updatedBy", "updatedBy");
+        aliasMap.put("UpdatedBy", "updatedBy");
+        aliasMap.put("updatedAt", "updatedAt");
+        aliasMap.put("UpdatedAt", "updatedAt");
+        aliasMap.put("active", "active");
+        aliasMap.put("Active", "active");
+        aliasMap.put("deleted", "deleted");
+        aliasMap.put("Deleted", "deleted");
+        aliasMap.put("orderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
+        aliasMap.put("orderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("orderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
+        aliasMap.put("OrderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
     }
 
     private static void initPropertyTypeMap() {

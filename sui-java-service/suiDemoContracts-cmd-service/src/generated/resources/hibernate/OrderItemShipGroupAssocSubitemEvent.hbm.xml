@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
+  <class name="AbstractOrderItemShipGroupAssocSubitemEvent" table="order_item_ship_group_assoc_subitem_event" mutable="false" abstract="true">
+    <composite-id name="orderItemShipGroupAssocSubitemEventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderItemShipGroupAssocSubitemEventId">
+      <key-property name="orderV2OrderId">
+        <column name="order_v2_order_id" length="50" />
+      </key-property>
+      <key-property name="orderShipGroupShipGroupSeqId">
+        <column name="order_v2_ship_group_seq_id" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssociationProductId">
+        <column name="order_v2_item_ship_group_assoc_product_id" length="100" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemSeqId">
+        <column name="order_v2_item_ship_group_assoc_subitem_seq_id" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

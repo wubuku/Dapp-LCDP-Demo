@@ -52,6 +52,22 @@ aggregates:
                 type: u64
               CancelQuantity:
                 type: u64
+              Subitems:
+                itemType: OrderItemShipGroupAssocSubitem
+            entities:
+              # This is a ridiculous "made-up" entity, and in our practical experience,
+              # entities with more than three levels of hierarchy within an aggregate are extremely rare.
+              OrderItemShipGroupAssocSubitem:
+                metadata:
+                  IsCompositeIdUsingShortColumnNames: true
+                id:
+                  name: OrderItemShipGroupAssocSubitemSeqId
+                  type: u8
+                  columnName: order_v2_item_ship_group_assoc_subitem_seq_id
+                properties:
+                  Description:
+                    type: String
+                    length: 100
 
     methods:
       Create:

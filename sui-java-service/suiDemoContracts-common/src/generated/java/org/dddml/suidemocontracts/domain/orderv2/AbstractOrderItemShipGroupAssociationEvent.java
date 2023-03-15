@@ -74,6 +74,42 @@ public abstract class AbstractOrderItemShipGroupAssociationEvent extends Abstrac
         this.orderItemShipGroupAssociationEventId = eventId;
     }
 
+    protected OrderItemShipGroupAssocSubitemEventDao getOrderItemShipGroupAssocSubitemEventDao() {
+        return (OrderItemShipGroupAssocSubitemEventDao)ApplicationContext.current.get("orderItemShipGroupAssocSubitemEventDao");
+    }
+
+    protected OrderItemShipGroupAssocSubitemEventId newOrderItemShipGroupAssocSubitemEventId(Integer orderItemShipGroupAssocSubitemSeqId)
+    {
+        OrderItemShipGroupAssocSubitemEventId eventId = new OrderItemShipGroupAssocSubitemEventId(this.getOrderItemShipGroupAssociationEventId().getOrderV2OrderId(), this.getOrderItemShipGroupAssociationEventId().getOrderShipGroupShipGroupSeqId(), this.getOrderItemShipGroupAssociationEventId().getProductId(), 
+            orderItemShipGroupAssocSubitemSeqId, 
+            this.getOrderItemShipGroupAssociationEventId().getVersion());
+        return eventId;
+    }
+
+    protected void throwOnInconsistentEventIds(OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent e)
+    {
+        throwOnInconsistentEventIds(this, e);
+    }
+
+    public static void throwOnInconsistentEventIds(OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent oe, OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent e)
+    {
+        if (!oe.getOrderItemShipGroupAssociationEventId().getOrderV2OrderId().equals(e.getOrderItemShipGroupAssocSubitemEventId().getOrderV2OrderId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id OrderV2OrderId %1$s but inner id OrderV2OrderId %2$s", 
+                oe.getOrderItemShipGroupAssociationEventId().getOrderV2OrderId(), e.getOrderItemShipGroupAssocSubitemEventId().getOrderV2OrderId());
+        }
+        if (!oe.getOrderItemShipGroupAssociationEventId().getOrderShipGroupShipGroupSeqId().equals(e.getOrderItemShipGroupAssocSubitemEventId().getOrderShipGroupShipGroupSeqId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id OrderShipGroupShipGroupSeqId %1$s but inner id OrderShipGroupShipGroupSeqId %2$s", 
+                oe.getOrderItemShipGroupAssociationEventId().getOrderShipGroupShipGroupSeqId(), e.getOrderItemShipGroupAssocSubitemEventId().getOrderShipGroupShipGroupSeqId());
+        }
+        if (!oe.getOrderItemShipGroupAssociationEventId().getProductId().equals(e.getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssociationProductId()))
+        { 
+            throw DomainError.named("inconsistentEventIds", "Outer Id ProductId %1$s but inner id OrderItemShipGroupAssociationProductId %2$s", 
+                oe.getOrderItemShipGroupAssociationEventId().getProductId(), e.getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssociationProductId());
+        }
+    }
+
 
     public abstract String getEventType();
 

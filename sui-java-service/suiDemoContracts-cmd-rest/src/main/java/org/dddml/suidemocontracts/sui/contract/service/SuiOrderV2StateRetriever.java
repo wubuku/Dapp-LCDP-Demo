@@ -17,6 +17,8 @@ import org.dddml.suidemocontracts.sui.contract.OrderShipGroup;
 import org.dddml.suidemocontracts.sui.contract.OrderShipGroupDynamicField;
 import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssociation;
 import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssociationDynamicField;
+import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssocSubitem;
+import org.dddml.suidemocontracts.sui.contract.OrderItemShipGroupAssocSubitemDynamicField;
 
 import java.util.*;
 import java.math.*;
@@ -30,18 +32,21 @@ public class SuiOrderV2StateRetriever {
     private BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory;
     private BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory;
     private BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory;
+    private BiFunction<OrderItemShipGroupAssociationState, Integer, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory;
 
     public SuiOrderV2StateRetriever(SuiJsonRpcClient suiJsonRpcClient,
                                   Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory,
                                   BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory,
                                   BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory,
-                                  BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory
+                                  BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory,
+                                  BiFunction<OrderItemShipGroupAssociationState, Integer, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory
     ) {
         this.suiJsonRpcClient = suiJsonRpcClient;
         this.orderV2StateFactory = orderV2StateFactory;
         this.orderV2ItemStateFactory = orderV2ItemStateFactory;
         this.orderShipGroupStateFactory = orderShipGroupStateFactory;
         this.orderItemShipGroupAssociationStateFactory = orderItemShipGroupAssociationStateFactory;
+        this.orderItemShipGroupAssocSubitemStateFactory = orderItemShipGroupAssocSubitemStateFactory;
     }
 
     public OrderV2State retrieveOrderV2State(String objectId) {
@@ -97,7 +102,19 @@ public class SuiOrderV2StateRetriever {
         OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState orderItemShipGroupAssociationState = orderItemShipGroupAssociationStateFactory.apply(orderShipGroupState, orderItemShipGroupAssociation.getProductId());
         orderItemShipGroupAssociationState.setQuantity(orderItemShipGroupAssociation.getQuantity());
         orderItemShipGroupAssociationState.setCancelQuantity(orderItemShipGroupAssociation.getCancelQuantity());
+        String orderItemShipGroupAssocSubitemTableId = orderItemShipGroupAssociation.getSubitems().getFields().getId().getId();
+        List<OrderItemShipGroupAssocSubitem> subitems = getOrderItemShipGroupAssocSubitems(orderItemShipGroupAssocSubitemTableId);
+        for (OrderItemShipGroupAssocSubitem i : subitems) {
+            orderItemShipGroupAssociationState.getSubitems().add(toOrderItemShipGroupAssocSubitemState(orderItemShipGroupAssociationState, i));
+        }
+
         return orderItemShipGroupAssociationState;
+    }
+
+    private OrderItemShipGroupAssocSubitemState toOrderItemShipGroupAssocSubitemState(OrderItemShipGroupAssociationState orderItemShipGroupAssociationState, OrderItemShipGroupAssocSubitem orderItemShipGroupAssocSubitem) {
+        OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState orderItemShipGroupAssocSubitemState = orderItemShipGroupAssocSubitemStateFactory.apply(orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitem.getOrderItemShipGroupAssocSubitemSeqId());
+        orderItemShipGroupAssocSubitemState.setDescription(orderItemShipGroupAssocSubitem.getDescription());
+        return orderItemShipGroupAssocSubitemState;
     }
 
     private List<OrderV2Item> getOrderV2Items(String orderV2ItemTableId) {
@@ -164,6 +181,28 @@ public class SuiOrderV2StateRetriever {
             }
         }
         return orderItemShipGroupAssociations;
+    }
+
+    private List<OrderItemShipGroupAssocSubitem> getOrderItemShipGroupAssocSubitems(String orderItemShipGroupAssocSubitemTableId) {
+        List<OrderItemShipGroupAssocSubitem> orderItemShipGroupAssocSubitems = new ArrayList<>();
+        String cursor = null;
+        while (true) {
+            DynamicFieldPage orderItemShipGroupAssocSubitemFieldPage = suiJsonRpcClient.getDynamicFields(orderItemShipGroupAssocSubitemTableId, cursor, null);
+            for (DynamicFieldInfo orderItemShipGroupAssocSubitemFieldInfo : orderItemShipGroupAssocSubitemFieldPage.getData()) {
+            
+                String fieldObjectId = orderItemShipGroupAssocSubitemFieldInfo.getObjectId();
+                GetMoveObjectDataResponse<OrderItemShipGroupAssocSubitemDynamicField> getOrderItemShipGroupAssocSubitemFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderItemShipGroupAssocSubitemDynamicField.class);
+                OrderItemShipGroupAssocSubitem orderItemShipGroupAssocSubitem = getOrderItemShipGroupAssocSubitemFieldResponse
+                        .getDetails().getData().getFields().getValue().getFields();
+                orderItemShipGroupAssocSubitems.add(orderItemShipGroupAssocSubitem);
+            }
+            cursor = orderItemShipGroupAssocSubitemFieldPage.getNextCursor();
+            if (cursor == null) {
+                break;
+            }
+        }
+        return orderItemShipGroupAssocSubitems;
     }
 
     

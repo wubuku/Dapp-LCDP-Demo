@@ -182,6 +182,24 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
         return criteria.add(partIdCondition).list();
     }
 
+    @Transactional(readOnly = true)
+    public OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Integer orderItemShipGroupAssocSubitemSeqId) {
+        OrderV2OrderItemShipGroupAssocSubitemId entityId = new OrderV2OrderItemShipGroupAssocSubitemId(orderV2OrderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemSeqId);
+        return (OrderItemShipGroupAssocSubitemState) getCurrentSession().get(AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState.class, entityId);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<OrderItemShipGroupAssocSubitemState> getOrderItemShipGroupAssocSubitems(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, org.dddml.support.criterion.Criterion filter, List<String> orders) {
+        Criteria criteria = getCurrentSession().createCriteria(AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState.class);
+        org.hibernate.criterion.Junction partIdCondition = org.hibernate.criterion.Restrictions.conjunction()
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId", orderV2OrderId))
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId", orderShipGroupShipGroupSeqId))
+            .add(org.hibernate.criterion.Restrictions.eq("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId", orderItemShipGroupAssociationProductId))
+            ;
+        HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, 0, Integer.MAX_VALUE);
+        return criteria.add(partIdCondition).list();
+    }
+
 
     protected static void addNotDeletedRestriction(Criteria criteria) {
         criteria.add(org.hibernate.criterion.Restrictions.eq("deleted", false));

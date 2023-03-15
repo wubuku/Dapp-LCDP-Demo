@@ -26,9 +26,14 @@ module sui_contracts::order_v2_remove_order_ship_group_logic {
         //     &mut order_v2,
         //     order_v2::order_ship_group_removed_ship_group_seq_id(order_ship_group_removed),
         // );
+
+        /*
         order_v2::remove_order_ship_group(&mut order_v2,
             order_v2::order_ship_group_removed_ship_group_seq_id(order_ship_group_removed),
         );
+        */
+        let _ = order_ship_group_removed;
+
         order_v2
     }
 }

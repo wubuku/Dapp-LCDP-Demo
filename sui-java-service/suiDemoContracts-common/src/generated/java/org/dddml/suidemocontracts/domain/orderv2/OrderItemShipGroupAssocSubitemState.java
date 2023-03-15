@@ -11,17 +11,15 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.Event;
 
-public interface OrderItemShipGroupAssociationState
+public interface OrderItemShipGroupAssocSubitemState
 {
     Long VERSION_ZERO = 0L;
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    String getProductId();
+    Integer getOrderItemShipGroupAssocSubitemSeqId();
 
-    BigInteger getQuantity();
-
-    BigInteger getCancelQuantity();
+    String getDescription();
 
     Long getOffChainVersion();
 
@@ -41,14 +39,12 @@ public interface OrderItemShipGroupAssociationState
 
     Integer getOrderShipGroupShipGroupSeqId();
 
-    EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> getSubitems();
+    String getOrderItemShipGroupAssociationProductId();
 
-    interface MutableOrderItemShipGroupAssociationState extends OrderItemShipGroupAssociationState {
-        void setProductId(String productId);
+    interface MutableOrderItemShipGroupAssocSubitemState extends OrderItemShipGroupAssocSubitemState {
+        void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId);
 
-        void setQuantity(BigInteger quantity);
-
-        void setCancelQuantity(BigInteger cancelQuantity);
+        void setDescription(String description);
 
         void setOffChainVersion(Long offChainVersion);
 
@@ -68,20 +64,22 @@ public interface OrderItemShipGroupAssociationState
 
         void setOrderShipGroupShipGroupSeqId(Integer orderShipGroupShipGroupSeqId);
 
+        void setOrderItemShipGroupAssociationProductId(String orderItemShipGroupAssociationProductId);
+
 
         void mutate(Event e);
 
-        //void when(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateCreated e);
+        //void when(OrderItemShipGroupAssocSubitemEvent.OrderItemShipGroupAssocSubitemStateCreated e);
 
-        //void when(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateMergePatched e);
+        //void when(OrderItemShipGroupAssocSubitemEvent.OrderItemShipGroupAssocSubitemStateMergePatched e);
 
-        //void when(OrderItemShipGroupAssociationEvent.OrderItemShipGroupAssociationStateRemoved e);
+        //void when(OrderItemShipGroupAssocSubitemEvent.OrderItemShipGroupAssocSubitemStateRemoved e);
     }
 
-    interface SqlOrderItemShipGroupAssociationState extends MutableOrderItemShipGroupAssociationState {
-        OrderV2OrderItemShipGroupAssociationId getOrderV2OrderItemShipGroupAssociationId();
+    interface SqlOrderItemShipGroupAssocSubitemState extends MutableOrderItemShipGroupAssocSubitemState {
+        OrderV2OrderItemShipGroupAssocSubitemId getOrderV2OrderItemShipGroupAssocSubitemId();
 
-        void setOrderV2OrderItemShipGroupAssociationId(OrderV2OrderItemShipGroupAssociationId orderV2OrderItemShipGroupAssociationId);
+        void setOrderV2OrderItemShipGroupAssocSubitemId(OrderV2OrderItemShipGroupAssocSubitemId orderV2OrderItemShipGroupAssocSubitemId);
 
 
         boolean isStateUnsaved();

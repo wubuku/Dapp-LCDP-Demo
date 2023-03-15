@@ -71,6 +71,10 @@ module sui_contracts::order_ship_group {
         }
     }
 
+
+    // Please note that when the hierarchical structure of entities within an aggregate exceeds three levels,
+    // currently the drop function for entities from the third to the second to last level cannot be generated.
+    /*
     public(friend) fun drop_order_ship_group(order_ship_group: OrderShipGroup) {
         let OrderShipGroup {
             ship_group_seq_id: _,
@@ -79,6 +83,6 @@ module sui_contracts::order_ship_group {
         } = order_ship_group;
         table::drop<String, OrderItemShipGroupAssociation>(order_item_ship_group_associations);
     }
-
+    */
 
 }

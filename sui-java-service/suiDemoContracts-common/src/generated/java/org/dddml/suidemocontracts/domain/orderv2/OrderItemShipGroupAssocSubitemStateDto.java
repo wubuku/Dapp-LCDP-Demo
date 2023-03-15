@@ -7,43 +7,31 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 
 
-public class OrderItemShipGroupAssociationStateDto
+public class OrderItemShipGroupAssocSubitemStateDto
 {
 
-    private String productId;
+    private Integer orderItemShipGroupAssocSubitemSeqId;
 
-    public String getProductId()
+    public Integer getOrderItemShipGroupAssocSubitemSeqId()
     {
-        return this.productId;
+        return this.orderItemShipGroupAssocSubitemSeqId;
     }
 
-    public void setProductId(String productId)
+    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId)
     {
-        this.productId = productId;
+        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
     }
 
-    private BigInteger quantity;
+    private String description;
 
-    public BigInteger getQuantity()
+    public String getDescription()
     {
-        return this.quantity;
+        return this.description;
     }
 
-    public void setQuantity(BigInteger quantity)
+    public void setDescription(String description)
     {
-        this.quantity = quantity;
-    }
-
-    private BigInteger cancelQuantity;
-
-    public BigInteger getCancelQuantity()
-    {
-        return this.cancelQuantity;
-    }
-
-    public void setCancelQuantity(BigInteger cancelQuantity)
-    {
-        this.cancelQuantity = cancelQuantity;
+        this.description = description;
     }
 
     private Boolean active;
@@ -94,6 +82,18 @@ public class OrderItemShipGroupAssociationStateDto
         this.orderShipGroupShipGroupSeqId = orderShipGroupShipGroupSeqId;
     }
 
+    private String orderItemShipGroupAssociationProductId;
+
+    public String getOrderItemShipGroupAssociationProductId()
+    {
+        return this.orderItemShipGroupAssociationProductId;
+    }
+
+    public void setOrderItemShipGroupAssociationProductId(String orderItemShipGroupAssociationProductId)
+    {
+        this.orderItemShipGroupAssociationProductId = orderItemShipGroupAssociationProductId;
+    }
+
     private String createdBy;
 
     public String getCreatedBy()
@@ -142,55 +142,40 @@ public class OrderItemShipGroupAssociationStateDto
         this.updatedAt = updatedAt;
     }
 
-    private OrderItemShipGroupAssocSubitemStateDto[] subitems;
-
-    public OrderItemShipGroupAssocSubitemStateDto[] getSubitems()
-    {
-        return this.subitems;
-    }	
-
-    public void setSubitems(OrderItemShipGroupAssocSubitemStateDto[] subitems)
-    {
-        this.subitems = subitems;
-    }
-
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
-        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{"Subitems"});
+        public static Collection<String> collectionFieldNames = Arrays.asList(new String[]{});
 
         @Override
         protected boolean isCollectionField(String fieldName) {
             return CollectionUtils.collectionContainsIgnoringCase(collectionFieldNames, fieldName);
         }
 
-        public OrderItemShipGroupAssociationStateDto[] toOrderItemShipGroupAssociationStateDtoArray(Iterable<OrderItemShipGroupAssociationState> states) {
-            return toOrderItemShipGroupAssociationStateDtoList(states).toArray(new OrderItemShipGroupAssociationStateDto[0]);
+        public OrderItemShipGroupAssocSubitemStateDto[] toOrderItemShipGroupAssocSubitemStateDtoArray(Iterable<OrderItemShipGroupAssocSubitemState> states) {
+            return toOrderItemShipGroupAssocSubitemStateDtoList(states).toArray(new OrderItemShipGroupAssocSubitemStateDto[0]);
         }
 
-        public List<OrderItemShipGroupAssociationStateDto> toOrderItemShipGroupAssociationStateDtoList(Iterable<OrderItemShipGroupAssociationState> states) {
-            ArrayList<OrderItemShipGroupAssociationStateDto> stateDtos = new ArrayList();
-            for (OrderItemShipGroupAssociationState s : states) {
-                OrderItemShipGroupAssociationStateDto dto = toOrderItemShipGroupAssociationStateDto(s);
+        public List<OrderItemShipGroupAssocSubitemStateDto> toOrderItemShipGroupAssocSubitemStateDtoList(Iterable<OrderItemShipGroupAssocSubitemState> states) {
+            ArrayList<OrderItemShipGroupAssocSubitemStateDto> stateDtos = new ArrayList();
+            for (OrderItemShipGroupAssocSubitemState s : states) {
+                OrderItemShipGroupAssocSubitemStateDto dto = toOrderItemShipGroupAssocSubitemStateDto(s);
                 stateDtos.add(dto);
             }
             return stateDtos;
         }
 
-        public OrderItemShipGroupAssociationStateDto toOrderItemShipGroupAssociationStateDto(OrderItemShipGroupAssociationState state)
+        public OrderItemShipGroupAssocSubitemStateDto toOrderItemShipGroupAssocSubitemStateDto(OrderItemShipGroupAssocSubitemState state)
         {
             if(state == null) {
                 return null;
             }
-            OrderItemShipGroupAssociationStateDto dto = new OrderItemShipGroupAssociationStateDto();
-            if (returnedFieldsContains("ProductId")) {
-                dto.setProductId(state.getProductId());
+            OrderItemShipGroupAssocSubitemStateDto dto = new OrderItemShipGroupAssocSubitemStateDto();
+            if (returnedFieldsContains("OrderItemShipGroupAssocSubitemSeqId")) {
+                dto.setOrderItemShipGroupAssocSubitemSeqId(state.getOrderItemShipGroupAssocSubitemSeqId());
             }
-            if (returnedFieldsContains("Quantity")) {
-                dto.setQuantity(state.getQuantity());
-            }
-            if (returnedFieldsContains("CancelQuantity")) {
-                dto.setCancelQuantity(state.getCancelQuantity());
+            if (returnedFieldsContains("Description")) {
+                dto.setDescription(state.getDescription());
             }
             if (returnedFieldsContains("Active")) {
                 dto.setActive(state.getActive());
@@ -204,6 +189,9 @@ public class OrderItemShipGroupAssociationStateDto
             if (returnedFieldsContains("OrderShipGroupShipGroupSeqId")) {
                 dto.setOrderShipGroupShipGroupSeqId(state.getOrderShipGroupShipGroupSeqId());
             }
+            if (returnedFieldsContains("OrderItemShipGroupAssociationProductId")) {
+                dto.setOrderItemShipGroupAssociationProductId(state.getOrderItemShipGroupAssociationProductId());
+            }
             if (returnedFieldsContains("CreatedBy")) {
                 dto.setCreatedBy(state.getCreatedBy());
             }
@@ -215,18 +203,6 @@ public class OrderItemShipGroupAssociationStateDto
             }
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
-            }
-            if (returnedFieldsContains("Subitems")) {
-                ArrayList<OrderItemShipGroupAssocSubitemStateDto> arrayList = new ArrayList();
-                if (state.getSubitems() != null) {
-                    OrderItemShipGroupAssocSubitemStateDto.DtoConverter conv = new OrderItemShipGroupAssocSubitemStateDto.DtoConverter();
-                    String returnFS = CollectionUtils.mapGetValueIgnoringCase(getReturnedFields(), "Subitems");
-                    if(returnFS != null) { conv.setReturnedFieldsString(returnFS); } else { conv.setAllFieldsReturned(this.getAllFieldsReturned()); }
-                    for (OrderItemShipGroupAssocSubitemState s : state.getSubitems()) {
-                        arrayList.add(conv.toOrderItemShipGroupAssocSubitemStateDto(s));
-                    }
-                }
-                dto.setSubitems(arrayList.toArray(new OrderItemShipGroupAssocSubitemStateDto[0]));
             }
             return dto;
         }
