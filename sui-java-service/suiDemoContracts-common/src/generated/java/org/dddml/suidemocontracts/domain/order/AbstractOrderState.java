@@ -114,6 +114,16 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         return this.getOffChainVersion() == null;
     }
 
+    private Set<OrderItemState> protectedItems;
+
+    protected Set<OrderItemState> getProtectedItems() {
+        return this.protectedItems;
+    }
+
+    protected void setProtectedItems(Set<OrderItemState> protectedItems) {
+        this.protectedItems = protectedItems;
+    }
+
     private EntityStateCollection<String, OrderItemState> items;
 
     public EntityStateCollection<String, OrderItemState> getItems() {

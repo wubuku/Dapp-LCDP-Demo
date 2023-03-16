@@ -29,6 +29,16 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
         orderV2State = s;
     }
     
+    private OrderItemShipGroupAssociationState protectedOrderItemShipGroupAssociationState;
+
+    protected OrderItemShipGroupAssociationState getProtectedOrderItemShipGroupAssociationState() {
+        return protectedOrderItemShipGroupAssociationState;
+    }
+
+    protected void setProtectedOrderItemShipGroupAssociationState(OrderItemShipGroupAssociationState protectedOrderItemShipGroupAssociationState) {
+        this.protectedOrderItemShipGroupAssociationState = protectedOrderItemShipGroupAssociationState;
+    }
+
     public String getOrderV2OrderId() {
         return this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderV2OrderId();
     }
@@ -53,12 +63,16 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
         this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssociationProductId(orderItemShipGroupAssociationProductId);
     }
 
+    //private Day orderItemShipGroupAssocSubitemDay;
+
     public Day getOrderItemShipGroupAssocSubitemDay() {
         return this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemDay();
+        //return this.orderItemShipGroupAssocSubitemDay;
     }
         
     public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay) {
         this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssocSubitemDay(orderItemShipGroupAssocSubitemDay);
+        //this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     private String description;

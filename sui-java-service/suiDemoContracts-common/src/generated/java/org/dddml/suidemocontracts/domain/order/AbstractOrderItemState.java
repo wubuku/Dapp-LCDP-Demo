@@ -30,6 +30,16 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         orderState = s;
     }
     
+    private OrderState protectedOrderState;
+
+    protected OrderState getProtectedOrderState() {
+        return protectedOrderState;
+    }
+
+    protected void setProtectedOrderState(OrderState protectedOrderState) {
+        this.protectedOrderState = protectedOrderState;
+    }
+
     public String getOrderId() {
         return this.getOrderItemId().getOrderId();
     }

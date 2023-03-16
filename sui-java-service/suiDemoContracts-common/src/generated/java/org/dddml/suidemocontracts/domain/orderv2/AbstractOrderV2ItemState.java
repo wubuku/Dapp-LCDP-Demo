@@ -30,6 +30,16 @@ public abstract class AbstractOrderV2ItemState implements OrderV2ItemState.SqlOr
         orderV2State = s;
     }
     
+    private OrderV2State protectedOrderV2State;
+
+    protected OrderV2State getProtectedOrderV2State() {
+        return protectedOrderV2State;
+    }
+
+    protected void setProtectedOrderV2State(OrderV2State protectedOrderV2State) {
+        this.protectedOrderV2State = protectedOrderV2State;
+    }
+
     public String getOrderV2OrderId() {
         return this.getOrderV2ItemId().getOrderV2OrderId();
     }

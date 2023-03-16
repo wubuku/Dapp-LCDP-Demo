@@ -29,6 +29,16 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         orderV2State = s;
     }
     
+    private OrderShipGroupState protectedOrderShipGroupState;
+
+    protected OrderShipGroupState getProtectedOrderShipGroupState() {
+        return protectedOrderShipGroupState;
+    }
+
+    protected void setProtectedOrderShipGroupState(OrderShipGroupState protectedOrderShipGroupState) {
+        this.protectedOrderShipGroupState = protectedOrderShipGroupState;
+    }
+
     public String getOrderV2OrderId() {
         return this.getOrderV2OrderItemShipGroupAssociationId().getOrderV2OrderId();
     }
@@ -145,6 +155,16 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
 
     public boolean isStateUnsaved() {
         return this.getOffChainVersion() == null;
+    }
+
+    private Set<OrderItemShipGroupAssocSubitemState> protectedSubitems;
+
+    protected Set<OrderItemShipGroupAssocSubitemState> getProtectedSubitems() {
+        return this.protectedSubitems;
+    }
+
+    protected void setProtectedSubitems(Set<OrderItemShipGroupAssocSubitemState> protectedSubitems) {
+        this.protectedSubitems = protectedSubitems;
     }
 
     private EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> subitems;

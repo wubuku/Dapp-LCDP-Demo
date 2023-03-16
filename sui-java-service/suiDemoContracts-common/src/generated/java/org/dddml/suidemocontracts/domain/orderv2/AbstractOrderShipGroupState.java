@@ -29,6 +29,16 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         orderV2State = s;
     }
     
+    private OrderV2State protectedOrderV2State;
+
+    protected OrderV2State getProtectedOrderV2State() {
+        return protectedOrderV2State;
+    }
+
+    protected void setProtectedOrderV2State(OrderV2State protectedOrderV2State) {
+        this.protectedOrderV2State = protectedOrderV2State;
+    }
+
     public String getOrderV2OrderId() {
         return this.getOrderV2OrderShipGroupId().getOrderV2OrderId();
     }
@@ -127,6 +137,16 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
 
     public boolean isStateUnsaved() {
         return this.getOffChainVersion() == null;
+    }
+
+    private Set<OrderItemShipGroupAssociationState> protectedOrderItemShipGroupAssociations;
+
+    protected Set<OrderItemShipGroupAssociationState> getProtectedOrderItemShipGroupAssociations() {
+        return this.protectedOrderItemShipGroupAssociations;
+    }
+
+    protected void setProtectedOrderItemShipGroupAssociations(Set<OrderItemShipGroupAssociationState> protectedOrderItemShipGroupAssociations) {
+        this.protectedOrderItemShipGroupAssociations = protectedOrderItemShipGroupAssociations;
     }
 
     private EntityStateCollection<String, OrderItemShipGroupAssociationState> orderItemShipGroupAssociations;

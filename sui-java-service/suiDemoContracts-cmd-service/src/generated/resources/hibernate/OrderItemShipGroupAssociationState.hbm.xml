@@ -14,6 +14,16 @@
       </key-property>
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
+
+    <set name="protectedSubitems" inverse="true" cascade="all">
+      <key>
+        <column name="order_v2_order_id" />
+        <column name="order_ship_group_ship_group_seq_id" />
+        <column name="order_item_ship_group_association_product_id" />
+      </key>
+      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssocSubitemState$SimpleOrderItemShipGroupAssocSubitemState"/>
+    </set>
+
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(20,0)" />
     </property>

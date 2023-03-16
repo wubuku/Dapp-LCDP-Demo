@@ -134,6 +134,16 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         return this.getOffChainVersion() == null;
     }
 
+    private Set<OrderV2ItemState> protectedItems;
+
+    protected Set<OrderV2ItemState> getProtectedItems() {
+        return this.protectedItems;
+    }
+
+    protected void setProtectedItems(Set<OrderV2ItemState> protectedItems) {
+        this.protectedItems = protectedItems;
+    }
+
     private EntityStateCollection<String, OrderV2ItemState> items;
 
     public EntityStateCollection<String, OrderV2ItemState> getItems() {
@@ -142,6 +152,16 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
     public void setItems(EntityStateCollection<String, OrderV2ItemState> items) {
         this.items = items;
+    }
+
+    private Set<OrderShipGroupState> protectedOrderShipGroups;
+
+    protected Set<OrderShipGroupState> getProtectedOrderShipGroups() {
+        return this.protectedOrderShipGroups;
+    }
+
+    protected void setProtectedOrderShipGroups(Set<OrderShipGroupState> protectedOrderShipGroups) {
+        this.protectedOrderShipGroups = protectedOrderShipGroups;
     }
 
     private EntityStateCollection<Integer, OrderShipGroupState> orderShipGroups;
