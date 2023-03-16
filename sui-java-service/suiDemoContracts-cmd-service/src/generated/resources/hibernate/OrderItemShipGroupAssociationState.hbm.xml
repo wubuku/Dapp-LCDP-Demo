@@ -15,7 +15,7 @@
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
 
-    <set name="protectedSubitems" inverse="true" cascade="all">
+    <set name="protectedSubitems" inverse="true" cascade="all-delete-orphan" fetch="join">
       <key>
         <column name="order_v2_order_id" />
         <column name="order_ship_group_ship_group_seq_id" />

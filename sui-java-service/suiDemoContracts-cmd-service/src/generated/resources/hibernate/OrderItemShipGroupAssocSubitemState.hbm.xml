@@ -33,11 +33,11 @@
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
 
-<!--    <many-to-one name="protectedOrderItemShipGroupAssociationState" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState">-->
-<!--      <column name="order_v2_order_id" />-->
-<!--      <column name="order_ship_group_ship_group_seq_id" />-->
-<!--      <column name="order_item_ship_group_association_product_id" />-->
-<!--    </many-to-one>-->
+    <many-to-one name="protectedOrderItemShipGroupAssociationState" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" insert="false" update="false">
+      <column name="order_v2_order_id" />
+      <column name="order_ship_group_ship_group_seq_id" />
+      <column name="order_item_ship_group_association_product_id" />
+    </many-to-one>
 
     <property name="description">
       <column name="description" length="100" />
