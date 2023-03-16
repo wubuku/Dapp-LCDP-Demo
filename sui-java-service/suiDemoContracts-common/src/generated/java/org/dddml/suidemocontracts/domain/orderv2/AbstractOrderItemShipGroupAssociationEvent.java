@@ -78,10 +78,10 @@ public abstract class AbstractOrderItemShipGroupAssociationEvent extends Abstrac
         return (OrderItemShipGroupAssocSubitemEventDao)ApplicationContext.current.get("orderItemShipGroupAssocSubitemEventDao");
     }
 
-    protected OrderItemShipGroupAssocSubitemEventId newOrderItemShipGroupAssocSubitemEventId(Integer orderItemShipGroupAssocSubitemSeqId)
+    protected OrderItemShipGroupAssocSubitemEventId newOrderItemShipGroupAssocSubitemEventId(Day orderItemShipGroupAssocSubitemDay)
     {
         OrderItemShipGroupAssocSubitemEventId eventId = new OrderItemShipGroupAssocSubitemEventId(this.getOrderItemShipGroupAssociationEventId().getOrderV2OrderId(), this.getOrderItemShipGroupAssociationEventId().getOrderShipGroupShipGroupSeqId(), this.getOrderItemShipGroupAssociationEventId().getProductId(), 
-            orderItemShipGroupAssocSubitemSeqId, 
+            orderItemShipGroupAssocSubitemDay, 
             this.getOrderItemShipGroupAssociationEventId().getVersion());
         return eventId;
     }

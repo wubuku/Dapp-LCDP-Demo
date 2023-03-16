@@ -24,6 +24,7 @@ configuration:
   baseUri: "/api"
   
   databaseNamingConvention: "UnderscoredNamingConvention"
+  #associationMappingsEnabled: true
   
   valueObjectBaseTypes:
     "Email": "string"

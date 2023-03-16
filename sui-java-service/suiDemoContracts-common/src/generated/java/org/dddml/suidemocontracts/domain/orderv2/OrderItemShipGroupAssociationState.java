@@ -41,7 +41,7 @@ public interface OrderItemShipGroupAssociationState
 
     Integer getOrderShipGroupShipGroupSeqId();
 
-    EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> getSubitems();
+    EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> getSubitems();
 
     interface MutableOrderItemShipGroupAssociationState extends OrderItemShipGroupAssociationState {
         void setProductId(String productId);

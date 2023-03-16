@@ -147,13 +147,13 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         return this.getOffChainVersion() == null;
     }
 
-    private EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> subitems;
+    private EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> subitems;
 
-    public EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> getSubitems() {
+    public EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> getSubitems() {
         return this.subitems;
     }
 
-    public void setSubitems(EntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState> subitems) {
+    public void setSubitems(EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> subitems) {
         this.subitems = subitems;
     }
 
@@ -229,7 +229,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
             }
             if (iterable != null) {
                 for (OrderItemShipGroupAssocSubitemState ss : iterable) {
-                    OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemSeqId());
+                    OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemDay());
                     ((AbstractOrderItemShipGroupAssocSubitemState) thisInnerState).merge(ss);
                 }
             }
@@ -237,17 +237,17 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         if (s.getSubitems() != null) {
             if (s.getSubitems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
                 if (((EntityStateCollection.ModifiableEntityStateCollection)s.getSubitems()).getRemovedStates() != null) {
-                    for (OrderItemShipGroupAssocSubitemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)s.getSubitems()).getRemovedStates()) {
-                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemSeqId());
+                    for (OrderItemShipGroupAssocSubitemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)s.getSubitems()).getRemovedStates()) {
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemDay());
                         ((AbstractOrderItemShipGroupAssocSubitemStateCollection)this.getSubitems()).remove(thisInnerState);
                     }
                 }
             } else {
                 if (s.getSubitems().isAllLoaded()) {
-                    Set<Integer> removedStateIds = new HashSet<>(this.getSubitems().stream().map(i -> i.getOrderItemShipGroupAssocSubitemSeqId()).collect(java.util.stream.Collectors.toList()));
-                    s.getSubitems().forEach(i -> removedStateIds.remove(i.getOrderItemShipGroupAssocSubitemSeqId()));
-                    for (Integer i : removedStateIds) {
-                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(i);
+                    Set<Day> removedStateIds = new HashSet<>(this.getSubitems().stream().map(i -> i.getOrderItemShipGroupAssocSubitemDay()).collect(java.util.stream.Collectors.toList()));
+                    s.getSubitems().forEach(i -> removedStateIds.remove(i.getOrderItemShipGroupAssocSubitemDay()));
+                    for (Day i : removedStateIds) {
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(i);
                         ((AbstractOrderItemShipGroupAssocSubitemStateCollection)this.getSubitems()).remove(thisInnerState);
                     }
                 }

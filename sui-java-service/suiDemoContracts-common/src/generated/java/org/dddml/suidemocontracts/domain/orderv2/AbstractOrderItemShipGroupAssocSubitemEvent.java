@@ -1,8 +1,8 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
@@ -18,12 +18,12 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends Abstra
         this.orderItemShipGroupAssocSubitemEventId = eventId;
     }
     
-    public Integer getOrderItemShipGroupAssocSubitemSeqId() {
-        return getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssocSubitemSeqId();
+    public Day getOrderItemShipGroupAssocSubitemDay() {
+        return getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssocSubitemDay();
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId) {
-        getOrderItemShipGroupAssocSubitemEventId().setOrderItemShipGroupAssocSubitemSeqId(orderItemShipGroupAssocSubitemSeqId);
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay) {
+        getOrderItemShipGroupAssocSubitemEventId().setOrderItemShipGroupAssocSubitemDay(orderItemShipGroupAssocSubitemDay);
     }
 
     private boolean eventReadOnly;

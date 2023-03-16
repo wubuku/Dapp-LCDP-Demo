@@ -1,5 +1,6 @@
 module sui_contracts::order_item_ship_group_assoc_subitem {
     use std::string::String;
+    use sui_contracts::day::Day;
     friend sui_contracts::order_v2_create_logic;
     friend sui_contracts::order_v2_remove_item_logic;
     friend sui_contracts::order_v2_update_item_quantity_logic;
@@ -13,12 +14,12 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
     const EID_ALREADY_EXISTS: u64 = 101;
 
     struct OrderItemShipGroupAssocSubitem has store, drop {
-        order_item_ship_group_assoc_subitem_seq_id: u8,
+        order_item_ship_group_assoc_subitem_day: Day,
         description: String,
     }
 
-    public fun order_item_ship_group_assoc_subitem_seq_id(order_item_ship_group_assoc_subitem: &OrderItemShipGroupAssocSubitem): u8 {
-        order_item_ship_group_assoc_subitem.order_item_ship_group_assoc_subitem_seq_id
+    public fun order_item_ship_group_assoc_subitem_day(order_item_ship_group_assoc_subitem: &OrderItemShipGroupAssocSubitem): Day {
+        order_item_ship_group_assoc_subitem.order_item_ship_group_assoc_subitem_day
     }
 
     public fun description(order_item_ship_group_assoc_subitem: &OrderItemShipGroupAssocSubitem): String {
@@ -30,18 +31,18 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
     }
 
     public(friend) fun new_order_item_ship_group_assoc_subitem(
-        order_item_ship_group_assoc_subitem_seq_id: u8,
+        order_item_ship_group_assoc_subitem_day: Day,
         description: String,
     ): OrderItemShipGroupAssocSubitem {
         OrderItemShipGroupAssocSubitem {
-            order_item_ship_group_assoc_subitem_seq_id,
+            order_item_ship_group_assoc_subitem_day,
             description,
         }
     }
 
     public(friend) fun drop_order_item_ship_group_assoc_subitem(order_item_ship_group_assoc_subitem: OrderItemShipGroupAssocSubitem) {
         let OrderItemShipGroupAssocSubitem {
-            order_item_ship_group_assoc_subitem_seq_id: _,
+            order_item_ship_group_assoc_subitem_day: _,
             description: _,
         } = order_item_ship_group_assoc_subitem;
     }

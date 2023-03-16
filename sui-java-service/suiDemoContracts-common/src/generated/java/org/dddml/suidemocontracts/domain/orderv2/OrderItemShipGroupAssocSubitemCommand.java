@@ -1,17 +1,17 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.domain.Command;
 import org.dddml.suidemocontracts.specialization.DomainError;
 
 public interface OrderItemShipGroupAssocSubitemCommand extends Command
 {
 
-    Integer getOrderItemShipGroupAssocSubitemSeqId();
+    Day getOrderItemShipGroupAssocSubitemDay();
 
-    void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId);
+    void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay);
 
 }
 

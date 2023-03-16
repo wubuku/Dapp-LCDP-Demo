@@ -500,13 +500,18 @@ public class OrderV2Resource {
 
     /**
      * 查看.
-     * 获取指定 OrderItemShipGroupAssocSubitemSeqId 的 OrderItemShipGroupAssocSubitem
+     * 获取指定 OrderItemShipGroupAssocSubitemDay 的 OrderItemShipGroupAssocSubitem
      */
-    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductId}/OrderItemShipGroupAssocSubitems/{orderItemShipGroupAssocSubitemSeqId}")
-    public OrderItemShipGroupAssocSubitemStateDto getOrderItemShipGroupAssocSubitem(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductId") String orderItemShipGroupAssociationProductId, @PathVariable("orderItemShipGroupAssocSubitemSeqId") Integer orderItemShipGroupAssocSubitemSeqId) {
+    @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductId}/OrderItemShipGroupAssocSubitems/{orderItemShipGroupAssocSubitemDay}")
+    public OrderItemShipGroupAssocSubitemStateDto getOrderItemShipGroupAssocSubitem(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductId") String orderItemShipGroupAssociationProductId, @PathVariable("orderItemShipGroupAssocSubitemDay") String orderItemShipGroupAssocSubitemDay) {
         try {
 
-            OrderItemShipGroupAssocSubitemState state = orderV2ApplicationService.getOrderItemShipGroupAssocSubitem(orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemSeqId);
+            OrderItemShipGroupAssocSubitemState state = orderV2ApplicationService.getOrderItemShipGroupAssocSubitem(orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, (new AbstractValueObjectTextFormatter<Day>(Day.class, ",") {
+                        @Override
+                        protected Class<?> getClassByTypeName(String type) {
+                            return BoundedContextMetadata.CLASS_MAP.get(type);
+                        }
+                    }.parse(orderItemShipGroupAssocSubitemDay)));
             if (state == null) { return null; }
             OrderItemShipGroupAssocSubitemStateDto.DtoConverter dtoConverter = new OrderItemShipGroupAssocSubitemStateDto.DtoConverter();
             OrderItemShipGroupAssocSubitemStateDto stateDto = dtoConverter.toOrderItemShipGroupAssocSubitemStateDto(state);

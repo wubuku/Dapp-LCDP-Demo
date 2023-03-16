@@ -9,6 +9,6 @@ import com.github.wubuku.sui.bean.DynamicField;
 
 import java.math.*;
 
-public class OrderItemShipGroupAssocSubitemDynamicField extends DynamicField<Integer, OrderItemShipGroupAssocSubitem> {
+public class OrderItemShipGroupAssocSubitemDynamicField extends DynamicField<Day, OrderItemShipGroupAssocSubitem> {
 
 }

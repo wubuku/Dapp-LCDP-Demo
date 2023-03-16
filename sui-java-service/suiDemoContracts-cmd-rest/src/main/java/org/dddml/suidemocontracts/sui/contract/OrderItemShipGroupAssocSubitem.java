@@ -15,16 +15,16 @@ import java.util.*;
 @JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
 public class OrderItemShipGroupAssocSubitem {
 
-    private Integer orderItemShipGroupAssocSubitemSeqId;
+    private Day orderItemShipGroupAssocSubitemDay;
 
     private String description;
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId() {
-        return orderItemShipGroupAssocSubitemSeqId;
+    public Day getOrderItemShipGroupAssocSubitemDay() {
+        return orderItemShipGroupAssocSubitemDay;
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId) {
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay) {
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     public String getDescription() {
@@ -38,7 +38,7 @@ public class OrderItemShipGroupAssocSubitem {
     @Override
     public String toString() {
         return "OrderItemShipGroupAssocSubitem{" +
-                "orderItemShipGroupAssocSubitemSeqId=" + orderItemShipGroupAssocSubitemSeqId +
+                "orderItemShipGroupAssocSubitemDay=" + orderItemShipGroupAssocSubitemDay +
                 ", description=" + '\'' + description + '\'' +
                 '}';
     }

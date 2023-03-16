@@ -57,7 +57,7 @@ public interface OrderV2ApplicationService
 
     Iterable<OrderItemShipGroupAssociationState> getOrderItemShipGroupAssociations(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, Criterion filter, List<String> orders);
 
-    OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Integer orderItemShipGroupAssocSubitemSeqId);
+    OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Day orderItemShipGroupAssocSubitemDay);
 
     Iterable<OrderItemShipGroupAssocSubitemState> getOrderItemShipGroupAssocSubitems(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Criterion filter, List<String> orders);
 

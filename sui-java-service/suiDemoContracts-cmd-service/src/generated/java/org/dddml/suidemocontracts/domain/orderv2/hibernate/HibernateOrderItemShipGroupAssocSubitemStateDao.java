@@ -1,7 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2.hibernate;
 
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import java.util.*;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
@@ -21,7 +21,7 @@ public class HibernateOrderItemShipGroupAssocSubitemStateDao implements OrderIte
         return this.sessionFactory.getCurrentSession();
     }
 
-    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderItemShipGroupAssocSubitemSeqId", "Description", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderV2OrderId", "OrderShipGroupShipGroupSeqId", "OrderItemShipGroupAssociationProductId"));
+    private static final Set<String> readOnlyPropertyPascalCaseNames = new HashSet<String>(Arrays.asList("OrderItemShipGroupAssocSubitemDay", "Description", "OffChainVersion", "CreatedBy", "CreatedAt", "UpdatedBy", "UpdatedAt", "Active", "Deleted", "OrderV2OrderId", "OrderShipGroupShipGroupSeqId", "OrderItemShipGroupAssociationProductId"));
     
     private ReadOnlyProxyGenerator readOnlyProxyGenerator;
     

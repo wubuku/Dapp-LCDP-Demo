@@ -32,14 +32,14 @@ public class SuiOrderV2StateRetriever {
     private BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory;
     private BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory;
     private BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory;
-    private BiFunction<OrderItemShipGroupAssociationState, Integer, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory;
+    private BiFunction<OrderItemShipGroupAssociationState, Day, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory;
 
     public SuiOrderV2StateRetriever(SuiJsonRpcClient suiJsonRpcClient,
                                   Function<String, OrderV2State.MutableOrderV2State> orderV2StateFactory,
                                   BiFunction<OrderV2State, String, OrderV2ItemState.MutableOrderV2ItemState> orderV2ItemStateFactory,
                                   BiFunction<OrderV2State, Integer, OrderShipGroupState.MutableOrderShipGroupState> orderShipGroupStateFactory,
                                   BiFunction<OrderShipGroupState, String, OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState> orderItemShipGroupAssociationStateFactory,
-                                  BiFunction<OrderItemShipGroupAssociationState, Integer, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory
+                                  BiFunction<OrderItemShipGroupAssociationState, Day, OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState> orderItemShipGroupAssocSubitemStateFactory
     ) {
         this.suiJsonRpcClient = suiJsonRpcClient;
         this.orderV2StateFactory = orderV2StateFactory;
@@ -112,7 +112,7 @@ public class SuiOrderV2StateRetriever {
     }
 
     private OrderItemShipGroupAssocSubitemState toOrderItemShipGroupAssocSubitemState(OrderItemShipGroupAssociationState orderItemShipGroupAssociationState, OrderItemShipGroupAssocSubitem orderItemShipGroupAssocSubitem) {
-        OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState orderItemShipGroupAssocSubitemState = orderItemShipGroupAssocSubitemStateFactory.apply(orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitem.getOrderItemShipGroupAssocSubitemSeqId());
+        OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState orderItemShipGroupAssocSubitemState = orderItemShipGroupAssocSubitemStateFactory.apply(orderItemShipGroupAssociationState, DomainBeanUtils.toDay(orderItemShipGroupAssocSubitem.getOrderItemShipGroupAssocSubitemDay()));
         orderItemShipGroupAssocSubitemState.setDescription(orderItemShipGroupAssocSubitem.getDescription());
         return orderItemShipGroupAssocSubitemState;
     }

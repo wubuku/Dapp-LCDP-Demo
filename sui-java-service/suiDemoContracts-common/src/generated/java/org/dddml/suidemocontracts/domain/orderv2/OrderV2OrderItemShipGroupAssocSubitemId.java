@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.io.Serializable;
+import org.dddml.suidemocontracts.domain.Day;
 import org.dddml.suidemocontracts.domain.*;
 
 public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
@@ -41,28 +42,88 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
         this.orderItemShipGroupAssociationProductId = orderItemShipGroupAssociationProductId;
     }
 
-    private Integer orderItemShipGroupAssocSubitemSeqId;
+    private Day orderItemShipGroupAssocSubitemDay = new Day();
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId()
+    public Day getOrderItemShipGroupAssocSubitemDay()
     {
-        return this.orderItemShipGroupAssocSubitemSeqId;
+        return this.orderItemShipGroupAssocSubitemDay;
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId)
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay)
     {
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
+    }
+
+    protected Integer getOrderItemShipGroupAssocSubitemDayMonthYearNumber()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getMonth().getYear().getNumber();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayMonthYearNumber(Integer orderItemShipGroupAssocSubitemDayMonthYearNumber)
+    {
+        getOrderItemShipGroupAssocSubitemDay().getMonth().getYear().setNumber(orderItemShipGroupAssocSubitemDayMonthYearNumber);
+    }
+
+    protected String getOrderItemShipGroupAssocSubitemDayMonthYearCalendar()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getMonth().getYear().getCalendar();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayMonthYearCalendar(String orderItemShipGroupAssocSubitemDayMonthYearCalendar)
+    {
+        getOrderItemShipGroupAssocSubitemDay().getMonth().getYear().setCalendar(orderItemShipGroupAssocSubitemDayMonthYearCalendar);
+    }
+
+    protected Integer getOrderItemShipGroupAssocSubitemDayMonthNumber()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getMonth().getNumber();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayMonthNumber(Integer orderItemShipGroupAssocSubitemDayMonthNumber)
+    {
+        getOrderItemShipGroupAssocSubitemDay().getMonth().setNumber(orderItemShipGroupAssocSubitemDayMonthNumber);
+    }
+
+    protected Boolean getOrderItemShipGroupAssocSubitemDayMonthIsLeap()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getMonth().getIsLeap();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayMonthIsLeap(Boolean orderItemShipGroupAssocSubitemDayMonthIsLeap)
+    {
+        getOrderItemShipGroupAssocSubitemDay().getMonth().setIsLeap(orderItemShipGroupAssocSubitemDayMonthIsLeap);
+    }
+
+    protected Integer getOrderItemShipGroupAssocSubitemDayNumber()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getNumber();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayNumber(Integer orderItemShipGroupAssocSubitemDayNumber)
+    {
+        getOrderItemShipGroupAssocSubitemDay().setNumber(orderItemShipGroupAssocSubitemDayNumber);
+    }
+
+    protected String getOrderItemShipGroupAssocSubitemDayTimeZone()
+    {
+        return getOrderItemShipGroupAssocSubitemDay().getTimeZone();
+    }
+
+    protected void setOrderItemShipGroupAssocSubitemDayTimeZone(String orderItemShipGroupAssocSubitemDayTimeZone)
+    {
+        getOrderItemShipGroupAssocSubitemDay().setTimeZone(orderItemShipGroupAssocSubitemDayTimeZone);
     }
 
     public OrderV2OrderItemShipGroupAssocSubitemId()
     {
     }
 
-    public OrderV2OrderItemShipGroupAssocSubitemId(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Integer orderItemShipGroupAssocSubitemSeqId)
+    public OrderV2OrderItemShipGroupAssocSubitemId(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Day orderItemShipGroupAssocSubitemDay)
     {
         this.orderV2OrderId = orderV2OrderId;
         this.orderShipGroupShipGroupSeqId = orderShipGroupShipGroupSeqId;
         this.orderItemShipGroupAssociationProductId = orderItemShipGroupAssociationProductId;
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     @Override
@@ -80,7 +141,7 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
             && (orderV2OrderId == other.orderV2OrderId || (orderV2OrderId != null && orderV2OrderId.equals(other.orderV2OrderId)))
             && (orderShipGroupShipGroupSeqId == other.orderShipGroupShipGroupSeqId || (orderShipGroupShipGroupSeqId != null && orderShipGroupShipGroupSeqId.equals(other.orderShipGroupShipGroupSeqId)))
             && (orderItemShipGroupAssociationProductId == other.orderItemShipGroupAssociationProductId || (orderItemShipGroupAssociationProductId != null && orderItemShipGroupAssociationProductId.equals(other.orderItemShipGroupAssociationProductId)))
-            && (orderItemShipGroupAssocSubitemSeqId == other.orderItemShipGroupAssocSubitemSeqId || (orderItemShipGroupAssocSubitemSeqId != null && orderItemShipGroupAssocSubitemSeqId.equals(other.orderItemShipGroupAssocSubitemSeqId)))
+            && (orderItemShipGroupAssocSubitemDay == other.orderItemShipGroupAssocSubitemDay || (orderItemShipGroupAssocSubitemDay != null && orderItemShipGroupAssocSubitemDay.equals(other.orderItemShipGroupAssocSubitemDay)))
             ;
     }
 
@@ -97,8 +158,8 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
         if (this.orderItemShipGroupAssociationProductId != null) {
             hash += 13 * this.orderItemShipGroupAssociationProductId.hashCode();
         }
-        if (this.orderItemShipGroupAssocSubitemSeqId != null) {
-            hash += 13 * this.orderItemShipGroupAssocSubitemSeqId.hashCode();
+        if (this.orderItemShipGroupAssocSubitemDay != null) {
+            hash += 13 * this.orderItemShipGroupAssocSubitemDay.hashCode();
         }
         return hash;
     }
@@ -108,7 +169,12 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
             "orderV2OrderId",
             "orderShipGroupShipGroupSeqId",
             "orderItemShipGroupAssociationProductId",
-            "orderItemShipGroupAssocSubitemSeqId",
+            "orderItemShipGroupAssocSubitemDayMonthYearNumber",
+            "orderItemShipGroupAssocSubitemDayMonthYearCalendar",
+            "orderItemShipGroupAssocSubitemDayMonthNumber",
+            "orderItemShipGroupAssocSubitemDayMonthIsLeap",
+            "orderItemShipGroupAssocSubitemDayNumber",
+            "orderItemShipGroupAssocSubitemDayTimeZone",
     };
 
     protected static final String[] FLATTENED_PROPERTY_TYPES = new String[]{
@@ -116,6 +182,11 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable
             "Integer",
             "String",
             "Integer",
+            "String",
+            "Integer",
+            "Boolean",
+            "Integer",
+            "String",
     };
 
     protected static final java.util.Map<String, String> FLATTENED_PROPERTY_TYPE_MAP;

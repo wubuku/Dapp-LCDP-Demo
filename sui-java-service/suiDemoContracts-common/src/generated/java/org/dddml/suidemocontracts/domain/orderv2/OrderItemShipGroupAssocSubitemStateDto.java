@@ -2,24 +2,24 @@ package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 
 
 public class OrderItemShipGroupAssocSubitemStateDto
 {
 
-    private Integer orderItemShipGroupAssocSubitemSeqId;
+    private Day orderItemShipGroupAssocSubitemDay;
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId()
+    public Day getOrderItemShipGroupAssocSubitemDay()
     {
-        return this.orderItemShipGroupAssocSubitemSeqId;
+        return this.orderItemShipGroupAssocSubitemDay;
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId)
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay)
     {
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     private String description;
@@ -171,8 +171,8 @@ public class OrderItemShipGroupAssocSubitemStateDto
                 return null;
             }
             OrderItemShipGroupAssocSubitemStateDto dto = new OrderItemShipGroupAssocSubitemStateDto();
-            if (returnedFieldsContains("OrderItemShipGroupAssocSubitemSeqId")) {
-                dto.setOrderItemShipGroupAssocSubitemSeqId(state.getOrderItemShipGroupAssocSubitemSeqId());
+            if (returnedFieldsContains("OrderItemShipGroupAssocSubitemDay")) {
+                dto.setOrderItemShipGroupAssocSubitemDay(state.getOrderItemShipGroupAssocSubitemDay());
             }
             if (returnedFieldsContains("Description")) {
                 dto.setDescription(state.getDescription());

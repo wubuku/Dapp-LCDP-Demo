@@ -916,7 +916,6 @@ public class M {
     public static final String PROPERTY_NAME_UPDATED_AT   = "updatedAt";
 
     public static final String[] propertyNames = new String[] {
-            "orderItemShipGroupAssocSubitemSeqId",
             "description",
             "offChainVersion",
             "createdBy",
@@ -928,14 +927,24 @@ public class M {
             "orderV2OrderId",
             "orderShipGroupShipGroupSeqId",
             "orderItemShipGroupAssociationProductId",
+            "orderItemShipGroupAssocSubitemDay.monthYearNumber",
+            "orderItemShipGroupAssocSubitemDay.monthYearCalendar",
+            "orderItemShipGroupAssocSubitemDay.monthNumber",
+            "orderItemShipGroupAssocSubitemDay.monthIsLeap",
+            "orderItemShipGroupAssocSubitemDay.number",
+            "orderItemShipGroupAssocSubitemDay.timeZone",
             "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId",
             "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId",
             "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId",
-            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber",
+            "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone",
     };
 
     public static final String[] propertyTypes = new String[] {
-            "Integer",
             "String",
             "Long",
             "String",
@@ -947,10 +956,21 @@ public class M {
             "String",
             "Integer",
             "String",
+            "Integer",
+            "String",
+            "Integer",
+            "Boolean",
+            "Integer",
+            "String",
             "String",
             "Integer",
             "String",
             "Integer",
+            "String",
+            "Integer",
+            "Boolean",
+            "Integer",
+            "String",
     };
 
     public static final Map<String, String> propertyTypeMap;
@@ -965,8 +985,6 @@ public class M {
     }
 
     private static  void initAliasMap() {
-        aliasMap.put("orderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
-        aliasMap.put("OrderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
         aliasMap.put("description", "description");
         aliasMap.put("Description", "description");
         aliasMap.put("offChainVersion", "offChainVersion");
@@ -989,14 +1007,60 @@ public class M {
         aliasMap.put("OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
         aliasMap.put("orderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
         aliasMap.put("OrderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.monthYearNumber", "orderItemShipGroupAssocSubitemDay.monthYearNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.MonthYearNumber", "orderItemShipGroupAssocSubitemDay.monthYearNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.month.year.number", "orderItemShipGroupAssocSubitemDay.monthYearNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Month.Year.Number", "orderItemShipGroupAssocSubitemDay.monthYearNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.monthYearCalendar", "orderItemShipGroupAssocSubitemDay.monthYearCalendar");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.MonthYearCalendar", "orderItemShipGroupAssocSubitemDay.monthYearCalendar");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.month.year.calendar", "orderItemShipGroupAssocSubitemDay.monthYearCalendar");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Month.Year.Calendar", "orderItemShipGroupAssocSubitemDay.monthYearCalendar");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.monthNumber", "orderItemShipGroupAssocSubitemDay.monthNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.MonthNumber", "orderItemShipGroupAssocSubitemDay.monthNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.month.number", "orderItemShipGroupAssocSubitemDay.monthNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Month.Number", "orderItemShipGroupAssocSubitemDay.monthNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.monthIsLeap", "orderItemShipGroupAssocSubitemDay.monthIsLeap");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.MonthIsLeap", "orderItemShipGroupAssocSubitemDay.monthIsLeap");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.month.isLeap", "orderItemShipGroupAssocSubitemDay.monthIsLeap");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Month.IsLeap", "orderItemShipGroupAssocSubitemDay.monthIsLeap");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.Number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.timeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.TimeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("orderItemShipGroupAssocSubitemDay.timeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("OrderItemShipGroupAssocSubitemDay.TimeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
         aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
         aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderV2OrderId", "orderV2OrderItemShipGroupAssocSubitemId.orderV2OrderId");
         aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
         aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderShipGroupShipGroupSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderShipGroupShipGroupSeqId");
         aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
         aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssociationProductId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssociationProductId");
-        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
-        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemSeqId", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemSeqId");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayMonthYearNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.month.year.number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.Month.Year.Number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayMonthYearCalendar", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.month.year.calendar", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.Month.Year.Calendar", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthYearCalendar");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayMonthNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.month.number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.Month.Number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayMonthIsLeap", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.month.isLeap", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.Month.IsLeap", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayMonthIsLeap");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayNumber", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.Number", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayNumber");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDayTimeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDay.timeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
+        aliasMap.put("OrderV2OrderItemShipGroupAssocSubitemId.OrderItemShipGroupAssocSubitemDay.TimeZone", "orderV2OrderItemShipGroupAssocSubitemId.orderItemShipGroupAssocSubitemDayTimeZone");
     }
 
     private static void initPropertyTypeMap() {

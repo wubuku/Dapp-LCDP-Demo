@@ -32,8 +32,8 @@ public class SuiOrderV2Service {
                         ((AbstractOrderShipGroupStateCollection) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
                         ((AbstractOrderItemShipGroupAssociationStateCollection) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
-                (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemSeqId) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
-                        ((AbstractOrderItemShipGroupAssocSubitemStateCollection) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemSeqId)
+                (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
+                        ((AbstractOrderItemShipGroupAssocSubitemStateCollection) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay)
         );
     }
 

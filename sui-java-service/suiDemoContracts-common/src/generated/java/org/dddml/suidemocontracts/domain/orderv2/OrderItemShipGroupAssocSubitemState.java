@@ -7,8 +7,8 @@ package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
 public interface OrderItemShipGroupAssocSubitemState
@@ -17,7 +17,7 @@ public interface OrderItemShipGroupAssocSubitemState
 
     Long VERSION_NULL = VERSION_ZERO - 1;
 
-    Integer getOrderItemShipGroupAssocSubitemSeqId();
+    Day getOrderItemShipGroupAssocSubitemDay();
 
     String getDescription();
 
@@ -42,7 +42,7 @@ public interface OrderItemShipGroupAssocSubitemState
     String getOrderItemShipGroupAssociationProductId();
 
     interface MutableOrderItemShipGroupAssocSubitemState extends OrderItemShipGroupAssocSubitemState {
-        void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId);
+        void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay);
 
         void setDescription(String description);
 

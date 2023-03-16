@@ -183,8 +183,8 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Integer orderItemShipGroupAssocSubitemSeqId) {
-        OrderV2OrderItemShipGroupAssocSubitemId entityId = new OrderV2OrderItemShipGroupAssocSubitemId(orderV2OrderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemSeqId);
+    public OrderItemShipGroupAssocSubitemState getOrderItemShipGroupAssocSubitem(String orderV2OrderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductId, Day orderItemShipGroupAssocSubitemDay) {
+        OrderV2OrderItemShipGroupAssocSubitemId entityId = new OrderV2OrderItemShipGroupAssocSubitemId(orderV2OrderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId, orderItemShipGroupAssocSubitemDay);
         return (OrderItemShipGroupAssocSubitemState) getCurrentSession().get(AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState.class, entityId);
     }
 

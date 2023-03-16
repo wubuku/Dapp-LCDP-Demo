@@ -1,8 +1,8 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.Event;
 
 public interface OrderItemShipGroupAssocSubitemEvent extends Event {
@@ -15,9 +15,9 @@ public interface OrderItemShipGroupAssocSubitemEvent extends Event {
         void setEventReadOnly(boolean readOnly);
     }
 
-    Integer getOrderItemShipGroupAssocSubitemSeqId();
+    Day getOrderItemShipGroupAssocSubitemDay();
 
-    //void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId);
+    //void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay);
 
     String getCreatedBy();
 

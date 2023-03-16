@@ -1,23 +1,23 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.domain.AbstractCommand;
 
 public abstract class AbstractOrderItemShipGroupAssocSubitemCommand extends AbstractCommand implements OrderItemShipGroupAssocSubitemCommand
 {
 
-    private Integer orderItemShipGroupAssocSubitemSeqId;
+    private Day orderItemShipGroupAssocSubitemDay;
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId()
+    public Day getOrderItemShipGroupAssocSubitemDay()
     {
-        return this.orderItemShipGroupAssocSubitemSeqId;
+        return this.orderItemShipGroupAssocSubitemDay;
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId)
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay)
     {
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     private String orderV2OrderId;

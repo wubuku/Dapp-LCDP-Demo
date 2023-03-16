@@ -2,8 +2,8 @@ package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
 import java.math.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.orderv2.OrderItemShipGroupAssocSubitemEvent.*;
 
@@ -53,12 +53,12 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
         this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssociationProductId(orderItemShipGroupAssociationProductId);
     }
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId() {
-        return this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemSeqId();
+    public Day getOrderItemShipGroupAssocSubitemDay() {
+        return this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemDay();
     }
         
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId) {
-        this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssocSubitemSeqId(orderItemShipGroupAssocSubitemSeqId);
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay) {
+        this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssocSubitemDay(orderItemShipGroupAssocSubitemDay);
     }
 
     private String description;
@@ -177,14 +177,14 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
 
     @Override
     public int hashCode() {
-        return getOrderItemShipGroupAssocSubitemSeqId().hashCode();
+        return getOrderItemShipGroupAssocSubitemDay().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj instanceof OrderItemShipGroupAssocSubitemState) {
-            return Objects.equals(this.getOrderItemShipGroupAssocSubitemSeqId(), ((OrderItemShipGroupAssocSubitemState)obj).getOrderItemShipGroupAssocSubitemSeqId());
+            return Objects.equals(this.getOrderItemShipGroupAssocSubitemDay(), ((OrderItemShipGroupAssocSubitemState)obj).getOrderItemShipGroupAssocSubitemDay());
         }
         return false;
     }
@@ -229,10 +229,10 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
             throw DomainError.named("mutateWrongEntity", "Entity Id OrderItemShipGroupAssociationProductId %1$s in state but entity id OrderItemShipGroupAssociationProductId %2$s in event", stateEntityIdOrderItemShipGroupAssociationProductId, eventEntityIdOrderItemShipGroupAssociationProductId);
         }
 
-        Integer stateEntityIdOrderItemShipGroupAssocSubitemSeqId = this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemSeqId();
-        Integer eventEntityIdOrderItemShipGroupAssocSubitemSeqId = ((OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent)event).getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssocSubitemSeqId();
-        if (!stateEntityIdOrderItemShipGroupAssocSubitemSeqId.equals(eventEntityIdOrderItemShipGroupAssocSubitemSeqId)) {
-            throw DomainError.named("mutateWrongEntity", "Entity Id OrderItemShipGroupAssocSubitemSeqId %1$s in state but entity id OrderItemShipGroupAssocSubitemSeqId %2$s in event", stateEntityIdOrderItemShipGroupAssocSubitemSeqId, eventEntityIdOrderItemShipGroupAssocSubitemSeqId);
+        Day stateEntityIdOrderItemShipGroupAssocSubitemDay = this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemDay();
+        Day eventEntityIdOrderItemShipGroupAssocSubitemDay = ((OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent)event).getOrderItemShipGroupAssocSubitemEventId().getOrderItemShipGroupAssocSubitemDay();
+        if (!stateEntityIdOrderItemShipGroupAssocSubitemDay.equals(eventEntityIdOrderItemShipGroupAssocSubitemDay)) {
+            throw DomainError.named("mutateWrongEntity", "Entity Id OrderItemShipGroupAssocSubitemDay %1$s in state but entity id OrderItemShipGroupAssocSubitemDay %2$s in event", stateEntityIdOrderItemShipGroupAssocSubitemDay, eventEntityIdOrderItemShipGroupAssocSubitemDay);
         }
 
 

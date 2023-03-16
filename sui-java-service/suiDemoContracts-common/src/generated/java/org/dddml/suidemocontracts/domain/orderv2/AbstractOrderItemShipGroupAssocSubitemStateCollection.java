@@ -1,12 +1,12 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
 import java.util.*;
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.specialization.ApplicationContext;
 import org.dddml.suidemocontracts.specialization.Saveable;
 
-public abstract class AbstractOrderItemShipGroupAssocSubitemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderItemShipGroupAssocSubitemState>, Saveable
+public abstract class AbstractOrderItemShipGroupAssocSubitemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>, Saveable
 {
     protected OrderItemShipGroupAssocSubitemStateDao getOrderItemShipGroupAssocSubitemStateDao()
     {
@@ -101,16 +101,16 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemStateCollection impl
         return getInnerIterable().iterator();
     }
 
-    public OrderItemShipGroupAssocSubitemState get(Integer orderItemShipGroupAssocSubitemSeqId) {
-        return get(orderItemShipGroupAssocSubitemSeqId, true, false);
+    public OrderItemShipGroupAssocSubitemState get(Day orderItemShipGroupAssocSubitemDay) {
+        return get(orderItemShipGroupAssocSubitemDay, true, false);
     }
 
-    public OrderItemShipGroupAssocSubitemState getOrAdd(Integer orderItemShipGroupAssocSubitemSeqId) {
-        return get(orderItemShipGroupAssocSubitemSeqId, false, false);
+    public OrderItemShipGroupAssocSubitemState getOrAdd(Day orderItemShipGroupAssocSubitemDay) {
+        return get(orderItemShipGroupAssocSubitemDay, false, false);
     }
 
-    protected OrderItemShipGroupAssocSubitemState get(Integer orderItemShipGroupAssocSubitemSeqId, boolean nullAllowed, boolean forCreation) {
-        OrderV2OrderItemShipGroupAssocSubitemId globalId = new OrderV2OrderItemShipGroupAssocSubitemId(((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getOrderV2OrderId(), ((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getOrderShipGroupShipGroupSeqId(), ((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getProductId(), orderItemShipGroupAssocSubitemSeqId);
+    protected OrderItemShipGroupAssocSubitemState get(Day orderItemShipGroupAssocSubitemDay, boolean nullAllowed, boolean forCreation) {
+        OrderV2OrderItemShipGroupAssocSubitemId globalId = new OrderV2OrderItemShipGroupAssocSubitemId(((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getOrderV2OrderId(), ((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getOrderShipGroupShipGroupSeqId(), ((OrderItemShipGroupAssociationState.SqlOrderItemShipGroupAssociationState)orderItemShipGroupAssociationState).getOrderV2OrderItemShipGroupAssociationId().getProductId(), orderItemShipGroupAssocSubitemDay);
         if (loadedOrderItemShipGroupAssocSubitemStates.containsKey(globalId)) {
             OrderItemShipGroupAssocSubitemState state = loadedOrderItemShipGroupAssocSubitemStates.get(globalId);
             if (state instanceof AbstractOrderItemShipGroupAssocSubitemState) {

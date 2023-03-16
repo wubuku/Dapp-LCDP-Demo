@@ -1,30 +1,30 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.dddml.suidemocontracts.domain.AbstractCommand;
 
 public abstract class AbstractOrderItemShipGroupAssocSubitemCommandDto extends AbstractCommand
 {
 
     /**
-     * Order Item Ship Group Assoc Subitem Seq Id
+     * Order Item Ship Group Assoc Subitem Day
      */
-    private Integer orderItemShipGroupAssocSubitemSeqId;
+    private Day orderItemShipGroupAssocSubitemDay;
 
-    public Integer getOrderItemShipGroupAssocSubitemSeqId()
+    public Day getOrderItemShipGroupAssocSubitemDay()
     {
-        return this.orderItemShipGroupAssocSubitemSeqId;
+        return this.orderItemShipGroupAssocSubitemDay;
     }
 
-    public void setOrderItemShipGroupAssocSubitemSeqId(Integer orderItemShipGroupAssocSubitemSeqId)
+    public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay)
     {
-        this.orderItemShipGroupAssocSubitemSeqId = orderItemShipGroupAssocSubitemSeqId;
+        this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
 
     public void copyTo(OrderItemShipGroupAssocSubitemCommand command) {
-        command.setOrderItemShipGroupAssocSubitemSeqId(this.getOrderItemShipGroupAssocSubitemSeqId());
+        command.setOrderItemShipGroupAssocSubitemDay(this.getOrderItemShipGroupAssocSubitemDay());
         
         command.setRequesterId(this.getRequesterId());
         command.setCommandId(this.getCommandId());

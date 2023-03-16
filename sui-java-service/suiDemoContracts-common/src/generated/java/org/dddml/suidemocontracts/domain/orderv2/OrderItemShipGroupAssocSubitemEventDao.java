@@ -1,7 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2;
 
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 
 public interface OrderItemShipGroupAssocSubitemEventDao
 {

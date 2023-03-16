@@ -1,7 +1,7 @@
 package org.dddml.suidemocontracts.domain.orderv2.hibernate;
 
-import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
+import java.util.Date;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.dddml.suidemocontracts.domain.orderv2.*;

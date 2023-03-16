@@ -58,12 +58,22 @@ aggregates:
               # This is a ridiculous "made-up" entity, and in our practical experience,
               # entities with more than three levels of hierarchy within an aggregate are extremely rare.
               OrderItemShipGroupAssocSubitem:
-                metadata:
-                  IsCompositeIdUsingShortColumnNames: true
                 id:
-                  name: OrderItemShipGroupAssocSubitemSeqId
-                  type: u8
-                  columnName: order_v2_item_ship_group_assoc_subitem_seq_id
+                  name: OrderItemShipGroupAssocSubitemDay
+                  # The local ID of this entity is a value object,
+                  # making it overly complex, almost to the point of being absurd.
+                  type: Day
+                globalId:
+                  columnNames:
+                    - order_v2_order_id
+                    - order_ship_group_ship_group_seq_id
+                    - order_item_ship_group_association_product_id
+                    - order_item_ship_group_assoc_subitem_day_month_year_number
+                    - order_item_ship_group_assoc_subitem_day_month_year_calendar
+                    - order_item_ship_group_assoc_subitem_day_month_number
+                    - order_item_ship_group_assoc_subitem_day_month_is_leap
+                    - order_item_ship_group_assoc_subitem_day_number
+                    - order_item_ship_group_assoc_subitem_day_time_zone
                 properties:
                   Description:
                     type: String
@@ -98,10 +108,10 @@ aggregates:
             # eventPropertyName: ProductId
         event:
           name: OrderV2ItemRemoved
-#          properties:
-#            Owner:
-#              type: address
-#              isOwner: true # Transfer the object to the account address indicated by this property
+      #          properties:
+      #            Owner:
+      #              type: address
+      #              isOwner: true # Transfer the object to the account address indicated by this property
 
       UpdateItemQuantity:
         parameters:
