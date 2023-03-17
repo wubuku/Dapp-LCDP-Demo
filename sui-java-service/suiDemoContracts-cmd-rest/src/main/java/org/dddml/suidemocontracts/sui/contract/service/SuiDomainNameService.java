@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.domainname.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ public class SuiDomainNameService {
     @Autowired
     public SuiDomainNameService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiDomainNameStateRetriever = new SuiDomainNameStateRetriever(suiJsonRpcClient,
-                //todo refactor factories???
                 domainNameId -> (DomainNameState.MutableDomainNameState)
                         domainNameStateRepository.get(domainNameId, false)
         );

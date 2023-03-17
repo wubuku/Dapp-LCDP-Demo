@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.product.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ public class SuiProductService {
     @Autowired
     public SuiProductService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiProductStateRetriever = new SuiProductStateRetriever(suiJsonRpcClient,
-                //todo refactor factories???
                 productId -> (ProductState.MutableProductState)
                         productStateRepository.get(productId, false)
         );

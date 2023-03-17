@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.daysummary.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ public class SuiDaySummaryService {
     @Autowired
     public SuiDaySummaryService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiDaySummaryStateRetriever = new SuiDaySummaryStateRetriever(suiJsonRpcClient,
-                //todo refactor factories???
                 day -> (DaySummaryState.MutableDaySummaryState)
                         daySummaryStateRepository.get(day, false)
         );

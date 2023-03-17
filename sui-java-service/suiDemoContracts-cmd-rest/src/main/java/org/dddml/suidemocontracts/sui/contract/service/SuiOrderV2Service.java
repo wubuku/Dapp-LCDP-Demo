@@ -6,7 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
-import org.dddml.suidemocontracts.domain.EntityStateCollection;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ public class SuiOrderV2Service {
     @Autowired
     public SuiOrderV2Service(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiOrderV2StateRetriever = new SuiOrderV2StateRetriever(suiJsonRpcClient,
-                //todo refactor factories???
                 orderId -> (OrderV2State.MutableOrderV2State)
                         orderV2StateRepository.get(orderId, false),
                 (orderV2State, productId) -> (OrderV2ItemState.MutableOrderV2ItemState)
@@ -32,9 +31,9 @@ public class SuiOrderV2Service {
                 (orderV2State, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
                         ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
-                        ((AbstractOrderItemShipGroupAssociationStateCollection) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
                 (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
-                        ((AbstractOrderItemShipGroupAssocSubitemStateCollection) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay)
         );
     }
 

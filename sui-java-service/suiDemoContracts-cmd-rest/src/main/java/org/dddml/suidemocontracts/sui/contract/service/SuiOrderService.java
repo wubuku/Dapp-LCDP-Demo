@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.order.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,10 @@ public class SuiOrderService {
     @Autowired
     public SuiOrderService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiOrderStateRetriever = new SuiOrderStateRetriever(suiJsonRpcClient,
-                //todo refactor factories???
                 id -> (OrderState.MutableOrderState)
                         orderStateRepository.get(id, false),
                 (orderState, productId) -> (OrderItemState.MutableOrderItemState)
-                        ((AbstractOrderItemStateCollection) orderState.getItems()).getOrAdd(productId)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId)
         );
     }
 
