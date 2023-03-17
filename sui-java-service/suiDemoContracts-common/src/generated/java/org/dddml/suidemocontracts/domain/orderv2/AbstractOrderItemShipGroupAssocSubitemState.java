@@ -63,16 +63,12 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
         this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssociationProductId(orderItemShipGroupAssociationProductId);
     }
 
-    //private Day orderItemShipGroupAssocSubitemDay;
-
     public Day getOrderItemShipGroupAssocSubitemDay() {
         return this.getOrderV2OrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemDay();
-        //return this.orderItemShipGroupAssocSubitemDay;
     }
         
     public void setOrderItemShipGroupAssocSubitemDay(Day orderItemShipGroupAssocSubitemDay) {
         this.getOrderV2OrderItemShipGroupAssocSubitemId().setOrderItemShipGroupAssocSubitemDay(orderItemShipGroupAssocSubitemDay);
-        //this.orderItemShipGroupAssocSubitemDay = orderItemShipGroupAssocSubitemDay;
     }
 
     private String description;

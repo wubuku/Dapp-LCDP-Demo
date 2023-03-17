@@ -6,6 +6,18 @@
       <generator class="assigned" />
     </id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedItems" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_v2_item_id_order_v2_order_id" />
+      </key>
+      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2ItemState$SimpleOrderV2ItemState" />
+    </set>
+    <set name="protectedOrderShipGroups" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_v2_order_ship_group_id_order_v2_order_id" />
+      </key>
+      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderShipGroupState$SimpleOrderShipGroupState" />
+    </set>
     <property name="id_">
       <column name="id" unique-key="unique_orderv2_sid" sql-type="VARCHAR(42)" />
     </property>

@@ -11,6 +11,16 @@
       </key-property>
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedOrderItemShipGroupAssociations" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_v2_order_item_ship_group_association_id_order_v2_order_id" />
+        <column name="order_v2_ship_group_seq_id" />
+      </key>
+      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" />
+    </set>
+    <many-to-one name="protectedOrderV2State" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2State$SimpleOrderV2State" insert="false" update="false">
+      <column name="order_v2_order_ship_group_id_order_v2_order_id" />
+    </many-to-one>
     <property name="shipmentMethod">
       <column name="shipment_method" />
     </property>

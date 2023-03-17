@@ -14,16 +14,18 @@
       </key-property>
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
-
     <set name="protectedSubitems" inverse="true" cascade="all-delete-orphan" fetch="join">
       <key>
         <column name="order_v2_order_id" />
         <column name="order_ship_group_ship_group_seq_id" />
         <column name="order_item_ship_group_association_product_id" />
       </key>
-      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssocSubitemState$SimpleOrderItemShipGroupAssocSubitemState"/>
+      <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderItemShipGroupAssocSubitemState$SimpleOrderItemShipGroupAssocSubitemState" />
     </set>
-
+    <many-to-one name="protectedOrderShipGroupState" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderShipGroupState$SimpleOrderShipGroupState" insert="false" update="false">
+      <column name="order_v2_order_item_ship_group_association_id_order_v2_order_id" />
+      <column name="order_v2_ship_group_seq_id" />
+    </many-to-one>
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(20,0)" />
     </property>

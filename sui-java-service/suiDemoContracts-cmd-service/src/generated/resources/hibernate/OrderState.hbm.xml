@@ -6,6 +6,12 @@
       <generator class="assigned" />
     </id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedItems" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_item_id_order_id" />
+      </key>
+      <one-to-many class="org.dddml.suidemocontracts.domain.order.AbstractOrderItemState$SimpleOrderItemState" />
+    </set>
     <property name="totalAmount">
       <column name="total_amount" sql-type="DECIMAL(20,0)" />
     </property>

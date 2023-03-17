@@ -11,6 +11,9 @@
       </key-property>
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
+    <many-to-one name="protectedOrderV2State" class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2State$SimpleOrderV2State" insert="false" update="false">
+      <column name="order_v2_item_id_order_v2_order_id" />
+    </many-to-one>
     <property name="quantity">
       <column name="quantity" sql-type="DECIMAL(20,0)" />
     </property>

@@ -10,10 +10,50 @@ execute stmt;
 deallocate prepare stmt;
 set @fkConstraintName = (SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE
             CONSTRAINT_SCHEMA = DATABASE() AND
+            TABLE_NAME        = 'order_item' AND
+            CONSTRAINT_TYPE   = 'FOREIGN KEY');
+set @sqlVar = if(@fkConstraintName is not null, 
+			concat('ALTER TABLE order_item drop foreign key ', @fkConstraintName),
+            'select 1');
+prepare stmt from @sqlVar;
+execute stmt;
+deallocate prepare stmt;
+set @fkConstraintName = (SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE
+            CONSTRAINT_SCHEMA = DATABASE() AND
             TABLE_NAME        = 'order_item_ship_group_assoc_subitem' AND
             CONSTRAINT_TYPE   = 'FOREIGN KEY');
 set @sqlVar = if(@fkConstraintName is not null, 
 			concat('ALTER TABLE order_item_ship_group_assoc_subitem drop foreign key ', @fkConstraintName),
+            'select 1');
+prepare stmt from @sqlVar;
+execute stmt;
+deallocate prepare stmt;
+set @fkConstraintName = (SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE
+            CONSTRAINT_SCHEMA = DATABASE() AND
+            TABLE_NAME        = 'order_item_ship_group_association' AND
+            CONSTRAINT_TYPE   = 'FOREIGN KEY');
+set @sqlVar = if(@fkConstraintName is not null, 
+			concat('ALTER TABLE order_item_ship_group_association drop foreign key ', @fkConstraintName),
+            'select 1');
+prepare stmt from @sqlVar;
+execute stmt;
+deallocate prepare stmt;
+set @fkConstraintName = (SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE
+            CONSTRAINT_SCHEMA = DATABASE() AND
+            TABLE_NAME        = 'order_ship_group' AND
+            CONSTRAINT_TYPE   = 'FOREIGN KEY');
+set @sqlVar = if(@fkConstraintName is not null, 
+			concat('ALTER TABLE order_ship_group drop foreign key ', @fkConstraintName),
+            'select 1');
+prepare stmt from @sqlVar;
+execute stmt;
+deallocate prepare stmt;
+set @fkConstraintName = (SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS WHERE
+            CONSTRAINT_SCHEMA = DATABASE() AND
+            TABLE_NAME        = 'order_v2_item' AND
+            CONSTRAINT_TYPE   = 'FOREIGN KEY');
+set @sqlVar = if(@fkConstraintName is not null, 
+			concat('ALTER TABLE order_v2_item drop foreign key ', @fkConstraintName),
             'select 1');
 prepare stmt from @sqlVar;
 execute stmt;
@@ -74,4 +114,8 @@ alter table domain_name add constraint unique_domainname_sid unique (id);
 alter table order_v2 add constraint unique_orderv2_sid unique (id);
 alter table product add constraint unique_product_sid unique (id);
 alter table day_summary_array_data add constraint FK2o1jthqfqexit9icrx6iwvpl8 foreign key (day_month_year_number, day_month_year_calendar, day_month_number, day_month_is_leap, day_number, day_time_zone) references day_summary (day_month_year_number, day_month_year_calendar, day_month_number, day_month_is_leap, day_number, day_time_zone);
+alter table order_item add constraint FK613ccnvx1pxajvm27cvxbnwaf foreign key (order_item_id_order_id) references order_t (id);
 alter table order_item_ship_group_assoc_subitem add constraint FKam6xdy24ytnicp96rqrct9h3f foreign key (order_v2_order_id, order_ship_group_ship_group_seq_id, order_item_ship_group_association_product_id) references order_item_ship_group_association (order_v2_order_item_ship_group_association_id_order_v2_order_id, order_v2_ship_group_seq_id, order_v2_item_ship_group_assoc_product_id);
+alter table order_item_ship_group_association add constraint FK8uwvt4yjfs1hs0wux1i0h75hb foreign key (order_v2_order_item_ship_group_association_id_order_v2_order_id, order_v2_ship_group_seq_id) references order_ship_group (order_v2_order_ship_group_id_order_v2_order_id, order_v2_ship_group_seq_id);
+alter table order_ship_group add constraint FK3emc0xwvt61h8y2gp13ybaagy foreign key (order_v2_order_ship_group_id_order_v2_order_id) references order_v2 (order_id);
+alter table order_v2_item add constraint FKe7jpjhab3atameit16rnw4vr3 foreign key (order_v2_item_id_order_v2_order_id) references order_v2 (order_id);
