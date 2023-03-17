@@ -11,6 +11,8 @@ module sui_contracts::order {
     friend sui_contracts::order_update_item_quantity_logic;
     friend sui_contracts::order_aggregate;
 
+    const EID_DATA_TOO_LONG: u64 = 102;
+
     struct Order has key {
         id: UID,
         version: u64,

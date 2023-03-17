@@ -12,6 +12,7 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
     friend sui_contracts::order_item_ship_group_association;
 
     const EID_ALREADY_EXISTS: u64 = 101;
+    const EID_DATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssocSubitem has store, drop {
         order_item_ship_group_assoc_subitem_day: Day,
@@ -34,6 +35,7 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
         order_item_ship_group_assoc_subitem_day: Day,
         description: String,
     ): OrderItemShipGroupAssocSubitem {
+        assert!(std::string::length(&description) <= 100, EID_DATA_TOO_LONG);
         OrderItemShipGroupAssocSubitem {
             order_item_ship_group_assoc_subitem_day,
             description,

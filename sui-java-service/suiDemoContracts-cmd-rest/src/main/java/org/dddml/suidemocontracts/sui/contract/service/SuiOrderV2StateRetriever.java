@@ -64,16 +64,20 @@ public class SuiOrderV2StateRetriever {
         orderV2State.setVersion(orderV2.getVersion());
         orderV2State.setTotalAmount(orderV2.getTotalAmount());
         orderV2State.setEstimatedShipDate(DomainBeanUtils.toDay(orderV2.getEstimatedShipDate()));
-        String orderV2ItemTableId = orderV2.getItems().getFields().getId().getId();
-        List<OrderV2Item> items = getOrderV2Items(orderV2ItemTableId);
-        for (OrderV2Item i : items) {
-            orderV2State.getItems().add(toOrderV2ItemState(orderV2State, i));
+        if (orderV2.getItems() != null) {
+            String orderV2ItemTableId = orderV2.getItems().getFields().getId().getId();
+            List<OrderV2Item> items = getOrderV2Items(orderV2ItemTableId);
+            for (OrderV2Item i : items) {
+                orderV2State.getItems().add(toOrderV2ItemState(orderV2State, i));
+            }
         }
 
-        String orderShipGroupTableId = orderV2.getOrderShipGroups().getFields().getId().getId();
-        List<OrderShipGroup> orderShipGroups = getOrderShipGroups(orderShipGroupTableId);
-        for (OrderShipGroup i : orderShipGroups) {
-            orderV2State.getOrderShipGroups().add(toOrderShipGroupState(orderV2State, i));
+        if (orderV2.getOrderShipGroups() != null) {
+            String orderShipGroupTableId = orderV2.getOrderShipGroups().getFields().getId().getId();
+            List<OrderShipGroup> orderShipGroups = getOrderShipGroups(orderShipGroupTableId);
+            for (OrderShipGroup i : orderShipGroups) {
+                orderV2State.getOrderShipGroups().add(toOrderShipGroupState(orderV2State, i));
+            }
         }
 
         return orderV2State;
@@ -89,10 +93,12 @@ public class SuiOrderV2StateRetriever {
     private OrderShipGroupState toOrderShipGroupState(OrderV2State orderV2State, OrderShipGroup orderShipGroup) {
         OrderShipGroupState.MutableOrderShipGroupState orderShipGroupState = orderShipGroupStateFactory.apply(orderV2State, orderShipGroup.getShipGroupSeqId());
         orderShipGroupState.setShipmentMethod(orderShipGroup.getShipmentMethod());
-        String orderItemShipGroupAssociationTableId = orderShipGroup.getOrderItemShipGroupAssociations().getFields().getId().getId();
-        List<OrderItemShipGroupAssociation> orderItemShipGroupAssociations = getOrderItemShipGroupAssociations(orderItemShipGroupAssociationTableId);
-        for (OrderItemShipGroupAssociation i : orderItemShipGroupAssociations) {
-            orderShipGroupState.getOrderItemShipGroupAssociations().add(toOrderItemShipGroupAssociationState(orderShipGroupState, i));
+        if (orderShipGroup.getOrderItemShipGroupAssociations() != null) {
+            String orderItemShipGroupAssociationTableId = orderShipGroup.getOrderItemShipGroupAssociations().getFields().getId().getId();
+            List<OrderItemShipGroupAssociation> orderItemShipGroupAssociations = getOrderItemShipGroupAssociations(orderItemShipGroupAssociationTableId);
+            for (OrderItemShipGroupAssociation i : orderItemShipGroupAssociations) {
+                orderShipGroupState.getOrderItemShipGroupAssociations().add(toOrderItemShipGroupAssociationState(orderShipGroupState, i));
+            }
         }
 
         return orderShipGroupState;
@@ -102,10 +108,12 @@ public class SuiOrderV2StateRetriever {
         OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState orderItemShipGroupAssociationState = orderItemShipGroupAssociationStateFactory.apply(orderShipGroupState, orderItemShipGroupAssociation.getProductId());
         orderItemShipGroupAssociationState.setQuantity(orderItemShipGroupAssociation.getQuantity());
         orderItemShipGroupAssociationState.setCancelQuantity(orderItemShipGroupAssociation.getCancelQuantity());
-        String orderItemShipGroupAssocSubitemTableId = orderItemShipGroupAssociation.getSubitems().getFields().getId().getId();
-        List<OrderItemShipGroupAssocSubitem> subitems = getOrderItemShipGroupAssocSubitems(orderItemShipGroupAssocSubitemTableId);
-        for (OrderItemShipGroupAssocSubitem i : subitems) {
-            orderItemShipGroupAssociationState.getSubitems().add(toOrderItemShipGroupAssocSubitemState(orderItemShipGroupAssociationState, i));
+        if (orderItemShipGroupAssociation.getSubitems() != null) {
+            String orderItemShipGroupAssocSubitemTableId = orderItemShipGroupAssociation.getSubitems().getFields().getId().getId();
+            List<OrderItemShipGroupAssocSubitem> subitems = getOrderItemShipGroupAssocSubitems(orderItemShipGroupAssocSubitemTableId);
+            for (OrderItemShipGroupAssocSubitem i : subitems) {
+                orderItemShipGroupAssociationState.getSubitems().add(toOrderItemShipGroupAssocSubitemState(orderItemShipGroupAssociationState, i));
+            }
         }
 
         return orderItemShipGroupAssociationState;

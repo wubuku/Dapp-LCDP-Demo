@@ -162,7 +162,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         return this.getOffChainVersion() == null;
     }
 
-    private Set<OrderItemShipGroupAssocSubitemState> protectedSubitems;
+    private Set<OrderItemShipGroupAssocSubitemState> protectedSubitems = new HashSet<>();
 
     protected Set<OrderItemShipGroupAssocSubitemState> getProtectedSubitems() {
         return this.protectedSubitems;
@@ -281,8 +281,9 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
     }
 
     public void save() {
-        ((Saveable)subitems).save();
-
+        if (subitems instanceof Saveable) {
+            ((Saveable)subitems).save();
+        }
     }
 
     protected void throwOnWrongEvent(OrderItemShipGroupAssociationEvent event) {
@@ -360,7 +361,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
                 OrderV2OrderItemShipGroupAssocSubitemId globalId = new OrderV2OrderItemShipGroupAssocSubitemId(getOrderV2OrderItemShipGroupAssociationId().getOrderV2OrderId(), getOrderV2OrderItemShipGroupAssociationId().getOrderShipGroupShipGroupSeqId(), getOrderV2OrderItemShipGroupAssociationId().getProductId(), orderItemShipGroupAssocSubitemDay);
                 AbstractOrderItemShipGroupAssocSubitemState state = new AbstractOrderItemShipGroupAssocSubitemState.SimpleOrderItemShipGroupAssocSubitemState();
                 state.setOrderV2OrderItemShipGroupAssocSubitemId(globalId);
-                protectedSubitems.add(state);
+                add(state);
                 s = state;
             }
             return s;
@@ -398,11 +399,19 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
 
         @Override
         public boolean add(OrderItemShipGroupAssocSubitemState s) {
+            if (s instanceof AbstractOrderItemShipGroupAssocSubitemState) {
+                AbstractOrderItemShipGroupAssocSubitemState state = (AbstractOrderItemShipGroupAssocSubitemState) s;
+                state.setProtectedOrderItemShipGroupAssociationState(AbstractOrderItemShipGroupAssociationState.this);
+            }
             return protectedSubitems.add(s);
         }
 
         @Override
         public boolean remove(Object o) {
+            if (o instanceof AbstractOrderItemShipGroupAssocSubitemState) {
+                AbstractOrderItemShipGroupAssocSubitemState s = (AbstractOrderItemShipGroupAssocSubitemState) o;
+                s.setProtectedOrderItemShipGroupAssociationState(null);
+            }
             return protectedSubitems.remove(o);
         }
 

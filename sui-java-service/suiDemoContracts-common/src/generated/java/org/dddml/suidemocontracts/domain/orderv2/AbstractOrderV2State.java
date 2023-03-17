@@ -139,7 +139,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         return this.getOffChainVersion() == null;
     }
 
-    private Set<OrderV2ItemState> protectedItems;
+    private Set<OrderV2ItemState> protectedItems = new HashSet<>();
 
     protected Set<OrderV2ItemState> getProtectedItems() {
         return this.protectedItems;
@@ -159,7 +159,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.items = items;
     }
 
-    private Set<OrderShipGroupState> protectedOrderShipGroups;
+    private Set<OrderShipGroupState> protectedOrderShipGroups = new HashSet<>();
 
     protected Set<OrderShipGroupState> getProtectedOrderShipGroups() {
         return this.protectedOrderShipGroups;
@@ -755,10 +755,12 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     }
 
     public void save() {
-        ((Saveable)items).save();
-
-        ((Saveable)orderShipGroups).save();
-
+        if (items instanceof Saveable) {
+            ((Saveable)items).save();
+        }
+        if (orderShipGroups instanceof Saveable) {
+            ((Saveable)orderShipGroups).save();
+        }
     }
 
     protected void throwOnWrongEvent(OrderV2Event event) {
@@ -828,7 +830,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                 OrderV2ItemId globalId = new OrderV2ItemId(getOrderId(), productId);
                 AbstractOrderV2ItemState state = new AbstractOrderV2ItemState.SimpleOrderV2ItemState();
                 state.setOrderV2ItemId(globalId);
-                protectedItems.add(state);
+                add(state);
                 s = state;
             }
             return s;
@@ -866,11 +868,19 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
         @Override
         public boolean add(OrderV2ItemState s) {
+            if (s instanceof AbstractOrderV2ItemState) {
+                AbstractOrderV2ItemState state = (AbstractOrderV2ItemState) s;
+                state.setProtectedOrderV2State(AbstractOrderV2State.this);
+            }
             return protectedItems.add(s);
         }
 
         @Override
         public boolean remove(Object o) {
+            if (o instanceof AbstractOrderV2ItemState) {
+                AbstractOrderV2ItemState s = (AbstractOrderV2ItemState) o;
+                s.setProtectedOrderV2State(null);
+            }
             return protectedItems.remove(o);
         }
 
@@ -936,7 +946,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                 OrderV2OrderShipGroupId globalId = new OrderV2OrderShipGroupId(getOrderId(), shipGroupSeqId);
                 AbstractOrderShipGroupState state = new AbstractOrderShipGroupState.SimpleOrderShipGroupState();
                 state.setOrderV2OrderShipGroupId(globalId);
-                protectedOrderShipGroups.add(state);
+                add(state);
                 s = state;
             }
             return s;
@@ -974,11 +984,19 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
         @Override
         public boolean add(OrderShipGroupState s) {
+            if (s instanceof AbstractOrderShipGroupState) {
+                AbstractOrderShipGroupState state = (AbstractOrderShipGroupState) s;
+                state.setProtectedOrderV2State(AbstractOrderV2State.this);
+            }
             return protectedOrderShipGroups.add(s);
         }
 
         @Override
         public boolean remove(Object o) {
+            if (o instanceof AbstractOrderShipGroupState) {
+                AbstractOrderShipGroupState s = (AbstractOrderShipGroupState) o;
+                s.setProtectedOrderV2State(null);
+            }
             return protectedOrderShipGroups.remove(o);
         }
 

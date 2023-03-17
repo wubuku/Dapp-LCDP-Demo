@@ -7,7 +7,7 @@
         <column name="day_month_year_number" />
       </key-property>
       <key-property name="dayMonthYearCalendar">
-        <column name="day_month_year_calendar" length="20" />
+        <column name="day_month_year_calendar" length="50" />
       </key-property>
       <key-property name="dayMonthNumber">
         <column name="day_month_number" />
@@ -19,7 +19,7 @@
         <column name="day_number" />
       </key-property>
       <key-property name="dayTimeZone">
-        <column name="day_time_zone" length="20" />
+        <column name="day_time_zone" length="50" />
       </key-property>
       <key-property name="version">
         <column name="version" sql-type="DECIMAL(20,0)" />

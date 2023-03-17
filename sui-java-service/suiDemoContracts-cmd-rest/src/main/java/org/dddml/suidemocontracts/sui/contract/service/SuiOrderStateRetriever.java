@@ -47,10 +47,12 @@ public class SuiOrderStateRetriever {
         OrderState.MutableOrderState orderState = orderStateFactory.apply(order.getId().getId());
         orderState.setVersion(order.getVersion());
         orderState.setTotalAmount(order.getTotalAmount());
-        String orderItemTableId = order.getItems().getFields().getId().getId();
-        List<OrderItem> items = getOrderItems(orderItemTableId);
-        for (OrderItem i : items) {
-            orderState.getItems().add(toOrderItemState(orderState, i));
+        if (order.getItems() != null) {
+            String orderItemTableId = order.getItems().getFields().getId().getId();
+            List<OrderItem> items = getOrderItems(orderItemTableId);
+            for (OrderItem i : items) {
+                orderState.getItems().add(toOrderItemState(orderState, i));
+            }
         }
 
         return orderState;

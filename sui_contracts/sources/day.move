@@ -1,6 +1,7 @@
 module sui_contracts::day {
     use std::string::String;
     use sui_contracts::month::Month;
+    const EID_DATA_TOO_LONG: u64 = 102;
 
     struct Day has store, drop, copy {
         month: Month,
@@ -13,6 +14,7 @@ module sui_contracts::day {
         number: u8,
         time_zone: String,
     ): Day {
+        assert!(std::string::length(&time_zone) <= 50, EID_DATA_TOO_LONG);
         Day {
             month,
             number,

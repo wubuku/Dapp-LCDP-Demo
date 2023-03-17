@@ -15,6 +15,7 @@ module sui_contracts::order_item_ship_group_association {
     friend sui_contracts::order_ship_group;
 
     const EID_ALREADY_EXISTS: u64 = 101;
+    const EID_DATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssociation has store {
         product_id: String,
@@ -75,6 +76,7 @@ module sui_contracts::order_item_ship_group_association {
         cancel_quantity: u64,
         ctx: &mut TxContext,
     ): OrderItemShipGroupAssociation {
+        assert!(std::string::length(&product_id) <= 100, EID_DATA_TOO_LONG);
         OrderItemShipGroupAssociation {
             product_id,
             quantity,

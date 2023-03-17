@@ -119,7 +119,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         return this.getOffChainVersion() == null;
     }
 
-    private Set<OrderItemState> protectedItems;
+    private Set<OrderItemState> protectedItems = new HashSet<>();
 
     protected Set<OrderItemState> getProtectedItems() {
         return this.protectedItems;
@@ -412,8 +412,9 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
     }
 
     public void save() {
-        ((Saveable)items).save();
-
+        if (items instanceof Saveable) {
+            ((Saveable)items).save();
+        }
     }
 
     protected void throwOnWrongEvent(OrderEvent event) {
@@ -483,7 +484,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
                 OrderItemId globalId = new OrderItemId(getId(), productId);
                 AbstractOrderItemState state = new AbstractOrderItemState.SimpleOrderItemState();
                 state.setOrderItemId(globalId);
-                protectedItems.add(state);
+                add(state);
                 s = state;
             }
             return s;
@@ -521,11 +522,19 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
         @Override
         public boolean add(OrderItemState s) {
+            if (s instanceof AbstractOrderItemState) {
+                AbstractOrderItemState state = (AbstractOrderItemState) s;
+                state.setProtectedOrderState(AbstractOrderState.this);
+            }
             return protectedItems.add(s);
         }
 
         @Override
         public boolean remove(Object o) {
+            if (o instanceof AbstractOrderItemState) {
+                AbstractOrderItemState s = (AbstractOrderItemState) o;
+                s.setProtectedOrderState(null);
+            }
             return protectedItems.remove(o);
         }
 

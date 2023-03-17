@@ -16,7 +16,7 @@
         <column name="order_item_ship_group_assoc_subitem_day_month_year_number" />
       </key-property>
       <key-property name="orderItemShipGroupAssocSubitemDayMonthYearCalendar">
-        <column name="order_item_ship_group_assoc_subitem_day_month_year_calendar" length="20" />
+        <column name="order_item_ship_group_assoc_subitem_day_month_year_calendar" length="50" />
       </key-property>
       <key-property name="orderItemShipGroupAssocSubitemDayMonthNumber">
         <column name="order_item_ship_group_assoc_subitem_day_month_number" />
@@ -28,7 +28,7 @@
         <column name="order_item_ship_group_assoc_subitem_day_number" />
       </key-property>
       <key-property name="orderItemShipGroupAssocSubitemDayTimeZone">
-        <column name="order_item_ship_group_assoc_subitem_day_time_zone" length="20" />
+        <column name="order_item_ship_group_assoc_subitem_day_time_zone" length="50" />
       </key-property>
       <key-property name="version">
         <column name="version" sql-type="DECIMAL(20,0)" />

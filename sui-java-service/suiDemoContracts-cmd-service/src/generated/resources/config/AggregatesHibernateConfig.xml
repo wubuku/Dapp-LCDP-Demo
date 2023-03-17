@@ -27,11 +27,6 @@
   </bean>
 
 
-  <bean id="orderItemStateDao" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderItemStateDao">
-    <property name="sessionFactory" ref="hibernateSessionFactory"/>
-    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
-  </bean>
-
   <bean id="orderItemEventDao" class="org.dddml.suidemocontracts.domain.order.hibernate.HibernateOrderItemEventDao">
     <property name="sessionFactory" ref="hibernateSessionFactory"/>
   </bean>
@@ -78,12 +73,19 @@
   </bean>
 
 
-<!--  <bean id="orderV2ItemStateDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemStateDao">-->
-<!--    <property name="sessionFactory" ref="hibernateSessionFactory"/>-->
-<!--    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>-->
-<!--  </bean>-->
-
   <bean id="orderV2ItemEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemEventDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderShipGroupEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderShipGroupEventDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderItemShipGroupAssociationEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderItemShipGroupAssociationEventDao">
+    <property name="sessionFactory" ref="hibernateSessionFactory"/>
+  </bean>
+
+  <bean id="orderItemShipGroupAssocSubitemEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderItemShipGroupAssocSubitemEventDao">
     <property name="sessionFactory" ref="hibernateSessionFactory"/>
   </bean>
 

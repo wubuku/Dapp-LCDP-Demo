@@ -29,7 +29,7 @@
         <column name="estimated_ship_date_month_year_number" />
       </property>
       <property name="monthYearCalendar">
-        <column name="estimated_ship_date_month_year_calendar" length="20" />
+        <column name="estimated_ship_date_month_year_calendar" length="50" />
       </property>
       <property name="monthNumber">
         <column name="estimated_ship_date_month_number" />
@@ -41,7 +41,7 @@
         <column name="estimated_ship_date_number" />
       </property>
       <property name="timeZone">
-        <column name="estimated_ship_date_time_zone" length="20" />
+        <column name="estimated_ship_date_time_zone" length="50" />
       </property>
     </component>
     <property name="version">

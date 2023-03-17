@@ -257,7 +257,7 @@ public class SchemaTool {
             connString = connString + (connString.endsWith("&") ? "" : "&") + connAllowOpt;
         }
         org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
-        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");//dialect.getEntityClass().getName());
+        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");//dialect.getEntityClass().getName());
         cfg.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
         cfg.setProperty("hibernate.connection.url", connString);
         cfg.setProperty("hibernate.connection.username", getDatabaseUsername());

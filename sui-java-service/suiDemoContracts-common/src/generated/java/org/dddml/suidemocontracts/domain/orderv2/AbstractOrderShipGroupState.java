@@ -144,7 +144,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         return this.getOffChainVersion() == null;
     }
 
-    private Set<OrderItemShipGroupAssociationState> protectedOrderItemShipGroupAssociations;
+    private Set<OrderItemShipGroupAssociationState> protectedOrderItemShipGroupAssociations = new HashSet<>();
 
     protected Set<OrderItemShipGroupAssociationState> getProtectedOrderItemShipGroupAssociations() {
         return this.protectedOrderItemShipGroupAssociations;
@@ -262,8 +262,9 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
     }
 
     public void save() {
-        ((Saveable)orderItemShipGroupAssociations).save();
-
+        if (orderItemShipGroupAssociations instanceof Saveable) {
+            ((Saveable)orderItemShipGroupAssociations).save();
+        }
     }
 
     protected void throwOnWrongEvent(OrderShipGroupEvent event) {
@@ -335,8 +336,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
                 OrderV2OrderItemShipGroupAssociationId globalId = new OrderV2OrderItemShipGroupAssociationId(getOrderV2OrderShipGroupId().getOrderV2OrderId(), getOrderV2OrderShipGroupId().getShipGroupSeqId(), productId);
                 AbstractOrderItemShipGroupAssociationState state = new AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState();
                 state.setOrderV2OrderItemShipGroupAssociationId(globalId);
-                state.setProtectedOrderShipGroupState(AbstractOrderShipGroupState.this);
-                protectedOrderItemShipGroupAssociations.add(state);
+                add(state);
                 s = state;
             }
             return s;
@@ -374,8 +374,8 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
 
         @Override
         public boolean add(OrderItemShipGroupAssociationState s) {
-            if (s instanceof AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) {
-                AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState state = (AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) s;
+            if (s instanceof AbstractOrderItemShipGroupAssociationState) {
+                AbstractOrderItemShipGroupAssociationState state = (AbstractOrderItemShipGroupAssociationState) s;
                 state.setProtectedOrderShipGroupState(AbstractOrderShipGroupState.this);
             }
             return protectedOrderItemShipGroupAssociations.add(s);
@@ -383,8 +383,8 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
 
         @Override
         public boolean remove(Object o) {
-            if (o instanceof AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) {
-                AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState s = (AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) o;
+            if (o instanceof AbstractOrderItemShipGroupAssociationState) {
+                AbstractOrderItemShipGroupAssociationState s = (AbstractOrderItemShipGroupAssociationState) o;
                 s.setProtectedOrderShipGroupState(null);
             }
             return protectedOrderItemShipGroupAssociations.remove(o);

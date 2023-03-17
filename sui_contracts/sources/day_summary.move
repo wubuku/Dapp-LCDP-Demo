@@ -11,6 +11,7 @@ module sui_contracts::day_summary {
     friend sui_contracts::day_summary_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
+    const EID_DATA_TOO_LONG: u64 = 102;
 
     struct DaySummaryIdTable has key {
         id: UID,

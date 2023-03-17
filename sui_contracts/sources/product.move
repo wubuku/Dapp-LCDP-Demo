@@ -8,6 +8,8 @@ module sui_contracts::product {
     friend sui_contracts::product_create_logic;
     friend sui_contracts::product_aggregate;
 
+    const EID_DATA_TOO_LONG: u64 = 102;
+
     const PRODUCT_ID_LENGTH: u64 = 20;
 
     struct ProductIdGenerator has key {
@@ -73,6 +75,7 @@ module sui_contracts::product {
         name: String,
         unit_price: u128,
     ): Product {
+        assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
         Product {
             id,
             product_id,

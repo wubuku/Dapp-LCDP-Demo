@@ -5,6 +5,8 @@ module sui_contracts::order_item {
     friend sui_contracts::order_update_item_quantity_logic;
     friend sui_contracts::order;
 
+    const EID_DATA_TOO_LONG: u64 = 102;
+
     struct OrderItem has store {
         product_id: String,
         quantity: u64,
@@ -36,6 +38,7 @@ module sui_contracts::order_item {
         quantity: u64,
         item_amount: u128,
     ): OrderItem {
+        assert!(std::string::length(&product_id) <= 50, EID_DATA_TOO_LONG);
         OrderItem {
             product_id,
             quantity,
