@@ -335,6 +335,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
                 OrderV2OrderItemShipGroupAssociationId globalId = new OrderV2OrderItemShipGroupAssociationId(getOrderV2OrderShipGroupId().getOrderV2OrderId(), getOrderV2OrderShipGroupId().getShipGroupSeqId(), productId);
                 AbstractOrderItemShipGroupAssociationState state = new AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState();
                 state.setOrderV2OrderItemShipGroupAssociationId(globalId);
+                state.setProtectedOrderShipGroupState(AbstractOrderShipGroupState.this);
                 protectedOrderItemShipGroupAssociations.add(state);
                 s = state;
             }
@@ -373,11 +374,19 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
 
         @Override
         public boolean add(OrderItemShipGroupAssociationState s) {
+            if (s instanceof AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) {
+                AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState state = (AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) s;
+                state.setProtectedOrderShipGroupState(AbstractOrderShipGroupState.this);
+            }
             return protectedOrderItemShipGroupAssociations.add(s);
         }
 
         @Override
         public boolean remove(Object o) {
+            if (o instanceof AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) {
+                AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState s = (AbstractOrderItemShipGroupAssociationState.SimpleOrderItemShipGroupAssociationState) o;
+                s.setProtectedOrderShipGroupState(null);
+            }
             return protectedOrderItemShipGroupAssociations.remove(o);
         }
 
