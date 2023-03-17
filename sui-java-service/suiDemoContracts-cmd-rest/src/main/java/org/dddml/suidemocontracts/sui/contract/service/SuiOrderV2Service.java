@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
+import org.dddml.suidemocontracts.domain.EntityStateCollection;
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,9 @@ public class SuiOrderV2Service {
                 orderId -> (OrderV2State.MutableOrderV2State)
                         orderV2StateRepository.get(orderId, false),
                 (orderV2State, productId) -> (OrderV2ItemState.MutableOrderV2ItemState)
-                        ((AbstractOrderV2ItemStateCollection) orderV2State.getItems()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) orderV2State.getItems()).getOrAdd(productId),
                 (orderV2State, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
-                        ((AbstractOrderShipGroupStateCollection) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
                         ((AbstractOrderItemShipGroupAssociationStateCollection) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
                 (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)

@@ -3,14 +3,49 @@ package org.dddml.suidemocontracts.domain.orderv2;
 import java.util.*;
 import java.math.*;
 import java.math.BigInteger;
+
 import org.dddml.suidemocontracts.domain.*;
+
 import java.util.Date;
+
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.orderv2.OrderV2Event.*;
 
 public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2State, Saveable {
 
     private String orderId;
+    private String id_;
+    private BigInteger totalAmount;
+    private Day estimatedShipDate;
+    private BigInteger version;
+    private Long offChainVersion;
+    private String createdBy;
+    private Date createdAt;
+    private String updatedBy;
+    private Date updatedAt;
+    private Boolean active;
+    private Boolean deleted;
+    private Set<OrderV2ItemState> protectedItems;
+    private EntityStateCollection<String, OrderV2ItemState> items;
+    private Set<OrderShipGroupState> protectedOrderShipGroups;
+    private EntityStateCollection<Integer, OrderShipGroupState> orderShipGroups;
+    private Boolean stateReadOnly;
+    private boolean forReapplying;
+
+    public AbstractOrderV2State(List<Event> events) {
+        initializeForReapplying();
+        if (events != null && events.size() > 0) {
+            this.setOrderId(((OrderV2Event.SqlOrderV2Event) events.get(0)).getOrderV2EventId().getOrderId());
+            for (Event e : events) {
+                mutate(e);
+                this.setOffChainVersion((this.getOffChainVersion() == null ? OrderV2State.VERSION_NULL : this.getOffChainVersion()) + 1);
+            }
+        }
+    }
+
+    public AbstractOrderV2State() {
+        initializeProperties();
+    }
 
     public String getOrderId() {
         return this.orderId;
@@ -20,8 +55,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.orderId = orderId;
     }
 
-    private String id_;
-
     public String getId_() {
         return this.id_;
     }
@@ -29,8 +62,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void setId_(String id) {
         this.id_ = id;
     }
-
-    private BigInteger totalAmount;
 
     public BigInteger getTotalAmount() {
         return this.totalAmount;
@@ -40,8 +71,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.totalAmount = totalAmount;
     }
 
-    private Day estimatedShipDate;
-
     public Day getEstimatedShipDate() {
         return this.estimatedShipDate;
     }
@@ -49,8 +78,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void setEstimatedShipDate(Day estimatedShipDate) {
         this.estimatedShipDate = estimatedShipDate;
     }
-
-    private BigInteger version;
 
     public BigInteger getVersion() {
         return this.version;
@@ -60,8 +87,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.version = version;
     }
 
-    private Long offChainVersion;
-
     public Long getOffChainVersion() {
         return this.offChainVersion;
     }
@@ -69,8 +94,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void setOffChainVersion(Long offChainVersion) {
         this.offChainVersion = offChainVersion;
     }
-
-    private String createdBy;
 
     public String getCreatedBy() {
         return this.createdBy;
@@ -80,8 +103,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.createdBy = createdBy;
     }
 
-    private Date createdAt;
-
     public Date getCreatedAt() {
         return this.createdAt;
     }
@@ -89,8 +110,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-
-    private String updatedBy;
 
     public String getUpdatedBy() {
         return this.updatedBy;
@@ -100,8 +119,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.updatedBy = updatedBy;
     }
 
-    private Date updatedAt;
-
     public Date getUpdatedAt() {
         return this.updatedAt;
     }
@@ -110,8 +127,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.updatedAt = updatedAt;
     }
 
-    private Boolean active;
-
     public Boolean getActive() {
         return this.active;
     }
@@ -119,8 +134,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     public void setActive(Boolean active) {
         this.active = active;
     }
-
-    private Boolean deleted;
 
     public Boolean getDeleted() {
         return this.deleted;
@@ -134,8 +147,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         return this.getOffChainVersion() == null;
     }
 
-    private Set<OrderV2ItemState> protectedItems;
-
     protected Set<OrderV2ItemState> getProtectedItems() {
         return this.protectedItems;
     }
@@ -143,8 +154,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     protected void setProtectedItems(Set<OrderV2ItemState> protectedItems) {
         this.protectedItems = protectedItems;
     }
-
-    private EntityStateCollection<String, OrderV2ItemState> items;
 
     public EntityStateCollection<String, OrderV2ItemState> getItems() {
         return this.items;
@@ -154,8 +163,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.items = items;
     }
 
-    private Set<OrderShipGroupState> protectedOrderShipGroups;
-
     protected Set<OrderShipGroupState> getProtectedOrderShipGroups() {
         return this.protectedOrderShipGroups;
     }
@@ -163,8 +170,6 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     protected void setProtectedOrderShipGroups(Set<OrderShipGroupState> protectedOrderShipGroups) {
         this.protectedOrderShipGroups = protectedOrderShipGroups;
     }
-
-    private EntityStateCollection<Integer, OrderShipGroupState> orderShipGroups;
 
     public EntityStateCollection<Integer, OrderShipGroupState> getOrderShipGroups() {
         return this.orderShipGroups;
@@ -174,13 +179,13 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.orderShipGroups = orderShipGroups;
     }
 
-    private Boolean stateReadOnly;
+    public Boolean getStateReadOnly() {
+        return this.stateReadOnly;
+    }
 
-    public Boolean getStateReadOnly() { return this.stateReadOnly; }
-
-    public void setStateReadOnly(Boolean readOnly) { this.stateReadOnly = readOnly; }
-
-    private boolean forReapplying;
+    public void setStateReadOnly(Boolean readOnly) {
+        this.stateReadOnly = readOnly;
+    }
 
     public boolean getForReapplying() {
         return forReapplying;
@@ -190,31 +195,15 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         this.forReapplying = forReapplying;
     }
 
-    public AbstractOrderV2State(List<Event> events) {
-        initializeForReapplying();
-        if (events != null && events.size() > 0) {
-            this.setOrderId(((OrderV2Event.SqlOrderV2Event) events.get(0)).getOrderV2EventId().getOrderId());
-            for (Event e : events) {
-                mutate(e);
-                this.setOffChainVersion((this.getOffChainVersion() == null ? OrderV2State.VERSION_NULL : this.getOffChainVersion()) + 1);
-            }
-        }
-    }
-
-
-    public AbstractOrderV2State() {
-        initializeProperties();
-    }
-
     protected void initializeForReapplying() {
         this.forReapplying = true;
 
         initializeProperties();
     }
-    
+
     protected void initializeProperties() {
-        items = new SimpleOrderV2ItemStateCollection(this);
-        orderShipGroups = new SimpleOrderShipGroupStateCollection(this);
+        items = new SimpleOrderV2ItemStateCollection();
+        orderShipGroups = new SimpleOrderShipGroupStateCollection();
     }
 
     @Override
@@ -224,9 +213,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) { return true; }
+        if (this == obj) {
+            return true;
+        }
         if (obj instanceof OrderV2State) {
-            return Objects.equals(this.getOrderId(), ((OrderV2State)obj).getOrderId());
+            return Objects.equals(this.getOrderId(), ((OrderV2State) obj).getOrderId());
         }
         return false;
     }
@@ -234,24 +225,23 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 
     public void mutate(Event e) {
         setStateReadOnly(false);
-        if (false) { 
-            ;
+        if (false) {
         } else if (e instanceof AbstractOrderV2Event.OrderV2Created) {
-            when((AbstractOrderV2Event.OrderV2Created)e);
+            when((AbstractOrderV2Event.OrderV2Created) e);
         } else if (e instanceof AbstractOrderV2Event.OrderV2ItemRemoved) {
-            when((AbstractOrderV2Event.OrderV2ItemRemoved)e);
+            when((AbstractOrderV2Event.OrderV2ItemRemoved) e);
         } else if (e instanceof AbstractOrderV2Event.OrderV2ItemQuantityUpdated) {
-            when((AbstractOrderV2Event.OrderV2ItemQuantityUpdated)e);
+            when((AbstractOrderV2Event.OrderV2ItemQuantityUpdated) e);
         } else if (e instanceof AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated) {
-            when((AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated)e);
+            when((AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated) e);
         } else if (e instanceof AbstractOrderV2Event.OrderShipGroupAdded) {
-            when((AbstractOrderV2Event.OrderShipGroupAdded)e);
+            when((AbstractOrderV2Event.OrderShipGroupAdded) e);
         } else if (e instanceof AbstractOrderV2Event.OrderShipGroupQuantityCanceled) {
-            when((AbstractOrderV2Event.OrderShipGroupQuantityCanceled)e);
+            when((AbstractOrderV2Event.OrderShipGroupQuantityCanceled) e);
         } else if (e instanceof AbstractOrderV2Event.OrderShipGroupItemRemoved) {
-            when((AbstractOrderV2Event.OrderShipGroupItemRemoved)e);
+            when((AbstractOrderV2Event.OrderShipGroupItemRemoved) e);
         } else if (e instanceof AbstractOrderV2Event.OrderShipGroupRemoved) {
-            when((AbstractOrderV2Event.OrderShipGroupRemoved)e);
+            when((AbstractOrderV2Event.OrderShipGroupRemoved) e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -275,17 +265,17 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
             }
             if (iterable != null) {
                 for (OrderV2ItemState ss : iterable) {
-                    OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(ss.getProductId());
+                    OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) this.getItems()).getOrAdd(ss.getProductId());
                     ((AbstractOrderV2ItemState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getItems() != null) {
             if (s.getItems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getItems()).getRemovedStates() != null) {
-                    for (OrderV2ItemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)s.getItems()).getRemovedStates()) {
-                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(ss.getProductId());
-                        ((AbstractOrderV2ItemStateCollection)this.getItems()).remove(thisInnerState);
+                if (((EntityStateCollection.ModifiableEntityStateCollection) s.getItems()).getRemovedStates() != null) {
+                    for (OrderV2ItemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) s.getItems()).getRemovedStates()) {
+                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) this.getItems()).getOrAdd(ss.getProductId());
+                        this.getItems().remove(thisInnerState);
                     }
                 }
             } else {
@@ -293,8 +283,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                     Set<String> removedStateIds = new HashSet<>(this.getItems().stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toList()));
                     s.getItems().forEach(i -> removedStateIds.remove(i.getProductId()));
                     for (String i : removedStateIds) {
-                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(i);
-                        ((AbstractOrderV2ItemStateCollection)this.getItems()).remove(thisInnerState);
+                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) this.getItems()).getOrAdd(i);
+                        this.getItems().remove(thisInnerState);
                     }
                 }
             }
@@ -309,17 +299,17 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
             }
             if (iterable != null) {
                 for (OrderShipGroupState ss : iterable) {
-                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
+                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
                     ((AbstractOrderShipGroupState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getOrderShipGroups() != null) {
             if (s.getOrderShipGroups() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getOrderShipGroups()).getRemovedStates() != null) {
-                    for (OrderShipGroupState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)s.getOrderShipGroups()).getRemovedStates()) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
-                        ((AbstractOrderShipGroupStateCollection)this.getOrderShipGroups()).remove(thisInnerState);
+                if (((EntityStateCollection.ModifiableEntityStateCollection) s.getOrderShipGroups()).getRemovedStates() != null) {
+                    for (OrderShipGroupState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) s.getOrderShipGroups()).getRemovedStates()) {
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
+                        this.getOrderShipGroups().remove(thisInnerState);
                     }
                 }
             } else {
@@ -327,8 +317,8 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                     Set<Integer> removedStateIds = new HashSet<>(this.getOrderShipGroups().stream().map(i -> i.getShipGroupSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderShipGroups().forEach(i -> removedStateIds.remove(i.getShipGroupSeqId()));
                     for (Integer i : removedStateIds) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(i);
-                        ((AbstractOrderShipGroupStateCollection)this.getOrderShipGroups()).remove(thisInnerState);
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) this.getOrderShipGroups()).getOrAdd(i);
+                        this.getOrderShipGroups().remove(thisInnerState);
                     }
                 }
             }
@@ -365,21 +355,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, product, quantity, unitPrice, totalAmount, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, product, quantity, unitPrice, totalAmount, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -388,7 +384,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -414,21 +412,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -437,7 +441,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -465,21 +471,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -488,7 +500,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -514,21 +528,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, Day.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, estimatedShipDate, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, Day.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, estimatedShipDate, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -537,7 +557,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -569,21 +591,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.AddOrderShipGroupLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, shipmentMethod, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.AddOrderShipGroupLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, shipGroupSeqId, shipmentMethod, productId, quantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -592,7 +620,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -622,21 +652,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.CancelOrderShipGroupQuantityLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, productId, cancelQuantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.CancelOrderShipGroupQuantityLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, shipGroupSeqId, productId, cancelQuantity, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -645,7 +681,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -673,21 +711,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupItemLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupItemLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, Integer.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, shipGroupSeqId, productId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -696,7 +740,9 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
@@ -722,21 +768,27 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         String status = e.getStatus();
         String Status = status;
 
-        if (this.getCreatedBy() == null){
+        if (this.getCreatedBy() == null) {
             this.setCreatedBy(e.getCreatedBy());
         }
-        if (this.getCreatedAt() == null){
+        if (this.getCreatedAt() == null) {
             this.setCreatedAt(e.getCreatedAt());
         }
         this.setUpdatedBy(e.getCreatedBy());
         this.setUpdatedAt(e.getCreatedAt());
 
         OrderV2State updatedOrderV2State = (OrderV2State) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupLogic",
-                    "mutate",
-                    new Class[]{OrderV2State.class, Integer.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
+                "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupLogic",
+                "mutate",
+                new Class[]{OrderV2State.class, Integer.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                new Object[]{this, shipGroupSeqId, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {
+                    if (s == this) {
+                        return this;
+                    } else {
+                        throw new UnsupportedOperationException();
+                    }
+                })}
+        );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
@@ -745,20 +797,22 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
 //    }
 //}
 
-        if (this != updatedOrderV2State) { merge(updatedOrderV2State); } //else do nothing
+        if (this != updatedOrderV2State) {
+            merge(updatedOrderV2State);
+        } //else do nothing
 
     }
 
     public void save() {
-        ((Saveable)items).save();
+        ((Saveable) items).save();
 
-        ((Saveable)orderShipGroups).save();
+        ((Saveable) orderShipGroups).save();
 
     }
 
     protected void throwOnWrongEvent(OrderV2Event event) {
         String stateEntityId = this.getOrderId(); // Aggregate Id
-        String eventEntityId = ((OrderV2Event.SqlOrderV2Event)event).getOrderV2EventId().getOrderId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
+        String eventEntityId = ((OrderV2Event.SqlOrderV2Event) event).getOrderV2EventId().getOrderId(); // EntityBase.Aggregate.GetEventIdPropertyIdName();
         if (!stateEntityId.equals(eventEntityId)) {
             throw DomainError.named("mutateWrongEntity", "Entity Id %1$s in state but entity id %2$s in event", stateEntityId, eventEntityId);
         }
@@ -787,15 +841,209 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     }
 
 
-    static class SimpleOrderV2ItemStateCollection extends AbstractOrderV2ItemStateCollection {
-        public SimpleOrderV2ItemStateCollection(AbstractOrderV2State outerState) {
-            super(outerState);
+    class SimpleOrderV2ItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState> {
+
+        @Override
+        public OrderV2ItemState get(String entityId) {
+            return null;
+        }
+
+        @Override
+        public boolean isLazy() {
+            return false;
+        }
+
+        @Override
+        public boolean isAllLoaded() {
+            return false;
+        }
+
+        @Override
+        public Collection<OrderV2ItemState> getLoadedStates() {
+            return null;
+        }
+
+        @Override
+        public Collection<OrderV2ItemState> getRemovedStates() {
+            return null;
+        }
+
+        @Override
+        public OrderV2ItemState getOrAdd(String entityId) {
+            return null;
+        }
+
+        @Override
+        public int size() {
+            return 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return false;
+        }
+
+        @Override
+        public Iterator<OrderV2ItemState> iterator() {
+            return null;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return new Object[0];
+        }
+
+        @Override
+        public <T> T[] toArray(T[] a) {
+            return null;
+        }
+
+        @Override
+        public boolean add(OrderV2ItemState orderV2ItemState) {
+            return false;
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            return false;
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends OrderV2ItemState> c) {
+            return false;
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            return false;
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            return false;
+        }
+
+        @Override
+        public void clear() {
+
         }
     }
 
-    static class SimpleOrderShipGroupStateCollection extends AbstractOrderShipGroupStateCollection {
-        public SimpleOrderShipGroupStateCollection(AbstractOrderV2State outerState) {
-            super(outerState);
+    class SimpleOrderShipGroupStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState> {
+
+        @Override
+        public OrderShipGroupState get(Integer shipGroupSeqId) {
+            return protectedOrderShipGroups.stream().filter(
+                            e -> e.getShipGroupSeqId().equals(shipGroupSeqId))
+                    .findFirst().orElse(null);
+        }
+
+        @Override
+        public boolean isLazy() {
+            return false;
+        }
+
+        @Override
+        public boolean isAllLoaded() {
+            return true;
+        }
+
+        @Override
+        public Collection<OrderShipGroupState> getLoadedStates() {
+            return protectedOrderShipGroups;
+        }
+
+        @Override
+        public Collection<OrderShipGroupState> getRemovedStates() {
+            return null;
+        }
+
+        @Override
+        public OrderShipGroupState getOrAdd(Integer shipGroupSeqId) {
+            OrderShipGroupState s = get(shipGroupSeqId);
+            if (s == null) {
+                OrderV2OrderShipGroupId globalId = new OrderV2OrderShipGroupId(getOrderId(), shipGroupSeqId);
+                AbstractOrderShipGroupState state = new AbstractOrderShipGroupState.SimpleOrderShipGroupState();
+                state.setOrderV2OrderShipGroupId(globalId);
+                protectedOrderShipGroups.add(state);
+                s = state;
+            }
+            return s;
+        }
+
+        @Override
+        public int size() {
+            return protectedOrderShipGroups.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return protectedOrderShipGroups.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return protectedOrderShipGroups.contains(o);
+        }
+
+        @Override
+        public Iterator<OrderShipGroupState> iterator() {
+            return protectedOrderShipGroups.iterator();
+        }
+
+        @Override
+        public Object[] toArray() {
+            return protectedOrderShipGroups.toArray();
+        }
+
+        @Override
+        public <T> T[] toArray(T[] a) {
+            return protectedOrderShipGroups.toArray(a);
+        }
+
+        @Override
+        public boolean add(OrderShipGroupState s) {
+            return protectedOrderShipGroups.add(s);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return protectedOrderShipGroups.remove(o);
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            return protectedOrderShipGroups.contains(c);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends OrderShipGroupState> c) {
+            return protectedOrderShipGroups.addAll(c);
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            return protectedOrderShipGroups.removeAll(c);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            return protectedOrderShipGroups.retainAll(c);
+        }
+
+        @Override
+        public void clear() {
+            protectedOrderShipGroups.clear();
         }
     }
 

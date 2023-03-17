@@ -78,10 +78,10 @@
   </bean>
 
 
-  <bean id="orderV2ItemStateDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemStateDao">
-    <property name="sessionFactory" ref="hibernateSessionFactory"/>
-    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>
-  </bean>
+<!--  <bean id="orderV2ItemStateDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemStateDao">-->
+<!--    <property name="sessionFactory" ref="hibernateSessionFactory"/>-->
+<!--    <property name="readOnlyProxyGenerator" ref="stateReadOnlyProxyGenerator"/>-->
+<!--  </bean>-->
 
   <bean id="orderV2ItemEventDao" class="org.dddml.suidemocontracts.domain.orderv2.hibernate.HibernateOrderV2ItemEventDao">
     <property name="sessionFactory" ref="hibernateSessionFactory"/>
