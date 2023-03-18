@@ -95,7 +95,7 @@ public class SchemaTool {
 
     public void dropCreateDatabaseAndSeed() {
         String connString = getConnectionString();
-        dropCreateDatebase(connString);
+        dropCreateDatabase(connString);
         seedDatabase(connString);
     }
 
@@ -118,7 +118,7 @@ public class SchemaTool {
 
     static final String FILENAME_ADD_STATE_ID_FK_CONSTRAINTS = "AddStateIdForeignKeyConstraints.sql";
 
-    public void dropCreateDatebase(String connString) {
+    public void dropCreateDatabase(String connString) {
         org.hibernate.cfg.Configuration cfg = getNHibernateConfiguration(connString);
 
         String[] fns = getDropCreateFileNames();
@@ -181,7 +181,7 @@ public class SchemaTool {
         MetadataImplementor metadata = (MetadataImplementor)metadataSources.getMetadataBuilder()
                 .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
                 .build();
-        // /////////////////// udpate ///////////////////////////
+        // /////////////////// update ///////////////////////////
         // Generate ddl update script
         hbm2DdlOutputUpdate(metadata);
         // //////////////////////////////////////////////////////
