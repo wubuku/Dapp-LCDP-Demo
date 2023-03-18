@@ -24,15 +24,18 @@ public class SuiDaySummaryService {
     @Autowired
     public SuiDaySummaryService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiDaySummaryStateRetriever = new SuiDaySummaryStateRetriever(suiJsonRpcClient,
-                day -> (DaySummaryState.MutableDaySummaryState)
-                        daySummaryStateRepository.get(day, false)
+                day -> {
+                    DaySummaryState.MutableDaySummaryState s = new AbstractDaySummaryState.SimpleDaySummaryState();
+                    s.setDay(day);
+                    return s;
+                }
         );
     }
 
     @Transactional
     public void updateDaySummaryState(String objectId) {
         DaySummaryState daySummaryState = suiDaySummaryStateRetriever.retrieveDaySummaryState(objectId);
-        daySummaryStateRepository.save(daySummaryState);
+        daySummaryStateRepository.merge(daySummaryState);
     }
 
 

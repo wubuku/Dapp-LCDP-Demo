@@ -24,15 +24,18 @@ public class SuiProductService {
     @Autowired
     public SuiProductService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiProductStateRetriever = new SuiProductStateRetriever(suiJsonRpcClient,
-                productId -> (ProductState.MutableProductState)
-                        productStateRepository.get(productId, false)
+                productId -> {
+                    ProductState.MutableProductState s = new AbstractProductState.SimpleProductState();
+                    s.setProductId(productId);
+                    return s;
+                }
         );
     }
 
     @Transactional
     public void updateProductState(String objectId) {
         ProductState productState = suiProductStateRetriever.retrieveProductState(objectId);
-        productStateRepository.save(productState);
+        productStateRepository.merge(productState);
     }
 
 

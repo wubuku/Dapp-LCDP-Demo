@@ -24,8 +24,11 @@ public class SuiOrderService {
     @Autowired
     public SuiOrderService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiOrderStateRetriever = new SuiOrderStateRetriever(suiJsonRpcClient,
-                id -> (OrderState.MutableOrderState)
-                        orderStateRepository.get(id, false),
+                id -> {
+                    OrderState.MutableOrderState s = new AbstractOrderState.SimpleOrderState();
+                    s.setId(id);
+                    return s;
+                },
                 (orderState, productId) -> (OrderItemState.MutableOrderItemState)
                         ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId)
         );
@@ -34,7 +37,7 @@ public class SuiOrderService {
     @Transactional
     public void updateOrderState(String objectId) {
         OrderState orderState = suiOrderStateRetriever.retrieveOrderState(objectId);
-        orderStateRepository.save(orderState);
+        orderStateRepository.merge(orderState);
     }
 
 

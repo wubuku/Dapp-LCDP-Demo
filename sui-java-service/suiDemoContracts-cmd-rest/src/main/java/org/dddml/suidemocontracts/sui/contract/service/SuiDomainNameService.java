@@ -24,15 +24,18 @@ public class SuiDomainNameService {
     @Autowired
     public SuiDomainNameService(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiDomainNameStateRetriever = new SuiDomainNameStateRetriever(suiJsonRpcClient,
-                domainNameId -> (DomainNameState.MutableDomainNameState)
-                        domainNameStateRepository.get(domainNameId, false)
+                domainNameId -> {
+                    DomainNameState.MutableDomainNameState s = new AbstractDomainNameState.SimpleDomainNameState();
+                    s.setDomainNameId(domainNameId);
+                    return s;
+                }
         );
     }
 
     @Transactional
     public void updateDomainNameState(String objectId) {
         DomainNameState domainNameState = suiDomainNameStateRetriever.retrieveDomainNameState(objectId);
-        domainNameStateRepository.save(domainNameState);
+        domainNameStateRepository.merge(domainNameState);
     }
 
 
