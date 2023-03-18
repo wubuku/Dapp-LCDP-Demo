@@ -67,6 +67,7 @@ public class SuiOrderV2StateRetriever {
         if (orderV2.getItems() != null) {
             String orderV2ItemTableId = orderV2.getItems().getFields().getId().getId();
             List<OrderV2Item> items = getOrderV2Items(orderV2ItemTableId);
+            //orderV2State.getItems().removeIf(s -> !items.stream().anyMatch(i -> i.getProductId().equals(s.getProductId())));
             for (OrderV2Item i : items) {
                 orderV2State.getItems().add(toOrderV2ItemState(orderV2State, i));
             }

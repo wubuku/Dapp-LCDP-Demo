@@ -50,6 +50,7 @@ public class SuiOrderStateRetriever {
         if (order.getItems() != null) {
             String orderItemTableId = order.getItems().getFields().getId().getId();
             List<OrderItem> items = getOrderItems(orderItemTableId);
+            //orderState.getItems().removeIf(s -> !items.stream().anyMatch(i -> i.getProductId().equals(s.getProductId())));
             for (OrderItem i : items) {
                 orderState.getItems().add(toOrderItemState(orderState, i));
             }

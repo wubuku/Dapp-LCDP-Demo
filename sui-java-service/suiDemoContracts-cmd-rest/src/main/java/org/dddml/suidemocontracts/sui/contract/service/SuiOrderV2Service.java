@@ -24,8 +24,11 @@ public class SuiOrderV2Service {
     @Autowired
     public SuiOrderV2Service(SuiJsonRpcClient suiJsonRpcClient) {
         this.suiOrderV2StateRetriever = new SuiOrderV2StateRetriever(suiJsonRpcClient,
-                orderId -> (OrderV2State.MutableOrderV2State)
-                        orderV2StateRepository.get(orderId, false),
+                orderId -> {
+                    OrderV2State.MutableOrderV2State s = new AbstractOrderV2State.SimpleOrderV2State();
+                    s.setOrderId(orderId);
+                    return s;
+                },
                 (orderV2State, productId) -> (OrderV2ItemState.MutableOrderV2ItemState)
                         ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) orderV2State.getItems()).getOrAdd(productId),
                 (orderV2State, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
@@ -40,7 +43,7 @@ public class SuiOrderV2Service {
     @Transactional
     public void updateOrderV2State(String objectId) {
         OrderV2State orderV2State = suiOrderV2StateRetriever.retrieveOrderV2State(objectId);
-        orderV2StateRepository.save(orderV2State);
+        orderV2StateRepository.merge(orderV2State);
     }
 
 
