@@ -127,7 +127,7 @@ public class OrderShipGroupStateDto {
     public OrderItemShipGroupAssociationStateDto[] getOrderItemShipGroupAssociations()
     {
         return this.orderItemShipGroupAssociations;
-    }	
+    }    
 
     public void setOrderItemShipGroupAssociations(OrderItemShipGroupAssociationStateDto[] orderItemShipGroupAssociations)
     {

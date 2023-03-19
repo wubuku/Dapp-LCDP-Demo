@@ -151,7 +151,7 @@ public class OrderItemShipGroupAssociationStateDto {
     public OrderItemShipGroupAssocSubitemStateDto[] getSubitems()
     {
         return this.subitems;
-    }	
+    }    
 
     public void setSubitems(OrderItemShipGroupAssocSubitemStateDto[] subitems)
     {

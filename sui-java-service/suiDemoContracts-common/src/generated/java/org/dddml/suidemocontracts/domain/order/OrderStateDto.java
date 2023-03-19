@@ -128,7 +128,7 @@ public class OrderStateDto {
     public OrderItemStateDto[] getItems()
     {
         return this.items;
-    }	
+    }    
 
     public void setItems(OrderItemStateDto[] items)
     {

@@ -152,7 +152,7 @@ public class OrderV2StateDto {
     public OrderV2ItemStateDto[] getItems()
     {
         return this.items;
-    }	
+    }    
 
     public void setItems(OrderV2ItemStateDto[] items)
     {
@@ -164,7 +164,7 @@ public class OrderV2StateDto {
     public OrderShipGroupStateDto[] getOrderShipGroups()
     {
         return this.orderShipGroups;
-    }	
+    }    
 
     public void setOrderShipGroups(OrderShipGroupStateDto[] orderShipGroups)
     {
