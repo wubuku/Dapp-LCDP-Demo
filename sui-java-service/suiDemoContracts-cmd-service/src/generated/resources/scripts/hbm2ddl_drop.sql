@@ -1,9 +1,15 @@
+alter table day_summary_array_data drop foreign key FK2o1jthqfqexit9icrx6iwvpl8;
+alter table order_item drop foreign key FK613ccnvx1pxajvm27cvxbnwaf;
+alter table order_item_ship_group_assoc_subitem drop foreign key FKam6xdy24ytnicp96rqrct9h3f;
+alter table order_item_ship_group_association drop foreign key FK8uwvt4yjfs1hs0wux1i0h75hb;
+alter table order_ship_group drop foreign key FK3emc0xwvt61h8y2gp13ybaagy;
+alter table order_v2_item drop foreign key FKe7jpjhab3atameit16rnw4vr3;
 drop table if exists day_summary;
 drop table if exists day_summary_array_data;
 drop table if exists day_summary_event;
 drop table if exists domain_name;
 drop table if exists domain_name_event;
-drop table if exists HIBERNATE_HELLO;
+drop table if exists hibernate_hello;
 drop table if exists hibernate_sequences;
 drop table if exists move_object_id_generator_object;
 drop table if exists order_event;

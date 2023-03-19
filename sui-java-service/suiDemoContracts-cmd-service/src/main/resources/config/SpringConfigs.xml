@@ -8,8 +8,8 @@
 
 <!--    <import resource="DatabaseConfig.xml"/>-->
 <!--    <import resource="AggregatesHibernateConfig.xml"/>-->
-    <import resource="TreesConfig.xml"/>
-    <import resource="TreesHibernateConfig.xml"/>
-    <import resource="CustomIdGeneratorsConfig.xml"/>
+<!--    <import resource="TreesConfig.xml"/>-->
+<!--    <import resource="TreesHibernateConfig.xml"/>-->
+<!--    <import resource="CustomIdGeneratorsConfig.xml"/>-->
 
 </beans>

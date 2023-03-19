@@ -13,7 +13,7 @@ public class TestSchemaTool {
     // //////////////////////////////////
 
     public static void main(final String[] args) throws Exception {
-        SchemaTool t = new SchemaTool();
+        SchemaTool t = new SchemaTool();//todo move SchemaTool to /src/main/java
 
         t.setSqlDirectory(_sqlDirectory);
         t.setConnectionString(_connectionString);

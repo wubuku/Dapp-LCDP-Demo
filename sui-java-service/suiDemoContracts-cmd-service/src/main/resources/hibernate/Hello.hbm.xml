@@ -6,7 +6,7 @@
 
 <hibernate-mapping package="org.dddml.suidemocontracts.tool.hibernate">
 
-    <class name="Hello" table="HIBERNATE_HELLO">
+    <class name="Hello" table="hibernate_hello">
 
         <id name="id">
             <generator class="enhanced-table">

@@ -5,13 +5,8 @@ spring:
     allow-bean-definition-overriding: true
 
   jpa:
-    show-sql: false
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: none
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
+    #show-sql: false
 
   jackson:
     time-zone: UTC

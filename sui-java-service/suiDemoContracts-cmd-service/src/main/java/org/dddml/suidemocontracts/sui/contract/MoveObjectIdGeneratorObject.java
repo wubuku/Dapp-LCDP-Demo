@@ -1,13 +1,20 @@
 package org.dddml.suidemocontracts.sui.contract;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Access(AccessType.FIELD)
 public class MoveObjectIdGeneratorObject {
+    @Id
     private String name;
-
     private String objectType;
     private String objectId;
+    private String createdBy;
+    private Date createdAt;
+    private String updatedBy;
+    private Date updatedAt;
 
     public String getName() {
         return name;
@@ -33,9 +40,6 @@ public class MoveObjectIdGeneratorObject {
         this.objectId = objectId;
     }
 
-
-    private String createdBy;
-
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -43,8 +47,6 @@ public class MoveObjectIdGeneratorObject {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
-    private Date createdAt;
 
     public Date getCreatedAt() {
         return this.createdAt;
@@ -54,8 +56,6 @@ public class MoveObjectIdGeneratorObject {
         this.createdAt = createdAt;
     }
 
-    private String updatedBy;
-
     public String getUpdatedBy() {
         return this.updatedBy;
     }
@@ -63,8 +63,6 @@ public class MoveObjectIdGeneratorObject {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
-
-    private Date updatedAt;
 
     public Date getUpdatedAt() {
         return this.updatedAt;

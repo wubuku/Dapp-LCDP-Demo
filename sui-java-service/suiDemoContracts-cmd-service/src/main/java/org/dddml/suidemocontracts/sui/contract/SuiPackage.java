@@ -1,12 +1,21 @@
 package org.dddml.suidemocontracts.sui.contract;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Access(AccessType.FIELD)
 public class SuiPackage {
+    @Id
     private String name;
-    private String objectId;
+    @Version
     private Long version;
+    private String objectId;
     private String publisher;
+    private String createdBy;
+    private Date createdAt;
+    private String updatedBy;
+    private Date updatedAt;
 
     public String getName() {
         return name;
@@ -40,8 +49,6 @@ public class SuiPackage {
         this.publisher = publisher;
     }
 
-    private String createdBy;
-
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -49,8 +56,6 @@ public class SuiPackage {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
-    private Date createdAt;
 
     public Date getCreatedAt() {
         return this.createdAt;
@@ -60,8 +65,6 @@ public class SuiPackage {
         this.createdAt = createdAt;
     }
 
-    private String updatedBy;
-
     public String getUpdatedBy() {
         return this.updatedBy;
     }
@@ -69,8 +72,6 @@ public class SuiPackage {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
-
-    private Date updatedAt;
 
     public Date getUpdatedAt() {
         return this.updatedAt;

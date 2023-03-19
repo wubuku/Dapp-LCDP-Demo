@@ -34,8 +34,12 @@ public class DatabaseConfig {
                 ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
                         .getResources("classpath:/hibernate/*.hbm.xml")
         );
+        sessionFactory.setPackagesToScan("org.dddml.suidemocontracts.*"); //add annotation mappings
+        sessionFactory.setPhysicalNamingStrategy(
+                new org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy()
+        );
         sessionFactory.setHibernateProperties(
-                org.hibernate.cfg.Environment.getProperties()
+                org.hibernate.cfg.Environment.getProperties() //resources/hibernate.properties
         );
         return sessionFactory;
     }

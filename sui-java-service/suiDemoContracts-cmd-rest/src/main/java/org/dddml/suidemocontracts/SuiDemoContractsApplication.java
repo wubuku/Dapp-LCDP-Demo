@@ -10,23 +10,23 @@ import org.dddml.suidemocontracts.sui.contract.service.MoveObjectIdGeneratorObje
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-/**
- * Created by liusizuo on 2018/7/5 .
- */
 //@EnableSwagger2
 @SpringBootApplication(exclude = {
         SecurityAutoConfiguration.class
 })
-@ImportResource("classpath*:/config/SpringConfigs.xml")
+//@ImportResource("classpath*:/config/SpringConfigs.xml")
+@EntityScan(basePackages = {
+        "org.dddml.suidemocontracts.sui.contract"
+})
 @Import({
 // 		//TramMessageProducerJdbcConfiguration.class,
 // 		TramCommandProducerConfiguration.class,

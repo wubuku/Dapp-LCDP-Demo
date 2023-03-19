@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"><!-- destroy-method="close" -->
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/test2?characterEncoding=utf8&amp;serverTimezone=GMT%2b0&amp;useLegacyDatetimeCode=false"/>
         <property name="username" value="root"/>
         <property name="password" value="123456"/>
