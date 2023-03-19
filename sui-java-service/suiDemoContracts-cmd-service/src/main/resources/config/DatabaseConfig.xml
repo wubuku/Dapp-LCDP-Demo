@@ -38,7 +38,7 @@
 <!--    <tx:annotation-driven/>-->
 
 <!--    <bean id="stateReadOnlyProxyGenerator" class="org.dddml.suidemocontracts.specialization.ReflectReadOnlyProxyGenerator"></bean>-->
-    <bean id="stateReadOnlyProxyGenerator" class="org.dddml.suidemocontracts.specialization.NullReadOnlyProxyGenerator"></bean>
+<!--    <bean id="stateReadOnlyProxyGenerator" class="org.dddml.suidemocontracts.specialization.NullReadOnlyProxyGenerator"></bean>-->
     <!--<bean id="clobConverter" class="org.dddml.suidemocontracts.specialization.json.FastJsonClobConverter"></bean>-->
 
 </beans>

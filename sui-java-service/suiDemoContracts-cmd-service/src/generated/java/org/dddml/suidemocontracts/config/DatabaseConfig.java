@@ -1,5 +1,7 @@
 package org.dddml.suidemocontracts.config;
 
+import org.dddml.suidemocontracts.specialization.NullReadOnlyProxyGenerator;
+import org.dddml.suidemocontracts.specialization.ReadOnlyProxyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,4 +39,10 @@ public class DatabaseConfig {
         );
         return sessionFactory;
     }
+
+    @Bean
+    public ReadOnlyProxyGenerator stateReadOnlyProxyGenerator() {
+        return new NullReadOnlyProxyGenerator();
+    }
+
 }

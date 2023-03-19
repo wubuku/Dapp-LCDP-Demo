@@ -6,8 +6,8 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <import resource="DatabaseConfig.xml"/>
-    <import resource="AggregatesHibernateConfig.xml"/>
+<!--    <import resource="DatabaseConfig.xml"/>-->
+<!--    <import resource="AggregatesHibernateConfig.xml"/>-->
     <import resource="TreesConfig.xml"/>
     <import resource="TreesHibernateConfig.xml"/>
     <import resource="CustomIdGeneratorsConfig.xml"/>
