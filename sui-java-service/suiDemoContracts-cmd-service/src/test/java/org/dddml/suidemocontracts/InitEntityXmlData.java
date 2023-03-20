@@ -16,7 +16,7 @@ import java.util.Map;
 public class InitEntityXmlData {
 
 
-    public static void main(final String[] args) throws Exception {
+    public static void _main(final String[] args) throws Exception {
         //todo 为了支持 DDDML Builder 的调用的 main 代码……
         //static
         org.springframework.context.ApplicationContext springFrameworkApplicationContext;

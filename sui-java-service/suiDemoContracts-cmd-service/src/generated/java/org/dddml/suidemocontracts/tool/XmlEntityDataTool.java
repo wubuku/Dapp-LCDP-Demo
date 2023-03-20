@@ -76,7 +76,7 @@ public class XmlEntityDataTool {
     }
 
     // only for test.
-    public static void main(String[] args) {
+    public static void _main(String[] args) {
 
         List<Object> entityInstList = null;
         Map<String, List<Object>> entityInstGroupByEntityName = null;

@@ -1,8 +1,9 @@
-package org.dddml.suidemocontracts.tool.hibernate;
+package org.dddml.suidemocontracts;
 
+import org.dddml.suidemocontracts.tool.hibernate.SchemaTool;
 import picocli.CommandLine;
 
-public class TestSchemaTool {
+public class ServiceCli {
 
     public static void main(final String[] args) throws Exception {
         /*
@@ -34,7 +35,7 @@ public class TestSchemaTool {
     // ddl method definition
     public static void ddl(DdlSubcommand ddlSubcommand) {
 
-        SchemaTool t = new SchemaTool();//todo move SchemaTool to /src/main/java
+        SchemaTool t = new SchemaTool();
 
         t.setSqlDirectory(ddlSubcommand.sqlDirectory);
         t.setConnectionUrl(ddlSubcommand.connectionUrl);

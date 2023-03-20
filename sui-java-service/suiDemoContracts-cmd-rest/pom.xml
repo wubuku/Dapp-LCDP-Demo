@@ -4,7 +4,7 @@
 
     <artifactId>suidemocontracts-cmd-rest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>suidemocontracts-cmd-rest</description>
 
     <parent>
@@ -183,6 +183,17 @@
                                 <source>${basedir}/src/generated/java</source>
                             </sources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

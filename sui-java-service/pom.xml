@@ -24,6 +24,7 @@
         <module>suiDemoContracts-common</module>
         <module>suiDemoContracts-cmd-service</module>
         <module>suiDemoContracts-cmd-rest</module>
+        <module>suiDemoContracts-service-cli</module>
     </modules>
 
     <dependencyManagement>

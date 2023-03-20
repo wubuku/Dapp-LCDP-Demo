@@ -22,11 +22,11 @@ public class TestMain {
         );
     }
 
-    public static void main(final String[] args) throws Exception {
-        ApplicationContext.current = new SpringApplicationContext(springFrameworkApplicationContext);
-        testCarApplicationService();
-        System.exit(0);
-    }
+//    public static void main(final String[] args) throws Exception {
+//        ApplicationContext.current = new SpringApplicationContext(springFrameworkApplicationContext);
+//        testCarApplicationService();
+//        System.exit(0);
+//    }
 
     /*
     private static void testInitEntityData() {
