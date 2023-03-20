@@ -22,7 +22,6 @@
         <dependency>
             <groupId>com.github.wubuku</groupId>
             <artifactId>sui-java-sdk</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

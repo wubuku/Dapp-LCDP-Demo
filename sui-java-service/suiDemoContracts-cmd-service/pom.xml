@@ -23,7 +23,7 @@
             <artifactId>suidemocontracts-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.dddml</groupId>
+            <groupId>com.github.wubuku</groupId>
             <artifactId>dddml-criterion-support</artifactId>
         </dependency>
         <dependency>
