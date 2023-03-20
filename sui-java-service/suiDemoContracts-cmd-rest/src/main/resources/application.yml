@@ -81,6 +81,8 @@ sui:
       url: "https://fullnode.devnet.sui.io/"
     package-publish-transaction: "8tWvDLgZiqdtNp2dxVSuJbnPVD7kqLeC8W2NGwm9CzX9"
     pull-day-summary-events:
-      day-summary-created-fixed-delay: 6000
+      day-summary-created:
+        fixed-delay: 6000
     pull-order-v2-events:
-      order-v2-created-fixed-delay: 6000
+      order-v2-created:
+        fixed-delay: 6000
