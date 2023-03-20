@@ -19,18 +19,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.dddml.suidemocontracts.restful.config.SuiCliCheatsheetConstants.ID_GENERATOR_OBJECT_NAME_TO_ARGUMENT_HINT_MAP;
+import static org.dddml.suidemocontracts.restful.config.SuiCliCheatsheetConstants.PACKAGE_ID_ARGUMENT_HINT;
+
 @Configuration
 public class SuiCliCheatsheetConfigurer implements WebMvcConfigurer {
-    private static Map<String, String> idGeneratorObjectNameToCliArgumentHintMap;
-
-    static {
-        Map<String, String> map = new HashMap<>();
-        map.put(ContractConstants.DOMAIN_NAME_MODULE_DOMAIN_NAME_ID_TABLE, "_DOMAIN_NAME_DOMAIN_NAME_ID_TABLE_OBJECT_ID_");
-        map.put(ContractConstants.PRODUCT_MODULE_PRODUCT_ID_GENERATOR, "_PRODUCT_PRODUCT_ID_GENERATOR_OBJECT_ID_");
-        map.put(ContractConstants.ORDER_V2_MODULE_ORDER_ID_TABLE, "_ORDER_V2_ORDER_ID_TABLE_OBJECT_ID_");
-        map.put(ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_ID_TABLE, "_DAY_SUMMARY_DAY_SUMMARY_ID_TABLE_OBJECT_ID_");
-        idGeneratorObjectNameToCliArgumentHintMap = map;
-    }
 
     @Autowired
     private MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository;
@@ -40,7 +33,7 @@ public class SuiCliCheatsheetConfigurer implements WebMvcConfigurer {
     private Map<String, String> getSuiClientCLICheatsheetReplacements() {
         Map<String, String> map = new HashMap<>();
         moveObjectIdGeneratorObjectRepository.findAll().forEach(moveObjectIdGeneratorObject -> {
-            String cliArgumentHint = idGeneratorObjectNameToCliArgumentHintMap.get(moveObjectIdGeneratorObject.getName());
+            String cliArgumentHint = ID_GENERATOR_OBJECT_NAME_TO_ARGUMENT_HINT_MAP.get(moveObjectIdGeneratorObject.getName());
             if (cliArgumentHint != null) {
                 map.put(cliArgumentHint, moveObjectIdGeneratorObject.getObjectId());
             }
@@ -48,7 +41,7 @@ public class SuiCliCheatsheetConfigurer implements WebMvcConfigurer {
 
         suiPackageRepository.findById(ContractConstants.DEFAULT_SUI_PACKAGE_NAME)
                 .ifPresent(suiPackage -> {
-                    map.put("_PACKAGE_ID_", suiPackage.getObjectId());
+                    map.put(PACKAGE_ID_ARGUMENT_HINT, suiPackage.getObjectId());
                 });
         return map;
     }
