@@ -47,14 +47,6 @@ public class ServiceCli {
         }
         t.setUp();
 
-        // ///////////////////////////////////////////////
-        //if (args.length > 0 && "-u".equalsIgnoreCase(args[0])) {
-        //    t.hbm2DdlUpdate();
-        //    System.out.println("hbm2Ddl update ok.");
-        //    System.exit(0);
-        //    return;
-        //}
-
         // //////////////////////////////////
         t.hbm2DdlOutput();
         System.out.println("hbm2DdlOutput ok.");
@@ -65,9 +57,6 @@ public class ServiceCli {
         t.dropCreateDatabaseAndSeed();
         System.out.println("dropCreateDatabaseAndSeed ok.");
     }
-
-//    static void test(TestSubcommand testSubcommand) {
-//    }
 
     // Create a top-level command with subcommands 'ddl' and 'test'
     @CommandLine.Command(subcommands = {

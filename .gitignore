@@ -1,11 +1,11 @@
-move-contracts/build
-move-contracts/storage
-off-chain-service/build
-move-contracts/alice
+starcoin-contracts/build
+starcoin-contracts/storage
+starcoin-go-service/build
+starcoin-contracts/alice
 starcoin-ns-demo
-move-contracts/release
+starcoin-contracts/release
 sui.log.*
-sui_contracts/build/
+sui-contracts/build/
 sui-java-service/dddml-suidemocontracts.net.sln
 sui-java-service/.idea/
 sui-java-service/suiDemoContracts-parent.iml
@@ -18,4 +18,4 @@ sui-java-service/suiDemoContracts-cmd-rest/target/
 sui-java-service/*/target/
 sui-java-service/**/*.tc
 sui-java-service/**/*.tt
-sui_contracts/.idea
+sui-contracts/.idea
