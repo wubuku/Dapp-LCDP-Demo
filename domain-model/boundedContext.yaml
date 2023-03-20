@@ -95,7 +95,7 @@ configuration:
     
     NoStateToCommandConverters: true
 
-    IgnoringRemovementConcurrencyConflict: true
+    IgnoringRemovalConcurrencyConflict: true
     
     # --------------------------------------------------------------
     # Enable Message-based Commands for all Internal Methods
@@ -104,6 +104,7 @@ configuration:
     # --------------------------------------------------------------
     AutoAggregateMethodJavaDefaultLogicEnabled: true
     AutoGeneratingCrUDCommandsDisabled: true
+    AllEventsMutable: true
     # OptimisticLockingVersionDisabled: true
     # JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 

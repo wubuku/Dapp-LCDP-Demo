@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
-  <class name="AbstractOrderV2Event" table="order_v2_event" mutable="false" abstract="true">
+  <class name="AbstractOrderV2Event" table="order_v2_event" abstract="true">
     <composite-id name="orderV2EventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderV2EventId">
       <key-property name="orderId">
         <column name="order_id" length="50" />

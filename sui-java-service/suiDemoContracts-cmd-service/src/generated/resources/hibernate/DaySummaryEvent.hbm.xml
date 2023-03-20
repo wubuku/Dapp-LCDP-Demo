@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.daysummary">
-  <class name="AbstractDaySummaryEvent" table="day_summary_event" mutable="false" abstract="true">
+  <class name="AbstractDaySummaryEvent" table="day_summary_event" abstract="true">
     <composite-id name="daySummaryEventId" class="org.dddml.suidemocontracts.domain.daysummary.DaySummaryEventId">
       <key-property name="dayMonthYearNumber">
         <column name="day_month_year_number" />

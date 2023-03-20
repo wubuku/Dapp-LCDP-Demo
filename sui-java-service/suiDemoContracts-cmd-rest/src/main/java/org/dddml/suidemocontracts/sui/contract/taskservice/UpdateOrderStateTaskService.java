@@ -26,7 +26,7 @@ public class UpdateOrderStateTaskService {
 
     @Scheduled(fixedDelayString = "${sui.contract.update-order-states.fixed-delay:5000}")
     @Transactional
-    public void task() {
+    public void updateOrderStates() {
         orderEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId();
             suiOrderService.updateOrderState(objectId);

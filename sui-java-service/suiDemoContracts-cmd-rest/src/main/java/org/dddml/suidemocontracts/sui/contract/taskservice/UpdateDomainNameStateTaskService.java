@@ -26,7 +26,7 @@ public class UpdateDomainNameStateTaskService {
 
     @Scheduled(fixedDelayString = "${sui.contract.update-domain-name-states.fixed-delay:5000}")
     @Transactional
-    public void task() {
+    public void updateDomainNameStates() {
         domainNameEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiDomainNameService.updateDomainNameState(objectId);

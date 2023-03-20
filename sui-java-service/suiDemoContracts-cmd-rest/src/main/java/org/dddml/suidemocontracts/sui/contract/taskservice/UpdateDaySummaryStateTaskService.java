@@ -26,7 +26,7 @@ public class UpdateDaySummaryStateTaskService {
 
     @Scheduled(fixedDelayString = "${sui.contract.update-day-summary-states.fixed-delay:5000}")
     @Transactional
-    public void task() {
+    public void updateDaySummaryStates() {
         daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiDaySummaryService.updateDaySummaryState(objectId);

@@ -26,7 +26,7 @@ public class UpdateOrderV2StateTaskService {
 
     @Scheduled(fixedDelayString = "${sui.contract.update-order-v2-states.fixed-delay:5000}")
     @Transactional
-    public void task() {
+    public void updateOrderV2States() {
         orderV2EventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiOrderV2Service.updateOrderV2State(objectId);

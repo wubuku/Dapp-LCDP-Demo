@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.orderv2">
-  <class name="AbstractOrderItemShipGroupAssociationEvent" table="order_item_ship_group_association_event" mutable="false" abstract="true">
+  <class name="AbstractOrderItemShipGroupAssociationEvent" table="order_item_ship_group_association_event" abstract="true">
     <composite-id name="orderItemShipGroupAssociationEventId" class="org.dddml.suidemocontracts.domain.orderv2.OrderItemShipGroupAssociationEventId">
       <key-property name="orderV2OrderId">
         <column name="order_v2_order_item_ship_group_association_id_order_v2_order_id" length="50" />
