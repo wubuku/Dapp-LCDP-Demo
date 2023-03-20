@@ -157,84 +157,14 @@
                 <artifactId>springfox-swagger2</artifactId>
                 <version>2.9.2</version>
             </dependency>
-
-            <!--			<dependency>-->
-            <!--				<groupId>com.aliyun.oss</groupId>-->
-            <!--				<artifactId>aliyun-sdk-oss</artifactId>-->
-            <!--				<version>2.7.0</version>-->
-            <!--			</dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.alibaba</groupId>-->
-            <!--                <artifactId>druid</artifactId>-->
-            <!--                <version>1.1.18</version>-->
-            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>checkstyle-validation</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <skip>${disable.checks}</skip>
-                            <configLocation>src/checkstyle/checkstyle.xml</configLocation>
-                            <suppressionsLocation>src/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-                            <headerLocation>src/checkstyle/checkstyle-header.txt</headerLocation>
-                            <propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <failOnViolation>true</failOnViolation>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
         </plugins>
         <pluginManagement>
             <plugins>
-                <!--
-                                <plugin>
-                                    <groupId>org.apache.maven.plugins</groupId>
-                                    <artifactId>maven-checkstyle-plugin</artifactId>
-                                    <version>2.17</version>
-                                    <dependencies>
-                                        <dependency>
-                                            <groupId>com.puppycrawl.tools</groupId>
-                                            <artifactId>checkstyle</artifactId>
-                                            <version>8.18</version>
-                                        </dependency>
-                                    </dependencies>
-                                </plugin>
-                                <plugin>
-                                    <groupId>com.syj.platform</groupId>
-                                    <artifactId>raml-spring-mvc-maven-plugin</artifactId>
-                                    <version>0.0.1-SNAPSHOT</version>
-                                    <executions>
-                                        <execution>
-                                            <phase>compile</phase>
-                                            <goals>
-                                                <goal>generate-raml</goal>
-                                            </goals>
-                                            <configuration>
-                                                <sources>
-                                                    <param>src/generated/java</param>
-                                                </sources>
-                                                <output>src/generated/resources/static/${project.artifactId}.raml</output>
-                                            </configuration>
-                                        </execution>
-                                    </executions>
-                                </plugin>
-                 -->
             </plugins>
         </pluginManagement>
     </build>
@@ -244,6 +174,11 @@
             <id>sui-java-sdk-github</id>
             <name>sui-java-sdk-bot</name>
             <url>https://maven.pkg.github.com/wubuku/sui-java-sdk</url>
+        </repository>
+        <repository>
+            <id>dddml-criterion-support-github</id>
+            <name>dddml-criterion-support-bot</name>
+            <url>https://maven.pkg.github.com/wubuku/dddml-criterion-support</url>
         </repository>
     </repositories>
 </project>
