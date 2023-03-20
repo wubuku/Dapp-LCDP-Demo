@@ -19,12 +19,10 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by yangjiefeng on 2018/2/4.
@@ -54,11 +52,24 @@ public class SchemaTool {
     static final String FILENAME_CREATE_RVIEWS = "CreateRViews.sql";
     static final String FILENAME_ADD_STATE_ID_FK_CONSTRAINTS = "AddStateIdForeignKeyConstraints.sql";
     private static final String SQL_DELIMITER = ";";
-    private String _sqlDirectory;
-    private String _databaseUsername = "root";
-    private String _databasePassword = "123456";
-    // ///////////////////////////////////
-    private String _connectionString;
+    /**
+     * SQL script input/output directory.
+     */
+    private String sqlDirectory;
+    /**
+     * Database username.
+     */
+    private String connectionUsername = "root";
+    /**
+     * Database password.
+     */
+    private String connectionPassword = "123456";
+    /**
+     * Database connection JDBC URL.
+     */
+    private String connectionUrl;
+
+    private Properties hibernateProperties = new Properties();
 
     private static boolean isSqlEmpty(String sql) {
         String[] lines = sql.split("\\r?\\n", 100);
@@ -70,52 +81,78 @@ public class SchemaTool {
         return true;
     }
 
+    private static Properties getDefaultHibernateProperties() {
+        Properties props = new Properties();
+        props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+        props.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+        props.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.EhCacheProvider");
+        props.setProperty("hibernate.cache.use_second_level_cache", "false");
+        return props;
+    }
+
+    private Properties getHibernateProperties() {
+        if (hibernateProperties == null) {
+            hibernateProperties = getDefaultHibernateProperties();
+        }
+        return hibernateProperties;
+    }
+
     public final String getSqlDirectory() {
-        return _sqlDirectory;
+        return sqlDirectory;
     }
 
     public final void setSqlDirectory(String value) {
-        _sqlDirectory = value;
+        sqlDirectory = value;
     }
 
-    public String getDatabaseUsername() {
-        return _databaseUsername;
+    public String getConnectionUsername() {
+        return connectionUsername;
     }
 
-    public void setDatabaseUsername(String databaseUsername) {
-        this._databaseUsername = databaseUsername;
+    public void setConnectionUsername(String connnectionUsername) {
+        this.connectionUsername = connnectionUsername;
     }
 
-    public String getDatabasePassword() {
-        return _databasePassword;
+    public String getConnectionPassword() {
+        return connectionPassword;
     }
 
-    public void setDatabasePassword(String value) {
-        _databasePassword = value;
+    public void setConnectionPassword(String value) {
+        connectionPassword = value;
     }
 
-    public String getConnectionString() {
-        return _connectionString;
+    public String getConnectionUrl() {
+        return connectionUrl;
     }
 
-    public void setConnectionString(String connStr) {
-        _connectionString = connStr;
+    public void setConnectionUrl(String connStr) {
+        connectionUrl = connStr;
     }
 
     public void setUp() {
+        if (hibernateProperties == null) {
+            hibernateProperties = getDefaultHibernateProperties();
+        } else {
+            Properties defaultProperties = getDefaultHibernateProperties();
+            for (Map.Entry<Object, Object> entry : defaultProperties.entrySet()) {
+                if (!hibernateProperties.containsKey(entry.getKey())) {
+                    hibernateProperties.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
     public void dropCreateDatabaseAndSeed() {
-        String connString = getConnectionString();
-        dropCreateDatabase(connString);
-        seedDatabase(connString);
+        dropCreateDatabase();
+        seedDatabase();
     }
 
-    public void seedDatabase(String connString) {
+    public void seedDatabase() {
+        //todo seed
     }
 
-    public void dropCreateDatabase(String connString) {
-        org.hibernate.cfg.Configuration cfg = getHibernateConfiguration(connString);
+    public void dropCreateDatabase() {
+        org.hibernate.cfg.Configuration cfg = getHibernateConfiguration();
 
         String[] fns = getDropCreateFileNames();
 
@@ -154,20 +191,20 @@ public class SchemaTool {
         };
     }
 
-
     public final void hbm2DdlOutput() {
-        String connString = getConnectionString();
-        org.hibernate.cfg.Configuration cfg = getHibernateConfiguration(connString);
+        org.hibernate.cfg.Configuration cfg = getHibernateConfiguration();
 
         // ///////////////////////////////////////////////////////
+        // setup hibernate properties
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
-
         MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+        // setup mapping resources
         for (String s : getHbmResourceNames()) {
             metadataSources.addResource(s);
         }
-        metadataSources.addAnnotatedClass(MoveObjectIdGeneratorObject.class);
-        metadataSources.addAnnotatedClass(SuiPackage.class);
+        for (Class<?> c : getAnnotationClasses()) {
+            metadataSources.addAnnotatedClass(c);
+        }
 
         MetadataImplementor metadata = (MetadataImplementor) metadataSources.getMetadataBuilder()
                 .applyPhysicalNamingStrategy(new SpringPhysicalNamingStrategy())
@@ -182,7 +219,6 @@ public class SchemaTool {
         String dropFilePath = Path.combine(getSqlDirectory(), "hbm2ddl_drop.sql");
         FileUtils.deleteIfExists(dropFilePath);
         schemaExport.setOutputFile(dropFilePath).setDelimiter(SQL_DELIMITER).drop(EnumSet.of(TargetType.SCRIPT), metadata);
-
 
         String createFilePath = Path.combine(getSqlDirectory(), FILENAME_HBM2DDL_CREATE);
         FileUtils.deleteIfExists(createFilePath);
@@ -238,27 +274,30 @@ public class SchemaTool {
         return tableNames;
     }
 
-    private org.hibernate.cfg.Configuration getHibernateConfiguration(String connString) {
-        String connAllowOpt = "allowMultiQueries=true";
-        if (!connString.toLowerCase().contains((connAllowOpt).toLowerCase())) {
-            connString = connString + (connString.endsWith("&") ? "" : "&") + connAllowOpt;
+    private org.hibernate.cfg.Configuration getHibernateConfiguration() {
+        String connString = getConnectionUrl();
+        String connAllowMQOpt = "allowMultiQueries=true";
+        if (!connString.toLowerCase().contains((connAllowMQOpt).toLowerCase())) {
+            connString = connString + (connString.endsWith("&") ? "" : "&") + connAllowMQOpt;
         }
         org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
-        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        cfg.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
         cfg.setProperty("hibernate.connection.url", connString);
-        cfg.setProperty("hibernate.connection.username", getDatabaseUsername());
-        cfg.setProperty("hibernate.connection.password", getDatabasePassword());
-        cfg.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.EhCacheProvider");
-        cfg.setProperty("hibernate.cache.use_second_level_cache", "false");
+        cfg.setProperty("hibernate.connection.username", getConnectionUsername());
+        cfg.setProperty("hibernate.connection.password", getConnectionPassword());
+        for (String key : getHibernateProperties().stringPropertyNames()) {
+            cfg.setProperty(key, getHibernateProperties().getProperty(key));
+        }
 
         List<String> resourceNames = getHbmResourceNames();
-
         for (String s : resourceNames) {
             cfg.addResource(s);
         }
+        for (Class<?> c : getAnnotationClasses()) {
+            cfg.addAnnotatedClass(c);
+        }
         return cfg;
     }
+
 
     private List<String> getHbmResourceNames() {
         String[] locationPatterns = new String[]{
@@ -270,6 +309,13 @@ public class SchemaTool {
             resourceNames.addAll(getHbmResourceNames(locationPattern));
         }
         return resourceNames;
+    }
+
+    private List<Class<?>> getAnnotationClasses() {
+        return Arrays.stream(new Class<?>[]{
+                SuiPackage.class,
+                MoveObjectIdGeneratorObject.class
+        }).collect(Collectors.toList());
     }
 
     private List<String> getHbmResourceNames(String locationPattern) {
