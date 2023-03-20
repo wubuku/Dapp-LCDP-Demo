@@ -1,31 +1,26 @@
 package org.dddml.suidemocontracts.tool;
 
-import java.beans.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Timestamp;
-import java.util.*;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.dddml.suidemocontracts.domain.meta.M.BoundedContextMetadata;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import org.dddml.suidemocontracts.domain.meta.M.BoundedContextMetadata;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import java.util.Arrays;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -33,22 +28,13 @@ import java.util.stream.Collectors;
 public class XmlEntityDataTool {
 
     public final static String DEFAULT_XML_DATA_LOCATION_PATTERN = "file:../../data/*.xml";
-            //"file:/C:/Users/yangjiefeng/Documents/GitHub/wms/data/*.xml";
-            //"classpath*:/data/*.xml";
+    //"file:/C:/Users/yangjiefeng/Documents/GitHub/wms/data/*.xml";
+    //"classpath*:/data/*.xml";
 
     private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-
-    private static DefaultConversionService defaultConversionService = new DefaultConversionService();
-
     private final static String BOUNDED_CONTEXT_DOMAIN_PACKAGE;
-
     private final static String XML_ROOT_NODE_NAME = "entity-engine-xml";
-
-    private static String getBoundedContextDomainPackage() {
-        String[] thisClassNames = XmlEntityDataTool.class.getName().split("\\.");
-        return Arrays.stream(thisClassNames).limit(thisClassNames.length - 2).reduce((x, y) -> x + "." + y)
-                .get() + ".domain";
-    }
+    private static DefaultConversionService defaultConversionService = new DefaultConversionService();
 
     static {
         // /////////////////////////
@@ -81,6 +67,12 @@ public class XmlEntityDataTool {
                     }
                 });
 
+    }
+
+    private static String getBoundedContextDomainPackage() {
+        String[] thisClassNames = XmlEntityDataTool.class.getName().split("\\.");
+        return Arrays.stream(thisClassNames).limit(thisClassNames.length - 2).reduce((x, y) -> x + "." + y)
+                .get() + ".domain";
     }
 
     // only for test.
@@ -147,86 +139,11 @@ public class XmlEntityDataTool {
         }
     }
 
-    public void deserialize(InputStream xmlInputStream, BiConsumer<Node, Object> action) {
-        Map<String, Map<String, PropertySetter>> propSetterMapCache = new HashMap<>();
-        deserialize(propSetterMapCache, xmlInputStream, action);
-    }
-
-    public void deserialize(Map<String, Map<String, PropertySetter>> propSetterMapCache, InputStream xmlInputStream, BiConsumer<Node, Object> action) {
-        try {
-            Document doc = parseXmlDocument(xmlInputStream);
-            Element docElement = doc.getDocumentElement();
-            if (!XML_ROOT_NODE_NAME.equals(docElement.getNodeName())) {
-                return;
-            }
-            NodeList childNodes = docElement.getChildNodes();
-
-            for (int i = 0; i < childNodes.getLength(); i++) {
-                Node entityDataNode = childNodes.item(i);
-                if (!entityDataNode.hasAttributes()) {
-                    continue;
-                }
-                Map<String, Object> attrMap = new HashMap<>();
-
-                String entityName = entityDataNode.getNodeName();
-                NamedNodeMap entityDataAttributes = entityDataNode.getAttributes();
-                for (int j = 0; j < entityDataAttributes.getLength(); j++) {
-                    Node item = entityDataAttributes.item(j);
-                    String attributeName = item.getNodeName();
-                    String nodeValue = item.getNodeValue();
-                    attrMap.put(attributeName, nodeValue);
-                }
-                action.accept(entityDataNode, convertEntityData(propSetterMapCache, entityName, attrMap));
-            }
-        } catch (ParserConfigurationException | IOException | SAXException |
-                IllegalAccessException | IntrospectionException | InstantiationException | NoSuchFieldException |
-                InvocationTargetException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static Document parseXmlDocument(InputStream xmlInputStream) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         DocumentBuilder db = dbf.newDocumentBuilder();
         return db.parse(xmlInputStream);
-    }
-
-    protected Object convertEntityData(Map<String, Map<String, PropertySetter>> propSetterMapCache,
-                                       String entityName, Map<String, Object> attrMap) throws
-            ClassNotFoundException, IntrospectionException, IllegalAccessException,
-            InstantiationException, NoSuchFieldException, InvocationTargetException {
-        Class<?> beanClass = getEntityClass(entityName);
-        //BeanInfo info = Introspector.getBeanInfo(beanClass);
-
-        String createdAtPropName = getCreatedAtPropertyName(entityName);
-        if (!attrMap.containsKey(createdAtPropName)) {
-            attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis()));
-        }
-
-        if (autoSetVersionProperty()) {
-            String versionPropName = getVersionPropertyName(entityName);
-            if (!attrMap.containsKey(versionPropName)) {
-                attrMap.put(versionPropName, -1L);
-            }
-        }
-
-        Object beanInst = beanClass.newInstance();
-
-        Map<String, PropertySetter> setterMap = propSetterMapCache.getOrDefault(entityName, null);
-        if (setterMap == null) {
-            setterMap = buildPropertySetterMap(entityName, beanClass);
-            propSetterMapCache.put(entityName, setterMap);
-        }
-        for (Map.Entry<String, Object> kv : attrMap.entrySet()) {
-            setProperty(beanInst, setterMap, kv.getKey(), kv.getValue());
-        }
-
-        return beanInst;
-    }
-
-    protected boolean autoSetVersionProperty() {
-        return true;
     }
 
     private static void setProperty(Object obj, Map<String, PropertySetter> setterMap, String attrName, Object attrVal) throws InvocationTargetException, IllegalAccessException {
@@ -249,37 +166,6 @@ public class XmlEntityDataTool {
 
     private static Object convertAttributeValue(Object attributeVal, Class<?> type) {
         return defaultConversionService.convert(attributeVal, type);
-    }
-
-    protected Class<?> getEntityClass(String entityName) throws ClassNotFoundException {
-        String[] names = getEntityClassNames(entityName);
-        Class<?> entityClass = null;
-        for (String n : names) {
-            try {
-                entityClass = Class.forName(n);
-            } catch (ClassNotFoundException e) {
-                //e.printStackTrace();
-            }
-            if (entityClass != null) {
-                break;
-            }
-        }
-        return entityClass;
-    }
-
-    protected String[] getEntityClassNames(String entityName) {
-        String packageClassPath = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
-                .get(entityName).toLowerCase();
-        ArrayList<String> names = new ArrayList<>();
-        names.add(String.format(
-                "%1$s.%2$s.Abstract%3$sStateEvent$Simple%4$sStateCreated",
-                BOUNDED_CONTEXT_DOMAIN_PACKAGE, packageClassPath, entityName, entityName)
-        );
-        names.add(String.format(
-                "%1$s.%2$s.CreateOrMergePatch%3$sDto$Create%4$sDto",
-                BOUNDED_CONTEXT_DOMAIN_PACKAGE, packageClassPath, entityName, entityName)
-        );
-        return names.toArray(new String[0]);
     }
 
     private static String getCreatedAtPropertyName(String entityName) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
@@ -337,7 +223,7 @@ public class XmlEntityDataTool {
                     @Override
                     public void invoke(Object b, Object pVal) throws InvocationTargetException, IllegalAccessException {
                         Object pref = propertyDescriptor.getReadMethod().invoke(b);
-                        if(pref == null) {
+                        if (pref == null) {
                             //throw new RuntimeException(String.format("The parent proeprty '%1$s' is null.", propertyDescriptor.getName()));
                             try {
                                 pref = propertyType.newInstance();
@@ -346,7 +232,7 @@ public class XmlEntityDataTool {
                                 throw new RuntimeException(e);
                             }
                         }
-                        if(ppDescriptor.getWriteMethod() == null) {
+                        if (ppDescriptor.getWriteMethod() == null) {
                             throw new RuntimeException(String.format("CANNOT get WriteMethod for proeprty '%1$s'.", ppDescriptor.getName()));
                         }
                         ppDescriptor.getWriteMethod().invoke(pref, pVal);
@@ -359,6 +245,112 @@ public class XmlEntityDataTool {
                 });
             }
         }
+    }
+
+    public void deserialize(InputStream xmlInputStream, BiConsumer<Node, Object> action) {
+        Map<String, Map<String, PropertySetter>> propSetterMapCache = new HashMap<>();
+        deserialize(propSetterMapCache, xmlInputStream, action);
+    }
+
+    public void deserialize(Map<String, Map<String, PropertySetter>> propSetterMapCache, InputStream xmlInputStream, BiConsumer<Node, Object> action) {
+        try {
+            Document doc = parseXmlDocument(xmlInputStream);
+            Element docElement = doc.getDocumentElement();
+            if (!XML_ROOT_NODE_NAME.equals(docElement.getNodeName())) {
+                return;
+            }
+            NodeList childNodes = docElement.getChildNodes();
+
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node entityDataNode = childNodes.item(i);
+                if (!entityDataNode.hasAttributes()) {
+                    continue;
+                }
+                Map<String, Object> attrMap = new HashMap<>();
+
+                String entityName = entityDataNode.getNodeName();
+                NamedNodeMap entityDataAttributes = entityDataNode.getAttributes();
+                for (int j = 0; j < entityDataAttributes.getLength(); j++) {
+                    Node item = entityDataAttributes.item(j);
+                    String attributeName = item.getNodeName();
+                    String nodeValue = item.getNodeValue();
+                    attrMap.put(attributeName, nodeValue);
+                }
+                action.accept(entityDataNode, convertEntityData(propSetterMapCache, entityName, attrMap));
+            }
+        } catch (ParserConfigurationException | IOException | SAXException |
+                 IllegalAccessException | IntrospectionException | InstantiationException | NoSuchFieldException |
+                 InvocationTargetException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected Object convertEntityData(Map<String, Map<String, PropertySetter>> propSetterMapCache,
+                                       String entityName, Map<String, Object> attrMap) throws
+            ClassNotFoundException, IntrospectionException, IllegalAccessException,
+            InstantiationException, NoSuchFieldException, InvocationTargetException {
+        Class<?> beanClass = getEntityClass(entityName);
+        //BeanInfo info = Introspector.getBeanInfo(beanClass);
+
+        String createdAtPropName = getCreatedAtPropertyName(entityName);
+        if (!attrMap.containsKey(createdAtPropName)) {
+            attrMap.put(createdAtPropName, Long.valueOf(System.currentTimeMillis()));
+        }
+
+        if (autoSetVersionProperty()) {
+            String versionPropName = getVersionPropertyName(entityName);
+            if (!attrMap.containsKey(versionPropName)) {
+                attrMap.put(versionPropName, -1L);
+            }
+        }
+
+        Object beanInst = beanClass.newInstance();
+
+        Map<String, PropertySetter> setterMap = propSetterMapCache.getOrDefault(entityName, null);
+        if (setterMap == null) {
+            setterMap = buildPropertySetterMap(entityName, beanClass);
+            propSetterMapCache.put(entityName, setterMap);
+        }
+        for (Map.Entry<String, Object> kv : attrMap.entrySet()) {
+            setProperty(beanInst, setterMap, kv.getKey(), kv.getValue());
+        }
+
+        return beanInst;
+    }
+
+    protected boolean autoSetVersionProperty() {
+        return true;
+    }
+
+    protected Class<?> getEntityClass(String entityName) throws ClassNotFoundException {
+        String[] names = getEntityClassNames(entityName);
+        Class<?> entityClass = null;
+        for (String n : names) {
+            try {
+                entityClass = Class.forName(n);
+            } catch (ClassNotFoundException e) {
+                //e.printStackTrace();
+            }
+            if (entityClass != null) {
+                break;
+            }
+        }
+        return entityClass;
+    }
+
+    protected String[] getEntityClassNames(String entityName) {
+        String packageClassPath = BoundedContextMetadata.TYPE_NAME_TO_AGGREGATE_NAME_MAP
+                .get(entityName).toLowerCase();
+        ArrayList<String> names = new ArrayList<>();
+        names.add(String.format(
+                "%1$s.%2$s.Abstract%3$sStateEvent$Simple%4$sStateCreated",
+                BOUNDED_CONTEXT_DOMAIN_PACKAGE, packageClassPath, entityName, entityName)
+        );
+        names.add(String.format(
+                "%1$s.%2$s.CreateOrMergePatch%3$sDto$Create%4$sDto",
+                BOUNDED_CONTEXT_DOMAIN_PACKAGE, packageClassPath, entityName, entityName)
+        );
+        return names.toArray(new String[0]);
     }
 
     interface PropertySetter {

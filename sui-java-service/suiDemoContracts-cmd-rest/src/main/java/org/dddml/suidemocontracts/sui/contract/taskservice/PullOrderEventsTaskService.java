@@ -16,17 +16,17 @@ public class PullOrderEventsTaskService {
     @Autowired
     private OrderEventService orderEventService;
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-created-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-created.fixed-delay:5000}")
     public void pullOrderCreatedEvents() {
         orderEventService.pullOrderCreatedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-item-removed-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-item-removed.fixed-delay:5000}")
     public void pullOrderItemRemovedEvents() {
         orderEventService.pullOrderItemRemovedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-item-quantity-updated-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-item-quantity-updated.fixed-delay:5000}")
     public void pullOrderItemQuantityUpdatedEvents() {
         orderEventService.pullOrderItemQuantityUpdatedEvents();
     }

@@ -40,6 +40,12 @@ public class OrderV2EventService {
     private OrderV2EventRepository orderV2EventRepository;
 
     @Transactional
+    public void updateStatusToProcessed(AbstractOrderV2Event event) {
+        event.setStatus("D");
+        orderV2EventRepository.save(event);
+    }
+
+    @Transactional
     public void pullOrderV2CreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {

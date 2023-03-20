@@ -12,9 +12,9 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.tool.schema.TargetType;
+import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -251,7 +251,6 @@ public class SchemaTool {
         cfg.setProperty("hibernate.connection.password", getDatabasePassword());
         cfg.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.EhCacheProvider");
         cfg.setProperty("hibernate.cache.use_second_level_cache", "false");
-        //cfg.setProperty("hibernate.implicit_naming_strategy", "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl");
 
         List<String> resourceNames = getHbmResourceNames();
 
@@ -374,7 +373,6 @@ public class SchemaTool {
     }
 
     static class Path {
-
         static String combine(String... paths) {
             File file = new File(paths[0]);
 
@@ -384,7 +382,6 @@ public class SchemaTool {
 
             return file.getPath();
         }
-
     }
 
 }

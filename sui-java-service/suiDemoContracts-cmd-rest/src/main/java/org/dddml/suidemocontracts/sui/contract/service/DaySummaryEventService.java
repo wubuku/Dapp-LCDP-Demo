@@ -33,6 +33,12 @@ public class DaySummaryEventService {
     private DaySummaryEventRepository daySummaryEventRepository;
 
     @Transactional
+    public void updateStatusToProcessed(AbstractDaySummaryEvent event) {
+        event.setStatus("D");
+        daySummaryEventRepository.save(event);
+    }
+
+    @Transactional
     public void pullDaySummaryCreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {

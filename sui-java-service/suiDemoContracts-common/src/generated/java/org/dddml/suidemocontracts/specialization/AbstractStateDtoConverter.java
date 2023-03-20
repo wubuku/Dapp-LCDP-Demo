@@ -84,11 +84,7 @@ public abstract class AbstractStateDtoConverter {
         }
         //对于集合类型的属性，需要显式地要求返回
         if (isCollectionField(fieldName)) {
-            if (CollectionUtils.mapContainsKeyIgnoringCase(getReturnedFields(), fieldName)) {
-                return true;
-            } else {
-                return false;
-            }
+            return CollectionUtils.mapContainsKeyIgnoringCase(getReturnedFields(), fieldName);
         }
         //对于集合类型之外的属性，缺省就是都返回的
         Map<String, String> returnedFieldsExcludingCollection = getReturnedFieldsExcludingCollection();

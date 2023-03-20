@@ -3,7 +3,7 @@ package org.dddml.suidemocontracts.specialization;
 import java.util.List;
 
 /**
- * Pgae of content(list).
+ * Page of content(list).
  */
 public interface Page<T> {
 
@@ -35,7 +35,7 @@ public interface Page<T> {
      */
     int getNumber();
 
-    public static class PageImpl<T> implements Page {
+    class PageImpl<T> implements Page {
 
         private List<T> content;
         private long totalElements;

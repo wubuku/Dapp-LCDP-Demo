@@ -7,8 +7,12 @@ package org.dddml.suidemocontracts.sui.contract.repository;
 
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.*;
 
 public interface OrderV2EventRepository extends JpaRepository<AbstractOrderV2Event, OrderV2EventId> {
+
+    List<AbstractOrderV2Event> findByStatusIsNull();
+
     AbstractOrderV2Event.OrderV2Created findFirstOrderV2CreatedByOrderBySuiTimestampDesc();
 
     AbstractOrderV2Event.OrderV2ItemRemoved findFirstOrderV2ItemRemovedByOrderBySuiTimestampDesc();

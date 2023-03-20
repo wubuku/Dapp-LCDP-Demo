@@ -7,8 +7,12 @@ package org.dddml.suidemocontracts.sui.contract.repository;
 
 import org.dddml.suidemocontracts.domain.product.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.*;
 
 public interface ProductEventRepository extends JpaRepository<AbstractProductEvent, ProductEventId> {
+
+    List<AbstractProductEvent> findByStatusIsNull();
+
     AbstractProductEvent.ProductCreated findFirstProductCreatedByOrderBySuiTimestampDesc();
 
 }

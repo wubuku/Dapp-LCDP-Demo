@@ -3,8 +3,10 @@ package org.dddml.suidemocontracts.specialization;
 import org.dddml.support.criterion.CriterionDto;
 import org.dddml.support.criterion.StringHelper;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yangjiefeng on 2018/7/31.
@@ -40,7 +42,7 @@ public class QueryParamUtils {
                             notCr.setType("not");
                             notCr.setCriterion(c);
                             conjunction.add(notCr);
-                        } else if (kws.contains(op)){
+                        } else if (kws.contains(op)) {
                             CriterionDto c = new CriterionDto();
                             c.setType(op);
                             c.setProperty(key);
@@ -53,7 +55,7 @@ public class QueryParamUtils {
                 }
             });
             if (eqList.size() > 0) {
-                if(eqList.size() == 1) {
+                if (eqList.size() == 1) {
                     CriterionDto c = new CriterionDto();
                     c.setType("eq");
                     c.setProperty(key);

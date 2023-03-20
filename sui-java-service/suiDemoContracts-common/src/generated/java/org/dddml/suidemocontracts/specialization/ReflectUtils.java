@@ -1,7 +1,5 @@
 package org.dddml.suidemocontracts.specialization;
 
-import org.joda.money.Money;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -9,8 +7,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 public class ReflectUtils {
@@ -56,10 +55,7 @@ public class ReflectUtils {
                 Arrays.stream(info.getPropertyDescriptors())
                         .filter(p -> Objects.equals(p.getName().toLowerCase(), propertyName.toLowerCase()))
                         .findFirst();
-        if (pd.isPresent()) {
-            return true;
-        }
-        return false;
+        return pd.isPresent();
     }
 
     public static boolean trySetPropertyValue(String propertyName, Object obj, Object value,
@@ -86,14 +82,14 @@ public class ReflectUtils {
         Object targetPropVal = value;
         Method m = null;
         try {
-            m = obj.getClass().getMethod("set" + pascalName, new Class[]{propCls});
+            m = obj.getClass().getMethod("set" + pascalName, propCls);
         } catch (NoSuchMethodException e) {
             if (throwOnError) {
                 throw new RuntimeException(e);// e.printStackTrace();
             } else {
                 try {
                     Class<?> pt = getPropertyType(propertyName, obj);
-                    m = obj.getClass().getMethod("set" + pascalName, new Class[]{pt});
+                    m = obj.getClass().getMethod("set" + pascalName, pt);
                     targetPropVal = convert.apply(value, pt);
                 } catch (NoSuchMethodException e1) {
                     if (throwOnError) {
@@ -119,7 +115,7 @@ public class ReflectUtils {
             if (m == null) {
                 return false;
             }
-            m.invoke(obj, new Object[]{targetPropVal});
+            m.invoke(obj, targetPropVal);
             return true;
         } catch (IllegalAccessException | InvocationTargetException e) {
             if (throwOnError) {

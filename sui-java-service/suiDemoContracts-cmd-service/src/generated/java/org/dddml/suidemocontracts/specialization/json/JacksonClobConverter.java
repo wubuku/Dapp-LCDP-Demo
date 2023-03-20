@@ -20,12 +20,12 @@ public class JacksonClobConverter implements ClobConverter {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         OBJECT_MAPPER = objectMapper;
     }
+
     @Override
     public String toString(Map<String, Object> lobProperties) {
         try {
             return OBJECT_MAPPER.writeValueAsString(lobProperties);
         } catch (JsonProcessingException e) {
-            //e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -33,9 +33,9 @@ public class JacksonClobConverter implements ClobConverter {
     @Override
     public Map<String, Object> parseLobProperties(String text) {
         try {
-            return OBJECT_MAPPER.readValue(text, new TypeReference<Map<String, Object>>(){});
+            return OBJECT_MAPPER.readValue(text, new TypeReference<Map<String, Object>>() {
+            });
         } catch (IOException e) {
-            //e.printStackTrace();
             throw new RuntimeException();
         }
     }

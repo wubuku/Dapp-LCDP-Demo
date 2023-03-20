@@ -9,9 +9,6 @@ import org.hibernate.internal.SessionImpl;
 
 import java.io.Serializable;
 
-/**
- * Created by yangjiefeng on 2017/9/18.
- */
 public class TableIdGenerator<TCommand, TState> implements IdGenerator<Long, TCommand, TState> {
 
     private static final String DEFAULT_ROOT_ENTITY_NAME = "org.dddml.suidemocontracts.tool.hibernate.Hello";
@@ -19,7 +16,7 @@ public class TableIdGenerator<TCommand, TState> implements IdGenerator<Long, TCo
     private String rootEntityName = DEFAULT_ROOT_ENTITY_NAME;
 
     private SessionFactory sessionFactory;
-    
+
     public String getRootEntityName() {
         return rootEntityName;
     }

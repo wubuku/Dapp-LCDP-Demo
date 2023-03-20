@@ -11,7 +11,7 @@ import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SuiOrderV2Service {

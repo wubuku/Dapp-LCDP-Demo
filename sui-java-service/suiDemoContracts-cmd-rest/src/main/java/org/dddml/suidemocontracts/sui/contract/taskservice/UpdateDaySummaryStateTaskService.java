@@ -10,6 +10,7 @@ import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UpdateDaySummaryStateTaskService {
@@ -20,13 +21,16 @@ public class UpdateDaySummaryStateTaskService {
     @Autowired
     private DaySummaryEventRepository daySummaryEventRepository;
 
-    @Scheduled(fixedDelay = 10000L)
+    @Autowired
+    private DaySummaryEventService daySummaryEventService;
+
+    @Scheduled(fixedDelayString = "${sui.contract.update-day-summary-states.fixed-delay:5000}")
+    @Transactional
     public void task() {
-        //todo filter by event status...
-        daySummaryEventRepository.findAll().forEach(e -> {
+        daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiDaySummaryService.updateDaySummaryState(objectId);
-            //todo update event status...
+            daySummaryEventService.updateStatusToProcessed(e);
         });
     }
 }

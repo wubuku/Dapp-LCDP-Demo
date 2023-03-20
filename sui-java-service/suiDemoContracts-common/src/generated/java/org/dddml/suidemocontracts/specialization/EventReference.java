@@ -1,6 +1,6 @@
 package org.dddml.suidemocontracts.specialization;
 
-public class EventReference<TId, T> implements  Event {
+public class EventReference<TId, T> implements Event {
     private Class<T> eventType;
     private TId eventId;
     private String url;

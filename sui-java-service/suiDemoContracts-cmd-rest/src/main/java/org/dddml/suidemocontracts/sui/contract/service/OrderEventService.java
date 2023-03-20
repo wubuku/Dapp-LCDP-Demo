@@ -35,6 +35,12 @@ public class OrderEventService {
     private OrderEventRepository orderEventRepository;
 
     @Transactional
+    public void updateStatusToProcessed(AbstractOrderEvent event) {
+        event.setStatus("D");
+        orderEventRepository.save(event);
+    }
+
+    @Transactional
     public void pullOrderCreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {

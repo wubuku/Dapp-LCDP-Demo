@@ -10,6 +10,7 @@ import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UpdateOrderV2StateTaskService {
@@ -20,13 +21,16 @@ public class UpdateOrderV2StateTaskService {
     @Autowired
     private OrderV2EventRepository orderV2EventRepository;
 
-    @Scheduled(fixedDelay = 10000L)
+    @Autowired
+    private OrderV2EventService orderV2EventService;
+
+    @Scheduled(fixedDelayString = "${sui.contract.update-order-v2-states.fixed-delay:5000}")
+    @Transactional
     public void task() {
-        //todo filter by event status...
-        orderV2EventRepository.findAll().forEach(e -> {
+        orderV2EventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiOrderV2Service.updateOrderV2State(objectId);
-            //todo update event status...
+            orderV2EventService.updateStatusToProcessed(e);
         });
     }
 }

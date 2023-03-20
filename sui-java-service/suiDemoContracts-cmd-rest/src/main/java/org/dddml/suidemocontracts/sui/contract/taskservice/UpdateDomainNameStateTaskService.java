@@ -10,6 +10,7 @@ import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UpdateDomainNameStateTaskService {
@@ -20,13 +21,16 @@ public class UpdateDomainNameStateTaskService {
     @Autowired
     private DomainNameEventRepository domainNameEventRepository;
 
-    @Scheduled(fixedDelay = 10000L)
+    @Autowired
+    private DomainNameEventService domainNameEventService;
+
+    @Scheduled(fixedDelayString = "${sui.contract.update-domain-name-states.fixed-delay:5000}")
+    @Transactional
     public void task() {
-        //todo filter by event status...
-        domainNameEventRepository.findAll().forEach(e -> {
+        domainNameEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             suiDomainNameService.updateDomainNameState(objectId);
-            //todo update event status...
+            domainNameEventService.updateStatusToProcessed(e);
         });
     }
 }

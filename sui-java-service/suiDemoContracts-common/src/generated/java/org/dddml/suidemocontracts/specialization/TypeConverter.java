@@ -9,5 +9,5 @@ public interface TypeConverter {
 
     String[] convertToStringArray(Object[] values);
 
-    public <T> T convertValue(Object fromValue, Class<T> toValueType);
+    <T> T convertValue(Object fromValue, Class<T> toValueType);
 }

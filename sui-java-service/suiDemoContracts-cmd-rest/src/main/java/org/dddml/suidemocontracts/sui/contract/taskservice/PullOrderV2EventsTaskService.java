@@ -16,42 +16,42 @@ public class PullOrderV2EventsTaskService {
     @Autowired
     private OrderV2EventService orderV2EventService;
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-created-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-created.fixed-delay:5000}")
     public void pullOrderV2CreatedEvents() {
         orderV2EventService.pullOrderV2CreatedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-item-removed-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-item-removed.fixed-delay:5000}")
     public void pullOrderV2ItemRemovedEvents() {
         orderV2EventService.pullOrderV2ItemRemovedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-item-quantity-updated-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-item-quantity-updated.fixed-delay:5000}")
     public void pullOrderV2ItemQuantityUpdatedEvents() {
         orderV2EventService.pullOrderV2ItemQuantityUpdatedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-estimated-ship-date-updated-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-v2-estimated-ship-date-updated.fixed-delay:5000}")
     public void pullOrderV2EstimatedShipDateUpdatedEvents() {
         orderV2EventService.pullOrderV2EstimatedShipDateUpdatedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-added-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-added.fixed-delay:5000}")
     public void pullOrderShipGroupAddedEvents() {
         orderV2EventService.pullOrderShipGroupAddedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-quantity-canceled-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-quantity-canceled.fixed-delay:5000}")
     public void pullOrderShipGroupQuantityCanceledEvents() {
         orderV2EventService.pullOrderShipGroupQuantityCanceledEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-item-removed-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-item-removed.fixed-delay:5000}")
     public void pullOrderShipGroupItemRemovedEvents() {
         orderV2EventService.pullOrderShipGroupItemRemovedEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-removed-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-v2-events.order-ship-group-removed.fixed-delay:5000}")
     public void pullOrderShipGroupRemovedEvents() {
         orderV2EventService.pullOrderShipGroupRemovedEvents();
     }

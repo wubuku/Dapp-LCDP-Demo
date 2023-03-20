@@ -7,8 +7,12 @@ package org.dddml.suidemocontracts.sui.contract.repository;
 
 import org.dddml.suidemocontracts.domain.daysummary.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.*;
 
 public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySummaryEvent, DaySummaryEventId> {
+
+    List<AbstractDaySummaryEvent> findByStatusIsNull();
+
     AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
 
 }

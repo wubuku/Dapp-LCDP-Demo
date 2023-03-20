@@ -1,7 +1,6 @@
 package org.dddml.suidemocontracts.specialization;
 
 import java.util.function.Function;
-import org.dddml.suidemocontracts.specialization.Event;
 
 public interface MutationContext<T, TM> {
 
@@ -15,6 +14,7 @@ public interface MutationContext<T, TM> {
             public Event getEvent() {
                 return e;
             }
+
             @Override
             public TM createMutableState(T state) {
                 return factoryFunc.apply(state);

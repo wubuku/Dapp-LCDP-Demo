@@ -7,6 +7,7 @@ public class DomainErrorUtils {
     /**
      * 将可以认为是 Domain Error 的异常转换为 DomainError，
      * 其他的转换为 RuntimeException。
+     *
      * @param e
      * @return
      */
@@ -19,7 +20,7 @@ public class DomainErrorUtils {
             //onDomainError.accept(domainError);
             return domainError;//throw domainError;
         } else {
-            String msg = "[" + UUID.randomUUID().toString() + "] Exception caught.";
+            String msg = "[" + UUID.randomUUID() + "] Exception caught.";
             RuntimeException runtimeException = new RuntimeException(msg, e);
             //onOtherException.accept(runtimeException);
             return runtimeException;//throw runtimeException;
@@ -28,6 +29,7 @@ public class DomainErrorUtils {
 
     /**
      * 判断一个异常是否可以认为是 Domain Error。
+     *
      * @param e Exception
      * @return 如果可以认为是 Domain Error，返回 true，否则返回 false。
      */
@@ -73,16 +75,16 @@ public class DomainErrorUtils {
     }
 
     private static Exception tryGetDomainError(Exception e) {
-        if (e instanceof java.lang.reflect.UndeclaredThrowableException){
+        if (e instanceof java.lang.reflect.UndeclaredThrowableException) {
             java.lang.reflect.UndeclaredThrowableException undeclaredThrowableException =
-                    (java.lang.reflect.UndeclaredThrowableException)e;
+                    (java.lang.reflect.UndeclaredThrowableException) e;
             Throwable undeclaredThrowable = undeclaredThrowableException.getUndeclaredThrowable();
             if (undeclaredThrowable instanceof java.lang.reflect.InvocationTargetException) {
                 java.lang.reflect.InvocationTargetException invocationTargetException =
                         (java.lang.reflect.InvocationTargetException) undeclaredThrowable;
                 Throwable targetException = invocationTargetException.getTargetException();
-                if (targetException != null && targetException instanceof DomainError) {
-                    return (DomainError)targetException;
+                if (targetException instanceof DomainError) {
+                    return (DomainError) targetException;
                 }
             }
         }

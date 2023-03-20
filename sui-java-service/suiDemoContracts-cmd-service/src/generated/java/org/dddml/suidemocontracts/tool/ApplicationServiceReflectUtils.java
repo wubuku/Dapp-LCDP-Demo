@@ -32,7 +32,7 @@ public class ApplicationServiceReflectUtils {
             if (!m.getParameterTypes()[0].isAssignableFrom(arg.getClass())) {
                 throw new NoSuchMethodException("No exact initialize() method.");
             }
-        }catch (NoSuchMethodException | ClassNotFoundException exM){
+        } catch (NoSuchMethodException | ClassNotFoundException exM) {
             //exM.printStackTrace();
             m = appSrvClass.getMethod("when", getApplicationServiceCreateMethodParameterType(aggregateName, entityName));
             if (m.getParameters()[0].getClass().isAssignableFrom(e.getClass())) {

@@ -52,10 +52,7 @@ public class CollectionUtils {
         if (s1 == null) {
             return false;
         }
-        if (s1.equalsIgnoreCase(s2)) {
-            return true;
-        }
-        return false;
+        return s1.equalsIgnoreCase(s2);
     }
 
 }

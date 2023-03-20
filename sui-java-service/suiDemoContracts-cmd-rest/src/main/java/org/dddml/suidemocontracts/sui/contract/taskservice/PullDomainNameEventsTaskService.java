@@ -16,12 +16,12 @@ public class PullDomainNameEventsTaskService {
     @Autowired
     private DomainNameEventService domainNameEventService;
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-domain-name-events.registered-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-domain-name-events.registered.fixed-delay:5000}")
     public void pullRegisteredEvents() {
         domainNameEventService.pullRegisteredEvents();
     }
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-domain-name-events.renewed-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-domain-name-events.renewed.fixed-delay:5000}")
     public void pullRenewedEvents() {
         domainNameEventService.pullRenewedEvents();
     }

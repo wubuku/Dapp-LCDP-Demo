@@ -1,7 +1,8 @@
 package org.dddml.suidemocontracts.specialization.hibernate;
 
 import org.dddml.suidemocontracts.specialization.*;
-import org.hibernate.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -14,9 +15,13 @@ import java.util.function.Consumer;
 public abstract class AbstractHibernateEventStore implements EventStore {
     private SessionFactory sessionFactory;
 
-    public SessionFactory getSessionFactory() { return this.sessionFactory; }
+    public SessionFactory getSessionFactory() {
+        return this.sessionFactory;
+    }
 
-    public void setSessionFactory(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     protected Session getCurrentSession() {
         return this.sessionFactory.getCurrentSession();

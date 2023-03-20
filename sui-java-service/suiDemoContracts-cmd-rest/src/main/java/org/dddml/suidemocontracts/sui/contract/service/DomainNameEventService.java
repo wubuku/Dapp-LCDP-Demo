@@ -34,6 +34,12 @@ public class DomainNameEventService {
     private DomainNameEventRepository domainNameEventRepository;
 
     @Transactional
+    public void updateStatusToProcessed(AbstractDomainNameEvent event) {
+        event.setStatus("D");
+        domainNameEventRepository.save(event);
+    }
+
+    @Transactional
     public void pullRegisteredEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {

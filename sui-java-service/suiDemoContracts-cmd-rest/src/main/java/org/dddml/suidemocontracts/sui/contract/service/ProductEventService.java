@@ -33,6 +33,12 @@ public class ProductEventService {
     private ProductEventRepository productEventRepository;
 
     @Transactional
+    public void updateStatusToProcessed(AbstractProductEvent event) {
+        event.setStatus("D");
+        productEventRepository.save(event);
+    }
+
+    @Transactional
     public void pullProductCreatedEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {

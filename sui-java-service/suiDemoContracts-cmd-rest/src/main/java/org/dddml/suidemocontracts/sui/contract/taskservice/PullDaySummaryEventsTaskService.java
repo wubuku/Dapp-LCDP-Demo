@@ -16,7 +16,7 @@ public class PullDaySummaryEventsTaskService {
     @Autowired
     private DaySummaryEventService daySummaryEventService;
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-day-summary-events.day-summary-created-fixed-delay:5000}")
+    @Scheduled(fixedDelayString = "${sui.contract.pull-day-summary-events.day-summary-created.fixed-delay:5000}")
     public void pullDaySummaryCreatedEvents() {
         daySummaryEventService.pullDaySummaryCreatedEvents();
     }

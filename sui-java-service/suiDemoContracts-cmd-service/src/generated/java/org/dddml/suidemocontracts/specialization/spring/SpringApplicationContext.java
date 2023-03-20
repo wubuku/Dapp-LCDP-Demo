@@ -16,25 +16,21 @@ public class SpringApplicationContext extends ApplicationContext {
 
     private org.springframework.context.ApplicationContext innerApplicationContext;
 
-    public SpringApplicationContext(org.springframework.context.ApplicationContext innerApplicationContext){
+    public SpringApplicationContext(org.springframework.context.ApplicationContext innerApplicationContext) {
         this.innerApplicationContext = innerApplicationContext;
     }
 
     @Override
     public Object get(String name) {
         int len = 1;
-        if (name.startsWith("_"))
-        {
+        if (name.startsWith("_")) {
             len = 2;
         }
-        String camelName = name.substring(0, len).toLowerCase()  + name.substring(len);
-        if (innerApplicationContext.containsBean(camelName))
-        {
+        String camelName = name.substring(0, len).toLowerCase() + name.substring(len);
+        if (innerApplicationContext.containsBean(camelName)) {
             Object obj = innerApplicationContext.getBean(camelName);
             return obj;
-        }
-        else
-        {
+        } else {
             if (innerApplicationContext.containsBean(name)) {
                 return innerApplicationContext.getBean(name);
             } else {
@@ -68,6 +64,7 @@ public class SpringApplicationContext extends ApplicationContext {
 
     public static class JacksonTypeConverter extends DefaultTypeConverter {
         private static final ObjectMapper objectMapper;
+
         static {
             objectMapper = new ObjectMapper();
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

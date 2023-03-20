@@ -1,7 +1,6 @@
 package org.dddml.suidemocontracts.specialization;
 
 import java.util.List;
-import java.util.Map;
 
 public interface DomainEventPublisher {
 

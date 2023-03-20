@@ -68,7 +68,7 @@ public abstract class AbstractValueObjectTextFormatter<T> implements TextFormatt
         }
         try {
             Method m = this.valueObjectClass
-                    .getDeclaredMethod(SET_FLATTENED_PROPERTY_VALUES_METHOD_NAME, new Class<?>[]{Object[].class});
+                    .getDeclaredMethod(SET_FLATTENED_PROPERTY_VALUES_METHOD_NAME, Object[].class);
             m.setAccessible(true);
             m.invoke(obj, new Object[]{filedValues});
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -97,7 +97,7 @@ public abstract class AbstractValueObjectTextFormatter<T> implements TextFormatt
         };
         try {
             Method m = this.valueObjectClass
-                    .getDeclaredMethod(FOR_EACH_FLATTENED_PROPERTY_METHOD_NAME, new Class<?>[]{BiConsumer.class});
+                    .getDeclaredMethod(FOR_EACH_FLATTENED_PROPERTY_METHOD_NAME, BiConsumer.class);
             m.setAccessible(true);
             m.invoke(value, append);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

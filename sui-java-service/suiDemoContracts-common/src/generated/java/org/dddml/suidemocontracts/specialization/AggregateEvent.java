@@ -1,6 +1,7 @@
 package org.dddml.suidemocontracts.specialization;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AggregateEvent<TA, TS> {
@@ -46,7 +47,7 @@ public class AggregateEvent<TA, TS> {
 
     public List<Event> getEvents() {
         if (events == null && event != null) {
-            return Arrays.asList(event);
+            return Collections.singletonList(event);
         }
         return events;
     }
