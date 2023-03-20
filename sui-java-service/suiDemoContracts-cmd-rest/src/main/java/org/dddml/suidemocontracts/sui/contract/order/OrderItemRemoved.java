@@ -5,7 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.order;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import org.dddml.suidemocontracts.sui.contract.*;
@@ -13,7 +13,7 @@ import org.dddml.suidemocontracts.sui.contract.*;
 import java.math.*;
 import java.util.*;
 
-@JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class OrderItemRemoved {
     private String id;
 

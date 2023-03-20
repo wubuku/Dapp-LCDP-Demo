@@ -5,13 +5,13 @@
 
 package org.dddml.suidemocontracts.sui.contract;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.sui.bean.*;
 
 public class Month extends MoveObject<Month.MonthFields> {
 
-    @JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class MonthFields {
         private Year year;
 
