@@ -9,12 +9,12 @@
   "javaProjectsDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service",
   "javaDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-common",
   "javaDomainProjectName": "suiDemoContracts-common",
-  "javaHibernateProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-service",
-  "javaHibernateProjectName": "suiDemoContracts-cmd-service",
-  "javaRestfulProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-rest",
-  "javaRestfulProjectName": "suiDemoContracts-cmd-rest",
-  "javaRestfulClientProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-cmd-rest-client",
-  "javaRestfulClientProjectName": "suiDemoContracts-cmd-rest-client",
+  "javaHibernateProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-service",
+  "javaHibernateProjectName": "suiDemoContracts-service",
+  "javaRestfulProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-service-rest",
+  "javaRestfulProjectName": "suiDemoContracts-service-rest",
+  "javaRestfulClientProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wubuku\\StarcoinNSDemo\\sui-java-service\\suiDemoContracts-service-rest-client",
+  "javaRestfulClientProjectName": "suiDemoContracts-service-rest-client",
   "sourceJavaDomainProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaCommon",
   "sourceJavaHibernateProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaServices",
   "sourceJavaRestfulProjectDirectoryPath": "C:\\Users\\yangjiefeng\\Documents\\GitHub\\wms\\java\\Dddml.Wms.JavaRestful",
@@ -177,7 +177,7 @@
         ],
         [
           "dddml-wms-restful-full.raml",
-          "suiDemoContracts-cmd-rest.raml"
+          "suiDemoContracts-service-rest.raml"
         ]
       ],
       "targetProjectSrcJavaSubDirectoryPath": "src\\main\\java"

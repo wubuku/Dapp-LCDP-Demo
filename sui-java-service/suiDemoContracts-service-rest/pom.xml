@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>suidemocontracts-cmd-rest</artifactId>
+    <artifactId>suidemocontracts-service-rest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <description>suidemocontracts-cmd-rest</description>
+    <description>suidemocontracts-service-rest</description>
 
     <parent>
         <groupId>org.dddml</groupId>
@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.dddml</groupId>
-            <artifactId>suidemocontracts-cmd-service</artifactId>
+            <artifactId>suidemocontracts-service</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.wubuku</groupId>

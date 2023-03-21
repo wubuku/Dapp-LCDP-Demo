@@ -22,8 +22,8 @@
 
     <modules>
         <module>suiDemoContracts-common</module>
-        <module>suiDemoContracts-cmd-service</module>
-        <module>suiDemoContracts-cmd-rest</module>
+        <module>suiDemoContracts-service</module>
+        <module>suiDemoContracts-service-rest</module>
         <module>suiDemoContracts-service-cli</module>
     </modules>
 
@@ -31,7 +31,7 @@
         <dependencies>
             <dependency>
                 <groupId>org.dddml</groupId>
-                <artifactId>suidemocontracts-cmd-service</artifactId>
+                <artifactId>suidemocontracts-service</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>

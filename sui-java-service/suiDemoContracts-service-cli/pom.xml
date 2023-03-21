@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.dddml</groupId>
-            <artifactId>suidemocontracts-cmd-service</artifactId>
+            <artifactId>suidemocontracts-service</artifactId>
         </dependency>
     </dependencies>
 
