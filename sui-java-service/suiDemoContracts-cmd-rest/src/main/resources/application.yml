@@ -3,7 +3,6 @@ spring:
     active: test
   main:
     allow-bean-definition-overriding: true
-
   jpa:
     open-in-view: false
     #show-sql: false
@@ -22,13 +21,13 @@ spring:
       path: /api
       #load-on-startup: -1
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8020/api/.well-known/jwks.json # 1
-        authorities-store:
-          url: http://localhost:8020/api/.well-known/dddml-wms-restful/authorities # 2
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: http://localhost:8020/api/.well-known/jwks.json # 1
+#        authorities-store:
+#          url: http://localhost:8020/api/.well-known/dddml-wms-restful/authorities # 2
 
 server:
   compression:
@@ -39,50 +38,3 @@ server:
 #  error:
 #    whitelabel:
 #      enabled: false
-
----
-spring:
-  profiles: prod
-  datasource:
-    url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
-    username: root
-    password: 123456
-server:
-  port: 1023
-
----
-spring:
-  profiles: test
-  datasource:
-    url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
-    username: root
-    password: 123456
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
-      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
-#      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
-#      - com.syj.security.resourceserver.OAuth2ResourceServerSecurityConfig
-
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: update
-
-server:
-  port: 1023
-
-sui:
-  contract:
-    jsonrpc:
-      url: "https://fullnode.devnet.sui.io/"
-    package-publish-transaction: "8tWvDLgZiqdtNp2dxVSuJbnPVD7kqLeC8W2NGwm9CzX9"
-    pull-day-summary-events:
-      day-summary-created:
-        fixed-delay: 6000
-    pull-order-v2-events:
-      order-v2-created:
-        fixed-delay: 6000
