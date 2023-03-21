@@ -38,8 +38,8 @@ public class DaySummaryResource {
 
 
     /**
-     * 查询.
-     * 查询 DaySummaries
+     * Retrieve.
+     * Retrieve DaySummaries
      */
     @GetMapping
     public DaySummaryStateDto[] getAll( HttpServletRequest request,
@@ -80,8 +80,8 @@ public class DaySummaryResource {
     }
 
     /**
-     * 查询.
-     * 分页查询 DaySummaries
+     * Retrieve in pages.
+     * Retrieve DaySummaries in pages.
      */
     @GetMapping("_page")
     public Page<DaySummaryStateDto> getPage( HttpServletRequest request,
@@ -124,8 +124,8 @@ public class DaySummaryResource {
     }
 
     /**
-     * 查看.
-     * 通过 Id 获取单个 DaySummary
+     * Retrieve.
+     * Retrieves DaySummary with the specified ID.
      */
     @GetMapping("{day}")
     public DaySummaryStateDto get(@PathVariable("day") String day, @RequestParam(value = "fields", required = false) String fields) {

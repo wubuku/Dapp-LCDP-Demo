@@ -38,8 +38,8 @@ public class DomainNameResource {
 
 
     /**
-     * 查询.
-     * 查询 DomainNames
+     * Retrieve.
+     * Retrieve DomainNames
      */
     @GetMapping
     public DomainNameStateDto[] getAll( HttpServletRequest request,
@@ -80,8 +80,8 @@ public class DomainNameResource {
     }
 
     /**
-     * 查询.
-     * 分页查询 DomainNames
+     * Retrieve in pages.
+     * Retrieve DomainNames in pages.
      */
     @GetMapping("_page")
     public Page<DomainNameStateDto> getPage( HttpServletRequest request,
@@ -124,8 +124,8 @@ public class DomainNameResource {
     }
 
     /**
-     * 查看.
-     * 通过 Id 获取单个 DomainName
+     * Retrieve.
+     * Retrieves DomainName with the specified ID.
      */
     @GetMapping("{domainNameId}")
     public DomainNameStateDto get(@PathVariable("domainNameId") String domainNameId, @RequestParam(value = "fields", required = false) String fields) {

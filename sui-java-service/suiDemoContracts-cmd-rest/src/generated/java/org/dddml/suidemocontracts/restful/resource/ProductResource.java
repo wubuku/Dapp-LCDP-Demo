@@ -38,8 +38,8 @@ public class ProductResource {
 
 
     /**
-     * 查询.
-     * 查询 Products
+     * Retrieve.
+     * Retrieve Products
      */
     @GetMapping
     public ProductStateDto[] getAll( HttpServletRequest request,
@@ -80,8 +80,8 @@ public class ProductResource {
     }
 
     /**
-     * 查询.
-     * 分页查询 Products
+     * Retrieve in pages.
+     * Retrieve Products in pages.
      */
     @GetMapping("_page")
     public Page<ProductStateDto> getPage( HttpServletRequest request,
@@ -124,8 +124,8 @@ public class ProductResource {
     }
 
     /**
-     * 查看.
-     * 通过 Id 获取单个 Product
+     * Retrieve.
+     * Retrieves Product with the specified ID.
      */
     @GetMapping("{productId}")
     public ProductStateDto get(@PathVariable("productId") String productId, @RequestParam(value = "fields", required = false) String fields) {

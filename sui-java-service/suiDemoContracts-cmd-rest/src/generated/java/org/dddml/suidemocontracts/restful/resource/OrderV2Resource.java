@@ -38,8 +38,8 @@ public class OrderV2Resource {
 
 
     /**
-     * 查询.
-     * 查询 OrderV2s
+     * Retrieve.
+     * Retrieve OrderV2s
      */
     @GetMapping
     public OrderV2StateDto[] getAll( HttpServletRequest request,
@@ -80,8 +80,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查询.
-     * 分页查询 OrderV2s
+     * Retrieve in pages.
+     * Retrieve OrderV2s in pages.
      */
     @GetMapping("_page")
     public Page<OrderV2StateDto> getPage( HttpServletRequest request,
@@ -124,8 +124,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查看.
-     * 通过 Id 获取单个 OrderV2
+     * Retrieve.
+     * Retrieves OrderV2 with the specified ID.
      */
     @GetMapping("{orderId}")
     public OrderV2StateDto get(@PathVariable("orderId") String orderId, @RequestParam(value = "fields", required = false) String fields) {
@@ -351,8 +351,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查看.
-     * 获取指定 ProductId 的 OrderV2Item
+     * Retrieve.
+     * Retrieves OrderV2Item with the specified ProductId.
      */
     @GetMapping("{orderId}/OrderV2Items/{productId}")
     public OrderV2ItemStateDto getOrderV2Item(@PathVariable("orderId") String orderId, @PathVariable("productId") String productId) {
@@ -402,8 +402,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查看.
-     * 获取指定 ShipGroupSeqId 的 OrderShipGroup
+     * Retrieve.
+     * Retrieves OrderShipGroup with the specified ShipGroupSeqId.
      */
     @GetMapping("{orderId}/OrderShipGroups/{shipGroupSeqId}")
     public OrderShipGroupStateDto getOrderShipGroup(@PathVariable("orderId") String orderId, @PathVariable("shipGroupSeqId") Integer shipGroupSeqId) {
@@ -453,8 +453,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查看.
-     * 获取指定 ProductId 的 OrderItemShipGroupAssociation
+     * Retrieve.
+     * Retrieves OrderItemShipGroupAssociation with the specified ProductId.
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{productId}")
     public OrderItemShipGroupAssociationStateDto getOrderItemShipGroupAssociation(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("productId") String productId) {
@@ -504,8 +504,8 @@ public class OrderV2Resource {
     }
 
     /**
-     * 查看.
-     * 获取指定 OrderItemShipGroupAssocSubitemDay 的 OrderItemShipGroupAssocSubitem
+     * Retrieve.
+     * Retrieves OrderItemShipGroupAssocSubitem with the specified OrderItemShipGroupAssocSubitemDay.
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductId}/OrderItemShipGroupAssocSubitems/{orderItemShipGroupAssocSubitemDay}")
     public OrderItemShipGroupAssocSubitemStateDto getOrderItemShipGroupAssocSubitem(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductId") String orderItemShipGroupAssociationProductId, @PathVariable("orderItemShipGroupAssocSubitemDay") String orderItemShipGroupAssocSubitemDay) {

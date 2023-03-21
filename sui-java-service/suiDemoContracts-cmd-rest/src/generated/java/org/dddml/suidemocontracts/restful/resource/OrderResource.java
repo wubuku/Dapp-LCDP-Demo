@@ -38,8 +38,8 @@ public class OrderResource {
 
 
     /**
-     * 查询.
-     * 查询 Orders
+     * Retrieve.
+     * Retrieve Orders
      */
     @GetMapping
     public OrderStateDto[] getAll( HttpServletRequest request,
@@ -80,8 +80,8 @@ public class OrderResource {
     }
 
     /**
-     * 查询.
-     * 分页查询 Orders
+     * Retrieve in pages.
+     * Retrieve Orders in pages.
      */
     @GetMapping("_page")
     public Page<OrderStateDto> getPage( HttpServletRequest request,
@@ -124,8 +124,8 @@ public class OrderResource {
     }
 
     /**
-     * 查看.
-     * 通过 Id 获取单个 Order
+     * Retrieve.
+     * Retrieves Order with the specified ID.
      */
     @GetMapping("{id}")
     public OrderStateDto get(@PathVariable("id") String id, @RequestParam(value = "fields", required = false) String fields) {
@@ -261,8 +261,8 @@ public class OrderResource {
     }
 
     /**
-     * 查看.
-     * 获取指定 ProductId 的 OrderItem
+     * Retrieve.
+     * Retrieves OrderItem with the specified ProductId.
      */
     @GetMapping("{id}/OrderItems/{productId}")
     public OrderItemStateDto getOrderItem(@PathVariable("id") String id, @PathVariable("productId") String productId) {
