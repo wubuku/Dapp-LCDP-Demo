@@ -21,7 +21,7 @@ import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.product.*;
 import static org.dddml.suidemocontracts.domain.meta.M.*;
 
-import com.alibaba.fastjson.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.dddml.support.criterion.TypeConverter;
 import org.slf4j.Logger;
@@ -55,7 +55,7 @@ public class ProductResource {
             Iterable<ProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -95,7 +95,7 @@ public class ProductResource {
             Iterable<ProductState> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> ProductResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -152,7 +152,7 @@ public class ProductResource {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSONObject.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }

@@ -21,7 +21,7 @@ import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import static org.dddml.suidemocontracts.domain.meta.M.*;
 
-import com.alibaba.fastjson.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.dddml.support.criterion.TypeConverter;
 import org.slf4j.Logger;
@@ -55,7 +55,7 @@ public class OrderV2Resource {
             Iterable<OrderV2State> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -95,7 +95,7 @@ public class OrderV2Resource {
             Iterable<OrderV2State> states = null; 
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getFilterPropertyName(kv.getKey()) != null)
@@ -152,7 +152,7 @@ public class OrderV2Resource {
             long count = 0;
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSONObject.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap());
             }
@@ -380,7 +380,7 @@ public class OrderV2Resource {
         try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getOrderV2ItemFilterPropertyName(kv.getKey()) != null)
@@ -431,7 +431,7 @@ public class OrderV2Resource {
         try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getOrderShipGroupFilterPropertyName(kv.getKey()) != null)
@@ -482,7 +482,7 @@ public class OrderV2Resource {
         try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getOrderItemShipGroupAssociationFilterPropertyName(kv.getKey()) != null)
@@ -538,7 +538,7 @@ public class OrderV2Resource {
         try {
             CriterionDto criterion = null;
             if (!StringHelper.isNullOrEmpty(filter)) {
-                criterion = JSON.parseObject(filter, CriterionDto.class);
+                criterion = new ObjectMapper().readValue(filter, CriterionDto.class);
             } else {
                 criterion = QueryParamUtils.getQueryCriterionDto(request.getParameterMap().entrySet().stream()
                     .filter(kv -> OrderV2ResourceUtils.getOrderItemShipGroupAssocSubitemFilterPropertyName(kv.getKey()) != null)
