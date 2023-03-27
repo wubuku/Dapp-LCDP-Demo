@@ -1,8 +1,12 @@
 module sui_contracts::order_created {
 
-    use sui_contracts::order::OrderCreated;
     use std::string::String;
-    use sui_contracts::order;
+    use sui::object;
+    use sui_contracts::order::{Self, OrderCreated};
+
+    public fun id(order_created: &OrderCreated): object::ID {
+        order::order_created_id(order_created)
+    }
 
     public fun product(order_created: &OrderCreated): String {
         order::order_created_product(order_created)
@@ -23,4 +27,5 @@ module sui_contracts::order_created {
     public fun owner(order_created: &OrderCreated): address {
         order::order_created_owner(order_created)
     }
+
 }

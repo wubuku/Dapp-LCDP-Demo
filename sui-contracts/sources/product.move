@@ -92,6 +92,10 @@ module sui_contracts::product {
         unit_price: u128,
     }
 
+    public fun product_created_id(product_created: &ProductCreated): object::ID {
+        product_created.id
+    }
+
     public fun product_created_product_id(product_created: &ProductCreated): String {
         product_created.product_id
     }

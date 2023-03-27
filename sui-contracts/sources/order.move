@@ -84,6 +84,10 @@ module sui_contracts::order {
         owner: address,
     }
 
+    public fun order_created_id(order_created: &OrderCreated): object::ID {
+        order_created.id
+    }
+
     public fun order_created_product(order_created: &OrderCreated): String {
         order_created.product
     }
@@ -128,6 +132,10 @@ module sui_contracts::order {
         product_id: String,
     }
 
+    public fun order_item_removed_id(order_item_removed: &OrderItemRemoved): object::ID {
+        order_item_removed.id
+    }
+
     public fun order_item_removed_product_id(order_item_removed: &OrderItemRemoved): String {
         order_item_removed.product_id
     }
@@ -148,6 +156,10 @@ module sui_contracts::order {
         version: u64,
         product_id: String,
         quantity: u64,
+    }
+
+    public fun order_item_quantity_updated_id(order_item_quantity_updated: &OrderItemQuantityUpdated): object::ID {
+        order_item_quantity_updated.id
     }
 
     public fun order_item_quantity_updated_product_id(order_item_quantity_updated: &OrderItemQuantityUpdated): String {

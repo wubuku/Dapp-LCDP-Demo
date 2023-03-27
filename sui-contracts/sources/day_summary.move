@@ -116,6 +116,10 @@ module sui_contracts::day_summary {
         optional_data: Option<vector<u8>>,
     }
 
+    public fun day_summary_created_id(day_summary_created: &DaySummaryCreated): object::ID {
+        day_summary_created.id
+    }
+
     public fun day_summary_created_day(day_summary_created: &DaySummaryCreated): Day {
         day_summary_created.day
     }

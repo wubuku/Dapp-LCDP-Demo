@@ -103,6 +103,10 @@ module sui_contracts::domain_name {
         owner: address,
     }
 
+    public fun registered_id(registered: &Registered): object::ID {
+        registered.id
+    }
+
     public fun registered_domain_name_id(registered: &Registered): DomainNameId {
         registered.domain_name_id
     }
@@ -135,6 +139,10 @@ module sui_contracts::domain_name {
         version: u64,
         renew_period: u64,
         account: address,
+    }
+
+    public fun renewed_id(renewed: &Renewed): object::ID {
+        renewed.id
     }
 
     public fun renewed_domain_name_id(renewed: &Renewed): DomainNameId {

@@ -164,6 +164,10 @@ module sui_contracts::order_v2 {
         owner: address,
     }
 
+    public fun order_v2_created_id(order_v2_created: &OrderV2Created): object::ID {
+        order_v2_created.id
+    }
+
     public fun order_v2_created_order_id(order_v2_created: &OrderV2Created): String {
         order_v2_created.order_id
     }
@@ -215,6 +219,10 @@ module sui_contracts::order_v2 {
         product_id: String,
     }
 
+    public fun order_v2_item_removed_id(order_v2_item_removed: &OrderV2ItemRemoved): object::ID {
+        order_v2_item_removed.id
+    }
+
     public fun order_v2_item_removed_order_id(order_v2_item_removed: &OrderV2ItemRemoved): String {
         order_v2_item_removed.order_id
     }
@@ -241,6 +249,10 @@ module sui_contracts::order_v2 {
         version: u64,
         product_id: String,
         quantity: u64,
+    }
+
+    public fun order_v2_item_quantity_updated_id(order_v2_item_quantity_updated: &OrderV2ItemQuantityUpdated): object::ID {
+        order_v2_item_quantity_updated.id
     }
 
     public fun order_v2_item_quantity_updated_order_id(order_v2_item_quantity_updated: &OrderV2ItemQuantityUpdated): String {
@@ -276,6 +288,10 @@ module sui_contracts::order_v2 {
         estimated_ship_date: Day,
     }
 
+    public fun order_v2_estimated_ship_date_updated_id(order_v2_estimated_ship_date_updated: &OrderV2EstimatedShipDateUpdated): object::ID {
+        order_v2_estimated_ship_date_updated.id
+    }
+
     public fun order_v2_estimated_ship_date_updated_order_id(order_v2_estimated_ship_date_updated: &OrderV2EstimatedShipDateUpdated): String {
         order_v2_estimated_ship_date_updated.order_id
     }
@@ -304,6 +320,10 @@ module sui_contracts::order_v2 {
         shipment_method: String,
         product_id: String,
         quantity: u64,
+    }
+
+    public fun order_ship_group_added_id(order_ship_group_added: &OrderShipGroupAdded): object::ID {
+        order_ship_group_added.id
     }
 
     public fun order_ship_group_added_order_id(order_ship_group_added: &OrderShipGroupAdded): String {
@@ -353,6 +373,10 @@ module sui_contracts::order_v2 {
         cancel_quantity: u64,
     }
 
+    public fun order_ship_group_quantity_canceled_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): object::ID {
+        order_ship_group_quantity_canceled.id
+    }
+
     public fun order_ship_group_quantity_canceled_order_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
         order_ship_group_quantity_canceled.order_id
     }
@@ -393,6 +417,10 @@ module sui_contracts::order_v2 {
         product_id: String,
     }
 
+    public fun order_ship_group_item_removed_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): object::ID {
+        order_ship_group_item_removed.id
+    }
+
     public fun order_ship_group_item_removed_order_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
         order_ship_group_item_removed.order_id
     }
@@ -424,6 +452,10 @@ module sui_contracts::order_v2 {
         order_id: String,
         version: u64,
         ship_group_seq_id: u8,
+    }
+
+    public fun order_ship_group_removed_id(order_ship_group_removed: &OrderShipGroupRemoved): object::ID {
+        order_ship_group_removed.id
     }
 
     public fun order_ship_group_removed_order_id(order_ship_group_removed: &OrderShipGroupRemoved): String {
