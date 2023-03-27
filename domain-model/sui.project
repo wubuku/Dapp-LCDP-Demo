@@ -12,6 +12,7 @@ project:
     - "sui-OrderV2.yaml"
     - "sui-ValueObjects.yaml"
     - "sui-DaySummary.yaml"
+    - "sui-EnumObjects.yaml"
 
   # directories:
     # - path: "."

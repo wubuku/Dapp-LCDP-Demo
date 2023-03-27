@@ -1,0 +1,19 @@
+enumObjects:
+  Weekday:
+    baseType: u8
+    values:
+      Monday:
+        #description: "Monday is the first day of the week."
+        value: 1
+      Tuesday:
+        value: 2
+      Wednesday:
+        value: 3
+      Thursday:
+        value: 4
+      Friday:
+        value: 5
+      Saturday:
+        value: 6
+      Sunday:
+        value: 7
