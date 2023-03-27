@@ -4,6 +4,7 @@ module sui_contracts::order_create_logic {
     use sui_contracts::order;
     use sui_contracts::order_item;
     use sui_contracts::product::{Self, Product};
+    use sui_contracts::order_created;
 
     friend sui_contracts::order_aggregate;
 
@@ -40,14 +41,12 @@ module sui_contracts::order_create_logic {
             ctx,
         );
         let order_item = order_item::new_order_item(
-            order::order_created_product(order_created),
-            order::order_created_quantity(order_created),
-            order::order_created_unit_price(order_created) * (order::order_created_quantity(order_created) as u128),
+            order_created::product(order_created),
+            order_created::quantity(order_created),
+            order_created::unit_price(order_created) * (order_created::quantity(order_created) as u128),
             //ctx,
         );
         order::add_item(&mut order, order_item);
         order
-
     }
-
 }
