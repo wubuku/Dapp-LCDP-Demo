@@ -4,6 +4,7 @@ module sui_contracts::order_v2_update_estimated_ship_date_logic {
     use sui_contracts::order_v2;
     //use sui_contracts::order_v2_item::{Self, OrderV2Item};
     use std::option;
+    use sui_contracts::order_v2_estimated_ship_date_updated;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -27,7 +28,7 @@ module sui_contracts::order_v2_update_estimated_ship_date_logic {
         let _ = ctx;
         order_v2::set_estimated_ship_date(
             &mut order_v2,
-            option::some(order_v2::order_v2_estimated_ship_date_updated_estimated_ship_date(order_v2_estimated_ship_date_updated)),
+            option::some(order_v2_estimated_ship_date_updated::estimated_ship_date(order_v2_estimated_ship_date_updated)),
         );
         order_v2
     }

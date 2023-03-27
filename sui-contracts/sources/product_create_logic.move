@@ -4,6 +4,7 @@ module sui_contracts::product_create_logic {
     use sui::object::{Self, UID};
     use sui::tx_context::TxContext;
     use sui_contracts::product;
+    use sui_contracts::product_created;
 
     friend sui_contracts::product_aggregate;
 
@@ -40,8 +41,8 @@ module sui_contracts::product_create_logic {
         let _ = ctx;
         let product = product::create_product(
             id,
-            product::product_created_name(product_created),
-            product::product_created_unit_price(product_created),
+            product_created::name(product_created),
+            product_created::unit_price(product_created),
             product_id_generator,
         );
         product

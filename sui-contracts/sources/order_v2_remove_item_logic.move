@@ -3,6 +3,7 @@ module sui_contracts::order_v2_remove_item_logic {
     use sui::tx_context::{TxContext};
     use sui_contracts::order_v2;
     use sui_contracts::order_v2_item::{Self};
+    use sui_contracts::order_v2_item_removed;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -25,7 +26,7 @@ module sui_contracts::order_v2_remove_item_logic {
         ctx: &TxContext,
     ): order_v2::OrderV2 {
         let _ = ctx;
-        let product_id = order_v2::order_v2_item_removed_product_id(order_v2_item_removed);
+        let product_id = order_v2_item_removed::product_id(order_v2_item_removed);
         let order_item = order_v2::borrow_item(&order_v2, product_id);
         let item_amount = order_v2_item::item_amount(order_item);
         order_v2::remove_item(&mut order_v2, product_id);

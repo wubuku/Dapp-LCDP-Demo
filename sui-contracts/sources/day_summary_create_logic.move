@@ -5,6 +5,7 @@ module sui_contracts::day_summary_create_logic {
     use sui::tx_context::{TxContext};
     use sui_contracts::day::Day;
     use sui_contracts::day_summary;
+    use sui_contracts::day_summary_created;
 
     friend sui_contracts::day_summary_aggregate;
 
@@ -41,11 +42,11 @@ module sui_contracts::day_summary_create_logic {
         let _ = ctx;
         let day_summary = day_summary::create_day_summary(
             id,
-            day_summary::day_summary_created_day(day_summary_created),
-            day_summary::day_summary_created_description(day_summary_created),
-            day_summary::day_summary_created_meta_data(day_summary_created),
-            day_summary::day_summary_created_array_data(day_summary_created),
-            day_summary::day_summary_created_optional_data(day_summary_created),
+            day_summary_created::day(day_summary_created),
+            day_summary_created::description(day_summary_created),
+            day_summary_created::meta_data(day_summary_created),
+            day_summary_created::array_data(day_summary_created),
+            day_summary_created::optional_data(day_summary_created),
             day_summary_id_table,
         );
         day_summary

@@ -5,6 +5,7 @@ module sui_contracts::order_v2_cancel_order_ship_group_quantity_logic {
     use sui_contracts::order_item_ship_group_association;
     use sui_contracts::order_ship_group;
     use sui_contracts::order_v2;
+    use sui_contracts::order_ship_group_quantity_canceled;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -32,15 +33,15 @@ module sui_contracts::order_v2_cancel_order_ship_group_quantity_logic {
         let _ = ctx;
         let order_ship_group = order_v2::borrow_mut_order_ship_group(
             &mut order_v2,
-            order_v2::order_ship_group_quantity_canceled_ship_group_seq_id(order_ship_group_quantity_canceled),
+            order_ship_group_quantity_canceled::ship_group_seq_id(order_ship_group_quantity_canceled),
         );
         let assoc = order_ship_group::borrow_mut_order_item_ship_group_association(
             order_ship_group,
-            order_v2::order_ship_group_quantity_canceled_product_id(order_ship_group_quantity_canceled),
+            order_ship_group_quantity_canceled::product_id(order_ship_group_quantity_canceled),
         );
         order_item_ship_group_association::set_cancel_quantity(
             assoc,
-            order_v2::order_ship_group_quantity_canceled_cancel_quantity(order_ship_group_quantity_canceled),
+            order_ship_group_quantity_canceled::cancel_quantity(order_ship_group_quantity_canceled),
         );
         order_v2
     }

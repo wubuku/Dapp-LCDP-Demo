@@ -4,6 +4,7 @@ module sui_contracts::order_v2_remove_order_ship_group_item_logic {
     use sui::tx_context::TxContext;
     use sui_contracts::order_ship_group;
     use sui_contracts::order_v2;
+    use sui_contracts::order_ship_group_item_removed;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -29,11 +30,11 @@ module sui_contracts::order_v2_remove_order_ship_group_item_logic {
         let _ = ctx;
         let order_ship_group = order_v2::borrow_mut_order_ship_group(
             &mut order_v2,
-            order_v2::order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed),
+            order_ship_group_item_removed::ship_group_seq_id(order_ship_group_item_removed),
         );
         order_ship_group::remove_order_item_ship_group_association(
             order_ship_group,
-            order_v2::order_ship_group_item_removed_product_id(order_ship_group_item_removed),
+            order_ship_group_item_removed::product_id(order_ship_group_item_removed),
         );
         order_v2
     }

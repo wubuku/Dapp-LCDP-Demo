@@ -3,6 +3,7 @@ module sui_contracts::order_v2_update_item_quantity_logic {
     use sui::tx_context::{TxContext};
     use sui_contracts::order_v2;
     use sui_contracts::order_v2_item::{Self};
+    use sui_contracts::order_v2_item_quantity_updated;
 
     friend sui_contracts::order_v2_aggregate;
 
@@ -28,13 +29,13 @@ module sui_contracts::order_v2_update_item_quantity_logic {
         ctx: &TxContext,
     ): order_v2::OrderV2 {
         let _ = ctx;
-        let product_id = order_v2::order_v2_item_quantity_updated_product_id(order_v2_item_quantity_updated);
-        let quantity = order_v2::order_v2_item_quantity_updated_quantity(order_v2_item_quantity_updated);
+        let product_id = order_v2_item_quantity_updated::product_id(order_v2_item_quantity_updated);
+        let quantity = order_v2_item_quantity_updated::quantity(order_v2_item_quantity_updated);
         let item = order_v2::borrow_mut_item(&mut order_v2, product_id);
         let unit_price = order_v2_item::item_amount(item) / (order_v2_item::quantity(item) as u128);
         order_v2_item::set_quantity(item, quantity);
         let old_item_amount = order_v2_item::item_amount(item);
-        let new_item_amount = unit_price * (order_v2::order_v2_item_quantity_updated_quantity(
+        let new_item_amount = unit_price * (order_v2_item_quantity_updated::quantity(
             order_v2_item_quantity_updated
         ) as u128);
         order_v2_item::set_item_amount(

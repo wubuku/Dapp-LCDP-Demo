@@ -2,6 +2,7 @@ module sui_contracts::domain_name_register_logic {
     use sui::object::{Self, UID};
     use sui::tx_context::{Self, TxContext};
     use sui_contracts::domain_name::{Self, DomainNameId};
+    use sui_contracts::registered;
 
     friend sui_contracts::domain_name_aggregate;
 
@@ -51,9 +52,9 @@ module sui_contracts::domain_name_register_logic {
         let _ = ctx;
         let domain_name = domain_name::create_domain_name(
             id,
-            domain_name::registered_domain_name_id(registered),
+            registered::domain_name_id(registered),
             //Timestamp::now_milliseconds() + , //TODO to expiration_date
-            domain_name::registered_registration_period(registered),
+            registered::registration_period(registered),
             domain_name_id_table,
             //ctx,
         );
