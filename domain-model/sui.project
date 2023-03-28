@@ -2,17 +2,17 @@
 project:
     
   files:
-    - "boundedContext.yaml"
-    - "types.yaml"
-    - "sui-types.yaml"
-    - "sui-SuperObjects.yaml"
-    - "sui-DomainName.yaml"
-    - "sui-Order.yaml"
-    - "sui-Product.yaml"
-    - "sui-OrderV2.yaml"
-    - "sui-ValueObjects.yaml"
-    - "sui-DaySummary.yaml"
-    - "sui-EnumObjects.yaml"
+    - "common/boundedContext.yaml"
+    - "common/types.yaml"
+    - "common/sui-types.yaml"
+    - "common/sui-SuperObjects.yaml"
+    - "sui/sui-DomainName.yaml"
+    - "sui/sui-Order.yaml"
+    - "sui/sui-Product.yaml"
+    - "sui/sui-OrderV2.yaml"
+    - "sui/sui-ValueObjects.yaml"
+    - "sui/sui-DaySummary.yaml"
+    - "sui/sui-EnumObjects.yaml"
 
   # directories:
     # - path: "."
