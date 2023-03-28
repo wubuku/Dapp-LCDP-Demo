@@ -139,7 +139,10 @@ public class HibernateDomainNameStateQueryRepository implements DomainNameStateQ
 
 
     protected static void addNotDeletedRestriction(Criteria criteria) {
-        criteria.add(org.hibernate.criterion.Restrictions.eq("deleted", false));
+        criteria.add(org.hibernate.criterion.Restrictions.or(
+                org.hibernate.criterion.Restrictions.isNull("deleted"),
+                org.hibernate.criterion.Restrictions.eq("deleted", false)
+        ));
     }
 
 }
