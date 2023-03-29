@@ -17,7 +17,8 @@ server:
 sui:
   contract:
     jsonrpc:
-      url: "https://fullnode.devnet.sui.io/"
+      #url: "https://fullnode.devnet.sui.io/"
+      url: "http://localhost:9000"
     package-publish-transaction: "8tWvDLgZiqdtNp2dxVSuJbnPVD7kqLeC8W2NGwm9CzX9"
 #    pull-day-summary-events:
 #      day-summary-created:
