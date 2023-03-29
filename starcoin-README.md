@@ -1,4 +1,4 @@
-# Starcoin NS(Name Service) Demo
+# Starcoin Demo
 
 ## Deploy on-chain contracts on local Dev network
 
