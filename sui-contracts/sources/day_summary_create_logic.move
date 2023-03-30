@@ -1,8 +1,8 @@
 module sui_contracts::day_summary_create_logic {
     use std::option::Option;
     use std::string::String;
-    use sui::object::{Self, UID};
-    use sui::tx_context::{TxContext};
+
+    use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
     use sui_contracts::day_summary;
     use sui_contracts::day_summary_created;
@@ -17,39 +17,32 @@ module sui_contracts::day_summary_create_logic {
         optional_data: Option<vector<u8>>,
         day_summary_id_table: &day_summary::DaySummaryIdTable,
         ctx: &mut TxContext,
-    ): (day_summary::DaySummaryCreated, UID) {
-        let id = object::new(ctx);
+    ): day_summary::DaySummaryCreated {
+        let _ = ctx;
         day_summary::asset_day_not_exists(day, day_summary_id_table);
-        (
-           day_summary::new_day_summary_created(
-               &id,
-               day,
-               description,
-               meta_data,
-               array_data,
-               optional_data,
-           ),
-           id,
+        day_summary::new_day_summary_created(
+            day,
+            description,
+            meta_data,
+            array_data,
+            optional_data,
         )
     }
 
     public(friend) fun mutate(
         day_summary_created: &day_summary::DaySummaryCreated,
-        id: UID,
         day_summary_id_table: &mut day_summary::DaySummaryIdTable,
-        ctx: &TxContext,
+        ctx: &mut TxContext,
     ): day_summary::DaySummary {
-        let _ = ctx;
         let day_summary = day_summary::create_day_summary(
-            id,
             day_summary_created::day(day_summary_created),
             day_summary_created::description(day_summary_created),
             day_summary_created::meta_data(day_summary_created),
             day_summary_created::array_data(day_summary_created),
             day_summary_created::optional_data(day_summary_created),
             day_summary_id_table,
+            ctx,
         );
         day_summary
     }
-
 }

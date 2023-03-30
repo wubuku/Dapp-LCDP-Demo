@@ -22,7 +22,7 @@ module sui_contracts::order_v2_aggregate {
         order_id_table: &mut order_v2::OrderIdTable,
         ctx: &mut tx_context::TxContext,
     ) {
-        let (order_v2_created, id) = order_v2_create_logic::verify(
+        let order_v2_created = order_v2_create_logic::verify(
             order_id,
             product,
             quantity,
@@ -31,10 +31,10 @@ module sui_contracts::order_v2_aggregate {
         );
         let order_v2 = order_v2_create_logic::mutate(
             &order_v2_created,
-            id,
             order_id_table,
             ctx,
         );
+        order_v2::set_order_v2_created_id(&mut order_v2_created, order_v2::id(&order_v2));
         order_v2::transfer_object(order_v2, order_v2::order_v2_created_owner(&order_v2_created));
         order_v2::emit_order_v2_created(order_v2_created);
     }

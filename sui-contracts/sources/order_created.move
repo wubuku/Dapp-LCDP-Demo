@@ -1,9 +1,9 @@
 module sui_contracts::order_created {
 
+    use std::option;
     use std::string::String;
     use sui::object;
     use sui_contracts::order::{Self, OrderCreated};
-    use std::option;
 
     public fun id(order_created: &OrderCreated): option::Option<object::ID> {
         order::order_created_id(order_created)

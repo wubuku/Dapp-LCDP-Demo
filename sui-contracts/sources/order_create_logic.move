@@ -1,10 +1,9 @@
 module sui_contracts::order_create_logic {
-    use sui::object;
     use sui::tx_context::{Self, TxContext};
     use sui_contracts::order;
+    use sui_contracts::order_created;
     use sui_contracts::order_item;
     use sui_contracts::product::{Self, Product};
-    use sui_contracts::order_created;
 
     friend sui_contracts::order_aggregate;
 
@@ -32,11 +31,9 @@ module sui_contracts::order_create_logic {
 
     public(friend) fun mutate(
         order_created: &order::OrderCreated,
-        //id: UID,
         ctx: &mut TxContext,
     ): order::Order {
         let order = order::new_order(
-            object::new(ctx),
             order::order_created_total_amount(order_created),
             ctx,
         );

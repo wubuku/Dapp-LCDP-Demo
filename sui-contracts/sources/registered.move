@@ -1,9 +1,10 @@
 module sui_contracts::registered {
 
+    use std::option;
     use sui::object;
     use sui_contracts::domain_name::{Self, DomainNameId, Registered};
 
-    public fun id(registered: &Registered): object::ID {
+    public fun id(registered: &Registered): option::Option<object::ID> {
         domain_name::registered_id(registered)
     }
 

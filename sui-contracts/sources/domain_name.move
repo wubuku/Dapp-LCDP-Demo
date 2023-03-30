@@ -1,4 +1,5 @@
 module sui_contracts::domain_name {
+    use std::option;
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -84,12 +85,12 @@ module sui_contracts::domain_name {
     }
 
     fun new_domain_name(
-        id: UID,
         domain_name_id: DomainNameId,
         expiration_date: u64,
+        ctx: &mut TxContext,
     ): DomainName {
         DomainName {
-            id,
+            id: object::new(ctx),
             domain_name_id,
             version: 0,
             expiration_date,
@@ -97,14 +98,18 @@ module sui_contracts::domain_name {
     }
 
     struct Registered has copy, drop {
-        id: object::ID,
+        id: option::Option<object::ID>,
         domain_name_id: DomainNameId,
         registration_period: u64,
         owner: address,
     }
 
-    public fun registered_id(registered: &Registered): object::ID {
+    public fun registered_id(registered: &Registered): option::Option<object::ID> {
         registered.id
+    }
+
+    public(friend) fun set_registered_id(registered: &mut Registered, id: object::ID) {
+        registered.id = option::some(id);
     }
 
     public fun registered_domain_name_id(registered: &Registered): DomainNameId {
@@ -120,13 +125,12 @@ module sui_contracts::domain_name {
     }
 
     public(friend) fun new_registered(
-        id: &UID,
         domain_name_id: DomainNameId,
         registration_period: u64,
         owner: address,
     ): Registered {
         Registered {
-            id: object::uid_to_inner(id),
+            id: option::none(),
             domain_name_id,
             registration_period,
             owner,
@@ -173,17 +177,17 @@ module sui_contracts::domain_name {
 
 
     public(friend) fun create_domain_name(
-        id: UID,
         domain_name_id: DomainNameId,
         expiration_date: u64,
         domain_name_id_table: &mut DomainNameIdTable,
+        ctx: &mut TxContext,
     ): DomainName {
-        asset_domain_name_id_not_exists_then_add(domain_name_id, domain_name_id_table, object::uid_to_inner(&id));
         let domain_name = new_domain_name(
-            id,
             domain_name_id,
             expiration_date,
+            ctx,
         );
+        asset_domain_name_id_not_exists_then_add(domain_name_id, domain_name_id_table, object::uid_to_inner(&domain_name.id));
         domain_name
     }
 

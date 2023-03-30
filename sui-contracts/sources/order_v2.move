@@ -1,5 +1,5 @@
 module sui_contracts::order_v2 {
-    use std::option::Option;
+    use std::option::{Self, Option};
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -136,7 +136,6 @@ module sui_contracts::order_v2 {
     }
 
     fun new_order_v2(
-        id: UID,
         order_id: String,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
@@ -144,7 +143,7 @@ module sui_contracts::order_v2 {
     ): OrderV2 {
         assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
         OrderV2 {
-            id,
+            id: object::new(ctx),
             order_id,
             version: 0,
             total_amount,
@@ -155,7 +154,7 @@ module sui_contracts::order_v2 {
     }
 
     struct OrderV2Created has copy, drop {
-        id: object::ID,
+        id: option::Option<object::ID>,
         order_id: String,
         product: String,
         quantity: u64,
@@ -164,8 +163,12 @@ module sui_contracts::order_v2 {
         owner: address,
     }
 
-    public fun order_v2_created_id(order_v2_created: &OrderV2Created): object::ID {
+    public fun order_v2_created_id(order_v2_created: &OrderV2Created): option::Option<object::ID> {
         order_v2_created.id
+    }
+
+    public(friend) fun set_order_v2_created_id(order_v2_created: &mut OrderV2Created, id: object::ID) {
+        order_v2_created.id = option::some(id);
     }
 
     public fun order_v2_created_order_id(order_v2_created: &OrderV2Created): String {
@@ -193,7 +196,6 @@ module sui_contracts::order_v2 {
     }
 
     public(friend) fun new_order_v2_created(
-        id: &UID,
         order_id: String,
         product: String,
         quantity: u64,
@@ -202,7 +204,7 @@ module sui_contracts::order_v2 {
         owner: address,
     ): OrderV2Created {
         OrderV2Created {
-            id: object::uid_to_inner(id),
+            id: option::none(),
             order_id,
             product,
             quantity,
@@ -480,21 +482,19 @@ module sui_contracts::order_v2 {
 
 
     public(friend) fun create_order_v2(
-        id: UID,
         order_id: String,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
         order_id_table: &mut OrderIdTable,
         ctx: &mut TxContext,
     ): OrderV2 {
-        asset_order_id_not_exists_then_add(order_id, order_id_table, object::uid_to_inner(&id));
         let order_v2 = new_order_v2(
-            id,
             order_id,
             total_amount,
             estimated_ship_date,
             ctx,
         );
+        asset_order_id_not_exists_then_add(order_id, order_id_table, object::uid_to_inner(&order_v2.id));
         order_v2
     }
 

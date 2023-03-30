@@ -10,7 +10,7 @@ module sui_contracts::product_aggregate {
         product_id_generator: &mut product::ProductIdGenerator,
         ctx: &mut tx_context::TxContext,
     ) {
-        let (product_created, id) = product_create_logic::verify(
+        let product_created = product_create_logic::verify(
             name,
             unit_price,
             product_id_generator,
@@ -18,10 +18,10 @@ module sui_contracts::product_aggregate {
         );
         let product = product_create_logic::mutate(
             &product_created,
-            id,
             product_id_generator,
             ctx,
         );
+        product::set_product_created_id(&mut product_created, product::id(&product));
         product::freeze_object(product);
         product::emit_product_created(product_created);
     }

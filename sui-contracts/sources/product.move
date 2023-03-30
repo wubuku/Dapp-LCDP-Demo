@@ -1,4 +1,5 @@
 module sui_contracts::product {
+    use std::option;
     use std::string::{Self, String};
     use std::vector;
     use sui::event;
@@ -70,14 +71,14 @@ module sui_contracts::product {
     }
 
     fun new_product(
-        id: UID,
         product_id: String,
         name: String,
         unit_price: u128,
+        ctx: &mut TxContext,
     ): Product {
         assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
         Product {
-            id,
+            id: object::new(ctx),
             product_id,
             version: 0,
             name,
@@ -86,14 +87,18 @@ module sui_contracts::product {
     }
 
     struct ProductCreated has copy, drop {
-        id: object::ID,
+        id: option::Option<object::ID>,
         product_id: String,
         name: String,
         unit_price: u128,
     }
 
-    public fun product_created_id(product_created: &ProductCreated): object::ID {
+    public fun product_created_id(product_created: &ProductCreated): option::Option<object::ID> {
         product_created.id
+    }
+
+    public(friend) fun set_product_created_id(product_created: &mut ProductCreated, id: object::ID) {
+        product_created.id = option::some(id);
     }
 
     public fun product_created_product_id(product_created: &ProductCreated): String {
@@ -109,14 +114,13 @@ module sui_contracts::product {
     }
 
     public(friend) fun new_product_created(
-        id: &UID,
         name: String,
         unit_price: u128,
         product_id_generator: &mut ProductIdGenerator,
     ): ProductCreated {
         let product_id = next_product_id(product_id_generator);
         ProductCreated {
-            id: object::uid_to_inner(id),
+            id: option::none(),
             product_id,
             name,
             unit_price,
@@ -125,17 +129,17 @@ module sui_contracts::product {
 
 
     public(friend) fun create_product(
-        id: UID,
         name: String,
         unit_price: u128,
         product_id_generator: &ProductIdGenerator,
+        ctx: &mut TxContext,
     ): Product {
         let product_id = current_product_id(product_id_generator);
         let product = new_product(
-            id,
             product_id,
             name,
             unit_price,
+            ctx,
         );
         product
     }

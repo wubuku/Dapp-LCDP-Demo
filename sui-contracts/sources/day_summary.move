@@ -1,5 +1,5 @@
 module sui_contracts::day_summary {
-    use std::option::Option;
+    use std::option::{Self, Option};
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -89,15 +89,15 @@ module sui_contracts::day_summary {
     }
 
     fun new_day_summary(
-        id: UID,
         day: Day,
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<vector<u8>>,
+        ctx: &mut TxContext,
     ): DaySummary {
         DaySummary {
-            id,
+            id: object::new(ctx),
             day,
             version: 0,
             description,
@@ -108,7 +108,7 @@ module sui_contracts::day_summary {
     }
 
     struct DaySummaryCreated has copy, drop {
-        id: object::ID,
+        id: option::Option<object::ID>,
         day: Day,
         description: String,
         meta_data: vector<u8>,
@@ -116,8 +116,12 @@ module sui_contracts::day_summary {
         optional_data: Option<vector<u8>>,
     }
 
-    public fun day_summary_created_id(day_summary_created: &DaySummaryCreated): object::ID {
+    public fun day_summary_created_id(day_summary_created: &DaySummaryCreated): option::Option<object::ID> {
         day_summary_created.id
+    }
+
+    public(friend) fun set_day_summary_created_id(day_summary_created: &mut DaySummaryCreated, id: object::ID) {
+        day_summary_created.id = option::some(id);
     }
 
     public fun day_summary_created_day(day_summary_created: &DaySummaryCreated): Day {
@@ -141,7 +145,6 @@ module sui_contracts::day_summary {
     }
 
     public(friend) fun new_day_summary_created(
-        id: &UID,
         day: Day,
         description: String,
         meta_data: vector<u8>,
@@ -149,7 +152,7 @@ module sui_contracts::day_summary {
         optional_data: Option<vector<u8>>,
     ): DaySummaryCreated {
         DaySummaryCreated {
-            id: object::uid_to_inner(id),
+            id: option::none(),
             day,
             description,
             meta_data,
@@ -160,23 +163,23 @@ module sui_contracts::day_summary {
 
 
     public(friend) fun create_day_summary(
-        id: UID,
         day: Day,
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<vector<u8>>,
         day_summary_id_table: &mut DaySummaryIdTable,
+        ctx: &mut TxContext,
     ): DaySummary {
-        asset_day_not_exists_then_add(day, day_summary_id_table, object::uid_to_inner(&id));
         let day_summary = new_day_summary(
-            id,
             day,
             description,
             metadata,
             array_data,
             optional_data,
+            ctx,
         );
+        asset_day_not_exists_then_add(day, day_summary_id_table, object::uid_to_inner(&day_summary.id));
         day_summary
     }
 

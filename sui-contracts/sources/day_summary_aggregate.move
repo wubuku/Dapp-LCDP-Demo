@@ -35,7 +35,7 @@ module sui_contracts::day_summary_aggregate {
             day_time_zone,
         );
 
-        let (day_summary_created, id) = day_summary_create_logic::verify(
+        let day_summary_created = day_summary_create_logic::verify(
             day,
             description,
             meta_data,
@@ -46,10 +46,10 @@ module sui_contracts::day_summary_aggregate {
         );
         let day_summary = day_summary_create_logic::mutate(
             &day_summary_created,
-            id,
             day_summary_id_table,
             ctx,
         );
+        day_summary::set_day_summary_created_id(&mut day_summary_created, day_summary::id(&day_summary));
         day_summary::transfer_object(day_summary, tx_context::sender(ctx));
         day_summary::emit_day_summary_created(day_summary_created);
     }

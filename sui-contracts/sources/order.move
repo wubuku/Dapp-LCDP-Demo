@@ -1,4 +1,5 @@
 module sui_contracts::order {
+    use std::option;
     use std::string::String;
     use sui::event;
     use sui::object::{Self, UID};
@@ -6,7 +7,6 @@ module sui_contracts::order {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::order_item::{Self, OrderItem};
-    use std::option;
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
@@ -64,12 +64,11 @@ module sui_contracts::order {
     }
 
     public(friend) fun new_order(
-        id: UID,
         total_amount: u128,
         ctx: &mut TxContext,
     ): Order {
         Order {
-            id,
+            id: object::new(ctx),
             version: 0,
             total_amount,
             items: table::new<String, OrderItem>(ctx),
@@ -114,7 +113,6 @@ module sui_contracts::order {
     }
 
     public(friend) fun new_order_created(
-        //id: &UID,
         product: String,
         quantity: u64,
         unit_price: u128,
@@ -217,4 +215,5 @@ module sui_contracts::order {
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) {
         event::emit(order_item_quantity_updated);
     }
+
 }

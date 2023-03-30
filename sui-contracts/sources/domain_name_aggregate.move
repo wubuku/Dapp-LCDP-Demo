@@ -17,7 +17,7 @@ module sui_contracts::domain_name_aggregate {
             domain_name_id_second_level_domain,
         );
 
-        let (registered, id) = domain_name_register_logic::verify(
+        let registered = domain_name_register_logic::verify(
             domain_name_id,
             registration_period,
             domain_name_id_table,
@@ -25,10 +25,10 @@ module sui_contracts::domain_name_aggregate {
         );
         let domain_name = domain_name_register_logic::mutate(
             &registered,
-            id,
             domain_name_id_table,
             ctx,
         );
+        domain_name::set_registered_id(&mut registered, domain_name::id(&domain_name));
         domain_name::transfer_object(domain_name, domain_name::registered_owner(&registered));
         domain_name::emit_registered(registered);
     }

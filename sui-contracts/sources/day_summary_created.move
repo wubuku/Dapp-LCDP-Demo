@@ -1,12 +1,12 @@
 module sui_contracts::day_summary_created {
 
-    use std::option::Option;
+    use std::option::{Self, Option};
     use std::string::String;
     use sui::object;
     use sui_contracts::day::Day;
     use sui_contracts::day_summary::{Self, DaySummaryCreated};
 
-    public fun id(day_summary_created: &DaySummaryCreated): object::ID {
+    public fun id(day_summary_created: &DaySummaryCreated): option::Option<object::ID> {
         day_summary::day_summary_created_id(day_summary_created)
     }
 

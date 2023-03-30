@@ -1,10 +1,11 @@
 module sui_contracts::product_created {
 
+    use std::option;
     use std::string::String;
     use sui::object;
     use sui_contracts::product::{Self, ProductCreated};
 
-    public fun id(product_created: &ProductCreated): object::ID {
+    public fun id(product_created: &ProductCreated): option::Option<object::ID> {
         product::product_created_id(product_created)
     }
 

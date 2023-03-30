@@ -19,7 +19,6 @@ module sui_contracts::order_aggregate {
         );
         let order = order_create_logic::mutate(
             &order_created,
-            //id,
             ctx,
         );
         order::set_order_created_id(&mut order_created, order::id(&order));
@@ -68,4 +67,5 @@ module sui_contracts::order_aggregate {
         order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
         order::emit_order_item_quantity_updated(order_item_quantity_updated);
     }
+
 }
