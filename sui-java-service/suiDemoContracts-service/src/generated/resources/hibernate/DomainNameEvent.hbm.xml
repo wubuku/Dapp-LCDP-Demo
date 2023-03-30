@@ -15,7 +15,7 @@
     </composite-id>
     <discriminator column="event_type" type="string" />
     <property name="id_">
-      <column name="id" sql-type="VARCHAR(42)" />
+      <column name="id" sql-type="VARCHAR(66)" />
     </property>
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
@@ -30,13 +30,13 @@
       <column name="sui_event_seq" />
     </property>
     <property name="suiPackageId">
-      <column name="sui_package_id" sql-type="VARCHAR(42)" />
+      <column name="sui_package_id" sql-type="VARCHAR(66)" />
     </property>
     <property name="suiTransactionModule">
       <column name="sui_transaction_module" length="100" />
     </property>
     <property name="suiSender">
-      <column name="sui_sender" sql-type="VARCHAR(42)" />
+      <column name="sui_sender" sql-type="VARCHAR(66)" />
     </property>
     <property name="suiType">
       <column name="sui_type" length="200" />

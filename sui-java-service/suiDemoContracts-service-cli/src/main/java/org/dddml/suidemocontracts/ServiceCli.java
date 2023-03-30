@@ -7,7 +7,7 @@ public class ServiceCli {
 
     public static void main(final String[] args) throws Exception {
         /*
-        ddl -d "/Users/yangjiefeng/Documents/wubuku/StarcoinNSDemo/sui-java-service/suiDemoContracts-service/src/generated/resources/scripts" -c "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 123456
+        sui-java-service % java -jar ./suiDemoContracts-service-cli/target/suidemocontracts-service-cli-0.0.1-SNAPSHOT.jar ddl -d "./suiDemoContracts-service/src/generated/resources/scripts" -c "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 123456
          */
         // //////////////////////////////////
 

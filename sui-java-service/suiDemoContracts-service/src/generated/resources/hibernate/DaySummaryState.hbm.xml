@@ -24,7 +24,7 @@
     </composite-id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
     <property name="id_">
-      <column name="id" unique-key="unique_daysummary_sid" sql-type="VARCHAR(42)" />
+      <column name="id" unique-key="unique_daysummary_sid" sql-type="VARCHAR(66)" />
     </property>
     <property name="description">
       <column name="description" />

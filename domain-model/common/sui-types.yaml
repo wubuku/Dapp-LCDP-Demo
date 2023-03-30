@@ -1,12 +1,12 @@
 typeDefinitions:
 
-  UID: #0x100475c96f65a7ffad0b4233eea7bfe4df15ca1e
-    sqlType: VARCHAR(42)
+  UID:
+    sqlType: VARCHAR(66)
     cSharpType: string
     javaType: String
 
   address:
-    sqlType: VARCHAR(42)
+    sqlType: VARCHAR(66)
     cSharpType: string
     javaType: String
 

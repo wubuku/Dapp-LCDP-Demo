@@ -4,7 +4,7 @@
   <class name="org.dddml.suidemocontracts.domain.order.AbstractOrderItemState$SimpleOrderItemState" table="order_item">
     <composite-id name="orderItemId" class="org.dddml.suidemocontracts.domain.order.OrderItemId">
       <key-property name="orderId">
-        <column name="order_item_id_order_id" sql-type="VARCHAR(42)" />
+        <column name="order_item_id_order_id" sql-type="VARCHAR(66)" />
       </key-property>
       <key-property name="productId">
         <column name="order_item_id_product_id" length="50" />

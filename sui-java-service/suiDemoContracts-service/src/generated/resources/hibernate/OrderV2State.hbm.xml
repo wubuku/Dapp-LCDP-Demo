@@ -19,7 +19,7 @@
       <one-to-many class="org.dddml.suidemocontracts.domain.orderv2.AbstractOrderShipGroupState$SimpleOrderShipGroupState" />
     </set>
     <property name="id_">
-      <column name="id" unique-key="unique_orderv2_sid" sql-type="VARCHAR(42)" />
+      <column name="id" unique-key="unique_orderv2_sid" sql-type="VARCHAR(66)" />
     </property>
     <property name="totalAmount">
       <column name="total_amount" sql-type="DECIMAL(20,0)" />

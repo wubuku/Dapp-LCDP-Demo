@@ -4,7 +4,7 @@
   <class name="AbstractOrderEvent" table="order_event" abstract="true">
     <composite-id name="orderEventId" class="org.dddml.suidemocontracts.domain.order.OrderEventId">
       <key-property name="id">
-        <column name="id" sql-type="VARCHAR(42)" />
+        <column name="id" sql-type="VARCHAR(66)" />
       </key-property>
       <key-property name="version">
         <column name="version" sql-type="DECIMAL(20,0)" />
@@ -24,13 +24,13 @@
       <column name="sui_event_seq" />
     </property>
     <property name="suiPackageId">
-      <column name="sui_package_id" sql-type="VARCHAR(42)" />
+      <column name="sui_package_id" sql-type="VARCHAR(66)" />
     </property>
     <property name="suiTransactionModule">
       <column name="sui_transaction_module" length="100" />
     </property>
     <property name="suiSender">
-      <column name="sui_sender" sql-type="VARCHAR(42)" />
+      <column name="sui_sender" sql-type="VARCHAR(66)" />
     </property>
     <property name="suiType">
       <column name="sui_type" length="200" />
