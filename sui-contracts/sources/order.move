@@ -6,6 +6,7 @@ module sui_contracts::order {
     use sui::transfer;
     use sui::tx_context::TxContext;
     use sui_contracts::order_item::{Self, OrderItem};
+    use std::option;
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
@@ -76,7 +77,7 @@ module sui_contracts::order {
     }
 
     struct OrderCreated has copy, drop {
-        id: object::ID,
+        id: option::Option<object::ID>,
         product: String,
         quantity: u64,
         unit_price: u128,
@@ -84,8 +85,12 @@ module sui_contracts::order {
         owner: address,
     }
 
-    public fun order_created_id(order_created: &OrderCreated): object::ID {
+    public fun order_created_id(order_created: &OrderCreated): option::Option<object::ID> {
         order_created.id
+    }
+
+    public(friend) fun set_order_created_id(order_created: &mut OrderCreated, id: object::ID) {
+        order_created.id = option::some(id);
     }
 
     public fun order_created_product(order_created: &OrderCreated): String {
@@ -109,7 +114,7 @@ module sui_contracts::order {
     }
 
     public(friend) fun new_order_created(
-        id: &UID,
+        //id: &UID,
         product: String,
         quantity: u64,
         unit_price: u128,
@@ -117,7 +122,7 @@ module sui_contracts::order {
         owner: address,
     ): OrderCreated {
         OrderCreated {
-            id: object::uid_to_inner(id),
+            id: option::none(),
             product,
             quantity,
             unit_price,
@@ -212,5 +217,4 @@ module sui_contracts::order {
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) {
         event::emit(order_item_quantity_updated);
     }
-
 }
