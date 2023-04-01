@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.bean.EventId;
+import com.github.wubuku.sui.bean.Page;
 import com.github.wubuku.sui.bean.PaginatedMoveEvents;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
@@ -47,7 +48,7 @@ public class ProductEventService {
         int limit = 1;
         EventId cursor = getProductCreatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<ProductCreated> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<ProductCreated> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED,
                     cursor, limit, false, ProductCreated.class);
 
@@ -59,7 +60,7 @@ public class ProductEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }

@@ -30,11 +30,11 @@ public class SuiProductStateRetriever {
     }
 
     public ProductState retrieveProductState(String objectId) {
-        GetMoveObjectDataResponse<Product> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
-                objectId, Product.class
+        SuiMoveObjectResponse<Product> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
+                objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), Product.class
         );
 
-        Product product = getObjectDataResponse.getDetails().getData().getFields();
+        Product product = getObjectDataResponse.getData().getContent().getFields();
         return toProductState(product);
     }
 

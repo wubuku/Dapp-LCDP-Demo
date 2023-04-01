@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.bean.EventId;
+import com.github.wubuku.sui.bean.Page;
 import com.github.wubuku.sui.bean.PaginatedMoveEvents;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
@@ -48,7 +49,7 @@ public class DomainNameEventService {
         int limit = 1;
         EventId cursor = getRegisteredEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<Registered> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<Registered> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.DOMAIN_NAME_MODULE_REGISTERED,
                     cursor, limit, false, Registered.class);
 
@@ -60,7 +61,7 @@ public class DomainNameEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -88,7 +89,7 @@ public class DomainNameEventService {
         int limit = 1;
         EventId cursor = getRenewedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<Renewed> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<Renewed> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.DOMAIN_NAME_MODULE_RENEWED,
                     cursor, limit, false, Renewed.class);
 
@@ -100,7 +101,7 @@ public class DomainNameEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }

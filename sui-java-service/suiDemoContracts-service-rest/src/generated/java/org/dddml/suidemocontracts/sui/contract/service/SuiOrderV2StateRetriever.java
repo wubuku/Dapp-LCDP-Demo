@@ -50,11 +50,11 @@ public class SuiOrderV2StateRetriever {
     }
 
     public OrderV2State retrieveOrderV2State(String objectId) {
-        GetMoveObjectDataResponse<OrderV2> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
-                objectId, OrderV2.class
+        SuiMoveObjectResponse<OrderV2> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
+                objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderV2.class
         );
 
-        OrderV2 orderV2 = getObjectDataResponse.getDetails().getData().getFields();
+        OrderV2 orderV2 = getObjectDataResponse.getData().getContent().getFields();
         return toOrderV2State(orderV2);
     }
 
@@ -133,14 +133,14 @@ public class SuiOrderV2StateRetriever {
             for (DynamicFieldInfo orderV2ItemFieldInfo : orderV2ItemFieldPage.getData()) {
             
                 String fieldObjectId = orderV2ItemFieldInfo.getObjectId();
-                GetMoveObjectDataResponse<OrderV2ItemDynamicField> getOrderV2ItemFieldResponse
-                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderV2ItemDynamicField.class);
+                SuiMoveObjectResponse<OrderV2ItemDynamicField> getOrderV2ItemFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderV2ItemDynamicField.class);
                 OrderV2Item orderV2Item = getOrderV2ItemFieldResponse
-                        .getDetails().getData().getFields().getValue().getFields();
+                        .getData().getContent().getFields().getValue().getFields();
                 orderV2Items.add(orderV2Item);
             }
             cursor = orderV2ItemFieldPage.getNextCursor();
-            if (cursor == null) {
+            if (!Page.hasNextPage(orderV2ItemFieldPage)) {
                 break;
             }
         }
@@ -155,14 +155,14 @@ public class SuiOrderV2StateRetriever {
             for (DynamicFieldInfo orderShipGroupFieldInfo : orderShipGroupFieldPage.getData()) {
             
                 String fieldObjectId = orderShipGroupFieldInfo.getObjectId();
-                GetMoveObjectDataResponse<OrderShipGroupDynamicField> getOrderShipGroupFieldResponse
-                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderShipGroupDynamicField.class);
+                SuiMoveObjectResponse<OrderShipGroupDynamicField> getOrderShipGroupFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderShipGroupDynamicField.class);
                 OrderShipGroup orderShipGroup = getOrderShipGroupFieldResponse
-                        .getDetails().getData().getFields().getValue().getFields();
+                        .getData().getContent().getFields().getValue().getFields();
                 orderShipGroups.add(orderShipGroup);
             }
             cursor = orderShipGroupFieldPage.getNextCursor();
-            if (cursor == null) {
+            if (!Page.hasNextPage(orderShipGroupFieldPage)) {
                 break;
             }
         }
@@ -177,14 +177,14 @@ public class SuiOrderV2StateRetriever {
             for (DynamicFieldInfo orderItemShipGroupAssociationFieldInfo : orderItemShipGroupAssociationFieldPage.getData()) {
             
                 String fieldObjectId = orderItemShipGroupAssociationFieldInfo.getObjectId();
-                GetMoveObjectDataResponse<OrderItemShipGroupAssociationDynamicField> getOrderItemShipGroupAssociationFieldResponse
-                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderItemShipGroupAssociationDynamicField.class);
+                SuiMoveObjectResponse<OrderItemShipGroupAssociationDynamicField> getOrderItemShipGroupAssociationFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderItemShipGroupAssociationDynamicField.class);
                 OrderItemShipGroupAssociation orderItemShipGroupAssociation = getOrderItemShipGroupAssociationFieldResponse
-                        .getDetails().getData().getFields().getValue().getFields();
+                        .getData().getContent().getFields().getValue().getFields();
                 orderItemShipGroupAssociations.add(orderItemShipGroupAssociation);
             }
             cursor = orderItemShipGroupAssociationFieldPage.getNextCursor();
-            if (cursor == null) {
+            if (!Page.hasNextPage(orderItemShipGroupAssociationFieldPage)) {
                 break;
             }
         }
@@ -199,14 +199,14 @@ public class SuiOrderV2StateRetriever {
             for (DynamicFieldInfo orderItemShipGroupAssocSubitemFieldInfo : orderItemShipGroupAssocSubitemFieldPage.getData()) {
             
                 String fieldObjectId = orderItemShipGroupAssocSubitemFieldInfo.getObjectId();
-                GetMoveObjectDataResponse<OrderItemShipGroupAssocSubitemDynamicField> getOrderItemShipGroupAssocSubitemFieldResponse
-                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderItemShipGroupAssocSubitemDynamicField.class);
+                SuiMoveObjectResponse<OrderItemShipGroupAssocSubitemDynamicField> getOrderItemShipGroupAssocSubitemFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderItemShipGroupAssocSubitemDynamicField.class);
                 OrderItemShipGroupAssocSubitem orderItemShipGroupAssocSubitem = getOrderItemShipGroupAssocSubitemFieldResponse
-                        .getDetails().getData().getFields().getValue().getFields();
+                        .getData().getContent().getFields().getValue().getFields();
                 orderItemShipGroupAssocSubitems.add(orderItemShipGroupAssocSubitem);
             }
             cursor = orderItemShipGroupAssocSubitemFieldPage.getNextCursor();
-            if (cursor == null) {
+            if (!Page.hasNextPage(orderItemShipGroupAssocSubitemFieldPage)) {
                 break;
             }
         }

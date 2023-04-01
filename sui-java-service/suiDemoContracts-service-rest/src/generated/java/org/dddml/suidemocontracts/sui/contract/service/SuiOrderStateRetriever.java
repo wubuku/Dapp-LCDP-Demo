@@ -35,11 +35,11 @@ public class SuiOrderStateRetriever {
     }
 
     public OrderState retrieveOrderState(String objectId) {
-        GetMoveObjectDataResponse<Order> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
-                objectId, Order.class
+        SuiMoveObjectResponse<Order> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
+                objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), Order.class
         );
 
-        Order order = getObjectDataResponse.getDetails().getData().getFields();
+        Order order = getObjectDataResponse.getData().getContent().getFields();
         return toOrderState(order);
     }
 
@@ -73,14 +73,14 @@ public class SuiOrderStateRetriever {
             for (DynamicFieldInfo orderItemFieldInfo : orderItemFieldPage.getData()) {
             
                 String fieldObjectId = orderItemFieldInfo.getObjectId();
-                GetMoveObjectDataResponse<OrderItemDynamicField> getOrderItemFieldResponse
-                        = suiJsonRpcClient.getMoveObject(fieldObjectId, OrderItemDynamicField.class);
+                SuiMoveObjectResponse<OrderItemDynamicField> getOrderItemFieldResponse
+                        = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderItemDynamicField.class);
                 OrderItem orderItem = getOrderItemFieldResponse
-                        .getDetails().getData().getFields().getValue().getFields();
+                        .getData().getContent().getFields().getValue().getFields();
                 orderItems.add(orderItem);
             }
             cursor = orderItemFieldPage.getNextCursor();
-            if (cursor == null) {
+            if (!Page.hasNextPage(orderItemFieldPage)) {
                 break;
             }
         }

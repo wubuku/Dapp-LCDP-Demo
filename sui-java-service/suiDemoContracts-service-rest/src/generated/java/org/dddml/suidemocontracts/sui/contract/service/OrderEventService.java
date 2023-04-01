@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.bean.EventId;
+import com.github.wubuku.sui.bean.Page;
 import com.github.wubuku.sui.bean.PaginatedMoveEvents;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
@@ -49,7 +50,7 @@ public class OrderEventService {
         int limit = 1;
         EventId cursor = getOrderCreatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderCreated> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderCreated> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_MODULE_ORDER_CREATED,
                     cursor, limit, false, OrderCreated.class);
 
@@ -61,7 +62,7 @@ public class OrderEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -89,7 +90,7 @@ public class OrderEventService {
         int limit = 1;
         EventId cursor = getOrderItemRemovedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderItemRemoved> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderItemRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED,
                     cursor, limit, false, OrderItemRemoved.class);
 
@@ -101,7 +102,7 @@ public class OrderEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -129,7 +130,7 @@ public class OrderEventService {
         int limit = 1;
         EventId cursor = getOrderItemQuantityUpdatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderItemQuantityUpdated> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderItemQuantityUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED,
                     cursor, limit, false, OrderItemQuantityUpdated.class);
 
@@ -141,7 +142,7 @@ public class OrderEventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }

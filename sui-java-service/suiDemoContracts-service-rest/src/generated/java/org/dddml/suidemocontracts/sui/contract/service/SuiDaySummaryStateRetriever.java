@@ -30,11 +30,11 @@ public class SuiDaySummaryStateRetriever {
     }
 
     public DaySummaryState retrieveDaySummaryState(String objectId) {
-        GetMoveObjectDataResponse<DaySummary> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
-                objectId, DaySummary.class
+        SuiMoveObjectResponse<DaySummary> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
+                objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), DaySummary.class
         );
 
-        DaySummary daySummary = getObjectDataResponse.getDetails().getData().getFields();
+        DaySummary daySummary = getObjectDataResponse.getData().getContent().getFields();
         return toDaySummaryState(daySummary);
     }
 

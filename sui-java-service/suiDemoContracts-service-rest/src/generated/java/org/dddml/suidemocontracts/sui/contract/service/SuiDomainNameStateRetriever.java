@@ -30,11 +30,11 @@ public class SuiDomainNameStateRetriever {
     }
 
     public DomainNameState retrieveDomainNameState(String objectId) {
-        GetMoveObjectDataResponse<DomainName> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
-                objectId, DomainName.class
+        SuiMoveObjectResponse<DomainName> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
+                objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), DomainName.class
         );
 
-        DomainName domainName = getObjectDataResponse.getDetails().getData().getFields();
+        DomainName domainName = getObjectDataResponse.getData().getContent().getFields();
         return toDomainNameState(domainName);
     }
 

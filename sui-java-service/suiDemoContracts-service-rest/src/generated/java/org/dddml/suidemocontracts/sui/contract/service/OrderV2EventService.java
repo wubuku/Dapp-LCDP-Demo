@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.bean.EventId;
+import com.github.wubuku.sui.bean.Page;
 import com.github.wubuku.sui.bean.PaginatedMoveEvents;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
@@ -54,7 +55,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderV2CreatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderV2Created> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderV2Created> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_V2_CREATED,
                     cursor, limit, false, OrderV2Created.class);
 
@@ -66,7 +67,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -94,7 +95,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderV2ItemRemovedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderV2ItemRemoved> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderV2ItemRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_V2_ITEM_REMOVED,
                     cursor, limit, false, OrderV2ItemRemoved.class);
 
@@ -106,7 +107,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -134,7 +135,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderV2ItemQuantityUpdatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderV2ItemQuantityUpdated> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderV2ItemQuantityUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_V2_ITEM_QUANTITY_UPDATED,
                     cursor, limit, false, OrderV2ItemQuantityUpdated.class);
 
@@ -146,7 +147,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -174,7 +175,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderV2EstimatedShipDateUpdatedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderV2EstimatedShipDateUpdated> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderV2EstimatedShipDateUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_V2_ESTIMATED_SHIP_DATE_UPDATED,
                     cursor, limit, false, OrderV2EstimatedShipDateUpdated.class);
 
@@ -186,7 +187,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -214,7 +215,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderShipGroupAddedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderShipGroupAdded> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderShipGroupAdded> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_ADDED,
                     cursor, limit, false, OrderShipGroupAdded.class);
 
@@ -226,7 +227,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -254,7 +255,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderShipGroupQuantityCanceledEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderShipGroupQuantityCanceled> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderShipGroupQuantityCanceled> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED,
                     cursor, limit, false, OrderShipGroupQuantityCanceled.class);
 
@@ -266,7 +267,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -294,7 +295,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderShipGroupItemRemovedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderShipGroupItemRemoved> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderShipGroupItemRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED,
                     cursor, limit, false, OrderShipGroupItemRemoved.class);
 
@@ -306,7 +307,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -334,7 +335,7 @@ public class OrderV2EventService {
         int limit = 1;
         EventId cursor = getOrderShipGroupRemovedEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<OrderShipGroupRemoved> eventPage = suiJsonRpcClient.getMoveEvents(
+            PaginatedMoveEvents<OrderShipGroupRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
                     packageId + "::" + ContractConstants.ORDER_V2_MODULE_ORDER_SHIP_GROUP_REMOVED,
                     cursor, limit, false, OrderShipGroupRemoved.class);
 
@@ -346,7 +347,7 @@ public class OrderV2EventService {
             } else {
                 break;
             }
-            if (cursor == null) {
+            if (!Page.hasNextPage(eventPage)) {
                 break;
             }
         }
