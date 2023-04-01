@@ -17,7 +17,7 @@ import java.util.*;
 public class DaySummaryCreated {
     private String id;
 
-    private Day day;
+    private DayForEvent day;
 
     private String description;
 
@@ -35,11 +35,11 @@ public class DaySummaryCreated {
         this.id = id;
     }
 
-    public Day getDay() {
+    public DayForEvent getDay() {
         return day;
     }
 
-    public void setDay(Day day) {
+    public void setDay(DayForEvent day) {
         this.day = day;
     }
 

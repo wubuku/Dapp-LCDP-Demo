@@ -1,7 +1,9 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
+import com.github.wubuku.sui.bean.ObjectChange;
 import com.github.wubuku.sui.bean.SuiEvent;
-import com.github.wubuku.sui.bean.SuiTransactionResponse;
+import com.github.wubuku.sui.bean.SuiTransactionBlockResponse;
+import com.github.wubuku.sui.bean.SuiTransactionBlockResponseOptions;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
 import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.MoveObjectIdGeneratorObject;
@@ -11,8 +13,8 @@ import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,39 +34,37 @@ public class MoveObjectIdGeneratorObjectService {
 
     @Transactional
     public void initMoveObjectIdGeneratorObjects() {
-        SuiTransactionResponse suiTransactionResponse = suiJsonRpcClient.getTransaction(
-                packagePublishTransaction
+        SuiTransactionBlockResponse suiTransactionBlockResponse = suiJsonRpcClient.getTransactionBlock(
+                packagePublishTransaction,
+                new SuiTransactionBlockResponseOptions(true, true, true, true, true, true)
         );
-        //System.out.println(suiTransactionResponse);
+
         AtomicReference<String> packageIdRef = new AtomicReference<>();
-        Arrays.stream(suiTransactionResponse.getEffects().getEvents()).filter(
-                event -> event instanceof SuiEvent.Publish
+        ObjectChange[] objectChanges = suiTransactionBlockResponse.getObjectChanges();
+        Arrays.stream(objectChanges).filter(
+                event -> event instanceof ObjectChange.Published
         ).findFirst().ifPresent(event -> {
-            SuiEvent.Publish publish = (SuiEvent.Publish) event;
-            //System.out.println(publish);
-            packageIdRef.set(publish.getPublish().getPackageId());
+            ObjectChange.Published published = (ObjectChange.Published) event;
+            //System.out.println(published);
+            packageIdRef.set(published.getPackageId());
             saveDefaultSuiPackageIfNotExists(
-                    publish.getPublish().getPackageId(),
-                    publish.getPublish().getSender()
+                    published.getPackageId(),
+                    null //todo publish.getDigest(),
             );
         });
+
         //System.out.println("package Id: " + packageIdRef.get());
         String packageId = packageIdRef.get();
-
         String[] idGeneratorDataObjTypes = ContractConstants.getMoveObjectIdGeneratorObjectTypes(packageId);
-        //System.out.println(idGeneratorDataObjTypes.length);
-        Arrays.stream(suiTransactionResponse.getEffects().getEvents()).filter(
-                event -> event instanceof SuiEvent.NewObject
+        Arrays.stream(objectChanges).filter(
+                event -> event instanceof ObjectChange.Created
         ).forEach(event -> {
-            SuiEvent.NewObject newObject = (SuiEvent.NewObject) event;
-            //System.out.println(newObject);
-            if (newObject.getNewObject().getPackageId().equals(packageId)) {
-                //System.out.println(newObject.getNewObject().getObjectId());
-                if (Arrays.stream(idGeneratorDataObjTypes).anyMatch(t ->
-                        t.equals(newObject.getNewObject().getObjectType()))) {
-                    //System.out.println("new object Id: " + newObject.getNewObject().getObjectId() + ", type: " + newObject.getNewObject().getObjectType());
+            ObjectChange.Created objectCreated = (ObjectChange.Created) event;
+            int idx = objectCreated.getObjectType().indexOf("::");
+            if (objectCreated.getObjectType().substring(0, idx).equals(packageId)) {
+                if (Arrays.stream(idGeneratorDataObjTypes).anyMatch(t -> t.equals(objectCreated.getObjectType()))) {
                     saveMoveObjectIdGeneratorObjectIfNotExists(
-                            newObject.getNewObject().getObjectType(), newObject.getNewObject().getObjectId());
+                            objectCreated.getObjectType(), objectCreated.getObjectId());
                 }
             }
         });

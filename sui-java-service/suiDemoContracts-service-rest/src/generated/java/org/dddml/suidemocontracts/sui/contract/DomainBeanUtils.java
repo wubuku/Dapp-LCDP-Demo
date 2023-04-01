@@ -45,6 +45,17 @@ public class DomainBeanUtils {
         return day;
     }
 
+    public static org.dddml.suidemocontracts.domain.Day toDay(DayForEvent contractDay) {
+        if (contractDay == null) {
+            return null;
+        }
+        org.dddml.suidemocontracts.domain.Day day = new org.dddml.suidemocontracts.domain.Day();
+        day.setMonth(toMonth(contractDay.getMonth()));
+        day.setNumber(contractDay.getNumber());
+        day.setTimeZone(contractDay.getTimeZone());
+        return day;
+    }
+
     public static org.dddml.suidemocontracts.domain.domainname.DomainNameId toDomainNameId(DomainNameId contractDomainNameId) {
         if (contractDomainNameId == null) {
             return null;
@@ -52,6 +63,16 @@ public class DomainBeanUtils {
         org.dddml.suidemocontracts.domain.domainname.DomainNameId domainNameId = new org.dddml.suidemocontracts.domain.domainname.DomainNameId();
         domainNameId.setTopLevelDomain(contractDomainNameId.getFields().getTopLevelDomain());
         domainNameId.setSecondLevelDomain(contractDomainNameId.getFields().getSecondLevelDomain());
+        return domainNameId;
+    }
+
+    public static org.dddml.suidemocontracts.domain.domainname.DomainNameId toDomainNameId(DomainNameIdForEvent contractDomainNameId) {
+        if (contractDomainNameId == null) {
+            return null;
+        }
+        org.dddml.suidemocontracts.domain.domainname.DomainNameId domainNameId = new org.dddml.suidemocontracts.domain.domainname.DomainNameId();
+        domainNameId.setTopLevelDomain(contractDomainNameId.getTopLevelDomain());
+        domainNameId.setSecondLevelDomain(contractDomainNameId.getSecondLevelDomain());
         return domainNameId;
     }
 
@@ -66,6 +87,17 @@ public class DomainBeanUtils {
         return month;
     }
 
+    public static org.dddml.suidemocontracts.domain.Month toMonth(MonthForEvent contractMonth) {
+        if (contractMonth == null) {
+            return null;
+        }
+        org.dddml.suidemocontracts.domain.Month month = new org.dddml.suidemocontracts.domain.Month();
+        month.setYear(toYear(contractMonth.getYear()));
+        month.setNumber(contractMonth.getNumber());
+        month.setIsLeap(contractMonth.getIsLeap());
+        return month;
+    }
+
     public static org.dddml.suidemocontracts.domain.Year toYear(Year contractYear) {
         if (contractYear == null) {
             return null;
@@ -73,6 +105,16 @@ public class DomainBeanUtils {
         org.dddml.suidemocontracts.domain.Year year = new org.dddml.suidemocontracts.domain.Year();
         year.setNumber(contractYear.getFields().getNumber());
         year.setCalendar(contractYear.getFields().getCalendar());
+        return year;
+    }
+
+    public static org.dddml.suidemocontracts.domain.Year toYear(YearForEvent contractYear) {
+        if (contractYear == null) {
+            return null;
+        }
+        org.dddml.suidemocontracts.domain.Year year = new org.dddml.suidemocontracts.domain.Year();
+        year.setNumber(contractYear.getNumber());
+        year.setCalendar(contractYear.getCalendar());
         return year;
     }
 

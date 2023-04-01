@@ -17,7 +17,7 @@ import java.util.*;
 public class Registered {
     private String id;
 
-    private DomainNameId domainNameId;
+    private DomainNameIdForEvent domainNameId;
 
     private BigInteger registrationPeriod;
 
@@ -31,11 +31,11 @@ public class Registered {
         this.id = id;
     }
 
-    public DomainNameId getDomainNameId() {
+    public DomainNameIdForEvent getDomainNameId() {
         return domainNameId;
     }
 
-    public void setDomainNameId(DomainNameId domainNameId) {
+    public void setDomainNameId(DomainNameIdForEvent domainNameId) {
         this.domainNameId = domainNameId;
     }
 

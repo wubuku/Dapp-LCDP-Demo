@@ -131,7 +131,6 @@ public class SuiOrderV2StateRetriever {
         while (true) {
             DynamicFieldPage orderV2ItemFieldPage = suiJsonRpcClient.getDynamicFields(orderV2ItemTableId, cursor, null);
             for (DynamicFieldInfo orderV2ItemFieldInfo : orderV2ItemFieldPage.getData()) {
-            
                 String fieldObjectId = orderV2ItemFieldInfo.getObjectId();
                 SuiMoveObjectResponse<OrderV2ItemDynamicField> getOrderV2ItemFieldResponse
                         = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderV2ItemDynamicField.class);
@@ -153,7 +152,6 @@ public class SuiOrderV2StateRetriever {
         while (true) {
             DynamicFieldPage orderShipGroupFieldPage = suiJsonRpcClient.getDynamicFields(orderShipGroupTableId, cursor, null);
             for (DynamicFieldInfo orderShipGroupFieldInfo : orderShipGroupFieldPage.getData()) {
-            
                 String fieldObjectId = orderShipGroupFieldInfo.getObjectId();
                 SuiMoveObjectResponse<OrderShipGroupDynamicField> getOrderShipGroupFieldResponse
                         = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderShipGroupDynamicField.class);
@@ -175,7 +173,6 @@ public class SuiOrderV2StateRetriever {
         while (true) {
             DynamicFieldPage orderItemShipGroupAssociationFieldPage = suiJsonRpcClient.getDynamicFields(orderItemShipGroupAssociationTableId, cursor, null);
             for (DynamicFieldInfo orderItemShipGroupAssociationFieldInfo : orderItemShipGroupAssociationFieldPage.getData()) {
-            
                 String fieldObjectId = orderItemShipGroupAssociationFieldInfo.getObjectId();
                 SuiMoveObjectResponse<OrderItemShipGroupAssociationDynamicField> getOrderItemShipGroupAssociationFieldResponse
                         = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderItemShipGroupAssociationDynamicField.class);
@@ -197,7 +194,6 @@ public class SuiOrderV2StateRetriever {
         while (true) {
             DynamicFieldPage orderItemShipGroupAssocSubitemFieldPage = suiJsonRpcClient.getDynamicFields(orderItemShipGroupAssocSubitemTableId, cursor, null);
             for (DynamicFieldInfo orderItemShipGroupAssocSubitemFieldInfo : orderItemShipGroupAssocSubitemFieldPage.getData()) {
-            
                 String fieldObjectId = orderItemShipGroupAssocSubitemFieldInfo.getObjectId();
                 SuiMoveObjectResponse<OrderItemShipGroupAssocSubitemDynamicField> getOrderItemShipGroupAssocSubitemFieldResponse
                         = suiJsonRpcClient.getMoveObject(fieldObjectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderItemShipGroupAssocSubitemDynamicField.class);

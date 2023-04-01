@@ -17,7 +17,7 @@ import java.util.*;
 public class Renewed {
     private String id;
 
-    private DomainNameId domainNameId;
+    private DomainNameIdForEvent domainNameId;
 
     private BigInteger version;
 
@@ -33,11 +33,11 @@ public class Renewed {
         this.id = id;
     }
 
-    public DomainNameId getDomainNameId() {
+    public DomainNameIdForEvent getDomainNameId() {
         return domainNameId;
     }
 
-    public void setDomainNameId(DomainNameId domainNameId) {
+    public void setDomainNameId(DomainNameIdForEvent domainNameId) {
         this.domainNameId = domainNameId;
     }
 
