@@ -1,7 +1,6 @@
 package org.dddml.suidemocontracts.sui.contract.service;
 
 import com.github.wubuku.sui.bean.ObjectChange;
-import com.github.wubuku.sui.bean.SuiEvent;
 import com.github.wubuku.sui.bean.SuiTransactionBlockResponse;
 import com.github.wubuku.sui.bean.SuiTransactionBlockResponseOptions;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
