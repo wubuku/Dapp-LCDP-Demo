@@ -19,3 +19,4 @@ sui-java-service/*/target/
 sui-java-service/**/*.tc
 sui-java-service/**/*.tt
 sui-contracts/.idea
+.idea
