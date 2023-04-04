@@ -109,11 +109,75 @@ done
 
 ### 发布 Sui 合约
 
-在完成业务逻辑的编码之后，执行以下命令，将合约发布到链上：
+在完成业务逻辑的编码之后，在目录 `sui-contracts` 下执行以下命令，将合约发布到链上：
 
 ```shell
 sui client publish --gas-budget 30000
 ```
+
+如果执行成功，会输出发布的交易摘要。例如：
+
+```shell
+----- Transaction Digest ----
+8DHx3A9thCwyipTrraD2LtUJL8jVeFhbUNzTDSSRjrmp
+----- Transaction Data ----
+#...
+```
+
+### 配置链下服务
+
+找到目录 `sui-java-service/suitestproj1-service-rest/src/main/resources` 下的 `application-test.yml` 文件，设置发布的交易摘要。设置之后类似这样：
+
+```yaml
+sui:
+  contract:
+    jsonrpc:
+      url: "https://fullnode.devnet.sui.io/"
+      #url: "http://localhost:9000"
+    package-publish-transaction: "6ja18UYT7t3DZ8xixcWhGBm5VaPTBdTF5RicDeNS8dtp"
+```
+
+### 创建链下服务的数据库
+
+使用 MySQL 客户端连接本地的 MySQL 服务器，执行以下脚本创建一个空的数据库（假设名称为 test2）：
+
+```sql
+CREATE SCHEMA `test2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+```
+
+进入 `sui-java-service` 目录，打包 Java 项目：
+
+```shell
+mvn package
+```
+
+然后运行一个命令行工具，创建数据库中的数据模型：
+
+```shell
+java -jar ./suitestproj1-service-cli/target/suitestproj1-service-cli-0.0.1-SNAPSHOT.jar  ddl -d "scripts" -c "jdbc:mysql://127.0.0.1:3306/test2?enabledTLSProtocols=TLSv1.2&characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false" -u root -p 12345
+```
+
+### 启动链下服务
+
+在 `sui-java-service` 目录下，执行以下命令启动链下服务：
+
+```shell
+mvn -pl suitestproj1-service-rest -am spring-boot:run
+```
+
+### 提交一些测试交易
+
+在链下服务启动后，你可以访问这个网址，得到一个如何使用 Sui Client CLI 调用链上合约的速查表（Cheatsheet）：
+
+在 Cheatsheet 中连刚才发布的合约的 Package Id、创建某些实体时需要使用到的（Id Generator 的）Object Id 都帮你填好了。你需要填写的参数有包含“类型和含义（名字）”的占位符。
+
+你可以拷贝这些命令，视你的需要稍作修改，然后在命令行终端中直接执行。
+
+
+
+
+
+
 
 
 
