@@ -316,10 +316,18 @@ DDDML 是一种基于 YAML 的 DSL，而 YAML 是 JSON 的超集，所以 JSON S
 
 * ……
 
-### 进一步探索“面向资源”与已有 DDDML 规范的结合
+### 进一步探索“面向资源”与 DDDML 规范的结合
+
+我们相信，DDDML 规范还可以进一步发展，以充分利用 Move 语言面向资源这一程序设计新范式的优势。
 
 [TBD]
 
 
+## 清理已经退出的 Docker 容器
 
+执行命令：
+
+```shell
+docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp:0.0.1")
+```
 
