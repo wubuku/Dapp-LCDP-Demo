@@ -20,3 +20,5 @@ sui-java-service/**/*.tc
 sui-java-service/**/*.tt
 sui-contracts/.idea
 .idea
+sui-contracts/.dddmlignore
+sui-java-service/.dddmlignore
