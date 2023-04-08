@@ -18,6 +18,7 @@ configuration:
   mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
   mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
   # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
+  ignoreEntityImmutable: true
 
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true

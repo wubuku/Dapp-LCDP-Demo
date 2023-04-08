@@ -137,25 +137,21 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     private String createdBy;
 
-    public String getCreatedBy()
-    {
+    public String getCreatedBy() {
         return this.createdBy;
     }
 
-    public void setCreatedBy(String createdBy)
-    {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
     private Date createdAt;
 
-    public Date getCreatedAt()
-    {
+    public Date getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Date createdAt)
-    {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
