@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source_dir="_PATH_TO_/Dapp-LCDP-Demo/sui-contracts/sources"
-target_dir="_PATH_TO_/test/sui-contracts/sources"
+source_dir="/Users/yangjiefeng/Documents/wubuku/Dapp-LCDP-Demo/sui-contracts/sources"
+target_dir="/Users/yangjiefeng/Documents/wubuku/test/sui-contracts/sources"
 
 old_keyword="sui_contracts"
 new_keyword="sui_test_proj1"

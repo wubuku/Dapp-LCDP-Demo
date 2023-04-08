@@ -39,10 +39,11 @@ sudo docker run -p 3306:3306 --name mysql \
 
 你可以按照下面的介绍重现该 Demo 的开发过程。
 
+需要说明的是，下面我们假设你将 Move 合约发布到 Sui devnet 上，所以略过如发布到其他网络所需的对某些配置文件的修改的说明。
 
 ### 编写 DDDML 模型文件
 
-你可以创建一个目录，比如叫做 `test`，来放置应用的所有代码，然后在该目录下面创建一个子目录 `dddml`。我们一般在 dddml 目录下放置按照 DDDML 的规范编写的模型文件。
+你可以创建一个目录，比如叫做 `test`，来放置应用的所有代码，然后在该目录下面创建一个子目录 `dddml`。我们一般在这个目录下放置按照 DDDML 的规范编写的模型文件。
 
 你可以把这里的示例模型文件下载/拷贝到 dddml 目录：https://github.com/wubuku/Dapp-LCDP-Demo/tree/main/domain-model/sui
 
@@ -141,6 +142,10 @@ sui move build
 sui client publish --gas-budget 30000
 ```
 
+> *提示*
+> 
+> 有时候 testnet 上的 gas 价格很高，请视需要调整命令中的 `gas-budget` 参数的值。
+
 如果执行成功，会输出这次发布的交易摘要（Transaction Digest）。例如：
 
 ```shell
@@ -152,6 +157,9 @@ BZXe8c5nBjoyacUJTkcfoLgFuU9xWRksAMSfaEU3XrSM
 
 记下这个交易摘要。
 
+> *说明*
+> 
+> 我们在 Sui testnet 上部署了这个 Demo 应用的合约，发布交易摘要为 `4mxSZCAkYwxhGQY79GDHQWFYoa8x3HQiQx4Azn9JbG8b`。
 
 ### 配置链下服务
 
@@ -197,16 +205,15 @@ java -jar ./suitestproj1-service-cli/target/suitestproj1-service-cli-0.0.1-SNAPS
 mvn -pl suitestproj1-service-rest -am spring-boot:run
 ```
 
-接下来你可以尝试提交一些交易，调用链上的 Move 函数了。
-
-
-### 提交一些测试交易
+### 特别提示：使用这个 Cheatsheet
 
 在链下服务启动后，你可以访问这个网址，得到一个如何使用 Sui Client CLI 调用链上合约的速查表（Cheatsheet）：http://localhost:1023/api/sui.contract/SuiClientCLICheatsheet.md
 
-在 Cheatsheet 中连刚才发布的合约的 Package Id、创建某些实体时需要使用到的（Id Generator 的）Object Id 都帮你填好了。你需要填写的参数有包含“类型和含义（名字）”的占位符。
+在 Cheatsheet 中连刚才发布的合约的 Package Id、创建某些实体时需要使用到的（Id Generator 的）Object Id 都帮你填好了。你需要填写的参数有包含“类型和含义（名字）”的占位符。 你可以拷贝这些命令，视你的需要稍作修改，然后在命令行终端中直接执行。
 
-你可以拷贝这些命令，视你的需要稍作修改，然后在命令行终端中直接执行。
+### 提交一些测试交易
+
+接下来你可以尝试提交一些交易，调用链上的 Move 函数了。
 
 比如，创建一个产品：
 
@@ -275,7 +282,7 @@ sui client call --package 0x88e91efb24e2e2fc9255af351d5035797071500df38b915f15b7
 
 ### 增加 JSON Schema
 
-你可能会觉得手写 DSL 模型有点麻烦。我们已经在完善 DDDML 的 JSON Schema。
+你可能会觉得手写 DSL 模型有点麻烦，别担心，我们已经在完善 DDDML 的 JSON Schema。
 
 DDDML 是一种基于 YAML 的 DSL，而 YAML 是 JSON 的超集，所以 JSON Schema 可以生效。
 
