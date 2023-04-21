@@ -22,3 +22,5 @@ sui-contracts/.idea
 .idea
 sui-contracts/.dddmlignore
 sui-java-service/.dddmlignore
+**/.aptos/
+aptos-contracts/**/build
