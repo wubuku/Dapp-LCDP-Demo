@@ -6,7 +6,7 @@
 module aptos_demo::order_item {
     use std::string::String;
 
-    // friend aptos_demo::order_create_logic;
+    friend aptos_demo::order_create_logic;
     // friend aptos_demo::order_remove_item_logic;
     // friend aptos_demo::order_update_item_quantity_logic;
     friend aptos_demo::order;

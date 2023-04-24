@@ -13,8 +13,8 @@ module aptos_demo::product {
 
     use aptos_demo::genesis_account;
 
-    //friend sui_contracts::product_create_logic;
-    //friend sui_contracts::product_aggregate;
+    friend aptos_demo::product_create_logic;
+    friend aptos_demo::product_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
 
@@ -149,8 +149,9 @@ module aptos_demo::product {
     public(friend) fun new_product_created(
         name: String,
         unit_price: u128,
-        product_id_generator: &mut ProductIdGenerator,
-    ): ProductCreated {
+        //product_id_generator: &mut ProductIdGenerator,
+    ): ProductCreated acquires ProductIdGenerator {
+        let product_id_generator = borrow_global_mut<ProductIdGenerator>(genesis_account::resouce_account_address());
         let product_id = next_product_id(product_id_generator);
         ProductCreated {
             //id: option::none(),
@@ -160,14 +161,13 @@ module aptos_demo::product {
         }
     }
 
-
     public(friend) fun create_product(
         name: String,
         unit_price: u128,
-        product_id_generator: &ProductIdGenerator,
+        //product_id_generator: &ProductIdGenerator,
         //ctx: &mut TxContext,
-    ) acquires Tables {
-        //: Product
+    ): Product acquires ProductIdGenerator {
+        let product_id_generator = borrow_global<ProductIdGenerator>(genesis_account::resouce_account_address());
         let product_id = current_product_id(product_id_generator);
         let product = new_product(
             product_id,
@@ -175,9 +175,7 @@ module aptos_demo::product {
             unit_price,
             //ctx,
         );
-
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.product_table, product_id, product);
+        product
     }
 
     fun current_product_id(
@@ -206,6 +204,33 @@ module aptos_demo::product {
     ): String {
         product_id_generator.sequence = product_id_generator.sequence + 1;
         current_product_id(product_id_generator)
+    }
+
+    public(friend) fun save_product(product: Product) acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        table::add(&mut tables.product_table, product_id(&product), product);
+    }
+
+    public(friend) fun get_product(product_id: String): Product acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        table::remove(&mut tables.product_table, product_id)
+    }
+
+    // public fun borrow_product(product_id: String): &Product acquires Tables {
+    //     let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+    //     table::borrow(&tables.product_table, product_id)
+    // }
+    // /*
+    // |         table::borrow(&tables.product_table, product_id)
+    // |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    // |         |
+    // |         Invalid return. Resource variable 'Tables' is still being borrowed.
+    // |         It is still being borrowed by this reference
+    // */
+
+    public fun get_unit_price_by_product_id(product_id: String): u128 acquires Tables {
+        let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+        table::borrow(&tables.product_table, product_id).unit_price
     }
 
     // public(friend) fun transfer_object(product: Product, recipient: address) {

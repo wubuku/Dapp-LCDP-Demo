@@ -14,10 +14,10 @@ module aptos_demo::order {
     use aptos_demo::genesis_account;
     use aptos_demo::order_item::{Self, OrderItem};
 
-    // friend aptos_demo::order_create_logic;
+    friend aptos_demo::order_create_logic;
     // friend aptos_demo::order_remove_item_logic;
     // friend aptos_demo::order_update_item_quantity_logic;
-    // friend aptos_demo::order_aggregate;
+    friend aptos_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
@@ -241,17 +241,15 @@ module aptos_demo::order {
         //estimated_ship_date: Option<Day>,
         //order_id_table: &mut OrderIdTable,
         //ctx: &mut TxContext,
-    ) acquires Tables {
+    ): Order acquires Tables {
+        asset_order_not_exists(order_id);
         let order = new_order(
             order_id,
             total_amount,
             //estimated_ship_date,
             //ctx,
         );
-
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        assert!(!table::contains(&tables.order_table, order_id), EID_ALREADY_EXISTS);
-        table::add(&mut tables.order_table, order_id, order);
+        order
     }
 
     public(friend) fun asset_order_not_exists(
@@ -260,6 +258,30 @@ module aptos_demo::order {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         assert!(!table::contains(&tables.order_table, order_id), EID_ALREADY_EXISTS);
     }
+
+    public(friend) fun save_order(order: Order) acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(!table::contains(&tables.order_table, order_id(&order)), EID_ALREADY_EXISTS);
+        table::add(&mut tables.order_table, order_id(&order), order);
+    }
+
+    public(friend) fun get_order(order_id: String): Order acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        table::remove(&mut tables.order_table, order_id)
+    }
+
+    // public fun get_total_amount_by_order_id(order_id: String): u128 acquires Tables {
+    //     let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+    //     let order = table::borrow(&tables.order_table, order_id);
+    //     order.total_amount
+    // }
+    //
+    // public fun get_order_item_quantity(order_id: String, order_item_id: String): u64 acquires Tables {
+    //     let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+    //     let order = table::borrow(&tables.order_table, order_id);
+    //     let order_item = table_with_length::borrow(&order.items, order_item_id);
+    //     order_item::quantity(order_item)
+    // }
 
     // public(friend) fun transfer_object(order: Order, recipient: address) {
     //     transfer::transfer(order, recipient);
