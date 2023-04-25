@@ -12,6 +12,7 @@ module aptos_demo::product {
     use aptos_framework::event;
 
     use aptos_demo::genesis_account;
+    use aptos_demo::pass_object;
 
     friend aptos_demo::product_create_logic;
     friend aptos_demo::product_aggregate;
@@ -206,14 +207,14 @@ module aptos_demo::product {
         current_product_id(product_id_generator)
     }
 
-    public(friend) fun save_product(product: Product) acquires Tables {
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.product_table, product_id(&product), product);
-    }
-
-    public(friend) fun get_product(product_id: String): Product acquires Tables {
+    public(friend) fun remove_product(product_id: String): Product acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.product_table, product_id)
+    }
+
+    public(friend) fun add_product(product: Product) acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        table::add(&mut tables.product_table, product_id(&product), product);
     }
 
     // public fun borrow_product(product_id: String): &Product acquires Tables {
@@ -228,7 +229,17 @@ module aptos_demo::product {
     // |         It is still being borrowed by this reference
     // */
 
-    public fun get_unit_price_by_product_id(product_id: String): u128 acquires Tables {
+    public fun get_product(product_id: String): pass_object::PassObject<Product> acquires Tables {
+        let product = remove_product(product_id);
+        pass_object::new(product)
+    }
+
+    public fun return_product(product_pass_obj: pass_object::PassObject<Product>) acquires Tables {
+        let product = pass_object::extract(product_pass_obj);
+        add_product(product);
+    }
+
+    fun get_unit_price_by_product_id(product_id: String): u128 acquires Tables {
         let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
         table::borrow(&tables.product_table, product_id).unit_price
     }

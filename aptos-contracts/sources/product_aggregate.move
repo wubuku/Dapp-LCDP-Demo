@@ -30,7 +30,7 @@ module aptos_demo::product_aggregate {
         );
         //product::set_product_created_id(&mut product_created, product::id(&product));
         //product::freeze_object(product);
-        product::save_product(product);
+        product::add_product(product);
         product::emit_product_created(product_created);
     }
 

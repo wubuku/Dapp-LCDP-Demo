@@ -30,7 +30,7 @@ module aptos_demo::order_aggregate {
             &order_created,
             //ctx,
         );
-        order::save_order(order);
+        order::add_order(order);
         //order::set_order_created_id(&mut order_created, order::id(&order));
         //order::transfer_object(order, order::order_created_owner(&order_created));
         order::emit_order_created(order_created);
@@ -43,7 +43,7 @@ module aptos_demo::order_aggregate {
         product_id: String,
         //ctx: &mut tx_context::TxContext,
     ) {
-        let order = order::get_order(order_id);
+        let order = order::remove_order(order_id);
         let order_item_removed = order_remove_item_logic::verify(
             account,
             product_id,
@@ -67,7 +67,7 @@ module aptos_demo::order_aggregate {
         quantity: u64,
         //ctx: &mut tx_context::TxContext,
     ) {
-        let order = order::get_order(order_id);
+        let order = order::remove_order(order_id);
         let order_item_quantity_updated = order_update_item_quantity_logic::verify(
             account,
             product_id,

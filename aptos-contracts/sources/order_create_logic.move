@@ -6,6 +6,7 @@ module aptos_demo::order_create_logic {
     use aptos_demo::order_created;
     use aptos_demo::order_item;
     use aptos_demo::product;
+    use aptos_demo::pass_object;
     //use aptos_demo::product;
 
     friend aptos_demo::order_aggregate;
@@ -20,7 +21,11 @@ module aptos_demo::order_create_logic {
         //let id = object::new(ctx);
         let e_quantity = quantity;
         let e_owner = signer::address_of(account);//tx_context::sender(ctx);
-        let unit_price = product::get_unit_price_by_product_id(product_id);
+        //let unit_price = product::get_unit_price_by_product_id(product_id);
+        let product_pass_obj = product::get_product(product_id);
+        let product = pass_object::borrow(&product_pass_obj);
+        let unit_price = product::unit_price(product);
+        product::return_product(product_pass_obj);
         //(
         order::new_order_created(
             order_id,

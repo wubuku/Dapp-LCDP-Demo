@@ -13,6 +13,7 @@ module aptos_demo::order {
 
     use aptos_demo::genesis_account;
     use aptos_demo::order_item::{Self, OrderItem};
+    use aptos_demo::pass_object;
 
     friend aptos_demo::order_create_logic;
     friend aptos_demo::order_remove_item_logic;
@@ -259,15 +260,25 @@ module aptos_demo::order {
         assert!(!table::contains(&tables.order_table, order_id), EID_ALREADY_EXISTS);
     }
 
-    public(friend) fun save_order(order: Order) acquires Tables {
+    public(friend) fun remove_order(order_id: String): Order acquires Tables {
+        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        table::remove(&mut tables.order_table, order_id)
+    }
+
+    public(friend) fun add_order(order: Order) acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         assert!(!table::contains(&tables.order_table, order_id(&order)), EID_ALREADY_EXISTS);
         table::add(&mut tables.order_table, order_id(&order), order);
     }
 
-    public(friend) fun get_order(order_id: String): Order acquires Tables {
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::remove(&mut tables.order_table, order_id)
+    public fun get_order(order_id: String): pass_object::PassObject<Order> acquires Tables {
+        let order = remove_order(order_id);
+        pass_object::new(order)
+    }
+
+    public fun return_order(order_pass_obj: pass_object::PassObject<Order>) acquires Tables {
+        let order = pass_object::extract(order_pass_obj);
+        add_order(order);
     }
 
     public fun get_total_amount_by_order_id(order_id: String): u128 acquires Tables {
@@ -301,7 +312,7 @@ module aptos_demo::order {
 
     public(friend) fun update_version_and_save(order: Order) acquires Tables {
         order.version = order.version + 1;
-        save_order(order);
+        add_order(order);
     }
 
     // public(friend) fun share_object(order: Order) {
