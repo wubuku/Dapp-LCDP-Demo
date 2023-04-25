@@ -33,4 +33,16 @@ module aptos_demo::product_aggregate {
         product::save_product(product);
         product::emit_product_created(product_created);
     }
+
+    // public fun borrow_tables(product_id: String): &Tables acquires Tables {
+    //     let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+    //     tables
+    // }
+    /*
+40 |         let tables = borrow_global<Tables>(genesis_account::resouce_account_address());
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |                      |             |
+   |                      |             The type '(aptos_demo=...)::product::Tables' was not declared in the current module. Global storage access is internal to the module'
+   |                      Invalid call to borrow_global.    
+    */
 }
