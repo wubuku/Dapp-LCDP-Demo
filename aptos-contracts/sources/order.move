@@ -36,7 +36,7 @@ module aptos_demo::order {
     }
 
 
-    public(friend) fun initialize(account: &signer) {
+    public fun initialize(account: &signer) {
         //acquires Events
         genesis_account::assert_genesis_account(account);
 
