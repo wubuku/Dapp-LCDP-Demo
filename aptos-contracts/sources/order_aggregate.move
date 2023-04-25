@@ -8,10 +8,10 @@ module aptos_demo::order_aggregate {
 
     use aptos_demo::order;
     use aptos_demo::order_create_logic;
+    use aptos_demo::order_remove_item_logic;
+    use aptos_demo::order_update_item_quantity_logic;
 
     //use sui::tx_context;
-    //use aptos_demo::order_remove_item_logic;
-    //use aptos_demo::order_update_item_quantity_logic;
     public entry fun create(
         account: &signer,
         order_id: String,
@@ -36,45 +36,51 @@ module aptos_demo::order_aggregate {
         order::emit_order_created(order_created);
     }
 
-    //
-    // public entry fun remove_item(
-    //     order: order::Order,
-    //     product_id: String,
-    //     ctx: &mut tx_context::TxContext,
-    // ) {
-    //     let order_item_removed = order_remove_item_logic::verify(
-    //         product_id,
-    //         &order,
-    //         ctx,
-    //     );
-    //     let updated_order = order_remove_item_logic::mutate(
-    //         &order_item_removed,
-    //         order,
-    //         ctx,
-    //     );
-    //     order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
-    //     order::emit_order_item_removed(order_item_removed);
-    // }
 
-    //
-    // public entry fun update_item_quantity(
-    //     order: order::Order,
-    //     product_id: String,
-    //     quantity: u64,
-    //     ctx: &mut tx_context::TxContext,
-    // ) {
-    //     let order_item_quantity_updated = order_update_item_quantity_logic::verify(
-    //         product_id,
-    //         quantity,
-    //         &order,
-    //         ctx,
-    //     );
-    //     let updated_order = order_update_item_quantity_logic::mutate(
-    //         &order_item_quantity_updated,
-    //         order,
-    //         ctx,
-    //     );
-    //     order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
-    //     order::emit_order_item_quantity_updated(order_item_quantity_updated);
-    // }
+    public entry fun remove_item(
+        account: &signer,
+        order_id: String,
+        product_id: String,
+        //ctx: &mut tx_context::TxContext,
+    ) {
+        let order = order::get_order(order_id);
+        let order_item_removed = order_remove_item_logic::verify(
+            account,
+            product_id,
+            &order,
+            //ctx,
+        );
+        let updated_order = order_remove_item_logic::mutate(
+            &order_item_removed,
+            order,
+            //ctx,
+        );
+        order::update_version_and_save(updated_order);
+        order::emit_order_item_removed(order_item_removed);
+    }
+
+
+    public entry fun update_item_quantity(
+        account: &signer,
+        order_id: String,
+        product_id: String,
+        quantity: u64,
+        //ctx: &mut tx_context::TxContext,
+    ) {
+        let order = order::get_order(order_id);
+        let order_item_quantity_updated = order_update_item_quantity_logic::verify(
+            account,
+            product_id,
+            quantity,
+            &order,
+            //ctx,
+        );
+        let updated_order = order_update_item_quantity_logic::mutate(
+            &order_item_quantity_updated,
+            order,
+            //ctx,
+        );
+        order::update_version_and_save(updated_order);
+        order::emit_order_item_quantity_updated(order_item_quantity_updated);
+    }
 }

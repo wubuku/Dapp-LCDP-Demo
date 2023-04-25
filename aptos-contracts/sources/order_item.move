@@ -8,7 +8,7 @@ module aptos_demo::order_item {
 
     friend aptos_demo::order_create_logic;
     // friend aptos_demo::order_remove_item_logic;
-    // friend aptos_demo::order_update_item_quantity_logic;
+    friend aptos_demo::order_update_item_quantity_logic;
     friend aptos_demo::order;
 
     const EID_DATA_TOO_LONG: u64 = 102;

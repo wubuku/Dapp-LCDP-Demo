@@ -15,8 +15,8 @@ module aptos_demo::order {
     use aptos_demo::order_item::{Self, OrderItem};
 
     friend aptos_demo::order_create_logic;
-    // friend aptos_demo::order_remove_item_logic;
-    // friend aptos_demo::order_update_item_quantity_logic;
+    friend aptos_demo::order_remove_item_logic;
+    friend aptos_demo::order_update_item_quantity_logic;
     friend aptos_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -291,7 +291,12 @@ module aptos_demo::order {
     //     order.version = order.version + 1;
     //     transfer::transfer(order, recipient);
     // }
-    //
+
+    public(friend) fun update_version_and_save(order: Order) acquires Tables {
+        order.version = order.version + 1;
+        save_order(order);
+    }
+
     // public(friend) fun share_object(order: Order) {
     //     transfer::share_object(order);
     // }
