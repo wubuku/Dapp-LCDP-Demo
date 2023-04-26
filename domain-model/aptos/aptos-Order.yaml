@@ -1,0 +1,171 @@
+aggregates:
+  Order:
+    id:
+      name: OrderId
+      type: string
+      generator:
+        class: assigned # 'increment', 'UUID', etc.
+        #tableName: OrderIdTable # Used to check the assigned Id., etc.
+    properties:
+      TotalAmount:
+        type: u128
+      EstimatedShipDate:
+        type: Day
+        optional: true
+      Items:
+        itemType: OrderItem
+      OrderShipGroups:
+        itemType: OrderShipGroup
+
+    entities:
+      OrderItem:
+        id:
+          name: ProductId
+          type: String
+          length: 100
+        properties:
+          Quantity:
+            type: u64
+          ItemAmount:
+            type: u128
+
+      OrderShipGroup:
+        id:
+          name: ShipGroupSeqId
+          type: u8
+          columnName: order_v2_ship_group_seq_id
+        properties:
+          ShipmentMethod:
+            type: String
+          OrderItemShipGroupAssociations:
+            itemType: OrderItemShipGroupAssociation
+
+        entities:
+          OrderItemShipGroupAssociation:
+            id:
+              name: ProductId
+              type: String
+              length: 100
+              columnName: order_v2_item_ship_group_assoc_product_id
+            properties:
+              Quantity:
+                type: u64
+              CancelQuantity:
+                type: u64
+              Subitems:
+                itemType: OrderItemShipGroupAssocSubitem
+            entities:
+              # This is a ridiculous "made-up" entity, and in our practical experience,
+              # entities with more than three levels of hierarchy within an aggregate are extremely rare.
+              OrderItemShipGroupAssocSubitem:
+                id:
+                  name: OrderItemShipGroupAssocSubitemDay
+                  # The local ID of this entity is a value object,
+                  # making it overly complex, almost to the point of being absurd.
+                  type: Day
+                globalId:
+                  columnNames:
+                    - order_v2_order_id
+                    - order_ship_group_ship_group_seq_id
+                    - order_item_ship_group_association_product_id
+                    - order_item_ship_group_assoc_subitem_day_month_year_number
+                    - order_item_ship_group_assoc_subitem_day_month_year_calendar
+                    - order_item_ship_group_assoc_subitem_day_month_number
+                    - order_item_ship_group_assoc_subitem_day_month_is_leap
+                    - order_item_ship_group_assoc_subitem_day_number
+                    - order_item_ship_group_assoc_subitem_day_time_zone
+                properties:
+                  Description:
+                    type: String
+                    length: 100
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Product:
+            referenceType: Product
+            # mutable: false
+            # immutable: true
+            # eventPropertyName: Product
+          Quantity:
+            type: u64
+        event:
+          name: OrderCreated
+          properties:
+            UnitPrice:
+              type: u128
+            TotalAmount:
+              type: u128
+            Owner:
+              type: address
+              isOwner: true # Transfer the object to the account address indicated by this property
+
+      RemoveItem:
+        parameters:
+          ProductId:
+            type: String
+            # eventPropertyName: ProductId
+        event:
+          name: OrderItemRemoved
+      #          properties:
+      #            Owner:
+      #              type: address
+      #              isOwner: true # Transfer the object to the account address indicated by this property
+
+      UpdateItemQuantity:
+        parameters:
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderItemQuantityUpdated
+
+      UpdateEstimatedShipDate:
+        parameters:
+          EstimatedShipDate:
+            type: Day
+        event:
+          name: OrderEstimatedShipDateUpdated
+
+      AddOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ShipmentMethod:
+            type: String
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderShipGroupAdded
+
+      CancelOrderShipGroupQuantity:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ProductId:
+            type: String
+          CancelQuantity:
+            type: u64
+        event:
+          name: OrderShipGroupQuantityCanceled
+
+      RemoveOrderShipGroupItem:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ProductId:
+            type: String
+        event:
+          name: OrderShipGroupItemRemoved
+
+      RemoveOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+        event:
+          name: OrderShipGroupRemoved
+

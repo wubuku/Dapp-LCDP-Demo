@@ -1,0 +1,16 @@
+
+project:
+    
+  files:
+    - "common/boundedContext.yaml"
+    - "common/types.yaml"
+    - "aptos/aptos-Order.yaml"
+    - "aptos/aptos-Product.yaml"
+
+  # directories:
+    # - path: "."
+      # pattern: "*.yaml"
+      # fileExclusions:
+        # - "fileExclusion1.yaml"
+        # - "fileExclusion2.yaml"
+    
