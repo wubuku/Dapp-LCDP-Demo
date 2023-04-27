@@ -6,6 +6,7 @@ project:
     - "common/types.yaml"
     - "aptos/aptos-Order.yaml"
     - "aptos/aptos-Product.yaml"
+    - "aptos/aptos-ValueObjects.yaml"
 
   # directories:
     # - path: "."
