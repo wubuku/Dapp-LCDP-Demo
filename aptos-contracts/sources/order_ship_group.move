@@ -5,7 +5,6 @@
 
 module aptos_demo::order_ship_group {
     use aptos_demo::order_item_ship_group_association::{Self, OrderItemShipGroupAssociation};
-    //use aptos_std::table::{Self, Table};
     use aptos_std::table_with_length::{Self, TableWithLength};
     use std::string::String;
     friend aptos_demo::order_create_logic;
@@ -80,7 +79,7 @@ module aptos_demo::order_ship_group {
             shipment_method: _,
             order_item_ship_group_associations,
         } = order_ship_group;
-        table::drop<String, OrderItemShipGroupAssociation>(order_item_ship_group_associations);
+        table_with_length::destroy_empty<String, OrderItemShipGroupAssociation>(order_item_ship_group_associations);
     }
 
     */

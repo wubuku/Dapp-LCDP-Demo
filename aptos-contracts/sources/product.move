@@ -32,7 +32,7 @@ module aptos_demo::product {
     }
 
 
-    public fun initialize(account: &signer) { //acquires Events
+    public fun initialize(account: &signer) {
         genesis_account::assert_genesis_account(account);
 
         let res_account = genesis_account::resource_account_signer();
