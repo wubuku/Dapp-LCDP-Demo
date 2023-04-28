@@ -7,6 +7,7 @@ module aptos_demo::order_create_logic {
     use aptos_demo::order_item;
     use aptos_demo::product;
     use aptos_demo::pass_object;
+    use std::option;
     //use aptos_demo::product;
 
     friend aptos_demo::order_aggregate;
@@ -46,9 +47,10 @@ module aptos_demo::order_create_logic {
         let order = order::create_order(
             order_created::order_id(order_created),
             order_created::total_amount(order_created),
+            option::none(),
         );
         let order_item = order_item::new_order_item(
-            order_created::product(order_created),
+            order_created::product_id(order_created),
             order_created::quantity(order_created),
             order_created::unit_price(order_created) * (order_created::quantity(order_created) as u128),
             //ctx,

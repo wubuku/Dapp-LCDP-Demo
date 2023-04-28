@@ -13,8 +13,8 @@ module aptos_demo::order_created {
         order::order_created_order_id(order_created)
     }
 
-    public fun product(order_created: &OrderCreated): String {
-        order::order_created_product(order_created)
+    public fun product_id(order_created: &OrderCreated): String {
+        order::order_created_product_id(order_created)
     }
 
     public fun quantity(order_created: &OrderCreated): u64 {
