@@ -19,7 +19,7 @@ module aptos_demo::product {
     const PRODUCT_ID_LENGTH: u64 = 20;
 
     struct Events has key {
-        product_id_generator_created_handle: event::EventHandle<ProductIdGeneratorCreated>,
+        // product_id_generator_created_handle: event::EventHandle<ProductIdGeneratorCreated>,
         product_created_handle: event::EventHandle<ProductCreated>,
     }
 
@@ -31,23 +31,23 @@ module aptos_demo::product {
         sequence: u128,
     }
 
-    struct ProductIdGeneratorCreated has store, drop {
-    }
 
     public fun initialize(account: &signer) acquires Events {
         genesis_account::assert_genesis_account(account);
 
         let res_account = genesis_account::resource_account_signer();
         move_to(&res_account, Events {
-            product_id_generator_created_handle: account::new_event_handle<ProductIdGeneratorCreated>(&res_account),
+            // product_id_generator_created_handle: account::new_event_handle<ProductIdGeneratorCreated>(&res_account),
             product_created_handle: account::new_event_handle<ProductCreated>(&res_account),
         });
 
         let product_id_generator = ProductIdGenerator {
-            //id: object::new(ctx),
             sequence: 0,
         };
         move_to(&res_account, product_id_generator);
+        // let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        // event::emit_event(&mut events.product_id_generator_created_handle, ProductIdGeneratorCreated {
+        // });
 
         move_to(
             &res_account,
@@ -55,12 +55,7 @@ module aptos_demo::product {
                 product_table: table::new(),
             },
         );
-        //let product_id_generator_id = object::uid_to_inner(&product_id_generator.id);
-        //transfer::share_object(product_id_generator);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
-        event::emit_event(&mut events.product_id_generator_created_handle, ProductIdGeneratorCreated {
-            //id: product_id_generator_id
-        });
+
     }
 
     struct Product has store {
