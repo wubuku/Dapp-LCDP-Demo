@@ -1,0 +1,52 @@
+aggregates:
+  DomainName:
+    id:
+      name: DomainNameId
+      type: DomainNameId
+      generator: 
+        class: assigned # 'increment', 'UUID', etc.
+        tableName: DomainNameIdTable # Used to check the assigned Id., etc.
+    properties:
+      ExpirationDate:
+        type: u64
+
+    methods:
+      Register:
+        parameters:
+          RegistrationPeriod:
+            type: u64
+        isCreationCommand: true
+        event:
+          name: Registered
+          properties:
+            Owner:
+              type: address
+              isOwner: true # Transfer the object to the account address indicated by this property
+      Renew:
+        parameters:
+          RenewPeriod:
+            type: u64
+        event:
+          name: Renewed
+          properties:
+            Account:
+              type: address
+              isOwner: true # Transfer the object to the account address indicated by this property
+#      Share:
+#        parameters:
+#        event:
+#          name: Shared
+#          isObjectShared: true # Share the object after the event has already occurred
+#      Freeze:
+#        parameters:
+#        event:
+#          name: Shared
+#          isObjectFrozen: true # Freeze the object after the event has already occurred
+
+    valueObjects:
+      DomainNameId:
+        properties:
+          TopLevelDomain: # TLD
+            type: String
+          SecondLevelDomain: # SLD
+            type: String
