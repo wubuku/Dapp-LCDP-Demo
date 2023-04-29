@@ -285,7 +285,7 @@ module aptos_demo::order {
         assert!(!table::contains(&tables.order_table, order_id), EID_ALREADY_EXISTS);
     }
 
-    public(friend) fun update_version_and_save(order: Order) acquires Tables {
+    public(friend) fun update_version_and_add(order: Order) acquires Tables {
         order.version = order.version + 1;
         add_order(order);
     }
