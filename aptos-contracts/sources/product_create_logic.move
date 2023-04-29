@@ -10,12 +10,14 @@ module aptos_demo::product_create_logic {
     friend aptos_demo::product_aggregate;
 
     public(friend) fun verify(
+        account: &signer,
         name: String,
         unit_price: u128,
         //product_id_generator: &mut product::ProductIdGenerator, // use mutable reference to generate next id
         //ctx: &mut TxContext,
     ): product::ProductCreated {
         //let _ = ctx;
+        let _ = account;
         let e_name = name;
         let e_unit_price = unit_price;
         //let _ = product_id_generator;
