@@ -12,7 +12,6 @@ module aptos_demo::genesis_account {
 
     friend aptos_demo::order;
     friend aptos_demo::product;
-    friend aptos_demo::domain_name;
     friend aptos_demo::day_summary;
 
     const ENOT_GENESIS_ACCOUNT: u64 = 100;

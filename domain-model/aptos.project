@@ -7,8 +7,8 @@ project:
     - "aptos/aptos-Order.yaml"
     - "aptos/aptos-Product.yaml"
     - "aptos/aptos-ValueObjects.yaml"
-    - "aptos/aptos-DomainName.yaml"
     - "aptos/aptos-DaySummary.yaml"
+    # - "aptos/aptos-DomainName.yaml"
 
   # directories:
     # - path: "."

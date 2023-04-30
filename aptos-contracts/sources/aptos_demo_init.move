@@ -5,7 +5,6 @@
 
 module aptos_demo::aptos_demo_init {
     use aptos_demo::day_summary;
-    use aptos_demo::domain_name;
     use aptos_demo::genesis_account;
     use aptos_demo::order;
     use aptos_demo::product;
@@ -14,7 +13,6 @@ module aptos_demo::aptos_demo_init {
         genesis_account::initialize(account);
         order::initialize(account);
         product::initialize(account);
-        domain_name::initialize(account);
         day_summary::initialize(account);
     }
 

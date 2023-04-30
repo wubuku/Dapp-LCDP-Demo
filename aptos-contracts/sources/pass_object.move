@@ -7,7 +7,6 @@ module aptos_demo::pass_object {
 
     friend aptos_demo::order;
     friend aptos_demo::product;
-    friend aptos_demo::domain_name;
     friend aptos_demo::day_summary;
 
     /// read-only 'hot potato' wrapper.
