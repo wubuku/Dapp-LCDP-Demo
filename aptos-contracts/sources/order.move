@@ -18,6 +18,11 @@ module aptos_demo::order {
     friend aptos_demo::order_create_logic;
     friend aptos_demo::order_remove_item_logic;
     friend aptos_demo::order_update_item_quantity_logic;
+    friend aptos_demo::order_update_estimated_ship_date_logic;
+    friend aptos_demo::order_add_order_ship_group_logic;
+    friend aptos_demo::order_cancel_order_ship_group_quantity_logic;
+    friend aptos_demo::order_remove_order_ship_group_item_logic;
+    friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -27,6 +32,11 @@ module aptos_demo::order {
         order_created_handle: event::EventHandle<OrderCreated>,
         order_item_removed_handle: event::EventHandle<OrderItemRemoved>,
         order_item_quantity_updated_handle: event::EventHandle<OrderItemQuantityUpdated>,
+        order_estimated_ship_date_updated_handle: event::EventHandle<OrderEstimatedShipDateUpdated>,
+        order_ship_group_added_handle: event::EventHandle<OrderShipGroupAdded>,
+        order_ship_group_quantity_canceled_handle: event::EventHandle<OrderShipGroupQuantityCanceled>,
+        order_ship_group_item_removed_handle: event::EventHandle<OrderShipGroupItemRemoved>,
+        order_ship_group_removed_handle: event::EventHandle<OrderShipGroupRemoved>,
     }
 
     struct Tables has key {
@@ -41,6 +51,11 @@ module aptos_demo::order {
             order_created_handle: account::new_event_handle<OrderCreated>(&res_account),
             order_item_removed_handle: account::new_event_handle<OrderItemRemoved>(&res_account),
             order_item_quantity_updated_handle: account::new_event_handle<OrderItemQuantityUpdated>(&res_account),
+            order_estimated_ship_date_updated_handle: account::new_event_handle<OrderEstimatedShipDateUpdated>(&res_account),
+            order_ship_group_added_handle: account::new_event_handle<OrderShipGroupAdded>(&res_account),
+            order_ship_group_quantity_canceled_handle: account::new_event_handle<OrderShipGroupQuantityCanceled>(&res_account),
+            order_ship_group_item_removed_handle: account::new_event_handle<OrderShipGroupItemRemoved>(&res_account),
+            order_ship_group_removed_handle: account::new_event_handle<OrderShipGroupRemoved>(&res_account),
         });
 
         move_to(
@@ -263,6 +278,173 @@ module aptos_demo::order {
         }
     }
 
+    struct OrderEstimatedShipDateUpdated has store, drop {
+        order_id: String,
+        version: u64,
+        estimated_ship_date: Day,
+    }
+
+    public fun order_estimated_ship_date_updated_order_id(order_estimated_ship_date_updated: &OrderEstimatedShipDateUpdated): String {
+        order_estimated_ship_date_updated.order_id
+    }
+
+    public fun order_estimated_ship_date_updated_estimated_ship_date(order_estimated_ship_date_updated: &OrderEstimatedShipDateUpdated): Day {
+        order_estimated_ship_date_updated.estimated_ship_date
+    }
+
+    public(friend) fun new_order_estimated_ship_date_updated(
+        order: &Order,
+        estimated_ship_date: Day,
+    ): OrderEstimatedShipDateUpdated {
+        OrderEstimatedShipDateUpdated {
+            order_id: order_id(order),
+            version: version(order),
+            estimated_ship_date,
+        }
+    }
+
+    struct OrderShipGroupAdded has store, drop {
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_id: String,
+        quantity: u64,
+    }
+
+    public fun order_ship_group_added_order_id(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.order_id
+    }
+
+    public fun order_ship_group_added_ship_group_seq_id(order_ship_group_added: &OrderShipGroupAdded): u8 {
+        order_ship_group_added.ship_group_seq_id
+    }
+
+    public fun order_ship_group_added_shipment_method(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.shipment_method
+    }
+
+    public fun order_ship_group_added_product_id(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.product_id
+    }
+
+    public fun order_ship_group_added_quantity(order_ship_group_added: &OrderShipGroupAdded): u64 {
+        order_ship_group_added.quantity
+    }
+
+    public(friend) fun new_order_ship_group_added(
+        order: &Order,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_id: String,
+        quantity: u64,
+    ): OrderShipGroupAdded {
+        OrderShipGroupAdded {
+            order_id: order_id(order),
+            version: version(order),
+            ship_group_seq_id,
+            shipment_method,
+            product_id,
+            quantity,
+        }
+    }
+
+    struct OrderShipGroupQuantityCanceled has store, drop {
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_id: String,
+        cancel_quantity: u64,
+    }
+
+    public fun order_ship_group_quantity_canceled_order_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
+        order_ship_group_quantity_canceled.order_id
+    }
+
+    public fun order_ship_group_quantity_canceled_ship_group_seq_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u8 {
+        order_ship_group_quantity_canceled.ship_group_seq_id
+    }
+
+    public fun order_ship_group_quantity_canceled_product_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
+        order_ship_group_quantity_canceled.product_id
+    }
+
+    public fun order_ship_group_quantity_canceled_cancel_quantity(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u64 {
+        order_ship_group_quantity_canceled.cancel_quantity
+    }
+
+    public(friend) fun new_order_ship_group_quantity_canceled(
+        order: &Order,
+        ship_group_seq_id: u8,
+        product_id: String,
+        cancel_quantity: u64,
+    ): OrderShipGroupQuantityCanceled {
+        OrderShipGroupQuantityCanceled {
+            order_id: order_id(order),
+            version: version(order),
+            ship_group_seq_id,
+            product_id,
+            cancel_quantity,
+        }
+    }
+
+    struct OrderShipGroupItemRemoved has store, drop {
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_id: String,
+    }
+
+    public fun order_ship_group_item_removed_order_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
+        order_ship_group_item_removed.order_id
+    }
+
+    public fun order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): u8 {
+        order_ship_group_item_removed.ship_group_seq_id
+    }
+
+    public fun order_ship_group_item_removed_product_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
+        order_ship_group_item_removed.product_id
+    }
+
+    public(friend) fun new_order_ship_group_item_removed(
+        order: &Order,
+        ship_group_seq_id: u8,
+        product_id: String,
+    ): OrderShipGroupItemRemoved {
+        OrderShipGroupItemRemoved {
+            order_id: order_id(order),
+            version: version(order),
+            ship_group_seq_id,
+            product_id,
+        }
+    }
+
+    struct OrderShipGroupRemoved has store, drop {
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+    }
+
+    public fun order_ship_group_removed_order_id(order_ship_group_removed: &OrderShipGroupRemoved): String {
+        order_ship_group_removed.order_id
+    }
+
+    public fun order_ship_group_removed_ship_group_seq_id(order_ship_group_removed: &OrderShipGroupRemoved): u8 {
+        order_ship_group_removed.ship_group_seq_id
+    }
+
+    public(friend) fun new_order_ship_group_removed(
+        order: &Order,
+        ship_group_seq_id: u8,
+    ): OrderShipGroupRemoved {
+        OrderShipGroupRemoved {
+            order_id: order_id(order),
+            version: version(order),
+            ship_group_seq_id,
+        }
+    }
+
 
     public(friend) fun create_order(
         order_id: String,
@@ -323,6 +505,31 @@ module aptos_demo::order {
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) acquires Events {
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.order_item_quantity_updated_handle, order_item_quantity_updated);
+    }
+
+    public(friend) fun emit_order_estimated_ship_date_updated(order_estimated_ship_date_updated: OrderEstimatedShipDateUpdated) acquires Events {
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_estimated_ship_date_updated_handle, order_estimated_ship_date_updated);
+    }
+
+    public(friend) fun emit_order_ship_group_added(order_ship_group_added: OrderShipGroupAdded) acquires Events {
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_ship_group_added_handle, order_ship_group_added);
+    }
+
+    public(friend) fun emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) acquires Events {
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_ship_group_quantity_canceled_handle, order_ship_group_quantity_canceled);
+    }
+
+    public(friend) fun emit_order_ship_group_item_removed(order_ship_group_item_removed: OrderShipGroupItemRemoved) acquires Events {
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_ship_group_item_removed_handle, order_ship_group_item_removed);
+    }
+
+    public(friend) fun emit_order_ship_group_removed(order_ship_group_removed: OrderShipGroupRemoved) acquires Events {
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_ship_group_removed_handle, order_ship_group_removed);
     }
 
 }

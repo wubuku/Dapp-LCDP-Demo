@@ -120,50 +120,50 @@ aggregates:
         event:
           name: OrderItemQuantityUpdated
 
-#      UpdateEstimatedShipDate:
-#        parameters:
-#          EstimatedShipDate:
-#            type: Day
-#        event:
-#          name: OrderEstimatedShipDateUpdated
-#
-#      AddOrderShipGroup:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#          ShipmentMethod:
-#            type: String
-#          ProductId:
-#            type: String
-#          Quantity:
-#            type: u64
-#        event:
-#          name: OrderShipGroupAdded
-#
-#      CancelOrderShipGroupQuantity:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#          ProductId:
-#            type: String
-#          CancelQuantity:
-#            type: u64
-#        event:
-#          name: OrderShipGroupQuantityCanceled
-#
-#      RemoveOrderShipGroupItem:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#          ProductId:
-#            type: String
-#        event:
-#          name: OrderShipGroupItemRemoved
-#
-#      RemoveOrderShipGroup:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#        event:
-#          name: OrderShipGroupRemoved
+      UpdateEstimatedShipDate:
+        parameters:
+          EstimatedShipDate:
+            type: Day
+        event:
+          name: OrderEstimatedShipDateUpdated
+
+      AddOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ShipmentMethod:
+            type: String
+          ProductId:
+            type: String
+          Quantity:
+            type: u64
+        event:
+          name: OrderShipGroupAdded
+
+      CancelOrderShipGroupQuantity:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ProductId:
+            type: String
+          CancelQuantity:
+            type: u64
+        event:
+          name: OrderShipGroupQuantityCanceled
+
+      RemoveOrderShipGroupItem:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ProductId:
+            type: String
+        event:
+          name: OrderShipGroupItemRemoved
+
+      RemoveOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+        event:
+          name: OrderShipGroupRemoved
 
