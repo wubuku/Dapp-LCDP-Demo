@@ -5,9 +5,8 @@
 
 module aptos_demo::order_created {
 
-    use std::string::String;
-
     use aptos_demo::order::{Self, OrderCreated};
+    use std::string::String;
 
     public fun order_id(order_created: &OrderCreated): String {
         order::order_created_order_id(order_created)
@@ -32,4 +31,5 @@ module aptos_demo::order_created {
     public fun owner(order_created: &OrderCreated): address {
         order::order_created_owner(order_created)
     }
+
 }

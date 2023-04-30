@@ -5,9 +5,8 @@
 
 module aptos_demo::order_item_quantity_updated {
 
-    use std::string::String;
-    //use sui::object;
     use aptos_demo::order::{Self, OrderItemQuantityUpdated};
+    use std::string::String;
 
     public fun order_id(order_item_quantity_updated: &OrderItemQuantityUpdated): String {
         order::order_item_quantity_updated_order_id(order_item_quantity_updated)

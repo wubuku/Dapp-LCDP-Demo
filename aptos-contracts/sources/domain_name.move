@@ -10,9 +10,9 @@ module aptos_demo::domain_name {
     use aptos_framework::event;
     use aptos_std::table::{Self, Table};
     use std::string::String;
-    //friend aptos_demo::domain_name_register_logic;
-    //friend aptos_demo::domain_name_renew_logic;
-    //friend aptos_demo::domain_name_aggregate;
+    friend aptos_demo::domain_name_register_logic;
+    friend aptos_demo::domain_name_renew_logic;
+    friend aptos_demo::domain_name_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;

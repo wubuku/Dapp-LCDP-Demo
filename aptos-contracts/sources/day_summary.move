@@ -12,8 +12,8 @@ module aptos_demo::day_summary {
     use aptos_std::table::{Self, Table};
     use std::option::Option;
     use std::string::String;
-    //friend aptos_demo::day_summary_create_logic;
-    //friend aptos_demo::day_summary_aggregate;
+    friend aptos_demo::day_summary_create_logic;
+    friend aptos_demo::day_summary_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;

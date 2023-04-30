@@ -5,9 +5,8 @@
 
 module aptos_demo::order_item_removed {
 
-    use std::string::String;
-    //use sui::object;
     use aptos_demo::order::{Self, OrderItemRemoved};
+    use std::string::String;
 
     public fun order_id(order_item_removed: &OrderItemRemoved): String {
         order::order_item_removed_order_id(order_item_removed)
