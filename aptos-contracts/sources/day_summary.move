@@ -49,7 +49,7 @@ module aptos_demo::day_summary {
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     }
 
     public fun day(day_summary: &DaySummary): Day {
@@ -84,11 +84,11 @@ module aptos_demo::day_summary {
         day_summary.array_data = array_data;
     }
 
-    public fun optional_data(day_summary: &DaySummary): Option<vector<u8>> {
+    public fun optional_data(day_summary: &DaySummary): Option<String> {
         day_summary.optional_data
     }
 
-    public(friend) fun set_optional_data(day_summary: &mut DaySummary, optional_data: Option<vector<u8>>) {
+    public(friend) fun set_optional_data(day_summary: &mut DaySummary, optional_data: Option<String>) {
         day_summary.optional_data = optional_data;
     }
 
@@ -97,7 +97,7 @@ module aptos_demo::day_summary {
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     ): DaySummary {
         DaySummary {
             day,
@@ -114,7 +114,7 @@ module aptos_demo::day_summary {
         description: String,
         meta_data: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     }
 
     public fun day_summary_created_day(day_summary_created: &DaySummaryCreated): Day {
@@ -133,7 +133,7 @@ module aptos_demo::day_summary {
         day_summary_created.array_data
     }
 
-    public fun day_summary_created_optional_data(day_summary_created: &DaySummaryCreated): Option<vector<u8>> {
+    public fun day_summary_created_optional_data(day_summary_created: &DaySummaryCreated): Option<String> {
         day_summary_created.optional_data
     }
 
@@ -142,7 +142,7 @@ module aptos_demo::day_summary {
         description: String,
         meta_data: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     ): DaySummaryCreated {
         DaySummaryCreated {
             day,
@@ -159,7 +159,7 @@ module aptos_demo::day_summary {
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     ): DaySummary acquires Tables {
         asset_day_summary_not_exists(day);
         let day_summary = new_day_summary(

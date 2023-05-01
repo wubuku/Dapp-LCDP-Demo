@@ -14,7 +14,7 @@ module aptos_demo::day_summary_create_logic {
         description: String,
         meta_data: vector<u8>,
         array_data: vector<String>,
-        optional_data: Option<vector<u8>>,
+        optional_data: Option<String>,
     ): day_summary::DaySummaryCreated {
         let _ = account;
         day_summary::asset_day_summary_not_exists(day);

@@ -26,7 +26,7 @@ module aptos_demo::day_summary_created {
         day_summary::day_summary_created_array_data(day_summary_created)
     }
 
-    public fun optional_data(day_summary_created: &DaySummaryCreated): Option<vector<u8>> {
+    public fun optional_data(day_summary_created: &DaySummaryCreated): Option<String> {
         day_summary::day_summary_created_optional_data(day_summary_created)
     }
 

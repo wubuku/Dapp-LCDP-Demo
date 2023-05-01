@@ -16,4 +16,8 @@ aptos move run --function-id 'default::product_aggregate::create' --args 'string
 aptos move run --function-id 'default::order_aggregate::create' --args 'string:test_order_1' 'string:00000000000000000001' 'u64:1' --assume-yes
 
 aptos move run --function-id 'default::order_aggregate::update_item_quantity' --args 'string:test_order_1' 'string:00000000000000000001' u64:3 --assume-yes
+
+aptos move run --function-id 'default::day_summary_aggregate::create' \
+--args u16:2022 'string:ChineseLunar' u8:4 bool:false u8:25 'string:Beijing' 'string:description' 'vector<u8>:1,2,3' 'vector<string>:str1,str2' 'vector<String>:optional_data_item' \
+--assume-yes
 ```

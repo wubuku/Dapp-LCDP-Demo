@@ -84,7 +84,7 @@ aptos move run --function-id 'default::product_aggregate::create' \
 
 ```shell
 aptos move run --function-id 'default::day_summary_aggregate::create' \
---args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item' 'vector<String>:array_data_item' Option<vector<u8>>:optional_data \
+--args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item' 'vector<String>:array_data_item' 'vector<String>:optional_data_item' \
 --assume-yes
 ```
 
