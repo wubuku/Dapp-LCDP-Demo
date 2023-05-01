@@ -3,7 +3,9 @@
 ```shell
 aptos config show-profiles
 
+aptos init
 aptos account fund-with-faucet --account default --amount 50000000000
+
 aptos move compile --named-addresses aptos_demo=default
 aptos move publish --named-addresses aptos_demo=default --assume-yes
 
