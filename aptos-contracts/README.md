@@ -9,8 +9,9 @@ aptos move publish --named-addresses aptos_demo=default --assume-yes
 
 aptos move run --function-id 'default::aptos_demo_init::initialize' --assume-yes
 
-aptos move run --function-id 'default::product_aggregate::create' --args 'string:test_product_1' --args 'u128:1000' --assume-yes
+aptos move run --function-id 'default::product_aggregate::create' --args 'string:test_product_1' 'u128:1000' --assume-yes
 
-aptos move run --function-id 'default::order_aggregate::create' --args 'string:test_order_1' --args 'string:00000000000000000001' --args 'u64:1' --assume-yes
+aptos move run --function-id 'default::order_aggregate::create' --args 'string:test_order_1' 'string:00000000000000000001' 'u64:1' --assume-yes
 
+aptos move run --function-id 'default::order_aggregate::update_item_quantity' --args 'string:test_order_1' 'string:00000000000000000001' u64:3 --assume-yes
 ```
