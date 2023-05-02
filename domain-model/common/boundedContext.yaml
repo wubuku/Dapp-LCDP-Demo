@@ -2,23 +2,26 @@
 ---
 
 configuration:
+  #  boundedContextName: "Dddml.SuiDemoContracts"
 
-  boundedContextName: "Dddml.SuiDemoContracts"
+  sequenceNumber: 0
+
+  #  defaultModule:
+  #    name: "Dddml.SuiDemoContracts"
   
-  defaultModule: 
-    name: "Dddml.SuiDemoContracts"
-  
-  isSurrogateIdMandatory: true
-  defaultSurrogateId:
-    name: Id
-    type: UID
+  #  isSurrogateIdMandatory: true
+  #  defaultSurrogateId:
+  #    name: Id
+  #    type: UID
+
   aggregateEventVersionProperty:
     name: Version
     type: u64
-  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
-  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
-  ignoreEntityImmutable: true
+
+  #  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
+  #  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
+  #  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
+  #  ignoreEntityImmutable: true
 
   #genericTypes: ["TAccountId", "TQuantity"]
   isGenericTypeAsType: true
@@ -29,7 +32,7 @@ configuration:
   
   valueObjectBaseTypes:
     "Email": "string"
-    
+
   #defaultTimestampType: "Timestamp"
 
   defaultReservedProperties:
@@ -40,7 +43,7 @@ configuration:
     updatedAt: UpdatedAt
     deleted: Deleted
     version: OffChainVersion
-    
+
   sqlTypes:
     DateTime: DATETIME
     decimal: decimal(18,6)
@@ -55,11 +58,11 @@ configuration:
         Java: "{fst}.add({snd} != null ? {snd} : BigDecimal.ZERO)"
       negateLogic:
         Java: "{0}.negate()"
-        
+
   # -----------------------------------------
   namedStringPatterns:
     "AttributeId": "^[\\(A-Za-z0-9][A-Za-z0-9]*"
-    
+
   onCommandExecuting:
     Java: "{0}.setRequesterId(SecurityContextUtil.getRequesterId());"
   
@@ -83,14 +86,16 @@ configuration:
     ClrDomainServiceSubNamespaceName: "Services"
     ClrHttpServiceSetRequesterIdAttributeEnabled: true
     ClrHttpServiceJsonContractResolver: "Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver"
-    ClrHttpServiceJsonConverters: [
-        "Dddml.SuiDemoContracts.HttpServices.JsonConverters.LongConverter",
-        "Dddml.SuiDemoContracts.HttpServices.JsonConverters.DecimalConverter"]
-    ClrHttpServiceDtoJObjectMapperAssembly: "Dddml.SuiDemoContracts.HttpServices"
 
-    ClrRamlVersion: "0.8"
-    ClrRamlClientSubNamespace: "HttpServices.ClientProxies.Raml"
-    ClrRamlClientMainClassName: "DddmlSuiDemoContractsRamlClient"
+#    ClrHttpServiceJsonConverters: [
+#      "Dddml.SuiDemoContracts.HttpServices.JsonConverters.LongConverter",
+#      "Dddml.SuiDemoContracts.HttpServices.JsonConverters.DecimalConverter"
+#    ]
+#    ClrHttpServiceDtoJObjectMapperAssembly: "Dddml.SuiDemoContracts.HttpServices"
+#
+#    ClrRamlVersion: "0.8"
+#    ClrRamlClientSubNamespace: "HttpServices.ClientProxies.Raml"
+#    ClrRamlClientMainClassName: "DddmlSuiDemoContractsRamlClient"
 
     TypeScriptJsonUsingCamelCasePropertyName: true
     
@@ -106,14 +111,15 @@ configuration:
     AutoAggregateMethodJavaDefaultLogicEnabled: true
     AutoGeneratingCrUDCommandsDisabled: true
     AllEventsMutable: true
+
     # OptimisticLockingVersionDisabled: true
     # JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
   sui:
-    boundedContextPackage: "sui_contracts"
-    moveObjectVersionPropertyName: "Version"
-    moveObjectVersionPropertyType: "u64"
-    offChainObjectNames: ["SuiEventId"]
+#    boundedContextPackage: "sui_contracts"
+#    moveObjectVersionPropertyName: "Version"
+#    moveObjectVersionPropertyType: "u64"
+#    offChainObjectNames: [ "SuiEventId" ]
     # ignoredMandatoryAggregateEventImplements: ...
 
     typeMappings:
@@ -133,11 +139,11 @@ configuration:
       "String": "std::string"
 
   aptos:
-    boundedContextPackage: "AptosDemo"
-    boundedContextNamedAddress: "aptos_demo"
-    moveObjectVersionPropertyName: "Version"
-    moveObjectVersionPropertyType: "u64"
-    offChainObjectNames: []
+#    boundedContextPackage: "AptosDemo"
+#    boundedContextNamedAddress: "aptos_demo"
+#    moveObjectVersionPropertyName: "Version"
+#    moveObjectVersionPropertyType: "u64"
+#    offChainObjectNames: [ ]
 
     typeMappings:
       "U8": "u8"
@@ -156,9 +162,8 @@ configuration:
       "String": "std::string"
 
   java:
-  
-    boundedContextPackage: "org.dddml.suidemocontracts"
-    specializationPackage: "org.dddml.suidemocontracts.specialization"
+#      boundedContextPackage: "org.dddml.suidemocontracts"
+#      specializationPackage: "org.dddml.suidemocontracts.specialization"
     isUsingSeparatedDomainAggregatePackage: true
     defaultUserIdType: "string"
     #JavaSerializationAnnotationTypes: {}
@@ -166,7 +171,7 @@ configuration:
     eventLobPropertiesPersistenceName: "DynamicPropertiesLob"
     eventLobPropertiesSqlType: VARCHAR(2000)
     
-    typeMappings: 
+    typeMappings:
       "bool": "Boolean"
       "bool?": "Boolean"
       "DateTime": "Date"
@@ -203,11 +208,11 @@ configuration:
   # -----------------------------------------
   onRestfulCommandExecuting:
     Java: "{0}.setRequesterId(SecurityContextUtil.getRequesterId());"
-  #onRestfulCommandExecuting:
-  #  Java: "SecurityContextUtil.setCommandContext({0});"      
-      
+      #onRestfulCommandExecuting:
+    #  Java: "SecurityContextUtil.setCommandContext({0});"
+
   php:
-  
+
     boundedContextNamespace: "Dddml\\SuiDemoContracts"
     specializationNamespace: "Dddml"
     defaultUserIdType: "string"
@@ -241,9 +246,9 @@ configuration:
       "DateTime": "DateTime"
       "DateTime?": "DateTime"
       
-    #typeNamespaces:
-    #  "Money": "NodaMoney"
-      
+      #typeNamespaces:
+      #  "Money": "NodaMoney"
+
     defaultFieldTypes:
       "bool": "CheckboxType"
       "bool?": "CheckboxType"
@@ -257,16 +262,16 @@ configuration:
       "long?": "IntegerType"
       "string": "TextType"
       "Money": "MoneyType"
-        
+
   typeScript:
-  
+
     boundedContextNamespace: "Dddml.SuiDemoContracts"
     specializationNamespace: "Dddml"
     isUsingSeparatedDomainAggregateNamespace: false
     
     typeNamespaces:
       "Money": "NodaMoney"
-  
+
     typeMappings:
       "bool": "boolean"
       "bool?": "boolean"
@@ -282,28 +287,28 @@ configuration:
       "long?": "string"
       "Money": "Money"
       "string": "string"
-            
+
   hibernate:
-  
+
     hibernateTypes:
       Money:
         mappingType: "org.dddml.suidemocontracts.domain.hibernate.usertypes.MoneyType"
-        propertyNames: ["Amount", "Currency"] 
-        propertyTypes: ["decimal", "string"]
+        propertyNames: [ "Amount", "Currency" ]
+        propertyTypes: [ "decimal", "string" ]
       DateTime:
         mappingType: timestamp
-        
+
   nHibernate:
     
     timestampMappingType: DateTimeUtc
     nHibernateTypes:
       Money:
         mappingType: "Dddml.SuiDemoContracts.Services.Domain.NHibernate.NodaMoneyType, Dddml.SuiDemoContracts.Services"
-        propertyNames: ["Amount", "Currency"]
-        propertyTypes: ["decimal", "string"]
+        propertyNames: [ "Amount", "Currency" ]
+        propertyTypes: [ "decimal", "string" ]
 
   aggregates:
-  
+
     AttributeSetInstance:
       metadata:
         PersistingStateEventRemovedPropertiesAsSet: true

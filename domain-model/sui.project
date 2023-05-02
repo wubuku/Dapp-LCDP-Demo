@@ -3,6 +3,7 @@ project:
     
   files:
     - "common/boundedContext.yaml"
+    - "common/sui-boundedContext.yaml"
     - "common/types.yaml"
     - "common/sui-types.yaml"
     - "common/sui-SuperObjects.yaml"

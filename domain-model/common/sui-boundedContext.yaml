@@ -1,0 +1,32 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 1
+
+  boundedContextName: "Dddml.SuiDemoContracts"
+
+  defaultModule:
+    name: "Dddml.SuiDemoContracts"
+
+  isSurrogateIdMandatory: true
+
+  defaultSurrogateId:
+    name: Id
+    type: UID
+
+  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
+  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
+  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
+  ignoreEntityImmutable: true
+
+  sui:
+    boundedContextPackage: "sui_contracts"
+    moveObjectVersionPropertyName: "Version"
+    moveObjectVersionPropertyType: "u64"
+    offChainObjectNames: [ "SuiEventId" ]
+
+  java:
+    boundedContextPackage: "org.dddml.suidemocontracts"
+    specializationPackage: "org.dddml.suidemocontracts.specialization"
+
