@@ -11,12 +11,12 @@ configuration:
 
   isSurrogateIdMandatory: false
 
-#  defaultSurrogateId:
-#    name: Id
-#    type: UID
+  #  defaultSurrogateId:
+  #    name: Id
+  #    type: UID
 
-  mandatoryAggregateImplements: ["VersionedAptosMoveObject"]
-  mandatoryAggregateEventImplements: ["AptosEvent", "HasStatus"]
+  mandatoryAggregateImplements: [ "VersionedAptosMoveObject" ]
+  mandatoryAggregateEventImplements: [ "AptosEvent", "HasStatus" ]
   ignoreEntityImmutable: true
 
   aptos:
@@ -24,7 +24,7 @@ configuration:
     boundedContextNamedAddress: "aptos_demo"
     moveObjectVersionPropertyName: "Version"
     moveObjectVersionPropertyType: "u64"
-    offChainObjectNames: [ ]
+    offChainObjectNames: [ "AptosEventGuid" ]
 
   java:
     boundedContextPackage: "org.dddml.aptosdemocontracts"

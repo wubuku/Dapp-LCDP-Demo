@@ -1,10 +1,10 @@
 #!/bin/bash
 
-source_dir="{PATH_TO}/Dapp-LCDP-Demo/sui-contracts/sources"
-target_dir="{PATH_TO}/A-Sui-Demo/sui-contracts/sources"
+source_dir="{PATH_TO}/Dapp-LCDP-Demo/aptos-contracts/sources"
+target_dir="{PATH_TO}/A-Aptos-Demo/aptos-contracts/sources"
 
-old_keyword="sui_contracts"
-new_keyword="sui_test_proj1"
+old_keyword="aptos_demo"
+new_keyword="aptos_test_proj1"
 
 for file in "${source_dir}"/*_logic.move; do
   if [[ -f "$file" ]] && grep -q "$old_keyword" "$file"; then
