@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source_dir="/Users/yangjiefeng/Documents/wubuku/Dapp-LCDP-Demo/aptos-contracts/sources"
-target_dir="/Users/yangjiefeng/Documents/dddappp/A-Aptos-Demo/aptos-contracts/sources"
+source_dir="{PATH_TO}/Dapp-LCDP-Demo/aptos-contracts/sources"
+target_dir="{PATH_TO}/A-Aptos-Demo/aptos-contracts/sources"
 
 old_keyword="aptos_demo"
 new_keyword="aptos_test_proj1"
