@@ -128,6 +128,7 @@ configuration:
       "U32": "u32"
       "U64": "u64"
       "U128": "u128"
+      "U256": "u256"
       "vector<u8>": "vector<u8>"
       "string": "String" # std::string::String
       "String": "String"
@@ -151,6 +152,7 @@ configuration:
       "U32": "u32"
       "U64": "u64"
       "U128": "u128"
+      "U256": "u256"
       "vector<u8>": "vector<u8>"
       "string": "String" # std::string::String
       "String": "String"

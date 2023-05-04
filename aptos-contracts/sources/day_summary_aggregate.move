@@ -25,6 +25,11 @@ module aptos_demo::day_summary_aggregate {
         meta_data: vector<u8>,
         array_data: vector<String>,
         optional_data: vector<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     ) {
         let day: Day = day::new(
             month::new(
@@ -46,6 +51,11 @@ module aptos_demo::day_summary_aggregate {
             meta_data,
             array_data,
             vector_to_option(optional_data),
+            u16_array_data,
+            u32_array_data,
+            u64_array_data,
+            u128_array_data,
+            u256_array_data,
         );
         let day_summary = day_summary_create_logic::mutate(
             &day_summary_created,

@@ -11,11 +11,30 @@ aggregates:
         type: String
       Metadata:
         type: vector<u8>
+        #     "meta_data": "0x010203",
       ArrayData:
         itemType: String
+        #      "array_data": [
+        #        "\u0004str1",
+        #        "\u0004str2"
+        #      ],
       OptionalData:
         type: String
         optional: true
+        #      "optional_data": {
+        #        "vec": [
+        #          "\u0012optional_data_item"
+        #        ]
+      U16ArrayData:
+        itemType: u16
+      U32ArrayData:
+        itemType: u32
+      U64ArrayData:
+        itemType: u64
+      U128ArrayData:
+        itemType: u128
+      U256ArrayData:
+        itemType: u256
 
     methods:
       Create:
@@ -30,6 +49,16 @@ aggregates:
           OptionalData:
             type: String # nested vector<vector<_>> parameter type is not supported in Aptos entry fun.
             optional: true
+          U16ArrayData:
+            itemType: u16
+          U32ArrayData:
+            itemType: u32
+          U64ArrayData:
+            itemType: u64
+          U128ArrayData:
+            itemType: u128
+          U256ArrayData:
+            itemType: u256
         event:
           name: DaySummaryCreated
 

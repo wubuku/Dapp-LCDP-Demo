@@ -50,6 +50,11 @@ module aptos_demo::day_summary {
         metadata: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     }
 
     public fun day(day_summary: &DaySummary): Day {
@@ -92,12 +97,57 @@ module aptos_demo::day_summary {
         day_summary.optional_data = optional_data;
     }
 
+    public fun u16_array_data(day_summary: &DaySummary): vector<u16> {
+        day_summary.u16_array_data
+    }
+
+    public(friend) fun set_u16_array_data(day_summary: &mut DaySummary, u16_array_data: vector<u16>) {
+        day_summary.u16_array_data = u16_array_data;
+    }
+
+    public fun u32_array_data(day_summary: &DaySummary): vector<u32> {
+        day_summary.u32_array_data
+    }
+
+    public(friend) fun set_u32_array_data(day_summary: &mut DaySummary, u32_array_data: vector<u32>) {
+        day_summary.u32_array_data = u32_array_data;
+    }
+
+    public fun u64_array_data(day_summary: &DaySummary): vector<u64> {
+        day_summary.u64_array_data
+    }
+
+    public(friend) fun set_u64_array_data(day_summary: &mut DaySummary, u64_array_data: vector<u64>) {
+        day_summary.u64_array_data = u64_array_data;
+    }
+
+    public fun u128_array_data(day_summary: &DaySummary): vector<u128> {
+        day_summary.u128_array_data
+    }
+
+    public(friend) fun set_u128_array_data(day_summary: &mut DaySummary, u128_array_data: vector<u128>) {
+        day_summary.u128_array_data = u128_array_data;
+    }
+
+    public fun u256_array_data(day_summary: &DaySummary): vector<u256> {
+        day_summary.u256_array_data
+    }
+
+    public(friend) fun set_u256_array_data(day_summary: &mut DaySummary, u256_array_data: vector<u256>) {
+        day_summary.u256_array_data = u256_array_data;
+    }
+
     fun new_day_summary(
         day: Day,
         description: String,
         metadata: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     ): DaySummary {
         DaySummary {
             day,
@@ -106,6 +156,11 @@ module aptos_demo::day_summary {
             metadata,
             array_data,
             optional_data,
+            u16_array_data,
+            u32_array_data,
+            u64_array_data,
+            u128_array_data,
+            u256_array_data,
         }
     }
 
@@ -115,6 +170,11 @@ module aptos_demo::day_summary {
         meta_data: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     }
 
     public fun day_summary_created_day(day_summary_created: &DaySummaryCreated): Day {
@@ -137,12 +197,37 @@ module aptos_demo::day_summary {
         day_summary_created.optional_data
     }
 
+    public fun day_summary_created_u16_array_data(day_summary_created: &DaySummaryCreated): vector<u16> {
+        day_summary_created.u16_array_data
+    }
+
+    public fun day_summary_created_u32_array_data(day_summary_created: &DaySummaryCreated): vector<u32> {
+        day_summary_created.u32_array_data
+    }
+
+    public fun day_summary_created_u64_array_data(day_summary_created: &DaySummaryCreated): vector<u64> {
+        day_summary_created.u64_array_data
+    }
+
+    public fun day_summary_created_u128_array_data(day_summary_created: &DaySummaryCreated): vector<u128> {
+        day_summary_created.u128_array_data
+    }
+
+    public fun day_summary_created_u256_array_data(day_summary_created: &DaySummaryCreated): vector<u256> {
+        day_summary_created.u256_array_data
+    }
+
     public(friend) fun new_day_summary_created(
         day: Day,
         description: String,
         meta_data: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     ): DaySummaryCreated {
         DaySummaryCreated {
             day,
@@ -150,6 +235,11 @@ module aptos_demo::day_summary {
             meta_data,
             array_data,
             optional_data,
+            u16_array_data,
+            u32_array_data,
+            u64_array_data,
+            u128_array_data,
+            u256_array_data,
         }
     }
 
@@ -160,6 +250,11 @@ module aptos_demo::day_summary {
         metadata: vector<u8>,
         array_data: vector<String>,
         optional_data: Option<String>,
+        u16_array_data: vector<u16>,
+        u32_array_data: vector<u32>,
+        u64_array_data: vector<u64>,
+        u128_array_data: vector<u128>,
+        u256_array_data: vector<u256>,
     ): DaySummary acquires Tables {
         asset_day_summary_not_exists(day);
         let day_summary = new_day_summary(
@@ -168,6 +263,11 @@ module aptos_demo::day_summary {
             metadata,
             array_data,
             optional_data,
+            u16_array_data,
+            u32_array_data,
+            u64_array_data,
+            u128_array_data,
+            u256_array_data,
         );
         day_summary
     }

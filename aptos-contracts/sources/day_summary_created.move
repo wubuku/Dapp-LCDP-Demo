@@ -30,4 +30,24 @@ module aptos_demo::day_summary_created {
         day_summary::day_summary_created_optional_data(day_summary_created)
     }
 
+    public fun u16_array_data(day_summary_created: &DaySummaryCreated): vector<u16> {
+        day_summary::day_summary_created_u16_array_data(day_summary_created)
+    }
+
+    public fun u32_array_data(day_summary_created: &DaySummaryCreated): vector<u32> {
+        day_summary::day_summary_created_u32_array_data(day_summary_created)
+    }
+
+    public fun u64_array_data(day_summary_created: &DaySummaryCreated): vector<u64> {
+        day_summary::day_summary_created_u64_array_data(day_summary_created)
+    }
+
+    public fun u128_array_data(day_summary_created: &DaySummaryCreated): vector<u128> {
+        day_summary::day_summary_created_u128_array_data(day_summary_created)
+    }
+
+    public fun u256_array_data(day_summary_created: &DaySummaryCreated): vector<u256> {
+        day_summary::day_summary_created_u256_array_data(day_summary_created)
+    }
+
 }

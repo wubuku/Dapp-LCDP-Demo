@@ -5,6 +5,7 @@ project:
     - "common/boundedContext.yaml"
     - "common/aptos-boundedContext.yaml"
     - "common/types.yaml"
+    - "common/aptos-types.yaml"
     - "aptos/aptos-Order.yaml"
     - "aptos/aptos-Product.yaml"
     - "aptos/aptos-ValueObjects.yaml"
