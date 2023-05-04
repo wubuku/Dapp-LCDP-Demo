@@ -4,20 +4,19 @@
 configuration:
   sequenceNumber: 1
 
-  boundedContextName: "Dddml.SuiDemoContracts"
+  boundedContextName: "Dddml.AptosDemoContracts"
 
   defaultModule:
-    name: "Dddml.SuiDemoContracts"
+    name: "Dddml.AptosDemoContracts"
 
-  isSurrogateIdMandatory: true
+  isSurrogateIdMandatory: false
 
-  defaultSurrogateId:
-    name: Id
-    type: UID
+#  defaultSurrogateId:
+#    name: Id
+#    type: UID
 
-  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
-  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
+  mandatoryAggregateImplements: ["VersionedAptosMoveObject"]
+  mandatoryAggregateEventImplements: ["AptosEvent", "HasStatus"]
   ignoreEntityImmutable: true
 
   aptos:
@@ -28,6 +27,6 @@ configuration:
     offChainObjectNames: [ ]
 
   java:
-    boundedContextPackage: "org.dddml.suidemocontracts"
-    specializationPackage: "org.dddml.suidemocontracts.specialization"
+    boundedContextPackage: "org.dddml.aptosdemocontracts"
+    specializationPackage: "org.dddml.aptosdemocontracts.specialization"
 

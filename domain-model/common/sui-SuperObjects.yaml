@@ -5,10 +5,10 @@ superObjects:
       Version:
         type: u64
 
-  VersionedSuiMoveEvent:
-    properties:
-      Version:
-        type: u64
+#  VersionedSuiMoveEvent:
+#    properties:
+#      Version:
+#        type: u64
 
 # SuiEventEnvelope<E> {
 #    private Long timestamp;

@@ -1,0 +1,40 @@
+superObjects:
+
+  VersionedAptosMoveObject:
+    properties:
+      Version:
+        type: u64
+
+  AptosEvent:
+    properties:
+      AptosEventVersion:
+        type: u128
+      AptosEventSequenceNumber:
+        type: u128
+      AptosEventType:
+        type: String
+        length: 500
+        #    "version": "4276735",
+        #    "sequence_number": "1",
+        #    "type": "0x2239450816c09cef0202c090ec15f648a33e3fff0209167cad1ef6830b1d5d1f::day_summary::DaySummaryCreated",
+      AptosEventGuid:
+        type: AptosEventGuid
+
+  HasStatus:
+    properties:
+      Status:
+        type: indicator
+
+
+valueObjects:
+
+  AptosEventGuid:
+    properties:
+      CreationNumber:
+        type: u128
+      AccountAddress:
+        type: address
+      #  "guid": {
+      #    "creation_number": "11",
+      #    "account_address": "0x427a45134e0bbfc962c576a7804eb6b3f1ad2d3d885f6bee6f27d91aca96df5b"
+      #  }
