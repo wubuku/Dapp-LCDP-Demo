@@ -33,17 +33,27 @@ public class MoveObjectIdGeneratorObjectService {
 
     @Transactional
     public void initMoveObjectIdGeneratorObjects() {
+        boolean showInput = false;
+        boolean showRawInput = false;
+        boolean showEffects = false;
+        boolean showEvents = true;
+        boolean showObjectChanges = true;
+        boolean showBalanceChanges = false;
         SuiTransactionBlockResponse suiTransactionBlockResponse = suiJsonRpcClient.getTransactionBlock(
                 packagePublishTransaction,
-                new SuiTransactionBlockResponseOptions(true, true, true, true, true, true)
+                new SuiTransactionBlockResponseOptions(showInput, showRawInput, showEffects, showEvents, showObjectChanges, showBalanceChanges)
         );
 
         AtomicReference<String> packageIdRef = new AtomicReference<>();
         ObjectChange[] objectChanges = suiTransactionBlockResponse.getObjectChanges();
+        if (objectChanges == null) {
+            System.out.println("No object changes found in SuiTransactionBlockResponse");
+            return;
+        }
         Arrays.stream(objectChanges).filter(
-                event -> event instanceof ObjectChange.Published
-        ).findFirst().ifPresent(event -> {
-            ObjectChange.Published published = (ObjectChange.Published) event;
+                c -> c instanceof ObjectChange.Published
+        ).findFirst().ifPresent(c -> {
+            ObjectChange.Published published = (ObjectChange.Published) c;
             //System.out.println(published);
             packageIdRef.set(published.getPackageId());
             saveDefaultSuiPackageIfNotExists(
@@ -56,9 +66,9 @@ public class MoveObjectIdGeneratorObjectService {
         String packageId = packageIdRef.get();
         String[] idGeneratorDataObjTypes = ContractConstants.getMoveObjectIdGeneratorObjectTypes(packageId);
         Arrays.stream(objectChanges).filter(
-                event -> event instanceof ObjectChange.Created
-        ).forEach(event -> {
-            ObjectChange.Created objectCreated = (ObjectChange.Created) event;
+                c -> c instanceof ObjectChange.Created
+        ).forEach(c -> {
+            ObjectChange.Created objectCreated = (ObjectChange.Created) c;
             int idx = objectCreated.getObjectType().indexOf("::");
             if (objectCreated.getObjectType().substring(0, idx).equals(packageId)) {
                 if (Arrays.stream(idGeneratorDataObjTypes).anyMatch(t -> t.equals(objectCreated.getObjectType()))) {
