@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.domain;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import org.dddml.suidemocontracts.domain.*;
 
 public class SuiEventId implements Serializable {
@@ -21,14 +22,14 @@ public class SuiEventId implements Serializable {
         this.txDigest = txDigest;
     }
 
-    private Long eventSeq;
+    private BigInteger eventSeq;
 
-    public Long getEventSeq()
+    public BigInteger getEventSeq()
     {
         return this.eventSeq;
     }
 
-    public void setEventSeq(Long eventSeq)
+    public void setEventSeq(BigInteger eventSeq)
     {
         this.eventSeq = eventSeq;
     }
@@ -37,7 +38,7 @@ public class SuiEventId implements Serializable {
     {
     }
 
-    public SuiEventId(String txDigest, Long eventSeq)
+    public SuiEventId(String txDigest, BigInteger eventSeq)
     {
         this.txDigest = txDigest;
         this.eventSeq = eventSeq;

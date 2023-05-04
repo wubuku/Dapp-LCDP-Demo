@@ -131,7 +131,7 @@ public class DomainBeanUtils {
 
         registered.setSuiTimestamp(eventEnvelope.getTimestampMs());
         registered.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        registered.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        registered.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         registered.setSuiPackageId(eventEnvelope.getPackageId());
         registered.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -152,7 +152,7 @@ public class DomainBeanUtils {
 
         renewed.setSuiTimestamp(eventEnvelope.getTimestampMs());
         renewed.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        renewed.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        renewed.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         renewed.setSuiPackageId(eventEnvelope.getPackageId());
         renewed.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -175,7 +175,7 @@ public class DomainBeanUtils {
 
         orderCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderCreated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderCreated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderCreated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderCreated.setSuiPackageId(eventEnvelope.getPackageId());
         orderCreated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -194,7 +194,7 @@ public class DomainBeanUtils {
 
         orderItemRemoved.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderItemRemoved.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderItemRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderItemRemoved.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderItemRemoved.setSuiPackageId(eventEnvelope.getPackageId());
         orderItemRemoved.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -214,7 +214,7 @@ public class DomainBeanUtils {
 
         orderItemQuantityUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderItemQuantityUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderItemQuantityUpdated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderItemQuantityUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderItemQuantityUpdated.setSuiPackageId(eventEnvelope.getPackageId());
         orderItemQuantityUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -235,7 +235,7 @@ public class DomainBeanUtils {
 
         productCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         productCreated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        productCreated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        productCreated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         productCreated.setSuiPackageId(eventEnvelope.getPackageId());
         productCreated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -259,7 +259,7 @@ public class DomainBeanUtils {
 
         orderV2Created.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderV2Created.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderV2Created.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderV2Created.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderV2Created.setSuiPackageId(eventEnvelope.getPackageId());
         orderV2Created.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -279,7 +279,7 @@ public class DomainBeanUtils {
 
         orderV2ItemRemoved.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderV2ItemRemoved.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderV2ItemRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderV2ItemRemoved.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderV2ItemRemoved.setSuiPackageId(eventEnvelope.getPackageId());
         orderV2ItemRemoved.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -300,7 +300,7 @@ public class DomainBeanUtils {
 
         orderV2ItemQuantityUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderV2ItemQuantityUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderV2ItemQuantityUpdated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderV2ItemQuantityUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderV2ItemQuantityUpdated.setSuiPackageId(eventEnvelope.getPackageId());
         orderV2ItemQuantityUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -320,7 +320,7 @@ public class DomainBeanUtils {
 
         orderV2EstimatedShipDateUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderV2EstimatedShipDateUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderV2EstimatedShipDateUpdated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderV2EstimatedShipDateUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderV2EstimatedShipDateUpdated.setSuiPackageId(eventEnvelope.getPackageId());
         orderV2EstimatedShipDateUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -343,7 +343,7 @@ public class DomainBeanUtils {
 
         orderShipGroupAdded.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderShipGroupAdded.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderShipGroupAdded.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderShipGroupAdded.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderShipGroupAdded.setSuiPackageId(eventEnvelope.getPackageId());
         orderShipGroupAdded.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -365,7 +365,7 @@ public class DomainBeanUtils {
 
         orderShipGroupQuantityCanceled.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderShipGroupQuantityCanceled.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderShipGroupQuantityCanceled.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderShipGroupQuantityCanceled.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderShipGroupQuantityCanceled.setSuiPackageId(eventEnvelope.getPackageId());
         orderShipGroupQuantityCanceled.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -386,7 +386,7 @@ public class DomainBeanUtils {
 
         orderShipGroupItemRemoved.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderShipGroupItemRemoved.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderShipGroupItemRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderShipGroupItemRemoved.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderShipGroupItemRemoved.setSuiPackageId(eventEnvelope.getPackageId());
         orderShipGroupItemRemoved.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -406,7 +406,7 @@ public class DomainBeanUtils {
 
         orderShipGroupRemoved.setSuiTimestamp(eventEnvelope.getTimestampMs());
         orderShipGroupRemoved.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        orderShipGroupRemoved.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        orderShipGroupRemoved.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         orderShipGroupRemoved.setSuiPackageId(eventEnvelope.getPackageId());
         orderShipGroupRemoved.setSuiTransactionModule(eventEnvelope.getTransactionModule());
@@ -429,7 +429,7 @@ public class DomainBeanUtils {
 
         daySummaryCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
         daySummaryCreated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        daySummaryCreated.setSuiEventSeq(eventEnvelope.getId().getEventSeq());
+        daySummaryCreated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
         daySummaryCreated.setSuiPackageId(eventEnvelope.getPackageId());
         daySummaryCreated.setSuiTransactionModule(eventEnvelope.getTransactionModule());

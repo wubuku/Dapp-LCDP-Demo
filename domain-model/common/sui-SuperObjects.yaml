@@ -23,7 +23,7 @@ superObjects:
         type: String
         length: 50
       SuiEventSeq:
-        type: long
+        type: u64
 
   SuiMoveEvent:
     properties:
@@ -65,4 +65,4 @@ valueObjects:
         type: String
         length: 50
       EventSeq:
-        type: long
+        type: u64

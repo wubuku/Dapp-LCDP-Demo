@@ -14,7 +14,7 @@ public interface SuiEventEnvelope {
 
     String getSuiTxDigest();
 
-    Long getSuiEventSeq();
+    BigInteger getSuiEventSeq();
 
     interface MutableSuiEventEnvelope {
 
@@ -22,7 +22,7 @@ public interface SuiEventEnvelope {
 
         void setSuiTxDigest(String p);
 
-        void setSuiEventSeq(Long p);
+        void setSuiEventSeq(BigInteger p);
 
     }
 

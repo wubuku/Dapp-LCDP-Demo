@@ -253,8 +253,8 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         Long SuiTimestamp = suiTimestamp;
         String suiTxDigest = e.getSuiTxDigest();
         String SuiTxDigest = suiTxDigest;
-        Long suiEventSeq = e.getSuiEventSeq();
-        Long SuiEventSeq = suiEventSeq;
+        BigInteger suiEventSeq = e.getSuiEventSeq();
+        BigInteger SuiEventSeq = suiEventSeq;
         String suiPackageId = e.getSuiPackageId();
         String SuiPackageId = suiPackageId;
         String suiTransactionModule = e.getSuiTransactionModule();
@@ -278,14 +278,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new Object[]{this, description, metaData, arrayData, optionalData, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 

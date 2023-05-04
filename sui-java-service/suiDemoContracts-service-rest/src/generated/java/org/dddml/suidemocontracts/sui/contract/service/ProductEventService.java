@@ -68,7 +68,7 @@ public class ProductEventService {
 
     private EventId getProductCreatedEventNextCursor() {
         AbstractProductEvent lastEvent = productEventRepository.findFirstProductCreatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveProductCreated(SuiMoveEventEnvelope<ProductCreated> eventEnvelope) {

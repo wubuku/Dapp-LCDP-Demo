@@ -70,7 +70,7 @@ public class OrderEventService {
 
     private EventId getOrderCreatedEventNextCursor() {
         AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderCreatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderCreated(SuiMoveEventEnvelope<OrderCreated> eventEnvelope) {
@@ -110,7 +110,7 @@ public class OrderEventService {
 
     private EventId getOrderItemRemovedEventNextCursor() {
         AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderItemRemovedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderItemRemoved(SuiMoveEventEnvelope<OrderItemRemoved> eventEnvelope) {
@@ -150,7 +150,7 @@ public class OrderEventService {
 
     private EventId getOrderItemQuantityUpdatedEventNextCursor() {
         AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderItemQuantityUpdatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderItemQuantityUpdated(SuiMoveEventEnvelope<OrderItemQuantityUpdated> eventEnvelope) {

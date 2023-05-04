@@ -69,7 +69,7 @@ public class DomainNameEventService {
 
     private EventId getRegisteredEventNextCursor() {
         AbstractDomainNameEvent lastEvent = domainNameEventRepository.findFirstRegisteredByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveRegistered(SuiMoveEventEnvelope<Registered> eventEnvelope) {
@@ -109,7 +109,7 @@ public class DomainNameEventService {
 
     private EventId getRenewedEventNextCursor() {
         AbstractDomainNameEvent lastEvent = domainNameEventRepository.findFirstRenewedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveRenewed(SuiMoveEventEnvelope<Renewed> eventEnvelope) {

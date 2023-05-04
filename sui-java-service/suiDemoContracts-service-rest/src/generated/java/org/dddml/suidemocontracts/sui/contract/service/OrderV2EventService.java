@@ -75,7 +75,7 @@ public class OrderV2EventService {
 
     private EventId getOrderV2CreatedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderV2CreatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderV2Created(SuiMoveEventEnvelope<OrderV2Created> eventEnvelope) {
@@ -115,7 +115,7 @@ public class OrderV2EventService {
 
     private EventId getOrderV2ItemRemovedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderV2ItemRemovedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderV2ItemRemoved(SuiMoveEventEnvelope<OrderV2ItemRemoved> eventEnvelope) {
@@ -155,7 +155,7 @@ public class OrderV2EventService {
 
     private EventId getOrderV2ItemQuantityUpdatedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderV2ItemQuantityUpdatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderV2ItemQuantityUpdated(SuiMoveEventEnvelope<OrderV2ItemQuantityUpdated> eventEnvelope) {
@@ -195,7 +195,7 @@ public class OrderV2EventService {
 
     private EventId getOrderV2EstimatedShipDateUpdatedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderV2EstimatedShipDateUpdatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderV2EstimatedShipDateUpdated(SuiMoveEventEnvelope<OrderV2EstimatedShipDateUpdated> eventEnvelope) {
@@ -235,7 +235,7 @@ public class OrderV2EventService {
 
     private EventId getOrderShipGroupAddedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupAddedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderShipGroupAdded(SuiMoveEventEnvelope<OrderShipGroupAdded> eventEnvelope) {
@@ -275,7 +275,7 @@ public class OrderV2EventService {
 
     private EventId getOrderShipGroupQuantityCanceledEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupQuantityCanceledByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderShipGroupQuantityCanceled(SuiMoveEventEnvelope<OrderShipGroupQuantityCanceled> eventEnvelope) {
@@ -315,7 +315,7 @@ public class OrderV2EventService {
 
     private EventId getOrderShipGroupItemRemovedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupItemRemovedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderShipGroupItemRemoved(SuiMoveEventEnvelope<OrderShipGroupItemRemoved> eventEnvelope) {
@@ -355,7 +355,7 @@ public class OrderV2EventService {
 
     private EventId getOrderShipGroupRemovedEventNextCursor() {
         AbstractOrderV2Event lastEvent = orderV2EventRepository.findFirstOrderShipGroupRemovedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveOrderShipGroupRemoved(SuiMoveEventEnvelope<OrderShipGroupRemoved> eventEnvelope) {

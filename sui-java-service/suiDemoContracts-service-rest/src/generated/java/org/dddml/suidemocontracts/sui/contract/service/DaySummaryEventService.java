@@ -68,7 +68,7 @@ public class DaySummaryEventService {
 
     private EventId getDaySummaryCreatedEventNextCursor() {
         AbstractDaySummaryEvent lastEvent = daySummaryEventRepository.findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq()) : null;
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
     private void saveDaySummaryCreated(SuiMoveEventEnvelope<DaySummaryCreated> eventEnvelope) {

@@ -218,8 +218,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         Long SuiTimestamp = suiTimestamp;
         String suiTxDigest = e.getSuiTxDigest();
         String SuiTxDigest = suiTxDigest;
-        Long suiEventSeq = e.getSuiEventSeq();
-        Long SuiEventSeq = suiEventSeq;
+        BigInteger suiEventSeq = e.getSuiEventSeq();
+        BigInteger SuiEventSeq = suiEventSeq;
         String suiPackageId = e.getSuiPackageId();
         String SuiPackageId = suiPackageId;
         String suiTransactionModule = e.getSuiTransactionModule();
@@ -243,14 +243,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new Object[]{this, registrationPeriod, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RegisterLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger registrationPeriod, String owner, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 
@@ -269,8 +269,8 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         Long SuiTimestamp = suiTimestamp;
         String suiTxDigest = e.getSuiTxDigest();
         String SuiTxDigest = suiTxDigest;
-        Long suiEventSeq = e.getSuiEventSeq();
-        Long SuiEventSeq = suiEventSeq;
+        BigInteger suiEventSeq = e.getSuiEventSeq();
+        BigInteger SuiEventSeq = suiEventSeq;
         String suiPackageId = e.getSuiPackageId();
         String SuiPackageId = suiPackageId;
         String suiTransactionModule = e.getSuiTransactionModule();
@@ -294,14 +294,14 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         DomainNameState updatedDomainNameState = (DomainNameState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
                     "mutate",
-                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, Long.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new Object[]{this, renewPeriod, account, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RenewLogic {
-//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, Long suiTimestamp, String suiTxDigest, Long suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
+//    public static DomainNameState mutate(DomainNameState domainNameState, BigInteger renewPeriod, String account, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<DomainNameState, DomainNameState.MutableDomainNameState> mutationContext) {
 //    }
 //}
 

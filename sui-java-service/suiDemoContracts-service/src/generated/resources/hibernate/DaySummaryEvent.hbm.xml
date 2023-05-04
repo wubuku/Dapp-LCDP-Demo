@@ -39,7 +39,7 @@
       <column name="sui_tx_digest" length="50" />
     </property>
     <property name="suiEventSeq">
-      <column name="sui_event_seq" />
+      <column name="sui_event_seq" sql-type="DECIMAL(20,0)" />
     </property>
     <property name="suiPackageId">
       <column name="sui_package_id" sql-type="VARCHAR(66)" />

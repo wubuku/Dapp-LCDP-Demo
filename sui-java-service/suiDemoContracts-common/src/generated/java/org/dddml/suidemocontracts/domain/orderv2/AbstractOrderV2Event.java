@@ -75,13 +75,13 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
         this.suiTxDigest = suiTxDigest;
     }
 
-    private Long suiEventSeq;
+    private BigInteger suiEventSeq;
 
-    public Long getSuiEventSeq() {
+    public BigInteger getSuiEventSeq() {
         return this.suiEventSeq;
     }
     
-    public void setSuiEventSeq(Long suiEventSeq) {
+    public void setSuiEventSeq(BigInteger suiEventSeq) {
         this.suiEventSeq = suiEventSeq;
     }
 
