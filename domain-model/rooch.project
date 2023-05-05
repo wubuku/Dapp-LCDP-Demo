@@ -1,0 +1,18 @@
+
+project:
+    
+  files:
+    - "common/boundedContext.yaml"
+    - "common/rooch-boundedContext.yaml"
+    - "common/types.yaml"
+    - "common/rooch-types.yaml"
+    - "common/rooch-SuperObjects.yaml"
+    - "rooch/rooch-blog.yaml"
+
+  # directories:
+    # - path: "."
+      # pattern: "*.yaml"
+      # fileExclusions:
+        # - "fileExclusion1.yaml"
+        # - "fileExclusion2.yaml"
+    

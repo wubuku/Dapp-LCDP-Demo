@@ -1,0 +1,32 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 1
+
+  boundedContextName: "Dddml.RoochDemoContracts"
+
+  defaultModule:
+    name: "Dddml.RoochDemoContracts"
+
+  isSurrogateIdMandatory: true
+
+  defaultSurrogateId:
+    name: Id
+    type: ObjectID
+
+  mandatoryAggregateImplements: [ "VersionedRoochMoveObject" ]
+  mandatoryAggregateEventImplements: [ "RoochEvent", "HasStatus" ]
+  ignoreEntityImmutable: true
+
+  rooch:
+    boundedContextPackage: "RoochDemo"
+    boundedContextNamedAddress: "rooch_demo"
+    moveObjectVersionPropertyName: "Version"
+    moveObjectVersionPropertyType: "u64"
+    offChainObjectNames: [ "RoochEventGuid" ]
+
+  java:
+    boundedContextPackage: "org.dddml.roochdemocontracts"
+    specializationPackage: "org.dddml.roochdemocontracts.specialization"
+

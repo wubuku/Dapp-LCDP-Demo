@@ -1,0 +1,33 @@
+superObjects:
+
+  VersionedRoochMoveObject:
+    properties:
+      Version:
+        type: u64
+
+  RoochEvent:
+    properties:
+      RoochEventVersion:
+        type: u128
+      RoochEventSequenceNumber:
+        type: u128
+      RoochEventType:
+        type: String
+        length: 500
+      RoochEventGuid:
+        type: RoochEventGuid
+
+  HasStatus:
+    properties:
+      Status:
+        type: indicator
+
+
+valueObjects:
+
+  RoochEventGuid:
+    properties:
+      CreationNumber:
+        type: u128
+      AccountAddress:
+        type: address

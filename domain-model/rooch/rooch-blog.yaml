@@ -1,0 +1,24 @@
+aggregates:
+  Article:
+    id:
+      name: Id
+      type: ObjectID
+      arbitrary: true
+
+    properties:
+      Title:
+        type: String
+      Author:
+        type: address
+      Tags:
+        itemType: ObjectId
+
+    methods:
+
+  Tag:
+    id:
+      name: Name
+      type: String
+      generator:
+        class: assigned
+        tableName: TagNameTable

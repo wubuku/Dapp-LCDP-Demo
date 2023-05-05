@@ -24,3 +24,4 @@ sui-contracts/.dddmlignore
 sui-java-service/.dddmlignore
 **/.aptos/
 aptos-contracts/**/build
+rooch-contracts/build

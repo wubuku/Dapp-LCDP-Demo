@@ -1,9 +1,9 @@
 typeDefinitions:
 
-#  UID:
-#    sqlType: VARCHAR(66)
-#    cSharpType: string
-#    javaType: String
+  ObjectID:
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
 
   address:
     sqlType: VARCHAR(66)
