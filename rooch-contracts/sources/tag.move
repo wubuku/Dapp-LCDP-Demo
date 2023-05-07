@@ -32,6 +32,7 @@ module rooch_demo::tag {
         // });
 
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
+
         account_storage::global_move_to(
             storage_ctx,
             account,
@@ -47,12 +48,15 @@ module rooch_demo::tag {
     ): Object<Tag> {
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
         let owner = tx_context::sender(tx_ctx);
-        let obj = object::new(
+        let tag_obj = object::new(
             tx_ctx,
             owner,
-            new_tag(name),
+            new_tag(
+                name
+            ),
         );
-        obj
+        asset_name_not_exists_then_add(storage_ctx, name, object::id(&tag_obj));
+        tag_obj
     }
 
     fun new_tag(
@@ -98,8 +102,14 @@ module rooch_demo::tag {
         object_storage::remove<Tag>(obj_store, obj_id)
     }
 
-
     public fun get_tag(
+        storage_ctx: &mut StorageContext,
+        obj_id: ObjectID
+    ): Object<Tag> {
+        remove_tag(storage_ctx, obj_id)
+    }
+
+    public fun get_tag_by_name(
         storage_ctx: &mut StorageContext,
         name: String
     ): Object<Tag> {
