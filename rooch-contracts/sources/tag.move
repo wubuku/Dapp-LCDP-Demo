@@ -12,21 +12,6 @@ module rooch_demo::tag {
 
     const EID_ALREADY_EXISTS: u64 = 101;
 
-    struct Tag has key {
-        // domain ID(key)
-        name: String,
-    }
-
-    /// get object id
-    public fun id(tag_obj: &Object<Tag>): ObjectID {
-        object::id(tag_obj)
-    }
-
-    /// get 'name' from object
-    public fun name(tag_obj: &Object<Tag>): String {
-        object::borrow(tag_obj).name
-    }
-
     struct Tables has key {
         tag_name_table: Table<String, ObjectID>,
     }
@@ -47,6 +32,29 @@ module rooch_demo::tag {
         );
     }
 
+    struct Tag has key {
+        // domain ID(key)
+        name: String,
+    }
+
+    /// get object id
+    public fun id(tag_obj: &Object<Tag>): ObjectID {
+        object::id(tag_obj)
+    }
+
+    /// get 'name' from object
+    public fun name(tag_obj: &Object<Tag>): String {
+        object::borrow(tag_obj).name
+    }
+
+    fun new_tag(
+        name: String
+    ): Tag {
+        Tag {
+            name,
+        }
+    }
+
     public(friend) fun create_tag(
         storage_ctx: &mut StorageContext,
         name: String,
@@ -62,14 +70,6 @@ module rooch_demo::tag {
         );
         asset_name_not_exists_then_add(storage_ctx, name, object::id(&tag_obj));
         tag_obj
-    }
-
-    fun new_tag(
-        name: String
-    ): Tag {
-        Tag {
-            name,
-        }
     }
 
     public(friend) fun asset_name_not_exists(
