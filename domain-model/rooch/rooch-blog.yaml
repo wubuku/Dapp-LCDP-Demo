@@ -10,10 +10,51 @@ aggregates:
         type: String
       Author:
         type: address
+      Contend:
+        type: String
       Tags:
         itemType: ObjectId
+      References:
+        itemType: Reference
+
+    entities:
+      Reference:
+        id:
+          name: ReferenceNumber
+          type: u64
+        properties:
+          Title:
+            type: String
+          Author:
+            type: String
+          PublicationYear:
+            type: u64
+            optional: true
+          Publisher:
+            type: String
+            optional: true
+          Doi:
+            type: String
+            optional: true
+          Url:
+            type: String
+            optional: true
+          PageNumber:
+            type: u64
+            optional: true
 
     methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Title:
+            type: String
+          Author:
+            type: address
+          Content:
+            type: String
+          Tags:
+            itemType: ObjectId
 
   Tag:
     id:
@@ -22,3 +63,4 @@ aggregates:
       generator:
         class: assigned
         tableName: TagNameTable
+

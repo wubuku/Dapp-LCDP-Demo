@@ -17,6 +17,11 @@ module rooch_demo::tag {
         name: String,
     }
 
+    /// get object id
+    public fun id(tag_obj: &Object<Tag>): ObjectID {
+        object::id(tag_obj)
+    }
+
     /// get 'name' from object
     public fun name(tag_obj: &Object<Tag>): String {
         object::borrow(tag_obj).name
