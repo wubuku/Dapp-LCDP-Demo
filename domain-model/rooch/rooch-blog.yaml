@@ -55,6 +55,20 @@ aggregates:
             type: String
           Tags:
             itemType: ObjectId
+        event:
+          name: ArticleCreated
+
+      AddReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+          Title:
+            type: String
+          Url:
+            type: String
+            optional: true
+        event:
+          name: ReferenceAdded
 
   Tag:
     id:
