@@ -97,44 +97,27 @@ module rooch_demo::tag {
         table::add(&mut tables.tag_name_table, name, id);
     }
 
-    fun add_tag(
-        storage_ctx: &mut StorageContext,
-        tag_obj: Object<Tag>
-    ) {
-        let obj_store = storage_context::object_storage_mut(storage_ctx);
-        object_storage::add(obj_store, tag_obj);
-    }
-
-    fun remove_tag(
-        storage_ctx: &mut StorageContext,
-        obj_id: ObjectID
-    ): Object<Tag> {
+    fun remove_tag(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Tag> {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::remove<Tag>(obj_store, obj_id)
     }
 
-    public fun get_tag(
-        storage_ctx: &mut StorageContext,
-        obj_id: ObjectID
-    ): Object<Tag> {
+    fun add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
+        let obj_store = storage_context::object_storage_mut(storage_ctx);
+        object_storage::add(obj_store, tag_obj);
+    }
+
+    public fun get_tag_by_name(storage_ctx: &mut StorageContext, name: String): Object<Tag> {
+        let tables = account_storage::global_borrow_mut<Tables>(storage_ctx, @rooch_demo);
+        let obj_id = table::borrow(&mut tables.tag_name_table, name);
+        remove_tag(storage_ctx, *obj_id)
+    }
+
+    public fun get_tag(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Tag> {
         remove_tag(storage_ctx, obj_id)
     }
 
-    public fun get_tag_by_name(
-        storage_ctx: &mut StorageContext,
-        name: String
-    ): Object<Tag> {
-        let tables = account_storage::global_borrow_mut<Tables>(storage_ctx, @rooch_demo);
-        let obj_id = table::borrow(&mut tables.tag_name_table, name);
-        let tag = remove_tag(storage_ctx, *obj_id);
-        tag
-    }
-
-    public fun return_tag(
-        storage_ctx: &mut StorageContext,
-        tag_obj: Object<Tag>
-    ) {
-        //let name = name(&tag_obj);
+    public fun return_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
         add_tag(storage_ctx, tag_obj);
     }
 
