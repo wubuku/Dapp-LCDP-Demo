@@ -62,27 +62,27 @@ module rooch_demo::tag {
         }
     }
 
-    struct CreateEvent has store, drop {
+    struct TagCreated has store, drop {
         id: option::Option<ObjectID>,
         name: String,
     }
 
-    public fun create_event_id(create_event: &CreateEvent): option::Option<ObjectID> {
-        create_event.id
+    public fun tag_created_id(tag_created: &TagCreated): option::Option<ObjectID> {
+        tag_created.id
     }
 
-    public(friend) fun set_create_event_id(create_event: &mut CreateEvent, id: ObjectID) {
-        create_event.id = option::some(id);
+    public(friend) fun set_tag_created_id(tag_created: &mut TagCreated, id: ObjectID) {
+        tag_created.id = option::some(id);
     }
 
-    public fun create_event_name(create_event: &CreateEvent): String {
-        create_event.name
+    public fun tag_created_name(tag_created: &TagCreated): String {
+        tag_created.name
     }
 
-    public(friend) fun new_create_event(
+    public(friend) fun new_tag_created(
         name: String,
-    ): CreateEvent {
-        CreateEvent {
+    ): TagCreated {
+        TagCreated {
             id: option::none(),
             name,
         }

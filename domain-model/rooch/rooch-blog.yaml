@@ -87,3 +87,5 @@ aggregates:
         parameters:
           #Name:
           #  type: String
+        event:
+          name: TagCreated

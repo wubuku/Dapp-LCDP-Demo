@@ -1,7 +1,7 @@
 module rooch_demo::tag_create_logic {
     use moveos_std::object::Object;
     use moveos_std::storage_context::StorageContext;
-    use rooch_demo::create_event;
+    use rooch_demo::tag_created;
     use rooch_demo::tag;
     use std::string::String;
 
@@ -11,21 +11,21 @@ module rooch_demo::tag_create_logic {
         storage_ctx: &mut StorageContext,
         account: &signer,
         name: String,
-    ): tag::CreateEvent {
+    ): tag::TagCreated {
         let _ = storage_ctx;
         let _ = account;
-        tag::new_create_event(
+        tag::new_tag_created(
             name,
         )
     }
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
-        create_event: &tag::CreateEvent,
+        create_event: &tag::TagCreated,
     ): Object<tag::Tag> {
         let tag = tag::create_tag(
             storage_ctx,
-            create_event::name(create_event),
+            tag_created::name(create_event),
         );
         tag
     }

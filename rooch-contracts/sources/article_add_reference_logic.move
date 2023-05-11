@@ -29,11 +29,11 @@ module rooch_demo::article_add_reference_logic {
     }
 
     public(friend) fun mutate(
-        _storage_ctx: &mut StorageContext,
+        storage_ctx: &mut StorageContext,
         reference_added: &article::ReferenceAdded,
         article_obj: Object<article::Article>,
     ): Object<article::Article> {
-        let _ = _storage_ctx;
+        let _ = storage_ctx;
         let ref = reference::new_reference(
             article::reference_added_reference_number(reference_added),
             article::reference_added_title(reference_added),

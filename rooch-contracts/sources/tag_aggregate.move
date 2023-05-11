@@ -14,16 +14,16 @@ module rooch_demo::tag_aggregate {
         account: &signer,
         name: String,
     ) {
-        let create_event = tag_create_logic::verify(
+        let tag_created = tag_create_logic::verify(
             storage_ctx,
             account,
             name,
         );
         let tag_obj = tag_create_logic::mutate(
             storage_ctx,
-            &create_event,
+            &tag_created,
         );
-        tag::set_create_event_id(&mut create_event, tag::id(&tag_obj));
+        tag::set_tag_created_id(&mut tag_created, tag::id(&tag_obj));
         tag::add_tag(storage_ctx, tag_obj);
     }
 
