@@ -230,12 +230,17 @@ module rooch_demo::article {
         article_obj
     }
 
-    fun remove_article(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Article> {
+    public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
+        object::borrow_mut( &mut article_obj).version = object::borrow( &mut article_obj).version + 1;
+        add_article(storage_ctx, article_obj);
+    }
+
+    public(friend) fun remove_article(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Article> {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::remove<Article>(obj_store, obj_id)
     }
 
-    fun add_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
+    public(friend) fun add_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, article_obj);
     }

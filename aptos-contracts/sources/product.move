@@ -177,6 +177,11 @@ module aptos_demo::product {
         current_product_id(product_id_generator)
     }
 
+    public(friend) fun update_version_and_add(product: Product) acquires Tables {
+        product.version = product.version + 1;
+        add_product(product);
+    }
+
     public(friend) fun remove_product(product_id: String): Product acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.product_table, product_id)

@@ -125,12 +125,12 @@ module rooch_demo::tag {
         table::add(&mut tables.tag_name_table, name, id);
     }
 
-    fun remove_tag(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Tag> {
+    public(friend) fun remove_tag(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Tag> {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::remove<Tag>(obj_store, obj_id)
     }
 
-    fun add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
+    public(friend) fun add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, tag_obj);
     }

@@ -12,10 +12,10 @@ module rooch_demo::article_add_reference_logic {
     public(friend) fun verify(
         storage_ctx: &mut StorageContext,
         account: &signer,
-        article_obj: &Object<Article>,
         reference_number: u64,
         title: String,
-        url: String,
+        url: option::Option<String>,
+        article_obj: &Object<Article>,
     ): article::ReferenceAdded {
         let _ = storage_ctx;
         let _ = account;
@@ -24,7 +24,7 @@ module rooch_demo::article_add_reference_logic {
             article_obj,
             reference_number,
             title,
-            option::some(url),
+            url,
         )
     }
 
