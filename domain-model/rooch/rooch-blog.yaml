@@ -10,10 +10,10 @@ aggregates:
         type: String
       Author:
         type: address
-      Contend:
+      Content:
         type: String
       Tags:
-        itemType: ObjectId
+        itemType: ObjectID
       References:
         itemType: Reference
 
@@ -54,9 +54,13 @@ aggregates:
           Content:
             type: String
           Tags:
-            itemType: ObjectId
+            itemType: ObjectID
         event:
           name: ArticleCreated
+          properties:
+            Owner:
+              type: address
+              #isOwner: true
 
       AddReference:
         parameters:

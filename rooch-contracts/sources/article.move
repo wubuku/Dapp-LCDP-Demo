@@ -76,30 +76,6 @@ module rooch_demo::article {
         }
     }
 
-    public(friend) fun create_article(
-        storage_ctx: &mut StorageContext,
-        title: String,
-        content: String,
-        author: address,
-        tags: vector<ObjectID>,
-    ): Object<Article> {
-        let tx_ctx = storage_context::tx_context_mut(storage_ctx);
-        let owner = tx_context::sender(tx_ctx);
-        let article = new_article(
-            tx_ctx,
-            title,
-            content,
-            author,
-            tags,
-        );
-        let article_obj = object::new(
-            tx_ctx,
-            owner,
-            article,
-        );
-        article_obj
-    }
-
     struct ArticleCreated has drop {
         // todo this a event object
         id: option::Option<ObjectID>,
@@ -155,6 +131,30 @@ module rooch_demo::article {
         }
     }
 
+
+    public(friend) fun create_article(
+        storage_ctx: &mut StorageContext,
+        title: String,
+        content: String,
+        author: address,
+        tags: vector<ObjectID>,
+    ): Object<Article> {
+        let tx_ctx = storage_context::tx_context_mut(storage_ctx);
+        let owner = tx_context::sender(tx_ctx);
+        let article = new_article(
+            tx_ctx,
+            title,
+            content,
+            author,
+            tags,
+        );
+        let article_obj = object::new(
+            tx_ctx,
+            owner,
+            article,
+        );
+        article_obj
+    }
 
     fun add_article(
         storage_ctx: &mut StorageContext,
