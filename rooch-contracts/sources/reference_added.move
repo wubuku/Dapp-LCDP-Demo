@@ -5,10 +5,10 @@
 
 module rooch_demo::reference_added {
 
+    use moveos_std::object::ObjectID;
     use rooch_demo::article::{Self, ReferenceAdded};
     use std::option::Option;
     use std::string::String;
-    use moveos_std::object::ObjectID;
 
     public fun id(reference_added: &ReferenceAdded): ObjectID {
         article::reference_added_id(reference_added)

@@ -5,8 +5,14 @@
 
 module rooch_demo::tag_created {
 
+    use moveos_std::object::ObjectID;
     use rooch_demo::tag::{Self, TagCreated};
+    use std::option;
     use std::string::String;
+
+    public fun id(tag_created: &TagCreated): option::Option<ObjectID> {
+        tag::tag_created_id(tag_created)
+    }
 
     public fun name(tag_created: &TagCreated): String {
         tag::tag_created_name(tag_created)

@@ -5,12 +5,12 @@
 
 module rooch_demo::article_created {
 
-    use rooch_demo::article::{Self, ArticleCreated};
-    use std::string::String;
     use moveos_std::object::ObjectID;
-    use std::option::Option;
+    use rooch_demo::article::{Self, ArticleCreated};
+    use std::option;
+    use std::string::String;
 
-    public fun id(article_created: &ArticleCreated): Option<ObjectID> {
+    public fun id(article_created: &ArticleCreated): option::Option<ObjectID> {
         article::article_created_id(article_created)
     }
 
