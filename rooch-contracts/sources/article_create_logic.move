@@ -51,8 +51,8 @@ module rooch_demo::article_create_logic {
         let article = article::create_article(
             storage_ctx,
             article::article_created_title(article_created),
-            article::article_created_content(article_created),
             article::article_created_author(article_created),
+            article::article_created_content(article_created),
             article::article_created_tags(article_created),
         );
         article

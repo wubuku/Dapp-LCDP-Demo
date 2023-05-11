@@ -81,4 +81,9 @@ aggregates:
       generator:
         class: assigned
         tableName: TagNameTable
-
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          #Name:
+          #  type: String

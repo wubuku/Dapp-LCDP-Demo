@@ -10,7 +10,9 @@ module rooch_demo::tag {
     use moveos_std::storage_context::{Self, StorageContext};
     use moveos_std::table::{Self, Table};
     use moveos_std::tx_context;
+    use std::option;
     use std::string::String;
+    friend rooch_demo::tag_create_logic;
     friend rooch_demo::tag_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -57,6 +59,32 @@ module rooch_demo::tag {
         Tag {
             name,
             version: 0,
+        }
+    }
+
+    struct CreateEvent has store, drop {
+        id: option::Option<ObjectID>,
+        name: String,
+    }
+
+    public fun create_event_id(create_event: &CreateEvent): option::Option<ObjectID> {
+        create_event.id
+    }
+
+    public(friend) fun set_create_event_id(create_event: &mut CreateEvent, id: ObjectID) {
+        create_event.id = option::some(id);
+    }
+
+    public fun create_event_name(create_event: &CreateEvent): String {
+        create_event.name
+    }
+
+    public(friend) fun new_create_event(
+        name: String,
+    ): CreateEvent {
+        CreateEvent {
+            id: option::none(),
+            name,
         }
     }
 
