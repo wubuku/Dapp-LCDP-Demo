@@ -9,6 +9,7 @@ project:
     - "common/rooch-SuperObjects.yaml"
     - "rooch/rooch-blog.yaml"
     - "rooch/rooch-ValueObjects.yaml"
+    - "rooch/rooch-Product.yaml"
 
   # directories:
     # - path: "."
