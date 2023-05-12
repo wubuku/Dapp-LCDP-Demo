@@ -8,6 +8,7 @@ project:
     - "common/rooch-types.yaml"
     - "common/rooch-SuperObjects.yaml"
     - "rooch/rooch-blog.yaml"
+    - "rooch/rooch-ValueObjects.yaml"
 
   # directories:
     # - path: "."
@@ -15,4 +16,3 @@ project:
       # fileExclusions:
         # - "fileExclusion1.yaml"
         # - "fileExclusion2.yaml"
-    
