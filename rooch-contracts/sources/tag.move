@@ -94,11 +94,11 @@ module rooch_demo::tag {
         storage_ctx: &mut StorageContext,
         name: String,
     ): Object<Tag> {
-        let tx_ctx = storage_context::tx_context_mut(storage_ctx);
-        let obj_owner = tx_context::sender(tx_ctx);
         let tag = new_tag(
             name,
         );
+        let tx_ctx = storage_context::tx_context_mut(storage_ctx);
+        let obj_owner = tx_context::sender(tx_ctx);
         let tag_obj = object::new(
             tx_ctx,
             obj_owner,

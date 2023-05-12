@@ -215,7 +215,6 @@ module rooch_demo::article {
         tags: vector<ObjectID>,
     ): Object<Article> {
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
-        let obj_owner = tx_context::sender(tx_ctx);
         let article = new_article(
             tx_ctx,
             title,
@@ -223,6 +222,7 @@ module rooch_demo::article {
             content,
             tags,
         );
+        let obj_owner = tx_context::sender(tx_ctx);
         let article_obj = object::new(
             tx_ctx,
             obj_owner,
