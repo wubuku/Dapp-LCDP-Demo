@@ -10,7 +10,9 @@ module rooch_demo::article {
     use moveos_std::table::{Self, Table};
     use moveos_std::tx_context;
     use rooch_demo::reference::{Self, Reference};
+    use std::error;
     use std::option::{Self, Option};
+    use std::signer;
     use std::string::String;
     friend rooch_demo::article_create_logic;
     friend rooch_demo::article_add_reference_logic;
@@ -18,8 +20,10 @@ module rooch_demo::article {
 
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
         let _ = storage_ctx;
         let _ = account;
     }

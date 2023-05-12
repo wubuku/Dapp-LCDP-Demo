@@ -10,7 +10,9 @@ module rooch_demo::tag {
     use moveos_std::storage_context::{Self, StorageContext};
     use moveos_std::table::{Self, Table};
     use moveos_std::tx_context;
+    use std::error;
     use std::option;
+    use std::signer;
     use std::string::String;
     friend rooch_demo::tag_create_logic;
     friend rooch_demo::tag_aggregate;
@@ -18,12 +20,14 @@ module rooch_demo::tag {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
     struct Tables has key {
         tag_name_table: Table<String, ObjectID>,
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(

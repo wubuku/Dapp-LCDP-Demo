@@ -9,7 +9,9 @@ module rooch_demo::product {
     use moveos_std::object_storage;
     use moveos_std::storage_context::{Self, StorageContext};
     use moveos_std::tx_context;
+    use std::error;
     use std::option;
+    use std::signer;
     use std::string::{Self, String};
     use std::vector;
     friend rooch_demo::product_create_logic;
@@ -17,6 +19,7 @@ module rooch_demo::product {
 
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
     const PRODUCT_ID_LENGTH: u64 = 20;
 
@@ -28,6 +31,7 @@ module rooch_demo::product {
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
         let product_id_generator = ProductIdGenerator {
             sequence: 0,
         };
