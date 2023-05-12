@@ -17,6 +17,7 @@ module sui_contracts::day_summary {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct DaySummaryIdTable has key {
         id: UID,
@@ -205,20 +206,38 @@ module sui_contracts::day_summary {
     }
 
     public(friend) fun transfer_object(day_summary: DaySummary, recipient: address) {
+        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
         transfer::transfer(day_summary, recipient);
     }
 
     public(friend) fun update_version_and_transfer_object(day_summary: DaySummary, recipient: address) {
-        day_summary.version = day_summary.version + 1;
+        update_object_version(&mut day_summary);
         transfer::transfer(day_summary, recipient);
     }
 
     public(friend) fun share_object(day_summary: DaySummary) {
+        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        transfer::share_object(day_summary);
+    }
+
+    public(friend) fun update_version_and_share_object(day_summary: DaySummary) {
+        update_object_version(&mut day_summary);
         transfer::share_object(day_summary);
     }
 
     public(friend) fun freeze_object(day_summary: DaySummary) {
+        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
         transfer::freeze_object(day_summary);
+    }
+
+    public(friend) fun update_version_and_freeze_object(day_summary: DaySummary) {
+        update_object_version(&mut day_summary);
+        transfer::freeze_object(day_summary);
+    }
+
+    fun update_object_version(day_summary: &mut DaySummary) {
+        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
+        day_summary.version = day_summary.version + 1;
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) {

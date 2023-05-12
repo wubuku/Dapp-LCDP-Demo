@@ -17,6 +17,7 @@ module rooch_demo::tag {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct Tables has key {
         tag_name_table: Table<String, ObjectID>,
@@ -126,8 +127,9 @@ module rooch_demo::tag {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
+        assert!(object::borrow(&tag_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut tag_obj).version = object::borrow( &mut tag_obj).version + 1;
-        add_tag(storage_ctx, tag_obj);
+        private_add_tag(storage_ctx, tag_obj);
     }
 
     public(friend) fun remove_tag(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Tag> {
@@ -136,6 +138,11 @@ module rooch_demo::tag {
     }
 
     public(friend) fun add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
+        assert!(object::borrow(&tag_obj).version == 0, EINAPPROPRIATE_VERSION);
+        private_add_tag(storage_ctx, tag_obj);
+    }
+
+    fun private_add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, tag_obj);
     }
@@ -151,7 +158,7 @@ module rooch_demo::tag {
     }
 
     public fun return_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
-        add_tag(storage_ctx, tag_obj);
+        private_add_tag(storage_ctx, tag_obj);
     }
 
 }

@@ -17,6 +17,7 @@ module sui_contracts::domain_name {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct DomainNameId has store, drop, copy {
         top_level_domain: String,
@@ -213,20 +214,38 @@ module sui_contracts::domain_name {
     }
 
     public(friend) fun transfer_object(domain_name: DomainName, recipient: address) {
+        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
         transfer::transfer(domain_name, recipient);
     }
 
     public(friend) fun update_version_and_transfer_object(domain_name: DomainName, recipient: address) {
-        domain_name.version = domain_name.version + 1;
+        update_object_version(&mut domain_name);
         transfer::transfer(domain_name, recipient);
     }
 
     public(friend) fun share_object(domain_name: DomainName) {
+        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
+        transfer::share_object(domain_name);
+    }
+
+    public(friend) fun update_version_and_share_object(domain_name: DomainName) {
+        update_object_version(&mut domain_name);
         transfer::share_object(domain_name);
     }
 
     public(friend) fun freeze_object(domain_name: DomainName) {
+        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
         transfer::freeze_object(domain_name);
+    }
+
+    public(friend) fun update_version_and_freeze_object(domain_name: DomainName) {
+        update_object_version(&mut domain_name);
+        transfer::freeze_object(domain_name);
+    }
+
+    fun update_object_version(domain_name: &mut DomainName) {
+        assert!(domain_name.version != 0, EINAPPROPRIATE_VERSION);
+        domain_name.version = domain_name.version + 1;
     }
 
     public(friend) fun emit_registered(registered: Registered) {

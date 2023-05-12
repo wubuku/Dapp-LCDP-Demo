@@ -15,6 +15,7 @@ module aptos_demo::product {
     friend aptos_demo::product_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     const PRODUCT_ID_LENGTH: u64 = 20;
 
@@ -178,8 +179,14 @@ module aptos_demo::product {
     }
 
     public(friend) fun update_version_and_add(product: Product) acquires Tables {
+        assert!(product.version != 0, EINAPPROPRIATE_VERSION);
         product.version = product.version + 1;
-        add_product(product);
+        private_add_product(product);
+    }
+
+    public(friend) fun add_product(product: Product) acquires Tables {
+        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
+        private_add_product(product);
     }
 
     public(friend) fun remove_product(product_id: String): Product acquires Tables {
@@ -187,7 +194,7 @@ module aptos_demo::product {
         table::remove(&mut tables.product_table, product_id)
     }
 
-    public(friend) fun add_product(product: Product) acquires Tables {
+    fun private_add_product(product: Product) acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.product_table, product_id(&product), product);
     }
@@ -199,7 +206,7 @@ module aptos_demo::product {
 
     public fun return_product(product_pass_obj: pass_object::PassObject<Product>) acquires Tables {
         let product = pass_object::extract(product_pass_obj);
-        add_product(product);
+        private_add_product(product);
     }
 
     public(friend) fun emit_product_created(product_created: ProductCreated) acquires Events {

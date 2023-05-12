@@ -17,6 +17,7 @@ module aptos_demo::day_summary {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct Events has key {
         day_summary_created_handle: event::EventHandle<DaySummaryCreated>,
@@ -280,8 +281,14 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun update_version_and_add(day_summary: DaySummary) acquires Tables {
+        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
         day_summary.version = day_summary.version + 1;
-        add_day_summary(day_summary);
+        private_add_day_summary(day_summary);
+    }
+
+    public(friend) fun add_day_summary(day_summary: DaySummary) acquires Tables {
+        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        private_add_day_summary(day_summary);
     }
 
     public(friend) fun remove_day_summary(day: Day): DaySummary acquires Tables {
@@ -289,7 +296,7 @@ module aptos_demo::day_summary {
         table::remove(&mut tables.day_summary_table, day)
     }
 
-    public(friend) fun add_day_summary(day_summary: DaySummary) acquires Tables {
+    fun private_add_day_summary(day_summary: DaySummary) acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.day_summary_table, day(&day_summary), day_summary);
     }
@@ -301,7 +308,7 @@ module aptos_demo::day_summary {
 
     public fun return_day_summary(day_summary_pass_obj: pass_object::PassObject<DaySummary>) acquires Tables {
         let day_summary = pass_object::extract(day_summary_pass_obj);
-        add_day_summary(day_summary);
+        private_add_day_summary(day_summary);
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) acquires Events {

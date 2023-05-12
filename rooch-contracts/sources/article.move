@@ -17,6 +17,7 @@ module rooch_demo::article {
     friend rooch_demo::article_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         let _ = storage_ctx;
@@ -231,8 +232,9 @@ module rooch_demo::article {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
+        assert!(object::borrow(&article_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut article_obj).version = object::borrow( &mut article_obj).version + 1;
-        add_article(storage_ctx, article_obj);
+        private_add_article(storage_ctx, article_obj);
     }
 
     public(friend) fun remove_article(storage_ctx: &mut StorageContext, obj_id: ObjectID): Object<Article> {
@@ -241,6 +243,11 @@ module rooch_demo::article {
     }
 
     public(friend) fun add_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
+        assert!(object::borrow(&article_obj).version == 0, EINAPPROPRIATE_VERSION);
+        private_add_article(storage_ctx, article_obj);
+    }
+
+    fun private_add_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, article_obj);
     }
@@ -250,7 +257,7 @@ module rooch_demo::article {
     }
 
     public fun return_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
-        add_article(storage_ctx, article_obj);
+        private_add_article(storage_ctx, article_obj);
     }
 
 }

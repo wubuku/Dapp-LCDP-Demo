@@ -27,6 +27,7 @@ module aptos_demo::order {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct Events has key {
         order_created_handle: event::EventHandle<OrderCreated>,
@@ -468,8 +469,14 @@ module aptos_demo::order {
     }
 
     public(friend) fun update_version_and_add(order: Order) acquires Tables {
+        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
         order.version = order.version + 1;
-        add_order(order);
+        private_add_order(order);
+    }
+
+    public(friend) fun add_order(order: Order) acquires Tables {
+        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
+        private_add_order(order);
     }
 
     public(friend) fun remove_order(order_id: String): Order acquires Tables {
@@ -477,7 +484,7 @@ module aptos_demo::order {
         table::remove(&mut tables.order_table, order_id)
     }
 
-    public(friend) fun add_order(order: Order) acquires Tables {
+    fun private_add_order(order: Order) acquires Tables {
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.order_table, order_id(&order), order);
     }
@@ -489,7 +496,7 @@ module aptos_demo::order {
 
     public fun return_order(order_pass_obj: pass_object::PassObject<Order>) acquires Tables {
         let order = pass_object::extract(order_pass_obj);
-        add_order(order);
+        private_add_order(order);
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) acquires Events {

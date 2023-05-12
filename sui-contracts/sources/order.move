@@ -18,6 +18,7 @@ module sui_contracts::order {
     friend sui_contracts::order_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct Order has key {
         id: UID,
@@ -193,20 +194,38 @@ module sui_contracts::order {
 
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
+        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
         transfer::transfer(order, recipient);
     }
 
     public(friend) fun update_version_and_transfer_object(order: Order, recipient: address) {
-        order.version = order.version + 1;
+        update_object_version(&mut order);
         transfer::transfer(order, recipient);
     }
 
     public(friend) fun share_object(order: Order) {
+        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
+        transfer::share_object(order);
+    }
+
+    public(friend) fun update_version_and_share_object(order: Order) {
+        update_object_version(&mut order);
         transfer::share_object(order);
     }
 
     public(friend) fun freeze_object(order: Order) {
+        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
         transfer::freeze_object(order);
+    }
+
+    public(friend) fun update_version_and_freeze_object(order: Order) {
+        update_object_version(&mut order);
+        transfer::freeze_object(order);
+    }
+
+    fun update_object_version(order: &mut Order) {
+        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
+        order.version = order.version + 1;
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) {

@@ -15,6 +15,7 @@ module sui_contracts::product {
     friend sui_contracts::product_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     const PRODUCT_ID_LENGTH: u64 = 20;
 
@@ -178,20 +179,38 @@ module sui_contracts::product {
     }
 
     public(friend) fun transfer_object(product: Product, recipient: address) {
+        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
         transfer::transfer(product, recipient);
     }
 
     public(friend) fun update_version_and_transfer_object(product: Product, recipient: address) {
-        product.version = product.version + 1;
+        update_object_version(&mut product);
         transfer::transfer(product, recipient);
     }
 
     public(friend) fun share_object(product: Product) {
+        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
+        transfer::share_object(product);
+    }
+
+    public(friend) fun update_version_and_share_object(product: Product) {
+        update_object_version(&mut product);
         transfer::share_object(product);
     }
 
     public(friend) fun freeze_object(product: Product) {
+        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
         transfer::freeze_object(product);
+    }
+
+    public(friend) fun update_version_and_freeze_object(product: Product) {
+        update_object_version(&mut product);
+        transfer::freeze_object(product);
+    }
+
+    fun update_object_version(product: &mut Product) {
+        assert!(product.version != 0, EINAPPROPRIATE_VERSION);
+        product.version = product.version + 1;
     }
 
     public(friend) fun emit_product_created(product_created: ProductCreated) {

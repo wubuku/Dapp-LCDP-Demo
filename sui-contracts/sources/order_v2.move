@@ -26,6 +26,7 @@ module sui_contracts::order_v2 {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+    const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct OrderIdTable has key {
         id: UID,
@@ -520,20 +521,38 @@ module sui_contracts::order_v2 {
     }
 
     public(friend) fun transfer_object(order_v2: OrderV2, recipient: address) {
+        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
         transfer::transfer(order_v2, recipient);
     }
 
     public(friend) fun update_version_and_transfer_object(order_v2: OrderV2, recipient: address) {
-        order_v2.version = order_v2.version + 1;
+        update_object_version(&mut order_v2);
         transfer::transfer(order_v2, recipient);
     }
 
     public(friend) fun share_object(order_v2: OrderV2) {
+        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
+        transfer::share_object(order_v2);
+    }
+
+    public(friend) fun update_version_and_share_object(order_v2: OrderV2) {
+        update_object_version(&mut order_v2);
         transfer::share_object(order_v2);
     }
 
     public(friend) fun freeze_object(order_v2: OrderV2) {
+        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
         transfer::freeze_object(order_v2);
+    }
+
+    public(friend) fun update_version_and_freeze_object(order_v2: OrderV2) {
+        update_object_version(&mut order_v2);
+        transfer::freeze_object(order_v2);
+    }
+
+    fun update_object_version(order_v2: &mut OrderV2) {
+        assert!(order_v2.version != 0, EINAPPROPRIATE_VERSION);
+        order_v2.version = order_v2.version + 1;
     }
 
     public(friend) fun emit_order_v2_created(order_v2_created: OrderV2Created) {
