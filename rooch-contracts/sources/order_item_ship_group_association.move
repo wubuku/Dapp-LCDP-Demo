@@ -79,14 +79,18 @@ module rooch_demo::order_item_ship_group_association {
         }
     }
 
-    // public(friend) fun drop_order_item_ship_group_association(order_item_ship_group_association: OrderItemShipGroupAssociation) {
-    //     let OrderItemShipGroupAssociation {
-    //         product_id: _,
-    //         quantity: _,
-    //         cancel_quantity: _,
-    //         subitems,
-    //     } = order_item_ship_group_association;
-    // }
+    // Please note that when the hierarchical structure of entities within an aggregate exceeds three levels,
+    // currently the 'drop_{entity_name}' function for entities from the second to the third-to-last level cannot be generated.
+    /*
+    public(friend) fun drop_order_item_ship_group_association(order_item_ship_group_association: OrderItemShipGroupAssociation) {
+        let OrderItemShipGroupAssociation {
+            product_id: _,
+            quantity: _,
+            cancel_quantity: _,
+            subitems,
+        } = order_item_ship_group_association;
+    }
 
+    */
 
 }
