@@ -10,6 +10,7 @@ project:
     - "rooch/rooch-blog.yaml"
     - "rooch/rooch-ValueObjects.yaml"
     - "rooch/rooch-Product.yaml"
+    - "rooch/rooch-Order.yaml"
 
   # directories:
     # - path: "."

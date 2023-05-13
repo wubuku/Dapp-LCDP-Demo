@@ -6,6 +6,7 @@
 module rooch_demo::rooch_demo_init {
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::article;
+    use rooch_demo::order;
     use rooch_demo::product;
     use rooch_demo::tag;
 
@@ -13,6 +14,7 @@ module rooch_demo::rooch_demo_init {
         article::initialize(storage_ctx, account);
         tag::initialize(storage_ctx, account);
         product::initialize(storage_ctx, account);
+        order::initialize(storage_ctx, account);
     }
 
 }
