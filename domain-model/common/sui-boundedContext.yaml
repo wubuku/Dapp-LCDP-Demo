@@ -26,6 +26,7 @@ configuration:
     moveObjectVersionPropertyType: "u64"
     offChainObjectNames: [ "SuiEventId" ]
 
+
   java:
     boundedContextPackage: "org.dddml.suidemocontracts"
     specializationPackage: "org.dddml.suidemocontracts.specialization"

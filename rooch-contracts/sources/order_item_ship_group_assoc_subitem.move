@@ -12,7 +12,7 @@ module rooch_demo::order_item_ship_group_assoc_subitem {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
 
-    struct OrderItemShipGroupAssocSubitem has store {
+    struct OrderItemShipGroupAssocSubitem has store, drop {
         order_item_ship_group_assoc_subitem_day: Day,
         description: String,
     }

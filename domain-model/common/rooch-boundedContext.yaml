@@ -26,6 +26,12 @@ configuration:
     moveObjectVersionPropertyType: "u64"
     offChainObjectNames: [ "RoochEventGuid" ]
 
+#    typeMappings:
+#    #"ObjectID": "ObjectID"
+#
+#    typeModules:
+#      "ObjetID": "moveos_std::object"
+
   java:
     boundedContextPackage: "org.dddml.roochdemocontracts"
     specializationPackage: "org.dddml.roochdemocontracts.specialization"
