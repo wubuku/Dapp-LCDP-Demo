@@ -25,6 +25,7 @@ configuration:
     moveObjectVersionPropertyName: "Version"
     moveObjectVersionPropertyType: "u64"
     offChainObjectNames: [ "RoochEventGuid" ]
+    isSurrogateIdPreferred: true
 
 #    typeMappings:
 #    #"ObjectID": "ObjectID"

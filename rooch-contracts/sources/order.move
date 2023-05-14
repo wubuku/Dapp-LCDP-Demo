@@ -18,6 +18,7 @@ module rooch_demo::order {
     use std::signer;
     use std::string::String;
     friend rooch_demo::order_create_logic;
+    friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -201,6 +202,58 @@ module rooch_demo::order {
             unit_price,
             total_amount,
             owner,
+        }
+    }
+
+    struct OrderShipGroupAdded has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    }
+
+    public fun order_ship_group_added_id(order_ship_group_added: &OrderShipGroupAdded): ObjectID {
+        order_ship_group_added.id
+    }
+
+    public fun order_ship_group_added_order_id(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.order_id
+    }
+
+    public fun order_ship_group_added_ship_group_seq_id(order_ship_group_added: &OrderShipGroupAdded): u8 {
+        order_ship_group_added.ship_group_seq_id
+    }
+
+    public fun order_ship_group_added_shipment_method(order_ship_group_added: &OrderShipGroupAdded): String {
+        order_ship_group_added.shipment_method
+    }
+
+    public fun order_ship_group_added_product_obj_id(order_ship_group_added: &OrderShipGroupAdded): ObjectID {
+        order_ship_group_added.product_obj_id
+    }
+
+    public fun order_ship_group_added_quantity(order_ship_group_added: &OrderShipGroupAdded): u64 {
+        order_ship_group_added.quantity
+    }
+
+    public(friend) fun new_order_ship_group_added(
+        order_obj: &Object<Order>,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    ): OrderShipGroupAdded {
+        OrderShipGroupAdded {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            ship_group_seq_id,
+            shipment_method,
+            product_obj_id,
+            quantity,
         }
     }
 

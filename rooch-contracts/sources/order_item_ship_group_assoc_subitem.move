@@ -7,6 +7,7 @@ module rooch_demo::order_item_ship_group_assoc_subitem {
     use rooch_demo::day::Day;
     use std::string::String;
     friend rooch_demo::order_create_logic;
+    friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_item_ship_group_association;
 
     const EID_ALREADY_EXISTS: u64 = 101;

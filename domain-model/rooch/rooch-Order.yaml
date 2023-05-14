@@ -45,9 +45,11 @@ aggregates:
         entities:
           OrderItemShipGroupAssociation:
             id:
-              name: ProductId
-              type: String
-              length: 100
+              #name: ProductId
+              #type: String
+              #length: 100
+              name: ProductObjId
+              type: ObjectID
               columnName: order_v2_item_ship_group_assoc_product_id
             properties:
               Quantity:
@@ -88,8 +90,8 @@ aggregates:
           #ProductId:
           #  type: String
           ProductObjId:
-            #referenceType: Product
             type: ObjectID
+            #referenceType: Product
           Quantity:
             type: u64
         event:
@@ -105,15 +107,15 @@ aggregates:
 
 #      RemoveItem:
 #        parameters:
-#          ProductId:
-#            type: String
+#          #ProductId:
+#          #  type: String
 #        event:
 #          name: OrderItemRemoved
 #
 #      UpdateItemQuantity:
 #        parameters:
-#          ProductId:
-#            type: String
+#          #ProductId:
+#          #  type: String
 #          Quantity:
 #            type: u64
 #        event:
@@ -126,25 +128,27 @@ aggregates:
 #        event:
 #          name: OrderEstimatedShipDateUpdated
 #
-#      AddOrderShipGroup:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#          ShipmentMethod:
-#            type: String
-#          ProductId:
-#            type: String
-#          Quantity:
-#            type: u64
-#        event:
-#          name: OrderShipGroupAdded
-#
+      AddOrderShipGroup:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          ShipmentMethod:
+            type: String
+          #ProductId:
+          #  type: String
+          ProductObjId:
+            type: ObjectID
+          Quantity:
+            type: u64
+        event:
+          name: OrderShipGroupAdded
+
 #      CancelOrderShipGroupQuantity:
 #        parameters:
 #          ShipGroupSeqId:
 #            type: u8
-#          ProductId:
-#            type: String
+#          #ProductId:
+#          #  type: String
 #          CancelQuantity:
 #            type: u64
 #        event:
@@ -154,8 +158,8 @@ aggregates:
 #        parameters:
 #          ShipGroupSeqId:
 #            type: u8
-#          ProductId:
-#            type: String
+#          #ProductId:
+#          #  type: String
 #        event:
 #          name: OrderShipGroupItemRemoved
 #

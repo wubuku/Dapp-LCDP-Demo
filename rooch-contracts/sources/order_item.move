@@ -6,6 +6,7 @@
 module rooch_demo::order_item {
     use moveos_std::object::ObjectID;
     friend rooch_demo::order_create_logic;
+    friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order;
 
     const EID_ALREADY_EXISTS: u64 = 101;

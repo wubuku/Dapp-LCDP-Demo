@@ -7,6 +7,7 @@ module rooch_demo::order_aggregate {
     use moveos_std::object::ObjectID;
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::order;
+    use rooch_demo::order_add_order_ship_group_logic;
     use rooch_demo::order_create_logic;
     use std::string::String;
 
@@ -30,6 +31,34 @@ module rooch_demo::order_aggregate {
         );
         order::set_order_created_id(&mut order_created, order::id(&order_obj));
         order::add_order(storage_ctx, order_obj);
+    }
+
+
+    public entry fun add_order_ship_group(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        ship_group_seq_id: u8,
+        shipment_method: String,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    ) {
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_ship_group_added = order_add_order_ship_group_logic::verify(
+            storage_ctx,
+            account,
+            ship_group_seq_id,
+            shipment_method,
+            product_obj_id,
+            quantity,
+            &order_obj,
+        );
+        let updated_order_obj = order_add_order_ship_group_logic::mutate(
+            storage_ctx,
+            &order_ship_group_added,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
     }
 
 }
