@@ -156,15 +156,17 @@ aggregates:
         event:
           name: OrderShipGroupQuantityCanceled
 
-#      RemoveOrderShipGroupItem:
-#        parameters:
-#          ShipGroupSeqId:
-#            type: u8
-#          #ProductId:
-#          #  type: String
-#        event:
-#          name: OrderShipGroupItemRemoved
-#
+      RemoveOrderShipGroupItem:
+        parameters:
+          ShipGroupSeqId:
+            type: u8
+          #ProductId:
+          #  type: String
+          ProductObjId:
+            type: ObjectID
+        event:
+          name: OrderShipGroupItemRemoved
+
 #      RemoveOrderShipGroup:
 #        parameters:
 #          ShipGroupSeqId:

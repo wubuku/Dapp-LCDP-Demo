@@ -20,6 +20,7 @@ module rooch_demo::order {
     friend rooch_demo::order_create_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
+    friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -300,6 +301,44 @@ module rooch_demo::order {
             ship_group_seq_id,
             product_obj_id,
             cancel_quantity,
+        }
+    }
+
+    struct OrderShipGroupItemRemoved has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+    }
+
+    public fun order_ship_group_item_removed_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): ObjectID {
+        order_ship_group_item_removed.id
+    }
+
+    public fun order_ship_group_item_removed_order_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): String {
+        order_ship_group_item_removed.order_id
+    }
+
+    public fun order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): u8 {
+        order_ship_group_item_removed.ship_group_seq_id
+    }
+
+    public fun order_ship_group_item_removed_product_obj_id(order_ship_group_item_removed: &OrderShipGroupItemRemoved): ObjectID {
+        order_ship_group_item_removed.product_obj_id
+    }
+
+    public(friend) fun new_order_ship_group_item_removed(
+        order_obj: &Object<Order>,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+    ): OrderShipGroupItemRemoved {
+        OrderShipGroupItemRemoved {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            ship_group_seq_id,
+            product_obj_id,
         }
     }
 

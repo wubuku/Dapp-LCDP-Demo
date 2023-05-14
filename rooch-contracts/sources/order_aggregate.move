@@ -10,6 +10,7 @@ module rooch_demo::order_aggregate {
     use rooch_demo::order_add_order_ship_group_logic;
     use rooch_demo::order_cancel_order_ship_group_quantity_logic;
     use rooch_demo::order_create_logic;
+    use rooch_demo::order_remove_order_ship_group_item_logic;
     use std::string::String;
 
     public entry fun create(
@@ -83,6 +84,30 @@ module rooch_demo::order_aggregate {
         let updated_order_obj = order_cancel_order_ship_group_quantity_logic::mutate(
             storage_ctx,
             &order_ship_group_quantity_canceled,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
+    }
+
+
+    public entry fun remove_order_ship_group_item(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+    ) {
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_ship_group_item_removed = order_remove_order_ship_group_item_logic::verify(
+            storage_ctx,
+            account,
+            ship_group_seq_id,
+            product_obj_id,
+            &order_obj,
+        );
+        let updated_order_obj = order_remove_order_ship_group_item_logic::mutate(
+            storage_ctx,
+            &order_ship_group_item_removed,
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);

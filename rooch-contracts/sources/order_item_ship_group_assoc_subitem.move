@@ -9,6 +9,7 @@ module rooch_demo::order_item_ship_group_assoc_subitem {
     friend rooch_demo::order_create_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
+    friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order_item_ship_group_association;
 
     const EID_ALREADY_EXISTS: u64 = 101;
