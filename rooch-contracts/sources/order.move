@@ -19,6 +19,7 @@ module rooch_demo::order {
     use std::string::String;
     friend rooch_demo::order_create_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
+    friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
     friend rooch_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -254,6 +255,51 @@ module rooch_demo::order {
             shipment_method,
             product_obj_id,
             quantity,
+        }
+    }
+
+    struct OrderShipGroupQuantityCanceled has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        cancel_quantity: u64,
+    }
+
+    public fun order_ship_group_quantity_canceled_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): ObjectID {
+        order_ship_group_quantity_canceled.id
+    }
+
+    public fun order_ship_group_quantity_canceled_order_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): String {
+        order_ship_group_quantity_canceled.order_id
+    }
+
+    public fun order_ship_group_quantity_canceled_ship_group_seq_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u8 {
+        order_ship_group_quantity_canceled.ship_group_seq_id
+    }
+
+    public fun order_ship_group_quantity_canceled_product_obj_id(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): ObjectID {
+        order_ship_group_quantity_canceled.product_obj_id
+    }
+
+    public fun order_ship_group_quantity_canceled_cancel_quantity(order_ship_group_quantity_canceled: &OrderShipGroupQuantityCanceled): u64 {
+        order_ship_group_quantity_canceled.cancel_quantity
+    }
+
+    public(friend) fun new_order_ship_group_quantity_canceled(
+        order_obj: &Object<Order>,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        cancel_quantity: u64,
+    ): OrderShipGroupQuantityCanceled {
+        OrderShipGroupQuantityCanceled {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            ship_group_seq_id,
+            product_obj_id,
+            cancel_quantity,
         }
     }
 

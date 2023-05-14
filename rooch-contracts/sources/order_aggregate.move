@@ -8,6 +8,7 @@ module rooch_demo::order_aggregate {
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::order;
     use rooch_demo::order_add_order_ship_group_logic;
+    use rooch_demo::order_cancel_order_ship_group_quantity_logic;
     use rooch_demo::order_create_logic;
     use std::string::String;
 
@@ -56,6 +57,32 @@ module rooch_demo::order_aggregate {
         let updated_order_obj = order_add_order_ship_group_logic::mutate(
             storage_ctx,
             &order_ship_group_added,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
+    }
+
+
+    public entry fun cancel_order_ship_group_quantity(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        cancel_quantity: u64,
+    ) {
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_ship_group_quantity_canceled = order_cancel_order_ship_group_quantity_logic::verify(
+            storage_ctx,
+            account,
+            ship_group_seq_id,
+            product_obj_id,
+            cancel_quantity,
+            &order_obj,
+        );
+        let updated_order_obj = order_cancel_order_ship_group_quantity_logic::mutate(
+            storage_ctx,
+            &order_ship_group_quantity_canceled,
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
