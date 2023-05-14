@@ -18,6 +18,9 @@ module rooch_demo::order {
     use std::signer;
     use std::string::String;
     friend rooch_demo::order_create_logic;
+    friend rooch_demo::order_remove_item_logic;
+    friend rooch_demo::order_update_item_quantity_logic;
+    friend rooch_demo::order_update_estimated_ship_date_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
     friend rooch_demo::order_remove_order_ship_group_item_logic;
@@ -204,6 +207,106 @@ module rooch_demo::order {
             unit_price,
             total_amount,
             owner,
+        }
+    }
+
+    struct OrderItemRemoved has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        product_obj_id: ObjectID,
+    }
+
+    public fun order_item_removed_id(order_item_removed: &OrderItemRemoved): ObjectID {
+        order_item_removed.id
+    }
+
+    public fun order_item_removed_order_id(order_item_removed: &OrderItemRemoved): String {
+        order_item_removed.order_id
+    }
+
+    public fun order_item_removed_product_obj_id(order_item_removed: &OrderItemRemoved): ObjectID {
+        order_item_removed.product_obj_id
+    }
+
+    public(friend) fun new_order_item_removed(
+        order_obj: &Object<Order>,
+        product_obj_id: ObjectID,
+    ): OrderItemRemoved {
+        OrderItemRemoved {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            product_obj_id,
+        }
+    }
+
+    struct OrderItemQuantityUpdated has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    }
+
+    public fun order_item_quantity_updated_id(order_item_quantity_updated: &OrderItemQuantityUpdated): ObjectID {
+        order_item_quantity_updated.id
+    }
+
+    public fun order_item_quantity_updated_order_id(order_item_quantity_updated: &OrderItemQuantityUpdated): String {
+        order_item_quantity_updated.order_id
+    }
+
+    public fun order_item_quantity_updated_product_obj_id(order_item_quantity_updated: &OrderItemQuantityUpdated): ObjectID {
+        order_item_quantity_updated.product_obj_id
+    }
+
+    public fun order_item_quantity_updated_quantity(order_item_quantity_updated: &OrderItemQuantityUpdated): u64 {
+        order_item_quantity_updated.quantity
+    }
+
+    public(friend) fun new_order_item_quantity_updated(
+        order_obj: &Object<Order>,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    ): OrderItemQuantityUpdated {
+        OrderItemQuantityUpdated {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            product_obj_id,
+            quantity,
+        }
+    }
+
+    struct OrderEstimatedShipDateUpdated has store, drop {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        estimated_ship_date: Day,
+    }
+
+    public fun order_estimated_ship_date_updated_id(order_estimated_ship_date_updated: &OrderEstimatedShipDateUpdated): ObjectID {
+        order_estimated_ship_date_updated.id
+    }
+
+    public fun order_estimated_ship_date_updated_order_id(order_estimated_ship_date_updated: &OrderEstimatedShipDateUpdated): String {
+        order_estimated_ship_date_updated.order_id
+    }
+
+    public fun order_estimated_ship_date_updated_estimated_ship_date(order_estimated_ship_date_updated: &OrderEstimatedShipDateUpdated): Day {
+        order_estimated_ship_date_updated.estimated_ship_date
+    }
+
+    public(friend) fun new_order_estimated_ship_date_updated(
+        order_obj: &Object<Order>,
+        estimated_ship_date: Day,
+    ): OrderEstimatedShipDateUpdated {
+        OrderEstimatedShipDateUpdated {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            estimated_ship_date,
         }
     }
 

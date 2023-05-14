@@ -6,11 +6,17 @@
 module rooch_demo::order_aggregate {
     use moveos_std::object::ObjectID;
     use moveos_std::storage_context::StorageContext;
+    use rooch_demo::day::{Self, Day};
+    use rooch_demo::month;
     use rooch_demo::order;
     use rooch_demo::order_add_order_ship_group_logic;
     use rooch_demo::order_cancel_order_ship_group_quantity_logic;
     use rooch_demo::order_create_logic;
+    use rooch_demo::order_remove_item_logic;
     use rooch_demo::order_remove_order_ship_group_item_logic;
+    use rooch_demo::order_update_estimated_ship_date_logic;
+    use rooch_demo::order_update_item_quantity_logic;
+    use rooch_demo::year;
     use std::string::String;
 
     public entry fun create(
@@ -33,6 +39,91 @@ module rooch_demo::order_aggregate {
         );
         order::set_order_created_id(&mut order_created, order::id(&order_obj));
         order::add_order(storage_ctx, order_obj);
+    }
+
+
+    public entry fun remove_item(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        product_obj_id: ObjectID,
+    ) {
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_item_removed = order_remove_item_logic::verify(
+            storage_ctx,
+            account,
+            product_obj_id,
+            &order_obj,
+        );
+        let updated_order_obj = order_remove_item_logic::mutate(
+            storage_ctx,
+            &order_item_removed,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
+    }
+
+
+    public entry fun update_item_quantity(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        product_obj_id: ObjectID,
+        quantity: u64,
+    ) {
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_item_quantity_updated = order_update_item_quantity_logic::verify(
+            storage_ctx,
+            account,
+            product_obj_id,
+            quantity,
+            &order_obj,
+        );
+        let updated_order_obj = order_update_item_quantity_logic::mutate(
+            storage_ctx,
+            &order_item_quantity_updated,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
+    }
+
+
+    public entry fun update_estimated_ship_date(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        estimated_ship_date_month_year_number: u16,
+        estimated_ship_date_month_year_calendar: String,
+        estimated_ship_date_month_number: u8,
+        estimated_ship_date_month_is_leap: bool,
+        estimated_ship_date_number: u8,
+        estimated_ship_date_time_zone: String,
+    ) {
+        let estimated_ship_date: Day = day::new(
+            month::new(
+                year::new(
+                    estimated_ship_date_month_year_number,
+                    estimated_ship_date_month_year_calendar,
+                ),
+                estimated_ship_date_month_number,
+                estimated_ship_date_month_is_leap,
+            ),
+            estimated_ship_date_number,
+            estimated_ship_date_time_zone,
+        );
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_estimated_ship_date_updated = order_update_estimated_ship_date_logic::verify(
+            storage_ctx,
+            account,
+            estimated_ship_date,
+            &order_obj,
+        );
+        let updated_order_obj = order_update_estimated_ship_date_logic::mutate(
+            storage_ctx,
+            &order_estimated_ship_date_updated,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
     }
 
 

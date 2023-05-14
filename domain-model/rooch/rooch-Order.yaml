@@ -105,29 +105,33 @@ aggregates:
               type: address
               isOwner: true # Transfer the object to the account address indicated by this property
 
-#      RemoveItem:
-#        parameters:
-#          #ProductId:
-#          #  type: String
-#        event:
-#          name: OrderItemRemoved
-#
-#      UpdateItemQuantity:
-#        parameters:
-#          #ProductId:
-#          #  type: String
-#          Quantity:
-#            type: u64
-#        event:
-#          name: OrderItemQuantityUpdated
-#
-#      UpdateEstimatedShipDate:
-#        parameters:
-#          EstimatedShipDate:
-#            type: Day
-#        event:
-#          name: OrderEstimatedShipDateUpdated
-#
+      RemoveItem:
+        parameters:
+          #ProductId:
+          #  type: String
+          ProductObjId:
+            type: ObjectID
+        event:
+          name: OrderItemRemoved
+
+      UpdateItemQuantity:
+        parameters:
+          #ProductId:
+          #  type: String
+          ProductObjId:
+            type: ObjectID
+          Quantity:
+            type: u64
+        event:
+          name: OrderItemQuantityUpdated
+
+      UpdateEstimatedShipDate:
+        parameters:
+          EstimatedShipDate:
+            type: Day
+        event:
+          name: OrderEstimatedShipDateUpdated
+
       AddOrderShipGroup:
         parameters:
           ShipGroupSeqId:

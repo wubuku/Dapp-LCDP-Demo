@@ -10,6 +10,9 @@ module rooch_demo::order_ship_group {
     use rooch_demo::order_item_ship_group_association::{Self, OrderItemShipGroupAssociation};
     use std::string::String;
     friend rooch_demo::order_create_logic;
+    friend rooch_demo::order_remove_item_logic;
+    friend rooch_demo::order_update_item_quantity_logic;
+    friend rooch_demo::order_update_estimated_ship_date_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
     friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
     friend rooch_demo::order_remove_order_ship_group_item_logic;
