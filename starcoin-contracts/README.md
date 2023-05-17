@@ -1,4 +1,4 @@
-# Starcoin Demo
+# Starcoin Demo Contracts
 
 ## Deploy on-chain contracts on local Dev network
 
@@ -79,52 +79,3 @@ move check
     ├── SMTUtils.move
     └── SMTreeHasher.move
 ```
-
-### Off-Chain Service
-
-```shell
-% tree ./off-chain-service
-```
-
-```txt
-./off-chain-service
-├── README.md
-├── client
-│   ├── client.go
-│   └── client_test.go
-├── contract
-│   ├── contract.go
-│   └── contract_test.go
-├── db
-│   ├── bcs.go
-│   ├── db.go
-│   ├── db_test.go
-│   ├── models.go
-│   ├── mysqldb.go
-│   └── smt_test.go
-├── events
-│   ├── events_test.go
-│   ├── lib.go
-│   └── libext.go
-├── go.mod
-├── go.sum
-├── handlers.go
-├── main.go
-├── manager
-│   ├── starcoinmanager.go
-│   └── starcoinmanager_test.go
-├── serde-format
-│   └── events.yaml
-├── starcoin-ns-demo
-├── tools
-│   ├── restclient.go
-│   ├── starcoinutil.go
-│   └── util.go
-├── transactions
-│   ├── lib.go
-│   ├── transactions_test.go
-│   └── util.go
-└── vo
-    └── vo.go    
-```
-
