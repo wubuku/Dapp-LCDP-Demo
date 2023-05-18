@@ -18,11 +18,17 @@ module aptos_demo::month {
         number: u8,
         is_leap: bool,
     ): Month {
-        Month {
+        let month = Month {
             year,
             number,
             is_leap,
-        }
+        };
+        validate(&month);
+        month
+    }
+
+    fun validate(month: &Month) {
+        let _ = month;
     }
 
     public fun year(month: &Month): Year {

@@ -16,11 +16,16 @@ module sui_contracts::year {
         number: u16,
         calendar: String,
     ): Year {
-        assert!(std::string::length(&calendar) <= 50, EID_DATA_TOO_LONG);
-        Year {
+        let year = Year {
             number,
             calendar,
-        }
+        };
+        validate(&year);
+        year
+    }
+
+    fun validate(year: &Year) {
+        assert!(std::string::length(&year.calendar) <= 50, EID_DATA_TOO_LONG);
     }
 
     public fun number(year: &Year): u16 {
