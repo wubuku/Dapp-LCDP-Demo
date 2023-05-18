@@ -19,11 +19,21 @@ module rooch_demo::reference_vo {
         title: String,
         url: Option<String>,
     ): ReferenceVO {
-        ReferenceVO {
+        let reference_vo = ReferenceVO {
             reference_number,
             title,
             url,
-        }
+        };
+        validate(&reference_vo);
+        reference_vo
+    }
+
+    public fun vector_from_bytes(bytes: vector<u8>): vector<ReferenceVO> {
+        moveos_std::bcd::from_bytes<vector<ReferenceVO>>(bytes)
+    }
+
+    fun validate(reference_vo: &ReferenceVO) {
+        let _ = reference_vo;
     }
 
     public fun reference_number(reference_vo: &ReferenceVO): u64 {

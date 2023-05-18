@@ -19,12 +19,17 @@ module rooch_demo::day {
         number: u8,
         time_zone: String,
     ): Day {
-        assert!(std::string::length(&time_zone) <= 50, EID_DATA_TOO_LONG);
-        Day {
+        let day = Day {
             month,
             number,
             time_zone,
-        }
+        };
+        validate(&day);
+        day
+    }
+
+    fun validate(day: &Day) {
+        assert!(std::string::length(&day.time_zone) <= 50, EID_DATA_TOO_LONG);
     }
 
     public fun month(day: &Day): Month {
