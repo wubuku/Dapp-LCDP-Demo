@@ -7,6 +7,7 @@ module rooch_demo::article_create_logic {
     use std::string;
     use std::vector;
     use rooch_demo::tag;
+    use rooch_demo::reference_vo::ReferenceVO;
 
     friend rooch_demo::article_aggregate;
 
@@ -16,6 +17,7 @@ module rooch_demo::article_create_logic {
         title: String,
         author: address,
         content: String,
+        references: vector<ReferenceVO>,
         tags: vector<ObjectID>,
     ): article::ArticleCreated {
         let _ = storage_ctx;
@@ -39,6 +41,7 @@ module rooch_demo::article_create_logic {
             title,
             author,
             content,
+            references,
             tags,
             owner
         )
@@ -55,6 +58,7 @@ module rooch_demo::article_create_logic {
             article::article_created_content(article_created),
             article::article_created_tags(article_created),
         );
+        //todo add references
         article
     }
 }

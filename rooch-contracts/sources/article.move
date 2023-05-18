@@ -10,6 +10,7 @@ module rooch_demo::article {
     use moveos_std::table::{Self, Table};
     use moveos_std::tx_context;
     use rooch_demo::reference::{Self, Reference};
+    use rooch_demo::reference_vo::ReferenceVO;
     use std::error;
     use std::option::{Self, Option};
     use std::signer;
@@ -122,6 +123,7 @@ module rooch_demo::article {
         title: String,
         author: address,
         content: String,
+        references: vector<ReferenceVO>,
         tags: vector<ObjectID>,
         owner: address,
     }
@@ -146,6 +148,10 @@ module rooch_demo::article {
         article_created.content
     }
 
+    public fun article_created_references(article_created: &ArticleCreated): vector<ReferenceVO> {
+        article_created.references
+    }
+
     public fun article_created_tags(article_created: &ArticleCreated): vector<ObjectID> {
         article_created.tags
     }
@@ -158,6 +164,7 @@ module rooch_demo::article {
         title: String,
         author: address,
         content: String,
+        references: vector<ReferenceVO>,
         tags: vector<ObjectID>,
         owner: address,
     ): ArticleCreated {
@@ -166,6 +173,7 @@ module rooch_demo::article {
             title,
             author,
             content,
+            references,
             tags,
             owner,
         }

@@ -7,6 +7,7 @@ module rooch_demo::article_created {
 
     use moveos_std::object::ObjectID;
     use rooch_demo::article::{Self, ArticleCreated};
+    use rooch_demo::reference_vo::ReferenceVO;
     use std::option;
     use std::string::String;
 
@@ -24,6 +25,10 @@ module rooch_demo::article_created {
 
     public fun content(article_created: &ArticleCreated): String {
         article::article_created_content(article_created)
+    }
+
+    public fun references(article_created: &ArticleCreated): vector<ReferenceVO> {
+        article::article_created_references(article_created)
     }
 
     public fun tags(article_created: &ArticleCreated): vector<ObjectID> {

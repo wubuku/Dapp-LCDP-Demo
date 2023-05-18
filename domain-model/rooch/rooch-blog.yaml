@@ -53,6 +53,8 @@ aggregates:
             type: address
           Content:
             type: String
+          References:
+            itemType: ReferenceVO
           Tags:
             itemType: ObjectID
         event:
@@ -89,3 +91,17 @@ aggregates:
           #  type: String
         event:
           name: TagCreated
+
+
+valueObjects:
+
+  ReferenceVO:
+    properties:
+      ReferenceNumber:
+        type: u64
+      Title:
+        type: String
+      Url:
+        type: String
+        optional: true
+

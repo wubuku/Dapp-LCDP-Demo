@@ -9,6 +9,7 @@ module rooch_demo::article_aggregate {
     use rooch_demo::article;
     use rooch_demo::article_add_reference_logic;
     use rooch_demo::article_create_logic;
+    use rooch_demo::reference_vo::ReferenceVO;
     use std::option::{Self, Option};
     use std::string::String;
     use std::vector;
@@ -19,6 +20,7 @@ module rooch_demo::article_aggregate {
         title: String,
         author: address,
         content: String,
+        references: vector<u8>,
         tags: vector<ObjectID>,
     ) {
         let article_created = article_create_logic::verify(
@@ -27,6 +29,7 @@ module rooch_demo::article_aggregate {
             title,
             author,
             content,
+            moveos_std::bcd::from_bytes<vector<ReferenceVO>>(references),//todo bcd maybe cannot be called here in the future
             tags,
         );
         let article_obj = article_create_logic::mutate(
