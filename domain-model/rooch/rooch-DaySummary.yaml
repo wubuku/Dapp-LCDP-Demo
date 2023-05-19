@@ -1,0 +1,55 @@
+aggregates:
+  DaySummary:
+    id:
+      name: Day
+      type: Day
+      generator:
+        class: assigned
+        tableName: DaySummaryIdTable
+    properties:
+      Description:
+        type: String
+      Metadata:
+        type: vector<u8>
+      ArrayData:
+        itemType: String
+      OptionalData:
+        type: String
+        optional: true
+      U16ArrayData:
+        itemType: u16
+      U32ArrayData:
+        itemType: u32
+      U64ArrayData:
+        itemType: u64
+      U128ArrayData:
+        itemType: u128
+      U256ArrayData:
+        itemType: u256
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Description:
+            type: String
+          MetaData: # note: not the same as the property name
+            type: vector<u8>
+          ArrayData:
+            itemType: String
+          OptionalData:
+            type: String # nested vector<vector<_>> parameter type is not supported in Rooch entry fun.
+            optional: true
+          U16ArrayData:
+            itemType: u16
+          U32ArrayData:
+            itemType: u32
+          U64ArrayData:
+            itemType: u64
+          U128ArrayData:
+            itemType: u128
+          U256ArrayData:
+            itemType: u256
+        event:
+          name: DaySummaryCreated
+

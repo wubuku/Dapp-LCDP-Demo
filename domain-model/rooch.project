@@ -11,6 +11,7 @@ project:
     - "rooch/rooch-ValueObjects.yaml"
     - "rooch/rooch-Product.yaml"
     - "rooch/rooch-Order.yaml"
+    - "rooch/rooch-DaySummary.yaml"
 
   # directories:
     # - path: "."
