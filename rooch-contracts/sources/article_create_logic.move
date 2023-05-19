@@ -1,13 +1,15 @@
 module rooch_demo::article_create_logic {
+    use std::option;
     use std::signer;
-    use std::string::String;
-    use rooch_demo::article;
-    use moveos_std::storage_context::StorageContext;
-    use moveos_std::object::{Object, ObjectID};
-    use std::string;
+    use std::string::{Self, String};
     use std::vector;
+
+    use moveos_std::object::{Object, ObjectID};
+    use moveos_std::storage_context::StorageContext;
+    use rooch_demo::article;
+    use rooch_demo::reference;
+    use rooch_demo::reference_vo::{Self, ReferenceVO};
     use rooch_demo::tag;
-    use rooch_demo::reference_vo::ReferenceVO;
 
     friend rooch_demo::article_aggregate;
 
@@ -58,7 +60,25 @@ module rooch_demo::article_create_logic {
             article::article_created_content(article_created),
             article::article_created_tags(article_created),
         );
-        //todo add references
+        let references = article::article_created_references(article_created);
+        let i = 0;
+        while (i < vector::length(&references)) {
+            let r = vector::borrow(&references, i);
+            article::add_reference(
+                &mut article,
+                reference::new_reference(
+                    reference_vo::reference_number(r),
+                    reference_vo::title(r),
+                    string::utf8(b"Unknown"),
+                    option::none(),
+                    option::none(),
+                    option::none(),
+                    reference_vo::url(r),
+                    option::none(),
+                ),
+            );
+            i = i + 1;
+        };
         article
     }
 }

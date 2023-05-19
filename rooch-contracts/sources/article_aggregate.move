@@ -9,10 +9,10 @@ module rooch_demo::article_aggregate {
     use rooch_demo::article;
     use rooch_demo::article_add_reference_logic;
     use rooch_demo::article_create_logic;
+    use rooch_demo::reference_vo;
     use std::option::{Self, Option};
     use std::string::String;
     use std::vector;
-    use rooch_demo::reference_vo;
 
     public entry fun create(
         storage_ctx: &mut StorageContext,
