@@ -17,6 +17,7 @@ module rooch_demo::article {
     use std::string::String;
     friend rooch_demo::article_create_logic;
     friend rooch_demo::article_add_reference_logic;
+    friend rooch_demo::article_update_reference_logic;
     friend rooch_demo::article_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
@@ -215,6 +216,52 @@ module rooch_demo::article {
             reference_number,
             title,
             url,
+        }
+    }
+
+    struct ReferenceUpdated has store, drop {
+        id: ObjectID,
+        version: u64,
+        reference_number: u64,
+        title: String,
+        url: Option<String>,
+        author: Option<String>,
+    }
+
+    public fun reference_updated_id(reference_updated: &ReferenceUpdated): ObjectID {
+        reference_updated.id
+    }
+
+    public fun reference_updated_reference_number(reference_updated: &ReferenceUpdated): u64 {
+        reference_updated.reference_number
+    }
+
+    public fun reference_updated_title(reference_updated: &ReferenceUpdated): String {
+        reference_updated.title
+    }
+
+    public fun reference_updated_url(reference_updated: &ReferenceUpdated): Option<String> {
+        reference_updated.url
+    }
+
+    public fun reference_updated_author(reference_updated: &ReferenceUpdated): Option<String> {
+        reference_updated.author
+    }
+
+    public(friend) fun new_reference_updated(
+        article_obj: &Object<Article>,
+        reference_number: u64,
+        title: String,
+        url: Option<String>,
+        author: Option<String>,
+    ): ReferenceUpdated {
+        ReferenceUpdated {
+            id: id(article_obj),
+            version: version(article_obj),
+            reference_number,
+            title,
+            url,
+            author,
         }
     }
 

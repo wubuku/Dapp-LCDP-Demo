@@ -76,6 +76,21 @@ aggregates:
         event:
           name: ReferenceAdded
 
+      UpdateReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+          Title:
+            type: String
+          Url:
+            type: String
+            optional: true
+          Author:
+            type: String
+            optional: true
+        event:
+          name: ReferenceUpdated
+
   Tag:
     id:
       name: Name

@@ -9,6 +9,7 @@ module rooch_demo::article_aggregate {
     use rooch_demo::article;
     use rooch_demo::article_add_reference_logic;
     use rooch_demo::article_create_logic;
+    use rooch_demo::article_update_reference_logic;
     use rooch_demo::reference_vo;
     use std::option::{Self, Option};
     use std::string::String;
@@ -61,6 +62,34 @@ module rooch_demo::article_aggregate {
         let updated_article_obj = article_add_reference_logic::mutate(
             storage_ctx,
             &reference_added,
+            article_obj,
+        );
+        article::update_version_and_add(storage_ctx, updated_article_obj);
+    }
+
+
+    public entry fun update_reference(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        reference_number: u64,
+        title: String,
+        url: vector<String>,
+        author: vector<String>,
+    ) {
+        let article_obj = article::remove_article(storage_ctx, id);
+        let reference_updated = article_update_reference_logic::verify(
+            storage_ctx,
+            account,
+            reference_number,
+            title,
+            vector_to_option(url),
+            vector_to_option(author),
+            &article_obj,
+        );
+        let updated_article_obj = article_update_reference_logic::mutate(
+            storage_ctx,
+            &reference_updated,
             article_obj,
         );
         article::update_version_and_add(storage_ctx, updated_article_obj);
