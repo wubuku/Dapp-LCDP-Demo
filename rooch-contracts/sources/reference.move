@@ -9,6 +9,7 @@ module rooch_demo::reference {
     friend rooch_demo::article_create_logic;
     friend rooch_demo::article_add_reference_logic;
     friend rooch_demo::article_update_reference_logic;
+    friend rooch_demo::article_remove_reference_logic;
     friend rooch_demo::article;
 
     const EID_DATA_TOO_LONG: u64 = 102;

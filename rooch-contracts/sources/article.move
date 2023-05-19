@@ -18,6 +18,7 @@ module rooch_demo::article {
     friend rooch_demo::article_create_logic;
     friend rooch_demo::article_add_reference_logic;
     friend rooch_demo::article_update_reference_logic;
+    friend rooch_demo::article_remove_reference_logic;
     friend rooch_demo::article_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
@@ -262,6 +263,31 @@ module rooch_demo::article {
             title,
             url,
             author,
+        }
+    }
+
+    struct ReferenceRemoved has store, drop {
+        id: ObjectID,
+        version: u64,
+        reference_number: u64,
+    }
+
+    public fun reference_removed_id(reference_removed: &ReferenceRemoved): ObjectID {
+        reference_removed.id
+    }
+
+    public fun reference_removed_reference_number(reference_removed: &ReferenceRemoved): u64 {
+        reference_removed.reference_number
+    }
+
+    public(friend) fun new_reference_removed(
+        article_obj: &Object<Article>,
+        reference_number: u64,
+    ): ReferenceRemoved {
+        ReferenceRemoved {
+            id: id(article_obj),
+            version: version(article_obj),
+            reference_number,
         }
     }
 

@@ -91,6 +91,14 @@ aggregates:
         event:
           name: ReferenceUpdated
 
+      RemoveReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+        event:
+          name: ReferenceRemoved
+
+
   Tag:
     id:
       name: Name
