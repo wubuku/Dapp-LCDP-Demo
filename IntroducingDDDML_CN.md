@@ -110,7 +110,7 @@ DDD 风格的领域模型是相对高度抽象的面向对象模型。
 所以，本文中的 DDDML 示例，有些代码可能仅适用于基于“特定 Move 智能合约平台”的应用的生成，对此，在讲解的时候我们会特别指出。
 
 
-### 示例 1: 一个“产品”聚合
+### 示例 1：一个“产品”聚合
 
 这是一个描述“产品”模型的 DDDML 文档：
 
@@ -158,5 +158,228 @@ aggregates:
 
 在 `parameters` 这个键结点下描述了方法的参数。`event/name` 这个键结点指出这个方法如果执行成功，会触发一个名为“产品创建”（ProductCreated）的事件。
 
+#### 注意不同的命名风格：camelCase 与 PascalCase
 
+细心的读者可能已经注意到，在这个 DDDML 文档中，有些 Map（也就是“JSON 的 Object”）的键（key）是以 `camelCase` 风格命名的，有些则是以（大写字母开头的）`PascalCase` 风格命名的。
+
+这其实是有意为之的。
+
+在 DDDML 规范中的定义的那些需要在特定的位置出现、具有特定含义的键（key），都使用了 `camelCase` 风格的命名，这样的键（key）属于 DDDML 的*关键字*。而在 DDDML 规范定义的关键字之外的那些“领域对象”的**名称**，我们强烈建议使用 `PascalCase` 风格命名。
+
+因为我们有意选择了不同的命名风格，所以当我们通过肉眼阅读 DDDML 文档的时候，就很容易从中分辨出哪些是 DDDML 的关键字，哪些是文档描述的当前领域模型中的概念。
+
+
+### 示例 X：一个 Blog 系统
+
+这是一个描述 blog 系统的 DDDML 模型文档：
+
+```yaml
+aggregates:
+  Article:
+    id:
+      name: Id
+      type: ObjectID # only for Rooch
+      arbitrary: true
+
+    properties:
+      Title:
+        type: String
+      Author:
+        type: address
+      Content:
+        type: String
+      Tags:
+        itemType: ObjectID
+      References:
+        itemType: Reference
+
+    entities:
+      Reference:
+        id:
+          name: ReferenceNumber
+          type: u64
+        properties:
+          Title:
+            type: String
+          Author:
+            type: String
+          PublicationYear:
+            type: u64
+            optional: true
+          # ...
+          Url:
+            type: String
+            optional: true
+          PageNumber:
+            type: u64
+            optional: true
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          Title:
+            type: String
+          Author:
+            type: address
+          Content:
+            type: String
+          References:
+            itemType: ReferenceVO
+          Tags:
+            itemType: ObjectID
+        event:
+          name: ArticleCreated
+
+      AddReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+          Title:
+            type: String
+          Url:
+            type: String
+            optional: true
+        event:
+          name: ReferenceAdded
+
+      UpdateReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+          Title:
+            type: String
+          Url:
+            type: String
+            optional: true
+          Author:
+            type: String
+            optional: true
+        event:
+          name: ReferenceUpdated
+
+      RemoveReference:
+        parameters:
+          ReferenceNumber:
+            type: u64
+        event:
+          name: ReferenceRemoved
+
+
+  Tag:
+    id:
+      name: Name
+      type: String
+      generator:
+        class: assigned
+        tableName: TagNameTable
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+        event:
+          name: TagCreated
+
+valueObjects:
+
+  ReferenceVO:
+    properties:
+      ReferenceNumber:
+        type: u64
+      Title:
+        type: String
+      Url:
+        type: String
+        optional: true
+```
+
+这个文档包含了两个聚合：`Article`（文章）和 `Tag`（标签），以及一个值对象模型：`ReferenceVO`。
+
+#### “文章”聚合
+
+我们使用 `/aggregates/Article/id` 这个键结点来定义文章的 ID。
+
+这里假设我们是基于 Rooch 来开发我们的 blog 系统，那么可以选择将文章的 id 的 `name` 设置为 `id`，`type` 设置为 `ObjectID`，则可以在创建文章时，使用 Rooch 平台提供的对象 ID 作为文章的 ID。 至于 id 的 `arbitrary` 是否为 `true`，目前对我们的 DDDML 工具生成代码并无实际影响。它更多是一种描述性的信息，表示我们其实并不关心文章的 ID 的格式之类，只要它是一个唯一的 ID 就好。
+
+不只是 Rooch，其他 “Move 智能合约平台”（链），比如 Sui，也是为每个“对象”提供了唯一 ID 的。如果平台支持，我们可以选择使用平台提供的 ID，而不用设置 id 的 generator 信息。
+
+在 `/aggregates/Article/properties` 这个键结点下，我们定义了文章的属性：`Title`、`Author`、`Content`、`Tags` 和 `References`，它们分别表示文章的标题、作者、内容、标签和引用。
+
+在这些属性的键结点下，我们使用 `type` 或 `itemType`（这两者只能定义一个）来指定（非集合）属性的类型或（集合）属性的元素的类型。
+
+在这里，我们指定了文章标题的类型是 `String`，文章作者的类型是 `address`（这是一个特殊的类型，表示账户地址），文章内容的类型是 `String`。
+
+文章的标签（tags）属性是一个由类型是 `ObjectID` 的元素所组成的集合（`itemType: ObjectID`）。
+
+文章的引用（references）属性是一个从聚合根实体（文章）导航到 `Reference`（文章的引用）这个聚合内部实体的“关系”。 对于 OO 模型来说，两个实体之间 one-to-many 的关系是使用前者的一个集合属性来表示的。所以这里我们使用 `itemType: Reference` 来描述文章和它的引用之间的 one-to-many 关系。
+
+显然，我们还需要进一步描述“引用”这个实体是什么，这些描述位于 `/aggregates/Article/entities/Reference` 这个键结点下。
+
+聚合内部实体 `Reference` 的 ID 是个 local ID。所谓的 Local ID，指的是对于这个实体（类型）来说，只要保证在同一个外部实体（父实体）的实例内、该实体（类型）的不同实例之间这个 ID 的值具备唯一性就可以了。
+
+在这里，我们指定了引用的 local ID 的名称是 `ReferenceNumber`，类型是 `u64`（无符号 64 位整数）。
+
+然后，在 `/aggregates/Article/entities/Reference/properties` 结点下我们定义了引用的属性，`Title`、`Author`、`PublicationYear` 等。
+
+
+
+---
+
+【TBD】
+
+... 等多几个属性和方法的键结点来定义多个属性和方法，分别是引用的标题、作者、出版年份、网址、页码等属性，以及添加引用、更新引用和移除引用等方法。在每个属性或方法的键结点下，我们使用 `type`、`optional`、
+... 等多几个键结点来描述属性或方法的类型、是否可选、参数、事件等细节。在这里，我们指定了引用标题和作者的类型都是 `String`，出版年份和页码的类型都是 `u64` 并且都是可选的（optional: true），网址的类型是 `String`
+并且也是可选的（optional: true）。我们还指定了添加引用方法有两个参数：引用编号和标题（parameters: ReferenceNumber, Title），并且会触发一个名为“引用添加”的事件（event: name: ReferenceAdded）。更新引用方法有四个参数：引用编号、标题、网址和作者（parameters: ReferenceNumber, Title, Url, Author），并且会触发一个名为“引用更新”的事件（event: name: ReferenceUpdated）。移除引用方法有一个参数：引用编号（parameters: ReferenceNumber），并且会触发一个名为“引用移除”的事件（event: name: ReferenceRemoved）。
+
+在 `/aggregates/Tag/id`
+这个键结点下，我们使用
+... 等多几个键结点来定义标签的标识符。在这里，我们指定了这个标识符的名称是
+Name
+，
+类型是
+String
+，
+生成器是一个名为
+assigned
+的类，
+它有一个表名叫做
+TagNameTable
+。
+
+在 `/aggregates/Tag/methods`
+这个键结点下，
+我们使用
+Create
+这个键结点来定义一个名为“创建”的方法。
+在这个方法的键结点下，
+我们使用
+isCreationCommand
+、
+parameters
+和
+event
+这些键结点来描述这个方法的特征、参数和事件。
+在这里，
+我们指定了这个方法是一个创建命令（isCreationCommand: true），
+它没有任何参数（parameters: ），
+它会触发一个名为“标签创建”的事件（event: name: TagCreated）。
+
+最后，在 `/valueObjects`
+这个键结点下，
+我们使用
+ReferenceVO
+这个键结点来定义一个名为“引用值对象”的值对象模型。
+值对象是一种 DDD 中的概念，
+它是一个没有唯一标识符和生命周期的对象，
+它只由其属性值决定其相等性。
+在这里，
+我们指定了引用值对象有四个属性：
+引用编号、标题、网址和作者（properties: ReferenceNumber, Title, Url, Author），
+并且分别指定了它们的类型和是否可选。
+
+总之，
+这段 yaml 文档用 DDDML 的语法来描述了一个博客系统的领域模型，
+它包含了文章和标签两种聚合根模型，
+以及引用值对象一种值对象模型，
+并且可以用来生成代码、文档等。
 
