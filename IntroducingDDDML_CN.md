@@ -299,9 +299,9 @@ valueObjects:
 
 我们使用 `/aggregates/Article/id` 这个键结点来定义文章的 ID。
 
-这里假设我们是基于 Rooch 来开发我们的 blog 系统，那么可以选择将文章的 id 的 `name` 设置为 `id`，`type` 设置为 `ObjectID`，则可以在创建文章时，使用 Rooch 平台提供的对象 ID 作为文章的 ID。 至于 id 的 `arbitrary` 是否为 `true`，目前对我们的 DDDML 工具生成代码并无实际影响。它更多是一种描述性的信息，表示我们其实并不关心文章的 ID 的格式之类，只要它是一个唯一的 ID 就好。
+这里假设我们是基于 Rooch 来开发我们的 blog 系统，那么可以选择将文章的 ID 的 `name` 设置为 `id`，`type` 设置为 `ObjectID`，则可以在创建文章时，使用 Rooch 平台提供的对象 ID 作为文章的 ID。 至于 `id` 的 `arbitrary` 是否为 `true`，目前对我们的 DDDML 工具生成代码并无实际影响。它更多是一种描述性的信息，表示我们其实并不关心文章的 ID 的格式之类，只要它是一个唯一的 ID 就好。
 
-不只是 Rooch，其他 “Move 智能合约平台”（链），比如 Sui，也是为每个“对象”提供了唯一 ID 的。如果平台支持，我们可以选择使用平台提供的 ID，而不用设置 id 的 generator 信息。
+不只是 Rooch，其他 “Move 智能合约平台”（链），比如 Sui，也是为每个“对象”提供了唯一 ID 的。如果平台支持，我们可以选择使用平台提供的 ID，而不用设置 `id` 的 `generator` 信息。
 
 在 `/aggregates/Article/properties` 这个键结点下，我们定义了文章的属性：`Title`、`Author`、`Content`、`Tags` 和 `References`，它们分别表示文章的标题、作者、内容、标签和引用。
 
@@ -319,67 +319,35 @@ valueObjects:
 
 在这里，我们指定了引用的 local ID 的名称是 `ReferenceNumber`，类型是 `u64`（无符号 64 位整数）。
 
-然后，在 `/aggregates/Article/entities/Reference/properties` 结点下我们定义了引用的属性，`Title`、`Author`、`PublicationYear` 等。
+然后，在 `/aggregates/Article/entities/Reference/properties` 结点下我们定义了引用的属性，`Title`、`Author`、`PublicationYear`、`Url` 等。顾名思义，它们分别是引用的标题、作者、出版年份、网址等属性。
+
+值得注意的是，这里面有些属性的 `optional` 值为 `true`，比如 `PublicationYear`、`Url` 等。这表示这些属性是可选的，即可以没有值。在生成 Move 代码时，会为可选属性生成 `Option<T>` 类型的字段。
+
+在 `/aggregates/Article/methods/Create` 这个键结点下，我们定义了“创建文章”的方法（`Create`）。
+
+值得注意的是，这个方法的参数（`parameters`）包含一个元素类型为 `ObjectID` 的集合属性 `Tags`，以及一个元素类型为 `ReferenceVO` 值对象的集合属性 `References`。下面我们会看到值对象 `ReferenceVO` 的定义。
+
+然后我们还定义了用于操作引用的几个方法。
+
+* “添加引用”方法的参数包括引用编号 `ReferenceNumber` 和 `Title` 等。需要注意的是，这里我们并不要在方法中定义一个表示聚合根 ID 的参数，DDDML 工具会为你自动添加这个必须的参数。这个方法执行成功会触发一个名为“引用已添加”（`ReferenceAdded`）的事件。
+* “更新引用”方法的参数包括引用编号、标题、网址和作者（`Author`）等。它会触发一个名为“引用已更新”（`ReferenceUpdated`）的事件。
+* “移除引用”方法包含一个参数：引用编号。它会触发一个名为“引用已移除”（`ReferenceRemoved`）的事件。
+
+#### “标签”聚合
+
+在 `/aggregates/Tag` 这个键结点下，我们定义了标签聚合。
+
+标签的（领域）ID 的名称是 `Name`，类型是 `String`。除了这个领域 ID，标签没有其他更多属性。
+
+Tag 对象实例的 ID 由一个类型（class）为 `assigned` 的生成器生成，意思是这个 ID 是由“用户”赋予的。显然，我们需要一个“表”来保证一个 ID 不会被赋予不同的对象实例。为了让生成的代码如我们所愿，我们可以指定这个表在代码中的命名，这里是 `TagNameTable`。
+
+在 `/aggregates/Tag/methods` 这个键结点下，我们定义了一个“创建”（`Create`）标签的方法。 我们没有为这个方法显式定义任何参数（`parameters`）。在 DDDML 生成这个方法的代码时，会自动为你添加一个表示聚合根 ID 的参数。这个方法执行成功会触发一个名为“标签已创建”（`TagCreated`）的事件。
+
+#### “ReferenceVO” 值对象
+
+最后，在 `/valueObjects` 这个键结点下， 我们定义了一个名为 `ReferenceVO` 值对象。我们主要在“创建文章”的方法参数中使用了这个值对象（类型）。
+
+该值对象的属性包括： 引用编号、标题、网址和作者。其中有些属性是可选的。
 
 
-
----
-
-【TBD】
-
-... 等多几个属性和方法的键结点来定义多个属性和方法，分别是引用的标题、作者、出版年份、网址、页码等属性，以及添加引用、更新引用和移除引用等方法。在每个属性或方法的键结点下，我们使用 `type`、`optional`、
-... 等多几个键结点来描述属性或方法的类型、是否可选、参数、事件等细节。在这里，我们指定了引用标题和作者的类型都是 `String`，出版年份和页码的类型都是 `u64` 并且都是可选的（optional: true），网址的类型是 `String`
-并且也是可选的（optional: true）。我们还指定了添加引用方法有两个参数：引用编号和标题（parameters: ReferenceNumber, Title），并且会触发一个名为“引用添加”的事件（event: name: ReferenceAdded）。更新引用方法有四个参数：引用编号、标题、网址和作者（parameters: ReferenceNumber, Title, Url, Author），并且会触发一个名为“引用更新”的事件（event: name: ReferenceUpdated）。移除引用方法有一个参数：引用编号（parameters: ReferenceNumber），并且会触发一个名为“引用移除”的事件（event: name: ReferenceRemoved）。
-
-在 `/aggregates/Tag/id`
-这个键结点下，我们使用
-... 等多几个键结点来定义标签的标识符。在这里，我们指定了这个标识符的名称是
-Name
-，
-类型是
-String
-，
-生成器是一个名为
-assigned
-的类，
-它有一个表名叫做
-TagNameTable
-。
-
-在 `/aggregates/Tag/methods`
-这个键结点下，
-我们使用
-Create
-这个键结点来定义一个名为“创建”的方法。
-在这个方法的键结点下，
-我们使用
-isCreationCommand
-、
-parameters
-和
-event
-这些键结点来描述这个方法的特征、参数和事件。
-在这里，
-我们指定了这个方法是一个创建命令（isCreationCommand: true），
-它没有任何参数（parameters: ），
-它会触发一个名为“标签创建”的事件（event: name: TagCreated）。
-
-最后，在 `/valueObjects`
-这个键结点下，
-我们使用
-ReferenceVO
-这个键结点来定义一个名为“引用值对象”的值对象模型。
-值对象是一种 DDD 中的概念，
-它是一个没有唯一标识符和生命周期的对象，
-它只由其属性值决定其相等性。
-在这里，
-我们指定了引用值对象有四个属性：
-引用编号、标题、网址和作者（properties: ReferenceNumber, Title, Url, Author），
-并且分别指定了它们的类型和是否可选。
-
-总之，
-这段 yaml 文档用 DDDML 的语法来描述了一个博客系统的领域模型，
-它包含了文章和标签两种聚合根模型，
-以及引用值对象一种值对象模型，
-并且可以用来生成代码、文档等。
 
