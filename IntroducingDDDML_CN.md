@@ -168,6 +168,101 @@ aggregates:
 
 因为我们有意选择了不同的命名风格，所以当我们通过肉眼阅读 DDDML 文档的时候，就很容易从中分辨出哪些是 DDDML 的关键字，哪些是文档描述的当前领域模型中的概念。
 
+### 示例 2：一个“订单”聚合
+
+这是一个描述“订单”模型的 DDDML 文档的一部分：
+
+```yaml
+aggregates:
+  Order:
+    id:
+      name: OrderId
+      type: string
+      generator:
+        class: assigned
+        tableName: OrderIdTable
+    properties:
+      TotalAmount:
+        type: u128
+      EstimatedShipDate:
+        type: Day
+        optional: true
+      Items:
+        itemType: OrderItem
+
+    entities:
+      OrderItem:
+        id:
+          name: ProductObjectId
+          type: ObjectID
+        properties:
+          Quantity:
+            type: u64
+          ItemAmount:
+            type: u128
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+          ProductObjId:
+            type: ObjectID
+          Quantity:
+            type: u64
+        event:
+          name: OrderCreated
+          properties:
+            UnitPrice:
+              type: u128
+            TotalAmount:
+              type: u128
+            Owner:
+              type: address
+```
+
+上面的 DDDML 代码定义了一个名为 `Order` 的聚合及同名聚合根，以及一个名为 `OrderItem` 的聚合内部实体。
+
+#### “订单”聚合
+
+在 `/aggregates/Order/id` 这个键结点下，我们定义了订单聚合根的 ID。订单的 ID 的名字为 `OrderId`，类型为 `string`。订单的 ID 由一个类型（class）为 `assigned` 的生成器生成，意思是这个 ID 是由“用户”赋予的。显然，我们需要一个“表”来保证一个 ID 不会被赋予不同的对象实例。为了让生成的代码如我们所愿，我们可以指定这个表在代码中的命名，这里是 `OrderIdTable`。
+
+在 `/aggregates/Order/properties` 这个键结点下，我们定义了订单的属性分别表示订单的总金额、预计发货日期和订单项。
+
+订单的总金额（`TotalAmount`）属性是一个类型为 `u128` 的属性。
+
+订单的预计发货日期（`EstimatedShipDate`）属性是一个类型为 `Day` 的可选属性（`optional: true`）。
+
+订单的订单项（`Items`）属性是一个由类型是 `OrderItem` 的元素所组成的集合（`itemType: OrderItem`）。这里的 `OrderItem` 是一个聚合内部实体。
+
+#### “订单项”实体
+
+在 `/aggregates/Order/entities/OrderItem` 这个键结点下，我们定义了“订单项”这个聚合内部实体。
+
+在这里定义的订单项的 `id` 是个 local ID（局部 ID）。所谓的 Local ID，指的是对于这个实体（类型）来说，只要保证在同一个外部实体（父实体）的实例内、该实体（类型）的不同实例之间这个 ID 的值具备唯一性就可以了。
+
+我们将订单项的 ID 命名为 `ProductObjectId`，声明其类型为 `ObjectID`。这个名字表明它指向一个产品（Product）对象。如果业务逻辑要求是一个订单内的不同的订单项不能指向同一个产品，那么产品的对象 ID 就可以用来作为订单项的 ID。
+
+注意，这里的 `ObjectID` 是一个平台特定的类型。这里我们假设是在开发一个基于 Rooch 的去中心化应用。在 Rooch Framework 中，每个对象都有一个全局唯一的 ID，这个 ID 的类型是 `ObjectID`。
+
+在 `/aggregates/Order/entities/OrderItem/properties` 结点下我们定义了订单项的属性，分别表示数量和金额。
+
+#### 操作“订单”的方法
+
+在 `/aggregates/Order/methods/Create` 这个键结点下，我们定义了订单的创建（`Create`）方法。
+
+这个方法是一个创建命令（`isCreationCommand: true`），它有两个参数：产品对象 ID 和数量。
+
+这里我们假设业务需求是在创建订单的时候，必须同时创建第一个订单项。所以在这个方法中，两个参数分别表示的是第一个订单项的产品的“对象 ID”以及这个产品的订购数量。
+
+另外，在 DDDML 工具生成这个“创建命令”的代码时，会自动为你添加一个表示聚合根 ID 的参数。
+
+这个方法如执行成功，会触发一个名为 `OrderCreated` 的事件。 默认情况下，这个方法产生的事件对象会包含与所有参数同名、同类型的属性。但是，如果你想要为这个事件添加更多的属性，你可以在 `/aggregates/Order/methods/Create/event` 这个键结点下定义它们。
+
+比如，在这个例子中，我们为 `OrderCreated` 对象添加了三个属性，分别表示产品的单价、订单的总金额和订单的所有者。
+
+### 示例 3：“Day”值对象
+
+【tbd】
 
 ### 示例 X：一个 Blog 系统
 
@@ -299,9 +394,11 @@ valueObjects:
 
 我们使用 `/aggregates/Article/id` 这个键结点来定义文章的 ID。
 
-这里假设我们是基于 Rooch 来开发我们的 blog 系统，那么可以选择将文章的 ID 的 `name` 设置为 `id`，`type` 设置为 `ObjectID`，则可以在创建文章时，使用 Rooch 平台提供的对象 ID 作为文章的 ID。 至于 `id` 的 `arbitrary` 是否为 `true`，目前对我们的 DDDML 工具生成代码并无实际影响。它更多是一种描述性的信息，表示我们其实并不关心文章的 ID 的格式之类，只要它是一个唯一的 ID 就好。
+关于聚合根实例的 ID 如何生成，如果平台支持，我们可以选择使用平台提供的“对象” ID，而不需要设置 `id` 的 `generator` 信息。
 
-不只是 Rooch，其他 “Move 智能合约平台”（链），比如 Sui，也是为每个“对象”提供了唯一 ID 的。如果平台支持，我们可以选择使用平台提供的 ID，而不用设置 `id` 的 `generator` 信息。
+这里假设我们是基于 Rooch 来开发我们的 blog 系统，那么可以选择将文章的 ID 的名字设置为 `id`，类型设置为 `ObjectID`，则 DDDML 工具生成的 Move 代码在创建文章时就会使用 Rooch 平台提供的对象 ID 作为文章的 ID。 至于 `id` 的 `arbitrary` 是否为 `true`，目前对我们的 DDDML 工具生成代码并无实际影响。它更多是一种描述性的信息，表示我们其实并不关心文章的 ID 的格式之类，只要它是一个唯一的 ID 就好。
+
+不只是 Rooch，其他 “Move 智能合约平台”（链），比如 Sui，也是为每个“对象”提供了唯一 ID 的。如果这里我们打算生成基于 Sui 的 Move 代码，那么可以将文章的 ID 的名字设置为 `id`，类型设置为 `UID`，则生成的 Sui Move 代码在创建文章时就会使用 Sui 平台提供的 UID 作为文章的 ID。
 
 在 `/aggregates/Article/properties` 这个键结点下，我们定义了文章的属性：`Title`、`Author`、`Content`、`Tags` 和 `References`，它们分别表示文章的标题、作者、内容、标签和引用。
 
@@ -341,7 +438,7 @@ valueObjects:
 
 Tag 对象实例的 ID 由一个类型（class）为 `assigned` 的生成器生成，意思是这个 ID 是由“用户”赋予的。显然，我们需要一个“表”来保证一个 ID 不会被赋予不同的对象实例。为了让生成的代码如我们所愿，我们可以指定这个表在代码中的命名，这里是 `TagNameTable`。
 
-在 `/aggregates/Tag/methods` 这个键结点下，我们定义了一个“创建”（`Create`）标签的方法。 我们没有为这个方法显式定义任何参数（`parameters`）。在 DDDML 生成这个方法的代码时，会自动为你添加一个表示聚合根 ID 的参数。这个方法执行成功会触发一个名为“标签已创建”（`TagCreated`）的事件。
+在 `/aggregates/Tag/methods` 这个键结点下，我们定义了一个“创建”（`Create`）标签的方法。 我们没有为这个方法显式定义任何参数（`parameters`）。在 DDDML 工具生成这个方法的代码时，会自动为你添加一个表示聚合根 ID 的参数。这个方法执行成功会触发一个名为“标签已创建”（`TagCreated`）的事件。
 
 #### “ReferenceVO” 值对象
 
