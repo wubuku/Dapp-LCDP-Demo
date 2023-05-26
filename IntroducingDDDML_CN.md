@@ -230,7 +230,7 @@ aggregates:
 
 订单的总金额（`TotalAmount`）属性是一个类型为 `u128` 的属性。
 
-订单的预计发货日期（`EstimatedShipDate`）属性是一个类型为 `Day` 的可选属性（`optional: true`）。
+订单的预计发货日期（`EstimatedShipDate`）属性是一个类型为 `Day` 的可选属性（`optional: true`）。这里的 `Day` 是一个自定义的值对象，下面我们会看到它的定义。
 
 订单的订单项（`Items`）属性是一个由类型是 `OrderItem` 的元素所组成的集合（`itemType: OrderItem`）。这里的 `OrderItem` 是一个聚合内部实体。
 
@@ -260,9 +260,51 @@ aggregates:
 
 比如，在这个例子中，我们为 `OrderCreated` 对象添加了三个属性，分别表示产品的单价、订单的总金额和订单的所有者。
 
-### 示例 3：“Day”值对象
+### 示例 3：组合值对象
 
-【tbd】
+这是一个生造的值对象的示例 DDDML 文档：
+
+```yaml
+valueObjects:
+  Year:
+    properties:
+      Number:
+        type: u16
+      Calendar:
+        type: String
+        length: 50
+
+  Month:
+    properties:
+      Year:
+        type: Year
+      Number:
+        type: u8
+      IsLeap:
+        type: bool
+
+  Day:
+    properties:
+      Month:
+        type: Month
+      Number:
+        type: u8
+      TimeZone:
+        type: String
+        length: 50
+```
+
+这个例子是生造的，那么我们不需要去讨论这个模型的设计是否合理。在此它只是展示了 DDDML 的一个特性，可以将把一个值对象作为另一个值对象的属性的类型，从而组合出更复杂的值对象。
+
+这个文档描述了三个值对象：Year、Month 和 Day。
+
+其中，Year 对象有两个属性：Number 和 Calendar。分别表示年份和日历类型。
+
+Month 对象有三个属性：Year、Number 和 IsLeap。它嵌入了一个 Year 对象作为它的属性，表示年份；Number 表示月份；IsLeap 表示这个月是否是闰月。
+
+Day 对象有三个属性：Month、Number 和 TimeZone。它嵌入了一个 Month 对象作为它的属性，表示月份；Number 表示日期；TimeZone 表示时区。
+
+这些属性都有不同的类型，如 u16、u8、bool 和 String。
 
 ### 示例 X：一个 Blog 系统
 
