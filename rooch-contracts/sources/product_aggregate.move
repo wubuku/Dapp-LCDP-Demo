@@ -27,6 +27,7 @@ module rooch_demo::product_aggregate {
         );
         product::set_product_created_id(&mut product_created, product::id(&product_obj));
         product::add_product(storage_ctx, product_obj);
+        product::emit_product_created(product_created);
     }
 
 }

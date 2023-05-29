@@ -13,6 +13,7 @@ module rooch_demo::article {
     use rooch_demo::reference::{Self, Reference};
     use rooch_demo::reference_vo::ReferenceVO;
     use std::error;
+    use std::event;
     use std::option::{Self, Option};
     use std::signer;
     use std::string::String;
@@ -26,8 +27,22 @@ module rooch_demo::article {
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
+    struct Events has key {
+        article_created_handle: event::EventHandle<ArticleCreated>,
+        reference_added_handle: event::EventHandle<ReferenceAdded>,
+        reference_updated_handle: event::EventHandle<ReferenceUpdated>,
+        reference_removed_handle: event::EventHandle<ReferenceRemoved>,
+    }
+
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        move_to(account, Events {
+            article_created_handle: event::new_event_handle<ArticleCreated>(account),
+            reference_added_handle: event::new_event_handle<ReferenceAdded>(account),
+            reference_updated_handle: event::new_event_handle<ReferenceUpdated>(account),
+            reference_removed_handle: event::new_event_handle<ReferenceRemoved>(account),
+        });
+
         let _ = storage_ctx;
         let _ = account;
     }
@@ -344,6 +359,26 @@ module rooch_demo::article {
 
     public fun return_article(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
         private_add_article(storage_ctx, article_obj);
+    }
+
+    public(friend) fun emit_article_created(article_created: ArticleCreated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.article_created_handle, article_created);
+    }
+
+    public(friend) fun emit_reference_added(reference_added: ReferenceAdded) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.reference_added_handle, reference_added);
+    }
+
+    public(friend) fun emit_reference_updated(reference_updated: ReferenceUpdated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.reference_updated_handle, reference_updated);
+    }
+
+    public(friend) fun emit_reference_removed(reference_removed: ReferenceRemoved) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.reference_removed_handle, reference_removed);
     }
 
 }

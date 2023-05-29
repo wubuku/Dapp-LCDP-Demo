@@ -66,6 +66,7 @@ module rooch_demo::day_summary_aggregate {
         );
         day_summary::set_day_summary_created_id(&mut day_summary_created, day_summary::id(&day_summary_obj));
         day_summary::add_day_summary(storage_ctx, day_summary_obj);
+        day_summary::emit_day_summary_created(day_summary_created);
     }
 
     fun vector_to_option<V : drop>(v: vector<V>): Option<V> {

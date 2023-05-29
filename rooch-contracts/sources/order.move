@@ -15,6 +15,7 @@ module rooch_demo::order {
     use rooch_demo::order_item::{Self, OrderItem};
     use rooch_demo::order_ship_group::{Self, OrderShipGroup};
     use std::error;
+    use std::event;
     use std::option::{Self, Option};
     use std::signer;
     use std::string::String;
@@ -36,8 +37,28 @@ module rooch_demo::order {
         order_id_table: Table<String, ObjectID>,
     }
 
+    struct Events has key {
+        order_created_handle: event::EventHandle<OrderCreated>,
+        order_item_removed_handle: event::EventHandle<OrderItemRemoved>,
+        order_item_quantity_updated_handle: event::EventHandle<OrderItemQuantityUpdated>,
+        order_estimated_ship_date_updated_handle: event::EventHandle<OrderEstimatedShipDateUpdated>,
+        order_ship_group_added_handle: event::EventHandle<OrderShipGroupAdded>,
+        order_ship_group_quantity_canceled_handle: event::EventHandle<OrderShipGroupQuantityCanceled>,
+        order_ship_group_item_removed_handle: event::EventHandle<OrderShipGroupItemRemoved>,
+    }
+
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        move_to(account, Events {
+            order_created_handle: event::new_event_handle<OrderCreated>(account),
+            order_item_removed_handle: event::new_event_handle<OrderItemRemoved>(account),
+            order_item_quantity_updated_handle: event::new_event_handle<OrderItemQuantityUpdated>(account),
+            order_estimated_ship_date_updated_handle: event::new_event_handle<OrderEstimatedShipDateUpdated>(account),
+            order_ship_group_added_handle: event::new_event_handle<OrderShipGroupAdded>(account),
+            order_ship_group_quantity_canceled_handle: event::new_event_handle<OrderShipGroupQuantityCanceled>(account),
+            order_ship_group_item_removed_handle: event::new_event_handle<OrderShipGroupItemRemoved>(account),
+        });
+
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -521,6 +542,41 @@ module rooch_demo::order {
 
     public fun return_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
         private_add_order(storage_ctx, order_obj);
+    }
+
+    public(friend) fun emit_order_created(order_created: OrderCreated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_created_handle, order_created);
+    }
+
+    public(friend) fun emit_order_item_removed(order_item_removed: OrderItemRemoved) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_item_removed_handle, order_item_removed);
+    }
+
+    public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_item_quantity_updated_handle, order_item_quantity_updated);
+    }
+
+    public(friend) fun emit_order_estimated_ship_date_updated(order_estimated_ship_date_updated: OrderEstimatedShipDateUpdated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_estimated_ship_date_updated_handle, order_estimated_ship_date_updated);
+    }
+
+    public(friend) fun emit_order_ship_group_added(order_ship_group_added: OrderShipGroupAdded) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_ship_group_added_handle, order_ship_group_added);
+    }
+
+    public(friend) fun emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_ship_group_quantity_canceled_handle, order_ship_group_quantity_canceled);
+    }
+
+    public(friend) fun emit_order_ship_group_item_removed(order_ship_group_item_removed: OrderShipGroupItemRemoved) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.order_ship_group_item_removed_handle, order_ship_group_item_removed);
     }
 
 }
