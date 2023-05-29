@@ -3,7 +3,8 @@ module rooch_demo::order_create_logic {
     use std::signer;
     use std::string::String;
 
-    use moveos_std::object::{Self, Object};
+    use moveos_std::object::{Object};
+    use moveos_std::object_id::ObjectID;
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::order;
     use rooch_demo::order_created;
@@ -16,7 +17,7 @@ module rooch_demo::order_create_logic {
         storage_ctx: &mut StorageContext,
         account: &signer,
         order_id: String,
-        product_obj_id: object::ObjectID,
+        product_obj_id: ObjectID,
         quantity: u64,
     ): order::OrderCreated {
         let e_quantity = quantity;

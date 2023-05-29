@@ -5,7 +5,7 @@
 
 module rooch_demo::day_summary_created {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::day::Day;
     use rooch_demo::day_summary::{Self, DaySummaryCreated};
     use std::option::{Self, Option};

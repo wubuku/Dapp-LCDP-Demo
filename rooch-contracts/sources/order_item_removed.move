@@ -5,7 +5,7 @@
 
 module rooch_demo::order_item_removed {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::order::{Self, OrderItemRemoved};
     use std::string::String;
 

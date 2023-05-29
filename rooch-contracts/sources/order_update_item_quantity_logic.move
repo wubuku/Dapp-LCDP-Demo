@@ -1,5 +1,6 @@
 module rooch_demo::order_update_item_quantity_logic {
-    use moveos_std::object::{Object, ObjectID};
+    use moveos_std::object::{Object};
+    use moveos_std::object_id::ObjectID;
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::order;
     use rooch_demo::order_item;

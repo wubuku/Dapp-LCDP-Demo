@@ -5,7 +5,7 @@
 
 module rooch_demo::order_ship_group_added {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::order::{Self, OrderShipGroupAdded};
     use std::string::String;
 

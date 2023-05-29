@@ -5,7 +5,7 @@
 
 module rooch_demo::reference_removed {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::article::{Self, ReferenceRemoved};
 
     public fun id(reference_removed: &ReferenceRemoved): ObjectID {

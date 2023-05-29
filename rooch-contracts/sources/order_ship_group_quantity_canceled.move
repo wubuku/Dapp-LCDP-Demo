@@ -5,7 +5,7 @@
 
 module rooch_demo::order_ship_group_quantity_canceled {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::order::{Self, OrderShipGroupQuantityCanceled};
     use std::string::String;
 

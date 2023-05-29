@@ -5,7 +5,7 @@
 
 module rooch_demo::article_created {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::article::{Self, ArticleCreated};
     use rooch_demo::reference_vo::ReferenceVO;
     use std::option;

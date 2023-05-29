@@ -5,7 +5,7 @@
 
 module rooch_demo::reference_updated {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::article::{Self, ReferenceUpdated};
     use std::option::Option;
     use std::string::String;

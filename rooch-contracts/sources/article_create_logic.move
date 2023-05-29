@@ -4,7 +4,8 @@ module rooch_demo::article_create_logic {
     use std::string::{Self, String};
     use std::vector;
 
-    use moveos_std::object::{Object, ObjectID};
+    use moveos_std::object::{Object};
+    use moveos_std::object_id::ObjectID;
     use moveos_std::storage_context::StorageContext;
     use rooch_demo::article;
     use rooch_demo::reference;

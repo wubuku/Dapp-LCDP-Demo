@@ -5,7 +5,8 @@
 
 module rooch_demo::product {
     use moveos_std::account_storage;
-    use moveos_std::object::{Self, Object, ObjectID};
+    use moveos_std::object::{Self, Object};
+    use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
     use moveos_std::storage_context::{Self, StorageContext};
     use moveos_std::tx_context;
@@ -14,6 +15,7 @@ module rooch_demo::product {
     use std::signer;
     use std::string::{Self, String};
     use std::vector;
+    use std::event;
     friend rooch_demo::product_create_logic;
     friend rooch_demo::product_aggregate;
 
@@ -22,6 +24,11 @@ module rooch_demo::product {
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
     const PRODUCT_ID_LENGTH: u64 = 20;
+
+    struct Events has key {
+        // product_id_generator_created_handle: event::EventHandle<ProductIdGeneratorCreated>,
+        product_created_handle: event::EventHandle<ProductCreated>,
+    }
 
     struct ProductIdGenerator has key {
         sequence: u128,
@@ -32,6 +39,9 @@ module rooch_demo::product {
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        move_to(account, Events {
+            product_created_handle: event::new_event_handle<ProductCreated>(account),
+        });
         let product_id_generator = ProductIdGenerator {
             sequence: 0,
         };
@@ -214,4 +224,8 @@ module rooch_demo::product {
         private_add_product(storage_ctx, product_obj);
     }
 
+    public(friend) fun emit_product_created(product_created: ProductCreated) acquires Events {
+        let events = borrow_global_mut<Events>(@rooch_demo);
+        event::emit_event(&mut events.product_created_handle, product_created);
+    }
 }

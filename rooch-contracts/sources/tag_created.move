@@ -5,7 +5,7 @@
 
 module rooch_demo::tag_created {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::tag::{Self, TagCreated};
     use std::option;
     use std::string::String;

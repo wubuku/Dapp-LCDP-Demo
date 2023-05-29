@@ -5,7 +5,7 @@
 
 module rooch_demo::order_item_quantity_updated {
 
-    use moveos_std::object::ObjectID;
+    use moveos_std::object_id::ObjectID;
     use rooch_demo::order::{Self, OrderItemQuantityUpdated};
     use std::string::String;
 
