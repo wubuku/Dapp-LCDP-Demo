@@ -39,7 +39,7 @@ module rooch_demo::order_aggregate {
         );
         order::set_order_created_id(&mut order_created, order::id(&order_obj));
         order::add_order(storage_ctx, order_obj);
-        order::emit_order_created(order_created);
+        order::emit_order_created(storage_ctx, order_created);
     }
 
 
@@ -62,7 +62,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_item_removed(order_item_removed);
+        order::emit_order_item_removed(storage_ctx, order_item_removed);
     }
 
 
@@ -87,7 +87,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_item_quantity_updated(order_item_quantity_updated);
+        order::emit_order_item_quantity_updated(storage_ctx, order_item_quantity_updated);
     }
 
 
@@ -127,7 +127,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_estimated_ship_date_updated(order_estimated_ship_date_updated);
+        order::emit_order_estimated_ship_date_updated(storage_ctx, order_estimated_ship_date_updated);
     }
 
 
@@ -156,7 +156,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_ship_group_added(order_ship_group_added);
+        order::emit_order_ship_group_added(storage_ctx, order_ship_group_added);
     }
 
 
@@ -183,7 +183,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled);
+        order::emit_order_ship_group_quantity_canceled(storage_ctx, order_ship_group_quantity_canceled);
     }
 
 
@@ -208,7 +208,7 @@ module rooch_demo::order_aggregate {
             order_obj,
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
-        order::emit_order_ship_group_item_removed(order_ship_group_item_removed);
+        order::emit_order_ship_group_item_removed(storage_ctx, order_ship_group_item_removed);
     }
 
 }

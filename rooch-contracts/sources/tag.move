@@ -5,6 +5,7 @@
 
 module rooch_demo::tag {
     use moveos_std::account_storage;
+    use moveos_std::events;
     use moveos_std::object::{Self, Object};
     use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
@@ -12,7 +13,6 @@ module rooch_demo::tag {
     use moveos_std::table::{Self, Table};
     use moveos_std::tx_context;
     use std::error;
-    use std::event;
     use std::option;
     use std::signer;
     use std::string::String;
@@ -28,16 +28,8 @@ module rooch_demo::tag {
         tag_name_table: Table<String, ObjectID>,
     }
 
-    struct Events has key {
-        tag_created_handle: event::EventHandle<TagCreated>,
-    }
-
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
-        move_to(account, Events {
-            tag_created_handle: event::new_event_handle<TagCreated>(account),
-        });
-
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -175,9 +167,8 @@ module rooch_demo::tag {
         private_add_tag(storage_ctx, tag_obj);
     }
 
-    public(friend) fun emit_tag_created(tag_created: TagCreated) acquires Events {
-        let events = borrow_global_mut<Events>(@rooch_demo);
-        event::emit_event(&mut events.tag_created_handle, tag_created);
+    public(friend) fun emit_tag_created(storage_ctx: &mut StorageContext, tag_created: TagCreated) {
+        events::emit_event(storage_ctx, tag_created);
     }
 
 }

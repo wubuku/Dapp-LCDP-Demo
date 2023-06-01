@@ -40,7 +40,7 @@ module rooch_demo::article_aggregate {
         );
         article::set_article_created_id(&mut article_created, article::id(&article_obj));
         article::add_article(storage_ctx, article_obj);
-        article::emit_article_created(article_created);
+        article::emit_article_created(storage_ctx, article_created);
     }
 
 
@@ -67,7 +67,7 @@ module rooch_demo::article_aggregate {
             article_obj,
         );
         article::update_version_and_add(storage_ctx, updated_article_obj);
-        article::emit_reference_added(reference_added);
+        article::emit_reference_added(storage_ctx, reference_added);
     }
 
 
@@ -96,7 +96,7 @@ module rooch_demo::article_aggregate {
             article_obj,
         );
         article::update_version_and_add(storage_ctx, updated_article_obj);
-        article::emit_reference_updated(reference_updated);
+        article::emit_reference_updated(storage_ctx, reference_updated);
     }
 
 
@@ -119,7 +119,7 @@ module rooch_demo::article_aggregate {
             article_obj,
         );
         article::update_version_and_add(storage_ctx, updated_article_obj);
-        article::emit_reference_removed(reference_removed);
+        article::emit_reference_removed(storage_ctx, reference_removed);
     }
 
     fun vector_to_option<V : drop>(v: vector<V>): Option<V> {

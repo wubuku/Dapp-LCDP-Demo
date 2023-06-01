@@ -5,6 +5,7 @@
 
 module rooch_demo::day_summary {
     use moveos_std::account_storage;
+    use moveos_std::events;
     use moveos_std::object::{Self, Object};
     use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
@@ -13,7 +14,6 @@ module rooch_demo::day_summary {
     use moveos_std::tx_context;
     use rooch_demo::day::Day;
     use std::error;
-    use std::event;
     use std::option::{Self, Option};
     use std::signer;
     use std::string::String;
@@ -29,16 +29,8 @@ module rooch_demo::day_summary {
         day_summary_id_table: Table<Day, ObjectID>,
     }
 
-    struct Events has key {
-        day_summary_created_handle: event::EventHandle<DaySummaryCreated>,
-    }
-
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
-        move_to(account, Events {
-            day_summary_created_handle: event::new_event_handle<DaySummaryCreated>(account),
-        });
-
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -355,9 +347,8 @@ module rooch_demo::day_summary {
         private_add_day_summary(storage_ctx, day_summary_obj);
     }
 
-    public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) acquires Events {
-        let events = borrow_global_mut<Events>(@rooch_demo);
-        event::emit_event(&mut events.day_summary_created_handle, day_summary_created);
+    public(friend) fun emit_day_summary_created(storage_ctx: &mut StorageContext, day_summary_created: DaySummaryCreated) {
+        events::emit_event(storage_ctx, day_summary_created);
     }
 
 }

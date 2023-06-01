@@ -3,7 +3,7 @@ name = "RoochDemo"
 version = "0.0.1"
 
 [dependencies]
-MoveosStdLib = { git = "https://github.com/rooch-network/rooch.git", subdir = "moveos/moveos-stdlib/moveos-stdlib", rev = "main" }
+MoveosStdLib = { git = "https://github.com/rooch-network/rooch.git", subdir = "moveos/moveos-stdlib/moveos-stdlib", rev = "event_objectid" }
 
 [addresses]
 rooch_demo = "0x123"
