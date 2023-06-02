@@ -50,7 +50,7 @@ module rooch_demo::order_create_logic {
             order_created::quantity(order_created),
             order_created::unit_price(order_created) * (order_created::quantity(order_created) as u128),
         );
-        order::add_item(&mut order, order_item);
+        order::add_item(storage_ctx,&mut order, order_item);
         order
     }
 }

@@ -33,6 +33,14 @@ module rooch_demo::order {
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
+    struct OrderItemTableItemAdded has store, drop {
+        key: ObjectID,
+    }
+
+    struct OrderShipGroupTableItemAdded has store, drop {
+        key: u8,
+    }
+
     struct Tables has key {
         order_id_table: Table<String, ObjectID>,
     }
@@ -88,9 +96,12 @@ module rooch_demo::order {
         object::borrow_mut(order_obj).estimated_ship_date = estimated_ship_date;
     }
 
-    public(friend) fun add_item(order_obj: &mut Object<Order>, item: OrderItem) {
+    public(friend) fun add_item(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, item: OrderItem) {
         let key = order_item::product_object_id(&item);
         table::add(&mut object::borrow_mut(order_obj).items, key, item);
+        events::emit_event(storage_ctx, OrderItemTableItemAdded {
+           key
+        });
     }
 
     public(friend) fun remove_item(order_obj: &mut Object<Order>, product_object_id: ObjectID) {
@@ -110,9 +121,12 @@ module rooch_demo::order {
         table::contains(&object::borrow(order_obj).items, product_object_id)
     }
 
-    public(friend) fun add_order_ship_group(order_obj: &mut Object<Order>, order_ship_group: OrderShipGroup) {
+    public(friend) fun add_order_ship_group(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, order_ship_group: OrderShipGroup) {
         let key = order_ship_group::ship_group_seq_id(&order_ship_group);
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, key, order_ship_group);
+        events::emit_event(storage_ctx, OrderShipGroupTableItemAdded {
+            key
+        });
     }
 
     /*

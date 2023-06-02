@@ -9,6 +9,8 @@ module rooch_demo::order_ship_group {
     use moveos_std::tx_context;
     use rooch_demo::order_item_ship_group_association::{Self, OrderItemShipGroupAssociation};
     use std::string::String;
+    use moveos_std::storage_context::StorageContext;
+    use moveos_std::events;
     friend rooch_demo::order_create_logic;
     friend rooch_demo::order_remove_item_logic;
     friend rooch_demo::order_update_item_quantity_logic;
@@ -20,6 +22,10 @@ module rooch_demo::order_ship_group {
 
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
+
+    struct OrderItemShipGroupAssociationTableItemAdded  has store, drop {
+        key: ObjectID,
+    }
 
     struct OrderShipGroup has store {
         ship_group_seq_id: u8,
@@ -39,9 +45,12 @@ module rooch_demo::order_ship_group {
         order_ship_group.shipment_method = shipment_method;
     }
 
-    public(friend) fun add_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
+    public(friend) fun add_order_item_ship_group_association(storage_ctx: &mut StorageContext, order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
         let key = order_item_ship_group_association::product_obj_id(&order_item_ship_group_association);
         table::add(&mut order_ship_group.order_item_ship_group_associations, key, order_item_ship_group_association);
+        events::emit_event(storage_ctx, OrderItemShipGroupAssociationTableItemAdded {
+            key
+        });
     }
 
     /*

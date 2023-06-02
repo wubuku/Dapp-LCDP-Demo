@@ -52,8 +52,9 @@ module rooch_demo::order_add_order_ship_group_logic {
             order_ship_group_added::quantity(order_ship_group_added),
             0,
         );
-        order_ship_group::add_order_item_ship_group_association(&mut order_ship_group, assc);
+        order_ship_group::add_order_item_ship_group_association(storage_ctx, &mut order_ship_group, assc);
         order::add_order_ship_group(
+            storage_ctx,
             &mut order_obj,
             order_ship_group
         );
