@@ -27,6 +27,10 @@ module rooch_demo::article {
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
+    struct ReferenceTableItemAdded has store, drop {
+        key: u64,
+    }
+
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
         assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
         let _ = storage_ctx;
@@ -83,9 +87,12 @@ module rooch_demo::article {
         object::borrow_mut(article_obj).tags = tags;
     }
 
-    public(friend) fun add_reference(article_obj: &mut Object<Article>, reference: Reference) {
+    public(friend) fun add_reference(storage_ctx: &mut StorageContext, article_obj: &mut Object<Article>, reference: Reference) {
         let key = reference::reference_number(&reference);
         table::add(&mut object::borrow_mut(article_obj).references, key, reference);
+        events::emit_event(storage_ctx, ReferenceTableItemAdded {
+            key
+        });
     }
 
     public(friend) fun remove_reference(article_obj: &mut Object<Article>, reference_number: u64) {

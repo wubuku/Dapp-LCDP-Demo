@@ -16,8 +16,8 @@ module sui_contracts::product {
 
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
-
     const PRODUCT_ID_LENGTH: u64 = 20;
+
 
     struct ProductIdGenerator has key {
         id: UID,

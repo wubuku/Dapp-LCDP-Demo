@@ -44,7 +44,7 @@ module rooch_demo::article_add_reference_logic {
             article::reference_added_url(reference_added),
             option::none(),
         );
-        article::add_reference(&mut article_obj, ref);
+        article::add_reference(storage_ctx, &mut article_obj, ref);
         article_obj
     }
 }

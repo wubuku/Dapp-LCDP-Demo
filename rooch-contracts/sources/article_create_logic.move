@@ -66,6 +66,7 @@ module rooch_demo::article_create_logic {
         while (i < vector::length(&references)) {
             let r = vector::borrow(&references, i);
             article::add_reference(
+                storage_ctx,
                 &mut article,
                 reference::new_reference(
                     reference_vo::reference_number(r),

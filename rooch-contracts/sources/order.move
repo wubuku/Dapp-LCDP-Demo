@@ -33,16 +33,16 @@ module rooch_demo::order {
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
+    struct Tables has key {
+        order_id_table: Table<String, ObjectID>,
+    }
+
     struct OrderItemTableItemAdded has store, drop {
         key: ObjectID,
     }
 
     struct OrderShipGroupTableItemAdded has store, drop {
         key: u8,
-    }
-
-    struct Tables has key {
-        order_id_table: Table<String, ObjectID>,
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
@@ -100,7 +100,7 @@ module rooch_demo::order {
         let key = order_item::product_object_id(&item);
         table::add(&mut object::borrow_mut(order_obj).items, key, item);
         events::emit_event(storage_ctx, OrderItemTableItemAdded {
-           key
+            key
         });
     }
 

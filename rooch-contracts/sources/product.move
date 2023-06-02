@@ -22,8 +22,8 @@ module rooch_demo::product {
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
-
     const PRODUCT_ID_LENGTH: u64 = 20;
+
 
     struct ProductIdGenerator has key {
         sequence: u128,
