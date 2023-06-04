@@ -42,6 +42,7 @@ module rooch_demo::order {
     }
 
     struct OrderShipGroupTableItemAdded has store, drop {
+        order_id: String,
         key: u8,
     }
 
@@ -125,6 +126,7 @@ module rooch_demo::order {
         let key = order_ship_group::ship_group_seq_id(&order_ship_group);
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, key, order_ship_group);
         events::emit_event(storage_ctx, OrderShipGroupTableItemAdded {
+            order_id: order_id(order_obj),
             key
         });
     }
