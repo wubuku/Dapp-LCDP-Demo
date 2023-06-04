@@ -38,6 +38,7 @@ module rooch_demo::order {
     }
 
     struct OrderItemTableItemAdded has store, drop {
+        order_id: String,
         key: ObjectID,
     }
 
@@ -101,7 +102,8 @@ module rooch_demo::order {
         let key = order_item::product_object_id(&item);
         table::add(&mut object::borrow_mut(order_obj).items, key, item);
         events::emit_event(storage_ctx, OrderItemTableItemAdded {
-            key
+            order_id: order_id(order_obj),
+            key,
         });
     }
 
@@ -127,7 +129,7 @@ module rooch_demo::order {
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, key, order_ship_group);
         events::emit_event(storage_ctx, OrderShipGroupTableItemAdded {
             order_id: order_id(order_obj),
-            key
+            key,
         });
     }
 

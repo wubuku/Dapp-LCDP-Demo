@@ -25,7 +25,7 @@ module rooch_demo::order_ship_group {
 
     struct OrderItemShipGroupAssociationTableItemAdded has store, drop {
         order_id: String,
-        ship_group_seq_id: u8,
+        order_ship_group_ship_group_seq_id: u8,
         key: ObjectID,
     }
 
@@ -52,8 +52,8 @@ module rooch_demo::order_ship_group {
         table::add(&mut order_ship_group.order_item_ship_group_associations, key, order_item_ship_group_association);
         events::emit_event(storage_ctx, OrderItemShipGroupAssociationTableItemAdded {
             order_id,
-            ship_group_seq_id: ship_group_seq_id(order_ship_group),
-            key
+            order_ship_group_ship_group_seq_id: ship_group_seq_id(order_ship_group),
+            key,
         });
     }
 

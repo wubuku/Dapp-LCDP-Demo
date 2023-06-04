@@ -11,6 +11,7 @@ module rooch_demo::order_item_ship_group_association {
     use moveos_std::tx_context;
     use rooch_demo::day::Day;
     use rooch_demo::order_item_ship_group_assoc_subitem::{Self, OrderItemShipGroupAssocSubitem};
+    use std::string::String;
     friend rooch_demo::order_create_logic;
     friend rooch_demo::order_remove_item_logic;
     friend rooch_demo::order_update_item_quantity_logic;
@@ -24,6 +25,9 @@ module rooch_demo::order_item_ship_group_association {
     const EID_DATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssocSubitemTableItemAdded has store, drop {
+        order_id: String,
+        order_ship_group_ship_group_seq_id: u8,
+        order_item_ship_group_association_product_obj_id: ObjectID,
         key: Day,
     }
 
@@ -54,11 +58,14 @@ module rooch_demo::order_item_ship_group_association {
         order_item_ship_group_association.cancel_quantity = cancel_quantity;
     }
 
-    public(friend) fun add_subitem(storage_ctx: &mut StorageContext, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
+    public(friend) fun add_subitem(storage_ctx: &mut StorageContext, order_id: String, order_ship_group_ship_group_seq_id: u8, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
         let key = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
         table::add(&mut order_item_ship_group_association.subitems, key, subitem);
         events::emit_event(storage_ctx, OrderItemShipGroupAssocSubitemTableItemAdded {
-            key
+            order_id,
+            order_ship_group_ship_group_seq_id,
+            order_item_ship_group_association_product_obj_id: product_obj_id(order_item_ship_group_association),
+            key,
         });
     }
 

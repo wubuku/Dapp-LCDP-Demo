@@ -28,6 +28,7 @@ module rooch_demo::article {
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
     struct ReferenceTableItemAdded has store, drop {
+        article_id: ObjectID,
         key: u64,
     }
 
@@ -91,7 +92,8 @@ module rooch_demo::article {
         let key = reference::reference_number(&reference);
         table::add(&mut object::borrow_mut(article_obj).references, key, reference);
         events::emit_event(storage_ctx, ReferenceTableItemAdded {
-            key
+            article_id: id(article_obj),
+            key,
         });
     }
 
