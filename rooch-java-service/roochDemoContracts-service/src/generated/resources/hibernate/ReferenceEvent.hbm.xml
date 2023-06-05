@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.roochdemocontracts.domain.article">
+  <class name="AbstractReferenceEvent" table="reference_event" abstract="true">
+    <composite-id name="referenceEventId" class="org.dddml.roochdemocontracts.domain.article.ReferenceEventId">
+      <key-property name="articleId">
+        <column name="article_reference_id_article_id" sql-type="VARCHAR(66)" />
+      </key-property>
+      <key-property name="referenceNumber">
+        <column name="article_reference_id_reference_number" sql-type="DECIMAL(20,0)" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+  </class>
+</hibernate-mapping>

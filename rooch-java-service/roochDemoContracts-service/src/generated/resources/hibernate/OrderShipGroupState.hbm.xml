@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.roochdemocontracts.domain.order">
+  <class name="org.dddml.roochdemocontracts.domain.order.AbstractOrderShipGroupState$SimpleOrderShipGroupState" table="order_ship_group">
+    <composite-id name="orderShipGroupId" class="org.dddml.roochdemocontracts.domain.order.OrderShipGroupId">
+      <key-property name="orderId">
+        <column name="order_ship_group_id_order_id" length="50" />
+      </key-property>
+      <key-property name="shipGroupSeqId">
+        <column name="order_v2_ship_group_seq_id" />
+      </key-property>
+    </composite-id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedOrderItemShipGroupAssociations" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_item_ship_group_association_id_order_id" />
+        <column name="order_v2_ship_group_seq_id" />
+      </key>
+      <one-to-many class="org.dddml.roochdemocontracts.domain.order.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" />
+    </set>
+    <many-to-one name="protectedOrderState" class="org.dddml.roochdemocontracts.domain.order.AbstractOrderState$SimpleOrderState" insert="false" update="false">
+      <column name="order_ship_group_id_order_id" />
+    </many-to-one>
+    <property name="shipmentMethod">
+      <column name="shipment_method" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

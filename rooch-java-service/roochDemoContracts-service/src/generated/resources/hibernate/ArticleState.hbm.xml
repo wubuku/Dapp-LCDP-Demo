@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.roochdemocontracts.domain.article">
+  <class name="org.dddml.roochdemocontracts.domain.article.AbstractArticleState$SimpleArticleState" table="article">
+    <id name="id" length="66" column="id">
+      <generator class="assigned" />
+    </id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedReferences" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="article_reference_id_article_id" />
+      </key>
+      <one-to-many class="org.dddml.roochdemocontracts.domain.article.AbstractReferenceState$SimpleReferenceState" />
+    </set>
+    <property name="title">
+      <column name="title" />
+    </property>
+    <property name="author">
+      <column name="author" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="content">
+      <column name="content" />
+    </property>
+    <property name="version">
+      <column name="version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <set name="tags" table="article_tags" lazy="false">
+      <key column="Id" />
+      <element column="tags_item" type="string" not-null="true" />
+    </set>
+  </class>
+</hibernate-mapping>

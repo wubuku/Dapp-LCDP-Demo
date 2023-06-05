@@ -185,6 +185,7 @@ configuration:
       "u32": "Long"
       "u64": "BigInteger"
       "u128": "BigInteger"
+      "u256": "BigInteger"
       #"UID": "String"
 
     typePackages:

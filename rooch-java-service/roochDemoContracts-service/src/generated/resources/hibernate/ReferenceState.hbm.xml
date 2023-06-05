@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.roochdemocontracts.domain.article">
+  <class name="org.dddml.roochdemocontracts.domain.article.AbstractReferenceState$SimpleReferenceState" table="reference">
+    <composite-id name="articleReferenceId" class="org.dddml.roochdemocontracts.domain.article.ArticleReferenceId">
+      <key-property name="articleId">
+        <column name="article_reference_id_article_id" sql-type="VARCHAR(66)" />
+      </key-property>
+      <key-property name="referenceNumber">
+        <column name="article_reference_id_reference_number" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <many-to-one name="protectedArticleState" class="org.dddml.roochdemocontracts.domain.article.AbstractArticleState$SimpleArticleState" insert="false" update="false">
+      <column name="article_reference_id_article_id" />
+    </many-to-one>
+    <property name="title">
+      <column name="title" />
+    </property>
+    <property name="author">
+      <column name="author" />
+    </property>
+    <property name="publicationYear">
+      <column name="publication_year" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="publisher">
+      <column name="publisher" />
+    </property>
+    <property name="doi">
+      <column name="doi" />
+    </property>
+    <property name="url">
+      <column name="url" />
+    </property>
+    <property name="pageNumber">
+      <column name="page_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

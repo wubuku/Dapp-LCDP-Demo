@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.roochdemocontracts.domain.daysummary">
+  <class name="AbstractDaySummaryEvent" table="day_summary_event" abstract="true">
+    <composite-id name="daySummaryEventId" class="org.dddml.roochdemocontracts.domain.daysummary.DaySummaryEventId">
+      <key-property name="dayMonthYearNumber">
+        <column name="day_month_year_number" />
+      </key-property>
+      <key-property name="dayMonthYearCalendar">
+        <column name="day_month_year_calendar" length="50" />
+      </key-property>
+      <key-property name="dayMonthNumber">
+        <column name="day_month_number" />
+      </key-property>
+      <key-property name="dayMonthIsLeap">
+        <column name="day_month_is_leap" />
+      </key-property>
+      <key-property name="dayNumber">
+        <column name="day_number" />
+      </key-property>
+      <key-property name="dayTimeZone">
+        <column name="day_time_zone" length="50" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="id_">
+      <column name="id" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="roochEventVersion">
+      <column name="rooch_event_version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="roochEventSequenceNumber">
+      <column name="rooch_event_sequence_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="roochEventType">
+      <column name="rooch_event_type" length="500" />
+    </property>
+    <component name="roochEventGuid" class="org.dddml.roochdemocontracts.domain.RoochEventGuid">
+      <property name="creationNumber">
+        <column name="rooch_event_guid_creation_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="accountAddress">
+        <column name="rooch_event_guid_account_address" sql-type="VARCHAR(66)" />
+      </property>
+    </component>
+    <property name="status">
+      <column name="status" sql-type="CHAR(1)" />
+    </property>
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractDaySummaryEvent$DaySummaryClobEvent" discriminator-value="DaySummaryClobEvent">
+      <property name="DynamicPropertiesLob">
+        <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
+      </property>
+      <subclass name="AbstractDaySummaryEvent$DaySummaryCreated" discriminator-value="DaySummaryCreated" />
+    </subclass>
+  </class>
+</hibernate-mapping>
