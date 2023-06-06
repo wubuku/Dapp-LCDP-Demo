@@ -23,7 +23,7 @@ module rooch_demo::order_ship_group {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
 
-    struct OrderItemShipGroupAssociationTableItemAdded has store, drop {
+    struct OrderItemShipGroupAssociationTableItemAdded has key {
         order_id: String,
         order_ship_group_ship_group_seq_id: u8,
         key: ObjectID,

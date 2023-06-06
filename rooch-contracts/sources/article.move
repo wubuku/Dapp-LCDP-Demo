@@ -27,7 +27,7 @@ module rooch_demo::article {
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
-    struct ReferenceTableItemAdded has store, drop {
+    struct ReferenceTableItemAdded has key {
         article_id: ObjectID,
         key: u64,
     }
@@ -131,7 +131,7 @@ module rooch_demo::article {
         }
     }
 
-    struct ArticleCreated has store, drop {
+    struct ArticleCreated has key {
         id: option::Option<ObjectID>,
         title: String,
         author: address,
@@ -192,7 +192,7 @@ module rooch_demo::article {
         }
     }
 
-    struct ReferenceAdded has store, drop {
+    struct ReferenceAdded has key {
         id: ObjectID,
         version: u64,
         reference_number: u64,
@@ -231,7 +231,7 @@ module rooch_demo::article {
         }
     }
 
-    struct ReferenceUpdated has store, drop {
+    struct ReferenceUpdated has key {
         id: ObjectID,
         version: u64,
         reference_number: u64,
@@ -277,7 +277,7 @@ module rooch_demo::article {
         }
     }
 
-    struct ReferenceRemoved has store, drop {
+    struct ReferenceRemoved has key {
         id: ObjectID,
         version: u64,
         reference_number: u64,

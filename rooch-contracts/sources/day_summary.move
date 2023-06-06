@@ -168,7 +168,7 @@ module rooch_demo::day_summary {
         }
     }
 
-    struct DaySummaryCreated has store, drop {
+    struct DaySummaryCreated has key {
         id: option::Option<ObjectID>,
         day: Day,
         description: String,

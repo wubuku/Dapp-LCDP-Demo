@@ -37,12 +37,12 @@ module rooch_demo::order {
         order_id_table: Table<String, ObjectID>,
     }
 
-    struct OrderItemTableItemAdded has store, drop {
+    struct OrderItemTableItemAdded has key {
         order_id: String,
         key: ObjectID,
     }
 
-    struct OrderShipGroupTableItemAdded has store, drop {
+    struct OrderShipGroupTableItemAdded has key {
         order_id: String,
         key: u8,
     }
@@ -169,7 +169,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderCreated has store, drop {
+    struct OrderCreated has key {
         id: option::Option<ObjectID>,
         order_id: String,
         product_obj_id: ObjectID,
@@ -230,7 +230,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderItemRemoved has store, drop {
+    struct OrderItemRemoved has key {
         id: ObjectID,
         order_id: String,
         version: u64,
@@ -261,7 +261,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderItemQuantityUpdated has store, drop {
+    struct OrderItemQuantityUpdated has key {
         id: ObjectID,
         order_id: String,
         version: u64,
@@ -299,7 +299,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderEstimatedShipDateUpdated has store, drop {
+    struct OrderEstimatedShipDateUpdated has key {
         id: ObjectID,
         order_id: String,
         version: u64,
@@ -330,7 +330,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderShipGroupAdded has store, drop {
+    struct OrderShipGroupAdded has key {
         id: ObjectID,
         order_id: String,
         version: u64,
@@ -382,7 +382,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderShipGroupQuantityCanceled has store, drop {
+    struct OrderShipGroupQuantityCanceled has key {
         id: ObjectID,
         order_id: String,
         version: u64,
@@ -427,7 +427,7 @@ module rooch_demo::order {
         }
     }
 
-    struct OrderShipGroupItemRemoved has store, drop {
+    struct OrderShipGroupItemRemoved has key {
         id: ObjectID,
         order_id: String,
         version: u64,

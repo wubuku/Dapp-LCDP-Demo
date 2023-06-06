@@ -29,7 +29,7 @@ module rooch_demo::product {
         sequence: u128,
     }
 
-    struct ProductIdGeneratorCreated has store, drop {
+    struct ProductIdGeneratorCreated has key {
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
@@ -94,7 +94,7 @@ module rooch_demo::product {
         }
     }
 
-    struct ProductCreated has store, drop {
+    struct ProductCreated has key {
         id: option::Option<ObjectID>,
         product_id: String,
         name: String,

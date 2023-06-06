@@ -69,7 +69,7 @@ module rooch_demo::tag {
         }
     }
 
-    struct TagCreated has store, drop {
+    struct TagCreated has key {
         id: option::Option<ObjectID>,
         name: String,
     }
