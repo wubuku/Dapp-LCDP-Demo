@@ -27,11 +27,11 @@ public class ReflectionTests {
         System.out.println(dayFieldsClass);
 
         Day d = new Day();
-        d.setValue(new Day.DayFields());
+        d.setValue(new Day.DayValue());
         d.getValue().setMonth(new Month());
-        d.getValue().getMonth().setValue(new Month.MonthFields());
+        d.getValue().getMonth().setValue(new Month.MonthValue());
         d.getValue().getMonth().getValue().setYear(new Year());
-        d.getValue().getMonth().getValue().getYear().setValue(new Year.YearFields());
+        d.getValue().getMonth().getValue().getYear().setValue(new Year.YearValue());
 
         d.getValue().getMonth().getValue().getYear().getValue().setNumber(2023);
 

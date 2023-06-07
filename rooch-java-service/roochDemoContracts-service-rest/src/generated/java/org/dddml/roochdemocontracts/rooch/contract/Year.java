@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.rooch.bean.*;
 
-public class Year extends AnnotatedMoveStructView<Year.YearFields> {
+public class Year extends AnnotatedMoveStructView<Year.YearValue> {
 
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class YearFields {
+    public static class YearValue {
         private Integer number;
 
         private String calendar;
@@ -36,7 +36,7 @@ public class Year extends AnnotatedMoveStructView<Year.YearFields> {
 
         @Override
         public String toString() {
-            return "YearFields{" +
+            return "YearValue{" +
                     "number=" + number +
                     ", calendar=" + '\'' + calendar + '\'' +
                     '}';

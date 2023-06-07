@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.rooch.bean.*;
 
-public class Day extends AnnotatedMoveStructView<Day.DayFields> {
+public class Day extends AnnotatedMoveStructView<Day.DayValue> {
 
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class DayFields {
+    public static class DayValue {
         private Month month;
 
         private Integer number;
@@ -46,7 +46,7 @@ public class Day extends AnnotatedMoveStructView<Day.DayFields> {
 
         @Override
         public String toString() {
-            return "DayFields{" +
+            return "DayValue{" +
                     "month=" + month +
                     ", number=" + number +
                     ", timeZone=" + '\'' + timeZone + '\'' +

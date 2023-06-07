@@ -10,10 +10,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.rooch.bean.*;
 import java.math.BigInteger;
 
-public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVOFields> {
+public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVOValue> {
 
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class ReferenceVOFields {
+    public static class ReferenceVOValue {
         private BigInteger referenceNumber;
 
         private String title;
@@ -47,7 +47,7 @@ public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVO
 
         @Override
         public String toString() {
-            return "ReferenceVOFields{" +
+            return "ReferenceVOValue{" +
                     "referenceNumber=" + referenceNumber +
                     ", title=" + '\'' + title + '\'' +
                     ", url=" + '\'' + url + '\'' +
