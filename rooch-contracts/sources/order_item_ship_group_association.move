@@ -28,7 +28,7 @@ module rooch_demo::order_item_ship_group_association {
         order_id: String,
         order_ship_group_ship_group_seq_id: u8,
         order_item_ship_group_association_product_obj_id: ObjectID,
-        key: Day,
+        order_item_ship_group_assoc_subitem_day: Day,
     }
 
     struct OrderItemShipGroupAssociation has store {
@@ -59,13 +59,13 @@ module rooch_demo::order_item_ship_group_association {
     }
 
     public(friend) fun add_subitem(storage_ctx: &mut StorageContext, order_id: String, order_ship_group_ship_group_seq_id: u8, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
-        let key = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
-        table::add(&mut order_item_ship_group_association.subitems, key, subitem);
+        let order_item_ship_group_assoc_subitem_day = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
+        table::add(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day, subitem);
         events::emit_event(storage_ctx, OrderItemShipGroupAssocSubitemTableItemAdded {
             order_id,
             order_ship_group_ship_group_seq_id,
             order_item_ship_group_association_product_obj_id: product_obj_id(order_item_ship_group_association),
-            key,
+            order_item_ship_group_assoc_subitem_day,
         });
     }
 

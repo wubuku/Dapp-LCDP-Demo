@@ -29,7 +29,7 @@ module rooch_demo::article {
 
     struct ReferenceTableItemAdded has key {
         article_id: ObjectID,
-        key: u64,
+        reference_number: u64,
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
@@ -89,11 +89,11 @@ module rooch_demo::article {
     }
 
     public(friend) fun add_reference(storage_ctx: &mut StorageContext, article_obj: &mut Object<Article>, reference: Reference) {
-        let key = reference::reference_number(&reference);
-        table::add(&mut object::borrow_mut(article_obj).references, key, reference);
+        let reference_number = reference::reference_number(&reference);
+        table::add(&mut object::borrow_mut(article_obj).references, reference_number, reference);
         events::emit_event(storage_ctx, ReferenceTableItemAdded {
             article_id: id(article_obj),
-            key,
+            reference_number,
         });
     }
 
