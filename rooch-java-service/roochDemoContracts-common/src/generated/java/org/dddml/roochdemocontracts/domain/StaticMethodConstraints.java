@@ -136,112 +136,112 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.CreateLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "title", "author", "content", "references", "tags", "owner", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "title", "author", "content", "references", "tags", "owner", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.AddReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "referenceNumber", "title", "url", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "referenceNumber", "title", "url", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.UpdateReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "referenceNumber", "title", "url", "author", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "referenceNumber", "title", "url", "author", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.RemoveReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "referenceNumber", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{ArticleState.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "referenceNumber", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.tag.CreateLogic",
                     "mutate",
-                    new Class[]{TagState.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{TagState.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "name", "unitPrice", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "unitPrice", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CreateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "productObjId", "quantity", "unitPrice", "totalAmount", "owner", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "productObjId", "quantity", "unitPrice", "totalAmount", "owner", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "productObjId", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "productObjId", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "productObjId", "quantity", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "productObjId", "quantity", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.UpdateEstimatedShipDateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Day.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "estimatedShipDate", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, Day.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "estimatedShipDate", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderShipGroupLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productObjId", "quantity", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productObjId", "quantity", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productObjId", "cancelQuantity", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productObjId", "cancelQuantity", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.RemoveOrderShipGroupItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productObjId", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{OrderState.class, Integer.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productObjId", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData", "roochEventVersion", "roochEventSequenceNumber", "roochEventType", "roochEventGuid", "status"}
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 

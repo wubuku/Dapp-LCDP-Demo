@@ -7,15 +7,21 @@ superObjects:
 
   RoochEvent:
     properties:
-      RoochEventVersion:
-        type: u128
-      RoochEventSequenceNumber:
-        type: u128
-      RoochEventType:
+      RoochEventId:
+        type: RoochEventId
+      RoochSender:
+        type: address
+      RoochTxHash:
+        type: address
+      RoochTypeTag:
         type: String
         length: 500
-      RoochEventGuid:
-        type: RoochEventGuid
+      RoochTimestampMs:
+        type: long
+      RoochBlockHeight:
+        type: u64
+      RoochEventIndex:
+        type: u32
 
   HasStatus:
     properties:
@@ -25,9 +31,9 @@ superObjects:
 
 valueObjects:
 
-  RoochEventGuid:
+  RoochEventId:
     properties:
-      CreationNumber:
-        type: u128
-      AccountAddress:
-        type: address
+      EventHandleId:
+        type: ObjectID
+      EventSeq:
+        type: u64

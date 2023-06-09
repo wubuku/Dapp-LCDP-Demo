@@ -351,14 +351,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         BigInteger TotalAmount = totalAmount;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -374,14 +380,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.CreateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, productObjId, quantity, unitPrice, totalAmount, owner, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, productObjId, quantity, unitPrice, totalAmount, owner, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class CreateLogic {
-//    public static OrderState mutate(OrderState orderState, String productObjId, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productObjId, BigInteger quantity, BigInteger unitPrice, BigInteger totalAmount, String owner, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -394,14 +400,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
         String productObjId = e.getProductObjId();
         String ProductObjId = productObjId;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -417,14 +429,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.RemoveItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, productObjId, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, productObjId, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class RemoveItemLogic {
-//    public static OrderState mutate(OrderState orderState, String productObjId, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productObjId, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -439,14 +451,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         String ProductObjId = productObjId;
         BigInteger quantity = e.getQuantity();
         BigInteger Quantity = quantity;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -462,14 +480,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.UpdateItemQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, productObjId, quantity, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, productObjId, quantity, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class UpdateItemQuantityLogic {
-//    public static OrderState mutate(OrderState orderState, String productObjId, BigInteger quantity, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, String productObjId, BigInteger quantity, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -482,14 +500,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
         Day estimatedShipDate = e.getEstimatedShipDate();
         Day EstimatedShipDate = estimatedShipDate;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -505,14 +529,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.UpdateEstimatedShipDateLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Day.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, estimatedShipDate, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, Day.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, estimatedShipDate, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class UpdateEstimatedShipDateLogic {
-//    public static OrderState mutate(OrderState orderState, Day estimatedShipDate, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, Day estimatedShipDate, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -531,14 +555,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         String ProductObjId = productObjId;
         BigInteger quantity = e.getQuantity();
         BigInteger Quantity = quantity;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -554,14 +584,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderShipGroupLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, shipmentMethod, productObjId, quantity, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, shipGroupSeqId, shipmentMethod, productObjId, quantity, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class AddOrderShipGroupLogic {
-//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -578,14 +608,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         String ProductObjId = productObjId;
         BigInteger cancelQuantity = e.getCancelQuantity();
         BigInteger CancelQuantity = cancelQuantity;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -601,14 +637,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, productObjId, cancelQuantity, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, shipGroupSeqId, productObjId, cancelQuantity, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class CancelOrderShipGroupQuantityLogic {
-//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 
@@ -623,14 +659,20 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         Integer ShipGroupSeqId = shipGroupSeqId;
         String productObjId = e.getProductObjId();
         String ProductObjId = productObjId;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -646,14 +688,14 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.RemoveOrderShipGroupItemLogic",
                     "mutate",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, shipGroupSeqId, productObjId, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{OrderState.class, Integer.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, shipGroupSeqId, productObjId, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class RemoveOrderShipGroupItemLogic {
-//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String productObjId, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String productObjId, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 

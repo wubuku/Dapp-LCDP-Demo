@@ -10,23 +10,35 @@ import java.util.*;
 
 public interface RoochEvent {
 
-    BigInteger getRoochEventVersion();
+    RoochEventId getRoochEventId();
 
-    BigInteger getRoochEventSequenceNumber();
+    String getRoochSender();
 
-    String getRoochEventType();
+    String getRoochTxHash();
 
-    RoochEventGuid getRoochEventGuid();
+    String getRoochTypeTag();
+
+    Long getRoochTimestampMs();
+
+    BigInteger getRoochBlockHeight();
+
+    Long getRoochEventIndex();
 
     interface MutableRoochEvent {
 
-        void setRoochEventVersion(BigInteger p);
+        void setRoochEventId(RoochEventId p);
 
-        void setRoochEventSequenceNumber(BigInteger p);
+        void setRoochSender(String p);
 
-        void setRoochEventType(String p);
+        void setRoochTxHash(String p);
 
-        void setRoochEventGuid(RoochEventGuid p);
+        void setRoochTypeTag(String p);
+
+        void setRoochTimestampMs(Long p);
+
+        void setRoochBlockHeight(BigInteger p);
+
+        void setRoochEventIndex(Long p);
 
     }
 

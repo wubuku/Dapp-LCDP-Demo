@@ -14,23 +14,32 @@
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />
-    <property name="roochEventVersion">
-      <column name="rooch_event_version" sql-type="DECIMAL(20,0)" />
-    </property>
-    <property name="roochEventSequenceNumber">
-      <column name="rooch_event_sequence_number" sql-type="DECIMAL(20,0)" />
-    </property>
-    <property name="roochEventType">
-      <column name="rooch_event_type" length="500" />
-    </property>
-    <component name="roochEventGuid" class="org.dddml.roochdemocontracts.domain.RoochEventGuid">
-      <property name="creationNumber">
-        <column name="rooch_event_guid_creation_number" sql-type="DECIMAL(20,0)" />
+    <component name="roochEventId" class="org.dddml.roochdemocontracts.domain.RoochEventId">
+      <property name="eventHandleId">
+        <column name="rooch_event_id_event_handle_id" sql-type="VARCHAR(66)" />
       </property>
-      <property name="accountAddress">
-        <column name="rooch_event_guid_account_address" sql-type="VARCHAR(66)" />
+      <property name="eventSeq">
+        <column name="rooch_event_id_event_seq" sql-type="DECIMAL(20,0)" />
       </property>
     </component>
+    <property name="roochSender">
+      <column name="rooch_sender" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="roochTxHash">
+      <column name="rooch_tx_hash" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="roochTypeTag">
+      <column name="rooch_type_tag" length="500" />
+    </property>
+    <property name="roochTimestampMs">
+      <column name="rooch_timestamp_ms" />
+    </property>
+    <property name="roochBlockHeight">
+      <column name="rooch_block_height" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="roochEventIndex">
+      <column name="rooch_event_index" />
+    </property>
     <property name="status">
       <column name="status" sql-type="CHAR(1)" />
     </property>

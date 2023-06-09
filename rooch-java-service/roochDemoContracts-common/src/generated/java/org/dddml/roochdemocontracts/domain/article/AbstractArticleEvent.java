@@ -45,44 +45,74 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
         getArticleEventId().setVersion(version);
     }
 
-    private BigInteger roochEventVersion;
+    private RoochEventId roochEventId;
 
-    public BigInteger getRoochEventVersion() {
-        return this.roochEventVersion;
+    public RoochEventId getRoochEventId() {
+        return this.roochEventId;
     }
     
-    public void setRoochEventVersion(BigInteger roochEventVersion) {
-        this.roochEventVersion = roochEventVersion;
+    public void setRoochEventId(RoochEventId roochEventId) {
+        this.roochEventId = roochEventId;
     }
 
-    private BigInteger roochEventSequenceNumber;
+    private String roochSender;
 
-    public BigInteger getRoochEventSequenceNumber() {
-        return this.roochEventSequenceNumber;
-    }
-    
-    public void setRoochEventSequenceNumber(BigInteger roochEventSequenceNumber) {
-        this.roochEventSequenceNumber = roochEventSequenceNumber;
-    }
-
-    private String roochEventType;
-
-    public String getRoochEventType() {
-        return this.roochEventType;
+    public String getRoochSender() {
+        return this.roochSender;
     }
     
-    public void setRoochEventType(String roochEventType) {
-        this.roochEventType = roochEventType;
+    public void setRoochSender(String roochSender) {
+        this.roochSender = roochSender;
     }
 
-    private RoochEventGuid roochEventGuid;
+    private String roochTxHash;
 
-    public RoochEventGuid getRoochEventGuid() {
-        return this.roochEventGuid;
+    public String getRoochTxHash() {
+        return this.roochTxHash;
     }
     
-    public void setRoochEventGuid(RoochEventGuid roochEventGuid) {
-        this.roochEventGuid = roochEventGuid;
+    public void setRoochTxHash(String roochTxHash) {
+        this.roochTxHash = roochTxHash;
+    }
+
+    private String roochTypeTag;
+
+    public String getRoochTypeTag() {
+        return this.roochTypeTag;
+    }
+    
+    public void setRoochTypeTag(String roochTypeTag) {
+        this.roochTypeTag = roochTypeTag;
+    }
+
+    private Long roochTimestampMs;
+
+    public Long getRoochTimestampMs() {
+        return this.roochTimestampMs;
+    }
+    
+    public void setRoochTimestampMs(Long roochTimestampMs) {
+        this.roochTimestampMs = roochTimestampMs;
+    }
+
+    private BigInteger roochBlockHeight;
+
+    public BigInteger getRoochBlockHeight() {
+        return this.roochBlockHeight;
+    }
+    
+    public void setRoochBlockHeight(BigInteger roochBlockHeight) {
+        this.roochBlockHeight = roochBlockHeight;
+    }
+
+    private Long roochEventIndex;
+
+    public Long getRoochEventIndex() {
+        return this.roochEventIndex;
+    }
+    
+    public void setRoochEventIndex(Long roochEventIndex) {
+        this.roochEventIndex = roochEventIndex;
     }
 
     private String status;

@@ -81,10 +81,13 @@ public abstract class AbstractTagAggregate extends AbstractAggregate implements 
             TagEventId eventId = new TagEventId(getState().getName(), null);
             AbstractTagEvent.TagCreated e = new AbstractTagEvent.TagCreated();
 
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);

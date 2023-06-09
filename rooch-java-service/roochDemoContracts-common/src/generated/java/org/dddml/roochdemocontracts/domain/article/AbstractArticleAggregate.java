@@ -193,10 +193,13 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setReferences(references);
             e.setTags(tags);
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -214,10 +217,13 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setReferenceNumber(referenceNumber);
             e.setTitle(title);
             e.setUrl(url);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -236,10 +242,13 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setTitle(title);
             e.setUrl(url);
             e.setAuthor(author);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -255,10 +264,13 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             AbstractArticleEvent.ReferenceRemoved e = new AbstractArticleEvent.ReferenceRemoved();
 
             e.setReferenceNumber(referenceNumber);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);

@@ -223,14 +223,20 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String Name = name;
         BigInteger unitPrice = e.getUnitPrice();
         BigInteger UnitPrice = unitPrice;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -246,14 +252,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 

@@ -304,14 +304,20 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String[] Tags = tags;
         String owner = e.getOwner();
         String Owner = owner;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -327,14 +333,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.CreateLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, title, author, content, references, tags, owner, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, title, author, content, references, tags, owner, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class CreateLogic {
-//    public static ArticleState mutate(ArticleState articleState, String title, String author, String content, ReferenceVO[] references, String[] tags, String owner, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    public static ArticleState mutate(ArticleState articleState, String title, String author, String content, ReferenceVO[] references, String[] tags, String owner, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
 //    }
 //}
 
@@ -351,14 +357,20 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Title = title;
         String url = e.getUrl();
         String Url = url;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -374,14 +386,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.AddReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, referenceNumber, title, url, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, referenceNumber, title, url, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class AddReferenceLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, String title, String url, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, String title, String url, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
 //    }
 //}
 
@@ -400,14 +412,20 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         String Url = url;
         String author = e.getAuthor();
         String Author = author;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -423,14 +441,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.UpdateReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, referenceNumber, title, url, author, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, referenceNumber, title, url, author, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class UpdateReferenceLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, String title, String url, String author, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, String title, String url, String author, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
 //    }
 //}
 
@@ -443,14 +461,20 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
 
         BigInteger referenceNumber = e.getReferenceNumber();
         BigInteger ReferenceNumber = referenceNumber;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -466,14 +490,14 @@ public abstract class AbstractArticleState implements ArticleState.SqlArticleSta
         ArticleState updatedArticleState = (ArticleState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.RemoveReferenceLogic",
                     "mutate",
-                    new Class[]{ArticleState.class, BigInteger.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, referenceNumber, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ArticleState.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, referenceNumber, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class RemoveReferenceLogic {
-//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
+//    public static ArticleState mutate(ArticleState articleState, BigInteger referenceNumber, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ArticleState, ArticleState.MutableArticleState> mutationContext) {
 //    }
 //}
 

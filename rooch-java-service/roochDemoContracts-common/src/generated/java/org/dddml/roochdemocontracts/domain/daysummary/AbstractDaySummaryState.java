@@ -314,14 +314,20 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         BigInteger[] U128ArrayData = u128ArrayData;
         BigInteger[] u256ArrayData = e.getU256ArrayData();
         BigInteger[] U256ArrayData = u256ArrayData;
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -337,14 +343,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 

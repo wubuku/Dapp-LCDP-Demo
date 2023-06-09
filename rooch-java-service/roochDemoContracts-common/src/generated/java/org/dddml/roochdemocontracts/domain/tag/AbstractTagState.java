@@ -197,14 +197,20 @@ public abstract class AbstractTagState implements TagState.SqlTagState {
     public void when(AbstractTagEvent.TagCreated e) {
         throwOnWrongEvent(e);
 
-        BigInteger roochEventVersion = e.getRoochEventVersion();
-        BigInteger RoochEventVersion = roochEventVersion;
-        BigInteger roochEventSequenceNumber = e.getRoochEventSequenceNumber();
-        BigInteger RoochEventSequenceNumber = roochEventSequenceNumber;
-        String roochEventType = e.getRoochEventType();
-        String RoochEventType = roochEventType;
-        RoochEventGuid roochEventGuid = e.getRoochEventGuid();
-        RoochEventGuid RoochEventGuid = roochEventGuid;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
         String status = e.getStatus();
         String Status = status;
 
@@ -220,14 +226,14 @@ public abstract class AbstractTagState implements TagState.SqlTagState {
         TagState updatedTagState = (TagState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.tag.CreateLogic",
                     "mutate",
-                    new Class[]{TagState.class, BigInteger.class, BigInteger.class, String.class, RoochEventGuid.class, String.class, MutationContext.class},
-                    new Object[]{this, roochEventVersion, roochEventSequenceNumber, roochEventType, roochEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{TagState.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.roochdemocontracts.domain.tag;
 //
 //public class CreateLogic {
-//    public static TagState mutate(TagState tagState, BigInteger roochEventVersion, BigInteger roochEventSequenceNumber, String roochEventType, RoochEventGuid roochEventGuid, String status, MutationContext<TagState, TagState.MutableTagState> mutationContext) {
+//    public static TagState mutate(TagState tagState, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<TagState, TagState.MutableTagState> mutationContext) {
 //    }
 //}
 

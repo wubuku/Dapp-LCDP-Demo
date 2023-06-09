@@ -287,10 +287,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
             e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
             e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -306,10 +309,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             AbstractOrderEvent.OrderItemRemoved e = new AbstractOrderEvent.OrderItemRemoved();
 
             e.setProductObjId(productObjId);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -326,10 +332,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -345,10 +354,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             AbstractOrderEvent.OrderEstimatedShipDateUpdated e = new AbstractOrderEvent.OrderEstimatedShipDateUpdated();
 
             e.setEstimatedShipDate(estimatedShipDate);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -367,10 +379,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setShipmentMethod(shipmentMethod);
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -388,10 +403,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductObjId(productObjId);
             e.setCancelQuantity(cancelQuantity);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
@@ -408,10 +426,13 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductObjId(productObjId);
-            e.setRoochEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventGuid(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
             e.setStatus(null); // todo Need to update 'verify' method to return event properties.
 
             e.setCommandId(commandId);
