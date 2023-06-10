@@ -97,4 +97,8 @@ public class Article {
                 ", references=" + references +
                 '}';
     }
+
+    public static class MoveObject extends com.github.wubuku.rooch.bean.MoveOSStdObject<Article> {
+    }
+
 }

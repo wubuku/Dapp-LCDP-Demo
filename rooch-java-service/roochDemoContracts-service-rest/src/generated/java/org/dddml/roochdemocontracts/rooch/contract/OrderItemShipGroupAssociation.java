@@ -64,4 +64,5 @@ public class OrderItemShipGroupAssociation {
                 ", subitems=" + subitems +
                 '}';
     }
+
 }

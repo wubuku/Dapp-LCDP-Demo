@@ -21,11 +21,11 @@ public class DaySummary {
 
     private String description;
 
-    private byte[] metadata;
+    private String metadata;
 
     private String[] arrayData;
 
-    private String optionalData;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> optionalData;
 
     private Integer[] u16ArrayData;
 
@@ -63,11 +63,11 @@ public class DaySummary {
         this.description = description;
     }
 
-    public byte[] getMetadata() {
+    public String getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(byte[] metadata) {
+    public void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 
@@ -79,11 +79,11 @@ public class DaySummary {
         this.arrayData = arrayData;
     }
 
-    public String getOptionalData() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getOptionalData() {
         return optionalData;
     }
 
-    public void setOptionalData(String optionalData) {
+    public void setOptionalData(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> optionalData) {
         this.optionalData = optionalData;
     }
 
@@ -141,9 +141,9 @@ public class DaySummary {
                 ", day=" + day +
                 ", offChainVersion=" + offChainVersion +
                 ", description=" + '\'' + description + '\'' +
-                ", metadata=" + Arrays.toString(metadata) +
+                ", metadata=" + '\'' + metadata + '\'' +
                 ", arrayData=" + Arrays.toString(arrayData) +
-                ", optionalData=" + '\'' + optionalData + '\'' +
+                ", optionalData=" + optionalData +
                 ", u16ArrayData=" + Arrays.toString(u16ArrayData) +
                 ", u32ArrayData=" + Arrays.toString(u32ArrayData) +
                 ", u64ArrayData=" + Arrays.toString(u64ArrayData) +
@@ -152,4 +152,8 @@ public class DaySummary {
                 ", version=" + version +
                 '}';
     }
+
+    public static class MoveObject extends com.github.wubuku.rooch.bean.MoveOSStdObject<DaySummary> {
+    }
+
 }

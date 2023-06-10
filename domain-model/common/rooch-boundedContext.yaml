@@ -32,7 +32,7 @@ configuration:
     specializationPackage: "org.dddml.roochdemocontracts.specialization"
 
     typeMappings:
-      "vector<u8>": "byte[]"
+      "vector<u8>": "String" # Mapped to Hex String, not byte[]
       #"ObjectID": "ObjectID"
 
       #

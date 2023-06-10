@@ -241,15 +241,15 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
             getDynamicProperties().put("description", value);
         }
 
-        public byte[] getMetaData() {
+        public String getMetaData() {
             Object val = getDynamicProperties().get("metaData");
-            if (val instanceof byte[]) {
-                return (byte[]) val;
+            if (val instanceof String) {
+                return (String) val;
             }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, byte[].class);
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
         }
 
-        public void setMetaData(byte[] value) {
+        public void setMetaData(String value) {
             getDynamicProperties().put("metaData", value);
         }
 

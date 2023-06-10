@@ -42,4 +42,5 @@ public class OrderItemShipGroupAssocSubitem {
                 ", description=" + '\'' + description + '\'' +
                 '}';
     }
+
 }

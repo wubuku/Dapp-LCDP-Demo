@@ -21,15 +21,15 @@ public class Reference {
 
     private String author;
 
-    private BigInteger publicationYear;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> publicationYear;
 
-    private String publisher;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> publisher;
 
-    private String doi;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> doi;
 
-    private String url;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> url;
 
-    private BigInteger pageNumber;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> pageNumber;
 
     public BigInteger getReferenceNumber() {
         return referenceNumber;
@@ -55,43 +55,43 @@ public class Reference {
         this.author = author;
     }
 
-    public BigInteger getPublicationYear() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> getPublicationYear() {
         return publicationYear;
     }
 
-    public void setPublicationYear(BigInteger publicationYear) {
+    public void setPublicationYear(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> publicationYear) {
         this.publicationYear = publicationYear;
     }
 
-    public String getPublisher() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> publisher) {
         this.publisher = publisher;
     }
 
-    public String getDoi() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getDoi() {
         return doi;
     }
 
-    public void setDoi(String doi) {
+    public void setDoi(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> doi) {
         this.doi = doi;
     }
 
-    public String getUrl() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> url) {
         this.url = url;
     }
 
-    public BigInteger getPageNumber() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> getPageNumber() {
         return pageNumber;
     }
 
-    public void setPageNumber(BigInteger pageNumber) {
+    public void setPageNumber(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<BigInteger> pageNumber) {
         this.pageNumber = pageNumber;
     }
 
@@ -102,10 +102,11 @@ public class Reference {
                 ", title=" + '\'' + title + '\'' +
                 ", author=" + '\'' + author + '\'' +
                 ", publicationYear=" + publicationYear +
-                ", publisher=" + '\'' + publisher + '\'' +
-                ", doi=" + '\'' + doi + '\'' +
-                ", url=" + '\'' + url + '\'' +
+                ", publisher=" + publisher +
+                ", doi=" + doi +
+                ", url=" + url +
                 ", pageNumber=" + pageNumber +
                 '}';
     }
+
 }

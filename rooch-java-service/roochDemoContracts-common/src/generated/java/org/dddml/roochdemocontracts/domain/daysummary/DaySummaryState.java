@@ -24,7 +24,7 @@ public interface DaySummaryState extends VersionedRoochMoveObject
 
     String getDescription();
 
-    byte[] getMetadata();
+    String getMetadata();
 
     String getOptionalData();
 
@@ -61,7 +61,7 @@ public interface DaySummaryState extends VersionedRoochMoveObject
 
         void setDescription(String description);
 
-        void setMetadata(byte[] metadata);
+        void setMetadata(String metadata);
 
         void setOptionalData(String optionalData);
 

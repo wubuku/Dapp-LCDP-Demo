@@ -21,7 +21,7 @@ public class Order {
 
     private BigInteger totalAmount;
 
-    private Day estimatedShipDate;
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<Day> estimatedShipDate;
 
     private BigInteger version;
 
@@ -53,11 +53,11 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public Day getEstimatedShipDate() {
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<Day> getEstimatedShipDate() {
         return estimatedShipDate;
     }
 
-    public void setEstimatedShipDate(Day estimatedShipDate) {
+    public void setEstimatedShipDate(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<Day> estimatedShipDate) {
         this.estimatedShipDate = estimatedShipDate;
     }
 
@@ -97,4 +97,8 @@ public class Order {
                 ", orderShipGroups=" + orderShipGroups +
                 '}';
     }
+
+    public static class MoveObject extends com.github.wubuku.rooch.bean.MoveOSStdObject<Order> {
+    }
+
 }

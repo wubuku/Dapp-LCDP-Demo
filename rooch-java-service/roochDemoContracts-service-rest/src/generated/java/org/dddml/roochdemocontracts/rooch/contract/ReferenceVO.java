@@ -18,7 +18,7 @@ public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVO
 
         private String title;
 
-        private String url;
+        private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> url;
 
 
         public BigInteger getReferenceNumber() {
@@ -37,11 +37,11 @@ public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVO
             this.title = title;
         }
 
-        public String getUrl() {
+        public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getUrl() {
             return url;
         }
 
-        public void setUrl(String url) {
+        public void setUrl(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> url) {
             this.url = url;
         }
 
@@ -50,7 +50,7 @@ public class ReferenceVO extends AnnotatedMoveStructView<ReferenceVO.ReferenceVO
             return "ReferenceVOValue{" +
                     "referenceNumber=" + referenceNumber +
                     ", title=" + '\'' + title + '\'' +
-                    ", url=" + '\'' + url + '\'' +
+                    ", url=" + url +
                     '}';
         }
     }

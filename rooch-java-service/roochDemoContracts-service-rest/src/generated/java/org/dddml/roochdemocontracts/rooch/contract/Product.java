@@ -75,4 +75,8 @@ public class Product {
                 ", version=" + version +
                 '}';
     }
+
+    public static class MoveObject extends com.github.wubuku.rooch.bean.MoveOSStdObject<Product> {
+    }
+
 }

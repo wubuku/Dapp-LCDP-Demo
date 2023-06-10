@@ -17,7 +17,7 @@ public interface DaySummaryAggregate {
 
     List<Event> getChanges();
 
-    void create(String description, byte[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c);
+    void create(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c);
 
     void throwOnInvalidStateTransition(Command c);
 }

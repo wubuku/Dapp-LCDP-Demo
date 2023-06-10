@@ -48,13 +48,13 @@ public class RoochJsonRpcClientTests {
         MoveOSStdObject<DaySummary> moveOSStdObject = (MoveOSStdObject<DaySummary>) response2.get(0).getMoveValue().getValue();
         System.out.println(moveOSStdObject.getValue().getValue().getDay());
 
-//        // ////////////////////
-//        List<GetAnnotatedStatesResponseMoveStructItem<TestSomethingObject>> response3 = rpcClient.getMoveStructAnnotatedStates(path,
-//                TestSomethingObject.class
-//        );
-//        System.out.println(response3);
-//        System.out.println(response3.get(0).getMoveValue().getValue().getValue());
-//        System.out.println(response3.get(0).getMoveValue().getValue().getValue().getValue().i);
+        // ////////////////////
+        List<GetAnnotatedStatesResponseMoveStructItem<DaySummary.MoveObject>> response3 = rpcClient.getMoveStructAnnotatedStates(path,
+                DaySummary.MoveObject.class
+        );
+        System.out.println(response3);
+        System.out.println(response3.get(0).getMoveValue().getValue().getValue());
+        System.out.println(response3.get(0).getMoveValue().getValue().getValue().getValue().getDay().getValue().getNumber());
     }
 
     @Test

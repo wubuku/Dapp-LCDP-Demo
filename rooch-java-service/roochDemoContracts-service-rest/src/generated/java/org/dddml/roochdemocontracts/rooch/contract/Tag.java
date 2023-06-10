@@ -53,4 +53,8 @@ public class Tag {
                 ", version=" + version +
                 '}';
     }
+
+    public static class MoveObject extends com.github.wubuku.rooch.bean.MoveOSStdObject<Tag> {
+    }
+
 }
