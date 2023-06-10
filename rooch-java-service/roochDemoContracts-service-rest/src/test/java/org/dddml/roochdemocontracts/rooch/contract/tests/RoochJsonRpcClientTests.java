@@ -7,6 +7,7 @@ import com.github.wubuku.rooch.utils.HexUtils;
 import com.github.wubuku.rooch.utils.MoveOSStdViewFunctions;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
 import org.dddml.roochdemocontracts.rooch.contract.DaySummary;
+import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
@@ -77,36 +78,36 @@ public class RoochJsonRpcClientTests {
 
     @Test
     void testGetEvents_1() throws MalformedURLException, JsonProcessingException {
-//        String rpcBaseUrl = "http://127.0.0.1:50051/";
-//        //Id: "0x53f32af12dc9236eb67f1c064cf55ee8891a90040f71ba17422cfdd91eb7358b";
-//        String eventHandleType = "0x565d5717526aecec1f9d464867f7d92d6eae2dc8ca73a0dc2613dd185d3d7bc7::something::SomethingCreated";
-//        RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
-//        List<AnnotatedEventView<Object>> getEventsResponse1 = rpcClient.getEventsByEventHandle(eventHandleType,
-//                null,
-//                null,
-//                Object.class);
-//        System.out.println(getEventsResponse1);
-//        System.out.println(getEventsResponse1.get(0).getParsedEventData().getValue().getClass());
-//
-//        System.out.println("------------------------");
-//        BigInteger cursor = null;
-//        Long limit = 1L;
-//        System.out.println("cursor: " + cursor);
-//        List<AnnotatedEventView<TestSomethingCreated>> getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
-//                cursor, limit, TestSomethingCreated.class);
-//        System.out.println(getEventsResponse2);
-//        System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().i);
-//
-//        System.out.println("------------------------");
-//        cursor = getEventsResponse2.get(0).getEvent().getEventId().getEventSeq();
-//        cursor = cursor.add(BigInteger.ONE);
-//        System.out.println("cursor: " + cursor);
-//
-//        getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
-//                cursor, limit, TestSomethingCreated.class);
-//        System.out.println(getEventsResponse2);
-//        System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().i);
-//        System.out.println("cursor: " + cursor);
+        String rpcBaseUrl = "http://127.0.0.1:50051/";
+        //Id: "0x53f32af12dc9236eb67f1c064cf55ee8891a90040f71ba17422cfdd91eb7358b";
+        String eventHandleType = "0x565d5717526aecec1f9d464867f7d92d6eae2dc8ca73a0dc2613dd185d3d7bc7::day_summary::DaySummaryCreated";
+        RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
+        List<AnnotatedEventView<Object>> getEventsResponse1 = rpcClient.getEventsByEventHandle(eventHandleType,
+                null,
+                null,
+                Object.class);
+        System.out.println(getEventsResponse1);
+        System.out.println(getEventsResponse1.get(0).getParsedEventData().getValue().getClass());
+
+        System.out.println("------------------------");
+        BigInteger cursor = null;
+        Long limit = 1L;
+        System.out.println("cursor: " + cursor);
+        List<AnnotatedEventView<DaySummaryCreated>> getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
+                cursor, limit, DaySummaryCreated.class);
+        System.out.println(getEventsResponse2);
+        System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().getDay().getValue().getNumber());
+
+        System.out.println("------------------------");
+        cursor = getEventsResponse2.get(0).getEvent().getEventId().getEventSeq();
+        cursor = cursor.add(BigInteger.ONE);
+        System.out.println("cursor: " + cursor);
+
+        getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
+                cursor, limit, DaySummaryCreated.class);
+        System.out.println(getEventsResponse2);
+        //System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().i);
+        //System.out.println("cursor: " + cursor);
     }
 
     @Test
