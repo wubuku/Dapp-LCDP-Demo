@@ -47,7 +47,7 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         }
 
         @Override
-        public void create(String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
+        public void create(String description, byte[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
             try {
                 verifyCreate(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, c);
             } catch (Exception ex) {
@@ -58,9 +58,9 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             apply(e);
         }
 
-        protected void verifyCreate(String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
+        protected void verifyCreate(String description, byte[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
             String Description = description;
-            int[] MetaData = metaData;
+            byte[] MetaData = metaData;
             String[] ArrayData = arrayData;
             String OptionalData = optionalData;
             Integer[] U16ArrayData = u16ArrayData;
@@ -72,21 +72,21 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
+                    new Class[]{DaySummaryState.class, String.class, byte[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
                     new Object[]{getState(), description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static void verify(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
+//    public static void verify(DaySummaryState daySummaryState, String description, byte[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
 //    }
 //}
 
         }
            
 
-        protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, byte[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId) {
             DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
 

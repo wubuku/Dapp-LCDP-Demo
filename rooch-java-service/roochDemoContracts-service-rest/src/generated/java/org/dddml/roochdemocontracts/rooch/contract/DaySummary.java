@@ -21,7 +21,7 @@ public class DaySummary {
 
     private String description;
 
-    private int[] metadata;
+    private byte[] metadata;
 
     private String[] arrayData;
 
@@ -63,11 +63,11 @@ public class DaySummary {
         this.description = description;
     }
 
-    public int[] getMetadata() {
+    public byte[] getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(int[] metadata) {
+    public void setMetadata(byte[] metadata) {
         this.metadata = metadata;
     }
 

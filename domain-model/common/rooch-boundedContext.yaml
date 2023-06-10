@@ -27,13 +27,14 @@ configuration:
     offChainObjectNames: [ "RoochEventGuid" ]
     isSurrogateIdPreferred: true
 
-#    typeMappings:
-#    #"ObjectID": "ObjectID"
-#
-#    typeModules:
-#      "ObjetID": "moveos_std::object"
-
   java:
     boundedContextPackage: "org.dddml.roochdemocontracts"
     specializationPackage: "org.dddml.roochdemocontracts.specialization"
 
+    typeMappings:
+      "vector<u8>": "byte[]"
+      #"ObjectID": "ObjectID"
+
+      #
+      #    typeModules:
+      #      "ObjetID": "moveos_std::object"

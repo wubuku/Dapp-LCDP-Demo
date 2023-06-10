@@ -51,14 +51,14 @@ public class DaySummaryStateDto {
         this.description = description;
     }
 
-    private int[] metadata;
+    private byte[] metadata;
 
-    public int[] getMetadata()
+    public byte[] getMetadata()
     {
         return this.metadata;
     }
 
-    public void setMetadata(int[] metadata)
+    public void setMetadata(byte[] metadata)
     {
         this.metadata = metadata;
     }

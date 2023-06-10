@@ -30,3 +30,5 @@ configuration:
     boundedContextPackage: "org.dddml.aptosdemocontracts"
     specializationPackage: "org.dddml.aptosdemocontracts.specialization"
 
+    typeMappings:
+      "vector<u8>": "int[]"

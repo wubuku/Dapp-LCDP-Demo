@@ -13,6 +13,7 @@ module rooch_demo::day_summary_aggregate {
     use std::option::{Self, Option};
     use std::string::String;
     use std::vector;
+    use std::string;
 
     public entry fun create(
         storage_ctx: &mut StorageContext,
@@ -33,6 +34,71 @@ module rooch_demo::day_summary_aggregate {
         u128_array_data: vector<u128>,
         u256_array_data: vector<u256>,
     ) {
+        let day: Day = day::new(
+            month::new(
+                year::new(
+                    day_month_year_number,
+                    day_month_year_calendar,
+                ),
+                day_month_number,
+                day_month_is_leap,
+            ),
+            day_number,
+            day_time_zone,
+        );
+
+        let day_summary_created = day_summary_create_logic::verify(
+            storage_ctx,
+            account,
+            day,
+            description,
+            meta_data,
+            array_data,
+            vector_to_option(optional_data),
+            u16_array_data,
+            u32_array_data,
+            u64_array_data,
+            u128_array_data,
+            u256_array_data,
+        );
+        let day_summary_obj = day_summary_create_logic::mutate(
+            storage_ctx,
+            &day_summary_created,
+        );
+        day_summary::set_day_summary_created_id(&mut day_summary_created, day_summary::id(&day_summary_obj));
+        day_summary::add_day_summary(storage_ctx, day_summary_obj);
+        day_summary::emit_day_summary_created(storage_ctx, day_summary_created);
+    }
+
+
+    public entry fun create2(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        day_month_year_number: u16,
+        day_month_number: u8,
+        day_month_is_leap: bool,
+        day_number: u8,
+        meta_data: vector<u8>,
+    ) {
+        let day_month_year_calendar: String = string::utf8(b"ChineseLunar");
+        let day_time_zone: String = string::utf8(b"Beijing");
+        let description: String = string::utf8(b"test_desc");
+        let array_data: vector<String> = vector::empty();
+        vector::push_back(&mut array_data, string::utf8(b"hello"));
+        vector::push_back(&mut array_data, string::utf8(b"world"));
+        let optional_data: vector<String> = vector::empty();
+        vector::push_back(&mut optional_data, string::utf8(b"foo"));
+        let u16_array_data: vector<u16> = vector::empty();
+        vector::push_back(&mut u16_array_data, 16);
+        let u32_array_data: vector<u32> = vector::empty();
+        vector::push_back(&mut u32_array_data, 32);
+        let u64_array_data: vector<u64> = vector::empty();
+        vector::push_back(&mut u64_array_data, 64);
+        let u128_array_data: vector<u128> = vector::empty();
+        vector::push_back(&mut u128_array_data, 128);
+        let u256_array_data: vector<u256> = vector::empty();
+        vector::push_back(&mut u256_array_data, 256);
+
         let day: Day = day::new(
             month::new(
                 year::new(
