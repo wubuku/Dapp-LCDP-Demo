@@ -127,4 +127,8 @@ valueObjects:
       Url:
         type: String
         optional: true
-
+#      U16ArrayMetadata: # for test
+#        itemType: u16
+#      StringArrayMetadata: # for test
+#        itemType: String
+#        optional: true
