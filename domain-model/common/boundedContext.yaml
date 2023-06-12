@@ -179,6 +179,7 @@ configuration:
       "U32": "Long"
       "U64": "BigInteger"
       "U128": "BigInteger"
+      "U256": "BigInteger"
       "u8": "Integer"
       "u16": "Integer"
       "u32": "Long"

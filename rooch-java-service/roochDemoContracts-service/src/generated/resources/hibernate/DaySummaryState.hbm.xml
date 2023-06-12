@@ -72,7 +72,7 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
-      <element column="u16_array_data_item" type="u16" not-null="true" />
+      <element column="u16_array_data_item" type="java.lang.Integer" not-null="true" />
     </set>
     <set name="u32ArrayData" table="day_summary_u32_array_data" lazy="false">
       <key>
@@ -83,7 +83,7 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
-      <element column="u32_array_data_item" type="u32" not-null="true" />
+      <element column="u32_array_data_item" type="java.lang.Long" not-null="true" />
     </set>
     <set name="u64ArrayData" table="day_summary_u64_array_data" lazy="false">
       <key>
@@ -94,7 +94,7 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
-      <element column="u64_array_data_item" type="u64" not-null="true" />
+      <element column="u64_array_data_item" type="java.math.BigInteger" not-null="true" />
     </set>
     <set name="u128ArrayData" table="day_summary_u128_array_data" lazy="false">
       <key>
@@ -105,7 +105,7 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
-      <element column="u128_array_data_item" type="u128" not-null="true" />
+      <element column="u128_array_data_item" type="java.math.BigInteger" not-null="true" />
     </set>
     <set name="u256ArrayData" table="day_summary_u256_array_data" lazy="false">
       <key>
@@ -116,7 +116,7 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
-      <element column="u256_array_data_item" type="u256" not-null="true" />
+      <element column="u256_array_data_item" type="java.math.BigInteger" not-null="true" />
     </set>
   </class>
 </hibernate-mapping>

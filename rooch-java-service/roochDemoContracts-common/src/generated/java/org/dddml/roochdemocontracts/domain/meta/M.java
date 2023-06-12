@@ -72,6 +72,7 @@ public class M {
         clsMap.put("BigInteger", java.math.BigInteger.class);
         clsMap.put("java.math.BigInteger", java.math.BigInteger.class);
         clsMap.put("U128", java.math.BigInteger.class);
+        clsMap.put("U256", java.math.BigInteger.class);
         clsMap.put("u8", Integer.class);
         clsMap.put("u16", Integer.class);
         clsMap.put("u32", Long.class);
