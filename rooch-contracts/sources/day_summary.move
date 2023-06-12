@@ -313,8 +313,8 @@ module rooch_demo::day_summary {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, day_summary_obj: Object<DaySummary>) {
-        assert!(object::borrow(&day_summary_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut day_summary_obj).version = object::borrow( &mut day_summary_obj).version + 1;
+        assert!(object::borrow(&day_summary_obj).version != 0, EINAPPROPRIATE_VERSION);
         private_add_day_summary(storage_ctx, day_summary_obj);
     }
 

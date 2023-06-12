@@ -224,8 +224,8 @@ module sui_contracts::order {
     }
 
     fun update_object_version(order: &mut Order) {
-        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
         order.version = order.version + 1;
+        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) {

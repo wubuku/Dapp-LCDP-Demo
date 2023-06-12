@@ -179,8 +179,8 @@ module aptos_demo::product {
     }
 
     public(friend) fun update_version_and_add(product: Product) acquires Tables {
-        assert!(product.version != 0, EINAPPROPRIATE_VERSION);
         product.version = product.version + 1;
+        assert!(product.version != 0, EINAPPROPRIATE_VERSION);
         private_add_product(product);
     }
 

@@ -236,8 +236,8 @@ module sui_contracts::day_summary {
     }
 
     fun update_object_version(day_summary: &mut DaySummary) {
-        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
         day_summary.version = day_summary.version + 1;
+        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) {

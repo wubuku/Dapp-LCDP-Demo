@@ -508,8 +508,8 @@ module rooch_demo::order {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
-        assert!(object::borrow(&order_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut order_obj).version = object::borrow( &mut order_obj).version + 1;
+        assert!(object::borrow(&order_obj).version != 0, EINAPPROPRIATE_VERSION);
         private_add_order(storage_ctx, order_obj);
     }
 

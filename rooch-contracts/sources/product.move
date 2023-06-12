@@ -188,8 +188,8 @@ module rooch_demo::product {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
-        assert!(object::borrow(&product_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut product_obj).version = object::borrow( &mut product_obj).version + 1;
+        assert!(object::borrow(&product_obj).version != 0, EINAPPROPRIATE_VERSION);
         private_add_product(storage_ctx, product_obj);
     }
 

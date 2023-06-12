@@ -281,8 +281,8 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun update_version_and_add(day_summary: DaySummary) acquires Tables {
-        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
         day_summary.version = day_summary.version + 1;
+        assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
         private_add_day_summary(day_summary);
     }
 

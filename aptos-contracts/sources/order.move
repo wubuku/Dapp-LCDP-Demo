@@ -469,8 +469,8 @@ module aptos_demo::order {
     }
 
     public(friend) fun update_version_and_add(order: Order) acquires Tables {
-        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
         order.version = order.version + 1;
+        assert!(order.version != 0, EINAPPROPRIATE_VERSION);
         private_add_order(order);
     }
 

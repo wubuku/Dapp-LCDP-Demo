@@ -133,8 +133,8 @@ module rooch_demo::tag {
     }
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
-        assert!(object::borrow(&tag_obj).version != 0, EINAPPROPRIATE_VERSION);
         object::borrow_mut(&mut tag_obj).version = object::borrow( &mut tag_obj).version + 1;
+        assert!(object::borrow(&tag_obj).version != 0, EINAPPROPRIATE_VERSION);
         private_add_tag(storage_ctx, tag_obj);
     }
 
