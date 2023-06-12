@@ -25,4 +25,5 @@ public class JsonTests {
         Day d2 = objectMapper.readValue(json, Day.class);
         System.out.println(d2.getValue().getMonth().getValue().getYear().getValue().getNumber());
     }
+
 }

@@ -7,6 +7,7 @@ import com.github.wubuku.rooch.utils.HexUtils;
 import com.github.wubuku.rooch.utils.MoveOSStdViewFunctions;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
 import org.dddml.roochdemocontracts.rooch.contract.DaySummary;
+import org.dddml.roochdemocontracts.rooch.contract.OrderItemShipGroupAssociationTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
 import org.junit.jupiter.api.Test;
 
@@ -112,15 +113,16 @@ public class RoochJsonRpcClientTests {
 
     @Test
     void testGetEvents_2() throws MalformedURLException, JsonProcessingException {
-//        String rpcBaseUrl = "http://127.0.0.1:50051/";
-//        RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
-//
-//        String eventHandleType2 = "0x565d5717526aecec1f9d464867f7d92d6eae2dc8ca73a0dc2613dd185d3d7bc7::something::BarTableItemAdded";//Id: "0x86a59b599dad6bd0b054eee46578c962f83479c38405555cf7ee421f82b4c7b2";
-//        List<AnnotatedEventView<TestBarTableItemAdded>> getEventsResponse3 = rpcClient.getEventsByEventHandle(eventHandleType2,
-//                null, null, TestBarTableItemAdded.class);
-//        System.out.println(getEventsResponse3);
-//        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().item.getValue().key.getClass());
-//        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().item.getValue().value.getClass());
+        String rpcBaseUrl = "http://127.0.0.1:50051/";
+        RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
+
+        String eventHandleType2 = "0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4"
+                + "::order_ship_group::OrderItemShipGroupAssociationTableItemAdded";
+        List<AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded>> getEventsResponse3 = rpcClient.getEventsByEventHandle(eventHandleType2,
+                null, null, OrderItemShipGroupAssociationTableItemAdded.class);
+        System.out.println(getEventsResponse3);
+        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().getOrderId());
+        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().getOrderShipGroupShipGroupSeqId());
     }
 
     @Test
