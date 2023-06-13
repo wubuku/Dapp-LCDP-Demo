@@ -1,5 +1,6 @@
 package org.dddml.roochdemocontracts.rooch.bcs.tests;
 
+import com.github.wubuku.rooch.bcs.MoveOSStdObjectID;
 import com.github.wubuku.rooch.utils.HexUtils;
 import com.novi.serde.DeserializationError;
 import com.novi.serde.SerializationError;
@@ -10,6 +11,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class BcsTests {
+
+    @Test
+    void testMisc_1() {
+        String hex = "0x565d5717526aecec1f9d464867f7d92d6eae2dc8ca73a0dc2613dd185d3d7bc7";
+        com.github.wubuku.rooch.bcs.AccountAddress bcsAddr = com.github.wubuku.rooch.bcs.AccountAddress.valueOf(com.github.wubuku.rooch.utils.HexUtils.hexToByteArray(hex));
+        System.out.println(bcsAddr);
+        com.github.wubuku.rooch.bcs.MoveOSStdObjectID bcsObjectID = new MoveOSStdObjectID(com.github.wubuku.rooch.bcs.AccountAddress.valueOf(com.github.wubuku.rooch.utils.HexUtils.hexToByteArray(hex)));
+        System.out.println(bcsObjectID);
+    }
 
     @Test
     void testSerializeAndDeserialize() throws SerializationError, DeserializationError {

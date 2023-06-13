@@ -39,6 +39,7 @@ public class JsonTests {
         Long u32 = 0xffffffffL;
         Integer i = (int) u32.longValue();
         System.out.println(i);
+        System.out.println(u32.intValue());
 
         java.math.BigInteger u64 = new java.math.BigInteger("18446744073709551615");
         Long l = u64.longValue();
