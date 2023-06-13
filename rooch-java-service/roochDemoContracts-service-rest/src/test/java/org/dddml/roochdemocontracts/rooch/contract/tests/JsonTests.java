@@ -26,4 +26,23 @@ public class JsonTests {
         System.out.println(d2.getValue().getMonth().getValue().getYear().getValue().getNumber());
     }
 
+    @Test
+    void testMisc_1() {
+        short b = (short) 0xff;
+        System.out.println(Short.valueOf(b).byteValue());
+
+        int u16 = 0xffff;
+        short s = (short) u16;
+        System.out.println(s);
+        System.out.println(Integer.valueOf(u16).shortValue());
+
+        Long u32 = 0xffffffffL;
+        Integer i = (int) u32.longValue();
+        System.out.println(i);
+
+        java.math.BigInteger u64 = new java.math.BigInteger("18446744073709551615");
+        Long l = u64.longValue();
+        System.out.println(l);
+
+    }
 }
