@@ -6,7 +6,7 @@ import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemI
 import java.util.Date;
 import java.util.Objects;
 
-public class OrderItemShipGroupAssocSubitemTableItemAdded {
+public class OrderItemShipGroupAssocSubitemTableItem {
     private OrderItemShipGroupAssocSubitemId orderItemShipGroupAssocSubitemId;
 
     public OrderItemShipGroupAssocSubitemId getOrderItemShipGroupAssocSubitemId() {
@@ -91,7 +91,7 @@ public class OrderItemShipGroupAssocSubitemTableItemAdded {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderItemShipGroupAssocSubitemTableItemAdded that = (OrderItemShipGroupAssocSubitemTableItemAdded) o;
+        OrderItemShipGroupAssocSubitemTableItem that = (OrderItemShipGroupAssocSubitemTableItem) o;
         return Objects.equals(orderItemShipGroupAssocSubitemId, that.orderItemShipGroupAssocSubitemId);
     }
 
