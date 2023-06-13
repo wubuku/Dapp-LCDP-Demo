@@ -8,6 +8,7 @@ package org.dddml.roochdemocontracts.rooch.contract;
 import java.math.*;
 
 import com.github.wubuku.rooch.bean.AnnotatedEventView;
+import com.github.wubuku.rooch.bean.AnnotatedMoveOptionView;
 import com.github.wubuku.rooch.bean.EventID;
 import org.dddml.roochdemocontracts.domain.RoochEvent;
 import org.dddml.roochdemocontracts.domain.RoochEventId;
@@ -90,7 +91,6 @@ public class DomainBeanUtils {
         articleCreated.setTitle(contractEvent.getTitle());
         articleCreated.setAuthor(contractEvent.getAuthor());
         articleCreated.setContent(contractEvent.getContent());
-        //articleCreated.setReferences(contractEvent.getReferences());
         articleCreated.setReferences(java.util.Arrays.stream(contractEvent.getReferences()).map(DomainBeanUtils::toReferenceVO).toArray(org.dddml.roochdemocontracts.domain.ReferenceVO[]::new));
         articleCreated.setTags(contractEvent.getTags());
         articleCreated.setOwner(contractEvent.getOwner());
@@ -108,7 +108,7 @@ public class DomainBeanUtils {
         referenceAdded.setId(contractEvent.getId());
         referenceAdded.setReferenceNumber(contractEvent.getReferenceNumber());
         referenceAdded.setTitle(contractEvent.getTitle());
-        referenceAdded.setUrl(contractEvent.getUrl().getValue().getVec()[0]);
+        referenceAdded.setUrl(extractOptionalValue(contractEvent.getUrl()));
         referenceAdded.setVersion(contractEvent.getVersion());
 
         setRoochEventProperties(referenceAdded, eventEnvelope);
@@ -123,8 +123,8 @@ public class DomainBeanUtils {
         referenceUpdated.setId(contractEvent.getId());
         referenceUpdated.setReferenceNumber(contractEvent.getReferenceNumber());
         referenceUpdated.setTitle(contractEvent.getTitle());
-        referenceUpdated.setUrl(contractEvent.getUrl().getValue().getVec()[0]);
-        referenceUpdated.setAuthor(contractEvent.getAuthor().getValue().getVec()[0]);
+        referenceUpdated.setUrl(extractOptionalValue(contractEvent.getUrl()));
+        referenceUpdated.setAuthor(extractOptionalValue(contractEvent.getAuthor()));
         referenceUpdated.setVersion(contractEvent.getVersion());
 
         setRoochEventProperties(referenceUpdated, eventEnvelope);
@@ -291,7 +291,7 @@ public class DomainBeanUtils {
         daySummaryCreated.setDescription(contractEvent.getDescription());
         daySummaryCreated.setMetaData(contractEvent.getMetaData());
         daySummaryCreated.setArrayData(contractEvent.getArrayData());
-        daySummaryCreated.setOptionalData(contractEvent.getOptionalData().getValue().getVec()[0]);
+        daySummaryCreated.setOptionalData(extractOptionalValue(contractEvent.getOptionalData()));
         daySummaryCreated.setU16ArrayData(contractEvent.getU16ArrayData());
         daySummaryCreated.setU32ArrayData(contractEvent.getU32ArrayData());
         daySummaryCreated.setU64ArrayData(contractEvent.getU64ArrayData());
@@ -315,5 +315,11 @@ public class DomainBeanUtils {
 
     private static RoochEventId toRoochEventId(EventID eventId) {
         return new RoochEventId(eventId.getEventHandleId(), eventId.getEventSeq());
+    }
+
+    private static <T> T extractOptionalValue(AnnotatedMoveOptionView<T> optionView) {
+        return optionView == null ? null
+                : (optionView.getValue().getVec() == null || optionView.getValue().getVec().length == 0) ? null
+                : optionView.getValue().getVec()[0];
     }
 }
