@@ -68,7 +68,7 @@ public class DomainBeanUtils {
         org.dddml.roochdemocontracts.domain.ReferenceVO referenceVO = new org.dddml.roochdemocontracts.domain.ReferenceVO();
         referenceVO.setReferenceNumber(contractReferenceVO.getValue().getReferenceNumber());
         referenceVO.setTitle(contractReferenceVO.getValue().getTitle());
-        referenceVO.setUrl(contractReferenceVO.getValue().getUrl().getValue().getVec()[0]);
+        referenceVO.setUrl(contractReferenceVO.getValue().getUrl().getValue().getVec().length == 0 ? null : contractReferenceVO.getValue().getUrl().getValue().getVec()[0]);
         return referenceVO;
     }
 
