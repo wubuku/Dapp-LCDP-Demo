@@ -30,6 +30,9 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupRemoved;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
+/**
+ * Utils that converts beans in contract package to domain beans.
+ */
 public class DomainBeanUtils {
     private DomainBeanUtils() {
     }
