@@ -24,7 +24,7 @@ configuration:
     boundedContextNamedAddress: "rooch_demo"
     moveObjectVersionPropertyName: "Version"
     moveObjectVersionPropertyType: "u64"
-    offChainObjectNames: [ "RoochEventGuid" ]
+    offChainObjectNames: [ "RoochEventId" ]
     isSurrogateIdPreferred: true
 
   java:
