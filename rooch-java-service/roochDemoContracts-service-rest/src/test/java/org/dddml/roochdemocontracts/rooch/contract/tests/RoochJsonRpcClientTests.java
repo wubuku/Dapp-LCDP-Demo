@@ -6,8 +6,7 @@ import com.github.wubuku.rooch.bean.*;
 import com.github.wubuku.rooch.utils.HexUtils;
 import com.github.wubuku.rooch.utils.MoveOSStdViewFunctions;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
-import org.dddml.roochdemocontracts.rooch.contract.DaySummary;
-import org.dddml.roochdemocontracts.rooch.contract.OrderItemShipGroupAssociationTableItemAdded;
+import org.dddml.roochdemocontracts.rooch.contract.*;
 import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ public class RoochJsonRpcClientTests {
     @Test
     void testGetStatesResponse_1() throws MalformedURLException, JsonProcessingException {
         String rpcBaseUrl = "http://127.0.0.1:50051/";
-        String path = "/object/0x4349384f4591976d3b5c043d81f7b468bab7ef851f51703923e26cda31133520";
+        String path = "/object/0xa29559906755a3e83c1d0c8802fbcfce0c887fd1feccb90053a95f8da5b4f38d";
         RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
         GetStatesResponse response = rpcClient.getStates(path);
         System.out.println(response);
@@ -62,19 +61,38 @@ public class RoochJsonRpcClientTests {
     @Test
     void testGetTableItem_1() throws MalformedURLException {
         String rpcBaseUrl = "http://127.0.0.1:50051/";
-        String tableHandle = "0x59e2c8f9d1d07e91fcd979fed7dbb98c3e0672b70633d9b5766054d89c738e61";
-        byte[] key = new byte[]{1};
-        String path = "/table/" + tableHandle + "/" + HexUtils.byteArrayToHexWithPrefix(key);
         RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
-        List<TypedGetAnnotatedStatesResponseItem<BigInteger>> response = rpcClient
-                .getAnnotatedStates(path, BigInteger.class);
-        System.out.println(response);
-        System.out.println(response.get(0).getMoveValue());
+        String orderObjId = "0xa29559906755a3e83c1d0c8802fbcfce0c887fd1feccb90053a95f8da5b4f38d";
 
-        TypedGetAnnotatedStatesResponseItem<BigInteger> response2 = rpcClient
-                .getAnnotatedTableItem(tableHandle, key, BigInteger.class);
-        System.out.println(response2);
-        System.out.println(response2.getMoveValue());
+        List<GetAnnotatedStatesResponseMoveStructItem<Order.MoveObject>> getOrderResponse = rpcClient.getMoveStructAnnotatedStates(
+                "/object/" + orderObjId,
+                Order.MoveObject.class
+        );
+        System.out.println(getOrderResponse);
+        //if (true) return;
+
+        String shipGroupTableHandle = getOrderResponse.get(0).getMoveValue().getValue().getValue().getValue().getOrderShipGroups().getValue().getHandle();
+        System.out.println("Order ship group table handle: " + shipGroupTableHandle);
+        byte[] key = new byte[]{1}; // Order Ship Group Seq Id.
+        String shipGroupTableItemPath = "/table/" + shipGroupTableHandle + "/" + HexUtils.byteArrayToHexWithPrefix(key);
+        List<GetAnnotatedStatesResponseMoveStructItem<OrderShipGroup>> getShipGroupTableItemResponse = rpcClient
+                .getMoveStructAnnotatedStates(shipGroupTableItemPath, OrderShipGroup.class);
+        System.out.println(getShipGroupTableItemResponse);
+        System.out.println(getShipGroupTableItemResponse.get(0).getMoveValue().getValue().getShipGroupSeqId());
+        //if (true) return;
+
+        String orderItemTableHandle = getOrderResponse.get(0).getMoveValue().getValue().getValue().getValue().getItems().getValue().getHandle();
+        System.out.println("Order item table handle: " + orderItemTableHandle);
+        String orderItemKey = "0xc321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a"; // Product Object Id.
+        String orderItemTableItemPath = "/table/" + orderItemTableHandle + "/" + orderItemKey;
+        List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = rpcClient
+                .getMoveStructAnnotatedStates(orderItemTableItemPath, OrderItem.class);
+        System.out.println(getOrderItemTableItemResponse);
+
+//        TypedGetAnnotatedStatesResponseItem<BigInteger> getPrimitiveTableItemResponse = rpcClient
+//                .getAnnotatedTableItem(tableHandle, key, BigInteger.class);
+//        System.out.println(getPrimitiveTableItemResponse);
+//        System.out.println(getPrimitiveTableItemResponse.getMoveValue());
     }
 
     @Test
