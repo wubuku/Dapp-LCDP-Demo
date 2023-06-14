@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.roochdemocontracts.domain.order">
-  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded" table="rooch_order_item_ship_group_assoc_subitem_table_item">
+  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded" table="rooch_order_item_ship_group_assoc_subitem_table_item_added">
     <composite-id name="orderItemShipGroupAssocSubitemId" class="org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId">
       <key-property name="orderId">
         <column name="order_v2_order_id" length="50" />

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Arrays;
 
 // Enables Spring's annotation-driven transaction management capability, similar to the support found in Spring's <tx:*> XML namespace.
 @EnableTransactionManagement
@@ -42,6 +43,12 @@ public class DatabaseConfig {
                 ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
                         .getResources("classpath:/hibernate/*.hbm.xml")
         );
+        //todo remove the debug prints
+        System.out.println("----------------------");
+        System.out.println(Arrays.toString(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                .getResources("classpath:/hibernate/*.hbm.xml")));
+        System.out.println("----------------------");
+
         sessionFactory.setPackagesToScan("org.dddml.roochdemocontracts.*"); //add annotation mappings
 
         //hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy

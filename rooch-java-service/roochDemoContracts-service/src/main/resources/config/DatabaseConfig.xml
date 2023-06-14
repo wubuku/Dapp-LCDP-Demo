@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    <bean id="hibernateSessionFactory"-->
+<!--          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
+<!--        <property name="dataSource" ref="dataSource"/>-->
+<!--        <property name="mappingLocations">-->
+<!--            <list>-->
+<!--                <value>classpath:/org/dddml/roochdemocontracts/domain/hbm/*.hbm.xml</value>-->
+<!--                <value>classpath:/org/dddml/roochdemocontracts/tool/hibernate/hbm/*.hbm.xml</value>-->
+<!--                <value>classpath:/org/dddml/roochdemocontracts/sui/contract/hbm/*.hbm.xml</value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--        <property name="hibernateProperties">-->
+<!--            <value>-->
+<!--                hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect-->
+<!--                hibernate.show_sql=true-->
+<!--                hibernate.hbm2ddl.auto=update-->
+<!--                hibernate.connection.pool_size=1-->
+<!--                hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider-->
+<!--                hibernate.cache.use_second_level_cache=false-->
+<!--            </value>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+    <!-- Solves the problem of "required a bean named 'entityManagerFactory' that could not be found." -->
+    <!-- https://stackoverflow.com/questions/48416927/spring-boot-required-a-bean-named-entitymanagerfactory-that-could-not-be-foun/54663039 -->
+<!--    <alias name="hibernateSessionFactory" alias="entityManagerFactory" />-->
+
+<!--    <bean id="transactionManager"-->
+<!--          class="org.springframework.orm.hibernate5.HibernateTransactionManager">-->
+<!--        <property name="sessionFactory" ref="hibernateSessionFactory"/>-->
+<!--    </bean>-->
+
+<!--    <tx:annotation-driven/>-->
+
+<!--    <bean id="stateReadOnlyProxyGenerator" class="org.dddml.roochdemocontracts.specialization.ReflectReadOnlyProxyGenerator"></bean>-->
+<!--    <bean id="stateReadOnlyProxyGenerator" class="org.dddml.roochdemocontracts.specialization.NullReadOnlyProxyGenerator"></bean>-->
+    <!--<bean id="clobConverter" class="org.dddml.roochdemocontracts.specialization.json.FastJsonClobConverter"></bean>-->
+
+</beans>

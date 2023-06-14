@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -24,7 +25,14 @@ public class IntegrationTests {
 
     @Test
     void testRepository_1() {
-        List<OrderItemShipGroupAssocSubitemTableItemAdded> list = orderItemShipGroupAssocSubitemTableItemAddedRepository.findAll();
+        List<OrderItemShipGroupAssocSubitemTableItemAdded> list =
+                //orderItemShipGroupAssocSubitemTableItemAddedRepository.findAll();
+                orderItemShipGroupAssocSubitemTableItemAddedRepository
+                        .findAllByOrderByRoochEventId_EventSeqDesc(Pageable.ofSize(1));
+        System.out.println(list);
+
+        list = orderItemShipGroupAssocSubitemTableItemAddedRepository
+                .findAllByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc("", Pageable.ofSize(1));
         System.out.println(list);
     }
 

@@ -17,7 +17,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         SecurityAutoConfiguration.class
 })
 @EntityScan(basePackages = {
-        "org.dddml.roochdemocontracts.rooch.contract"
+        "org.dddml.roochdemocontracts.rooch.contract",
+        "org.dddml.roochdemocontracts.rooch.contract.persistence"
 })
 @EnableScheduling
 //@EnableAutoConfiguration
