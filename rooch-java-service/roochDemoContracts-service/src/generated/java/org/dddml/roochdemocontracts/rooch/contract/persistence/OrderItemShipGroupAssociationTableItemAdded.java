@@ -12,15 +12,15 @@ import org.dddml.roochdemocontracts.domain.order.*;
 import java.math.*;
 import java.util.*;
 
-public class OrderItemShipGroupAssocSubitemTableItemAdded implements RoochEvent, RoochEvent.MutableRoochEvent {
-    private OrderItemShipGroupAssocSubitemId orderItemShipGroupAssocSubitemId;
+public class OrderItemShipGroupAssociationTableItemAdded implements RoochEvent, RoochEvent.MutableRoochEvent {
+    private OrderItemShipGroupAssociationId orderItemShipGroupAssociationId;
 
-    public OrderItemShipGroupAssocSubitemId getOrderItemShipGroupAssocSubitemId() {
-        return this.orderItemShipGroupAssocSubitemId;
+    public OrderItemShipGroupAssociationId getOrderItemShipGroupAssociationId() {
+        return this.orderItemShipGroupAssociationId;
     }
 
-    public void setOrderItemShipGroupAssocSubitemId(OrderItemShipGroupAssocSubitemId orderItemShipGroupAssocSubitemId) {
-        this.orderItemShipGroupAssocSubitemId = orderItemShipGroupAssocSubitemId;
+    public void setOrderItemShipGroupAssociationId(OrderItemShipGroupAssociationId orderItemShipGroupAssociationId) {
+        this.orderItemShipGroupAssociationId = orderItemShipGroupAssociationId;
     }
 
     private RoochEventId roochEventId;
@@ -145,8 +145,8 @@ public class OrderItemShipGroupAssocSubitemTableItemAdded implements RoochEvent,
 
     @Override
     public String toString() {
-        return "OrderItemShipGroupAssocSubitemTableItemAdded{" +
-                "orderItemShipGroupAssocSubitemId=" + orderItemShipGroupAssocSubitemId +
+        return "OrderItemShipGroupAssociationTableItemAdded{" +
+                "orderItemShipGroupAssociationId=" + orderItemShipGroupAssociationId +
                 ", roochEventId=" + roochEventId +
                 ", roochSender=" + '\'' + roochSender + '\'' +
                 ", roochTxHash=" + '\'' + roochTxHash + '\'' +

@@ -7,20 +7,20 @@ package org.dddml.roochdemocontracts.rooch.contract.persistence;
 
 import org.dddml.roochdemocontracts.domain.RoochEvent;
 import org.dddml.roochdemocontracts.domain.RoochEventId;
-import org.dddml.roochdemocontracts.domain.order.*;
+import org.dddml.roochdemocontracts.domain.article.*;
 
 import java.math.*;
 import java.util.*;
 
-public class OrderItemShipGroupAssocSubitemTableItemAdded implements RoochEvent, RoochEvent.MutableRoochEvent {
-    private OrderItemShipGroupAssocSubitemId orderItemShipGroupAssocSubitemId;
+public class ReferenceTableItemAdded implements RoochEvent, RoochEvent.MutableRoochEvent {
+    private ArticleReferenceId articleReferenceId;
 
-    public OrderItemShipGroupAssocSubitemId getOrderItemShipGroupAssocSubitemId() {
-        return this.orderItemShipGroupAssocSubitemId;
+    public ArticleReferenceId getArticleReferenceId() {
+        return this.articleReferenceId;
     }
 
-    public void setOrderItemShipGroupAssocSubitemId(OrderItemShipGroupAssocSubitemId orderItemShipGroupAssocSubitemId) {
-        this.orderItemShipGroupAssocSubitemId = orderItemShipGroupAssocSubitemId;
+    public void setArticleReferenceId(ArticleReferenceId articleReferenceId) {
+        this.articleReferenceId = articleReferenceId;
     }
 
     private RoochEventId roochEventId;
@@ -145,8 +145,8 @@ public class OrderItemShipGroupAssocSubitemTableItemAdded implements RoochEvent,
 
     @Override
     public String toString() {
-        return "OrderItemShipGroupAssocSubitemTableItemAdded{" +
-                "orderItemShipGroupAssocSubitemId=" + orderItemShipGroupAssocSubitemId +
+        return "ReferenceTableItemAdded{" +
+                "articleReferenceId=" + articleReferenceId +
                 ", roochEventId=" + roochEventId +
                 ", roochSender=" + '\'' + roochSender + '\'' +
                 ", roochTxHash=" + '\'' + roochTxHash + '\'' +
