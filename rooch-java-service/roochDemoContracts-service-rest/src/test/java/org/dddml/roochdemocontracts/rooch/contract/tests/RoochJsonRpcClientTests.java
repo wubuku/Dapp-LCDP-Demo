@@ -75,16 +75,32 @@ public class RoochJsonRpcClientTests {
         System.out.println("Order ship group table handle: " + shipGroupTableHandle);
         byte[] key = new byte[]{1}; // Order Ship Group Seq Id.
         String shipGroupTableItemPath = "/table/" + shipGroupTableHandle + "/" + HexUtils.byteArrayToHexWithPrefix(key);
+        System.out.println("Order Ship Group TableItem Path: " + shipGroupTableItemPath);
         List<GetAnnotatedStatesResponseMoveStructItem<OrderShipGroup>> getShipGroupTableItemResponse = rpcClient
                 .getMoveStructAnnotatedStates(shipGroupTableItemPath, OrderShipGroup.class);
         System.out.println(getShipGroupTableItemResponse);
         System.out.println(getShipGroupTableItemResponse.get(0).getMoveValue().getValue().getShipGroupSeqId());
         //if (true) return;
 
+        //if (false) {
+        String orderItemShipGroupAssociationTableHandle = getShipGroupTableItemResponse.get(0).getMoveValue().getValue().getOrderItemShipGroupAssociations().getValue().getHandle();
+        System.out.println("orderItemShipGroupAssociationTableHandle: " + orderItemShipGroupAssociationTableHandle);
+        String productObjId = "0x0c321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a";
+        System.out.println("Product ObjectID: " + productObjId);
+        String orderItemShipGroupAssociationTableItemPath = "/table/" + orderItemShipGroupAssociationTableHandle + "/" + productObjId;
+        System.out.println("OrderItemShipGroupAssociation TableItem Path: " + orderItemShipGroupAssociationTableItemPath);
+        List<GetAnnotatedStatesResponseMoveStructItem<OrderItemShipGroupAssociation>> getOrderItemShipGroupAssociationResp = rpcClient
+                .getMoveStructAnnotatedStates(orderItemShipGroupAssociationTableItemPath, OrderItemShipGroupAssociation.class);
+        System.out.println(getOrderItemShipGroupAssociationResp);
+        //if (true) return;
+        //}
+
+        //0xc4f1a312d456c28e0bdfefa16e4865fbe8049b256d339283936b3c6b7a107ec1
         String orderItemTableHandle = getOrderResponse.get(0).getMoveValue().getValue().getValue().getValue().getItems().getValue().getHandle();
         System.out.println("Order item table handle: " + orderItemTableHandle);
-        String orderItemKey = "0xc321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a"; // Product Object Id.
+        String orderItemKey = "0x0c321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a"; // Product Object Id.
         String orderItemTableItemPath = "/table/" + orderItemTableHandle + "/" + orderItemKey;
+        System.out.println("Order Item TableItem Path: " + orderItemTableItemPath);
         List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = rpcClient
                 .getMoveStructAnnotatedStates(orderItemTableItemPath, OrderItem.class);
         System.out.println(getOrderItemTableItemResponse);

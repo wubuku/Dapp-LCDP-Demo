@@ -74,7 +74,12 @@ public class RoochEventId implements Serializable {
         return hash;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "RoochEventId{" +
+                "eventHandleId='" + eventHandleId + '\'' +
+                ", eventSeq=" + eventSeq +
+                '}';
+    }
 }
 

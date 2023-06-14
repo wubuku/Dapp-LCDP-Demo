@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.roochdemocontracts.domain.order">
-  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItem" table="rooch_order_item_ship_group_assoc_subitem_table_item">
+  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded" table="rooch_order_item_ship_group_assoc_subitem_table_item">
     <composite-id name="orderItemShipGroupAssocSubitemId" class="org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId">
       <key-property name="orderId">
         <column name="order_v2_order_id" length="50" />
@@ -31,6 +31,7 @@
         <column name="order_item_ship_group_assoc_subitem_day_time_zone" length="50" />
       </key-property>
     </composite-id>
+
     <component name="roochEventId" class="org.dddml.roochdemocontracts.domain.RoochEventId">
       <property name="eventHandleId">
         <column name="rooch_event_id_event_handle_id" sql-type="VARCHAR(66)" />
@@ -39,9 +40,26 @@
         <column name="rooch_event_id_event_seq" sql-type="DECIMAL(20,0)" />
       </property>
     </component>
+    <property name="roochSender">
+      <column name="rooch_sender" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="roochTxHash">
+      <column name="rooch_tx_hash" sql-type="VARCHAR(66)" />
+    </property>
+    <property name="roochTypeTag">
+      <column name="rooch_type_tag" length="500" />
+    </property>
+    <property name="roochTimestampMs">
+      <column name="rooch_timestamp_ms" />
+    </property>
+    <property name="roochBlockHeight">
+      <column name="rooch_block_height" sql-type="DECIMAL(20,0)" />
+    </property>
     <property name="roochEventIndex">
       <column name="rooch_event_index" />
     </property>
+
+
     <property name="createdBy">
       <column name="created_by" />
     </property>

@@ -304,7 +304,7 @@ public class DomainBeanUtils {
         return daySummaryCreated;
     }
 
-    private static void setRoochEventProperties(RoochEvent.MutableRoochEvent domainRoochEvent, AnnotatedEventView<?> eventEnvelope) {
+    public static void setRoochEventProperties(RoochEvent.MutableRoochEvent domainRoochEvent, AnnotatedEventView<?> eventEnvelope) {
         domainRoochEvent.setRoochEventId(toRoochEventId(eventEnvelope.getEvent().getEventId()));
         domainRoochEvent.setRoochTypeTag(eventEnvelope.getEvent().getTypeTag());
         domainRoochEvent.setRoochEventIndex(eventEnvelope.getEvent().getEventIndex());
@@ -313,7 +313,7 @@ public class DomainBeanUtils {
         domainRoochEvent.setRoochTimestampMs(eventEnvelope.getTimestampMs());
     }
 
-    private static RoochEventId toRoochEventId(EventID eventId) {
+    public static RoochEventId toRoochEventId(EventID eventId) {
         return new RoochEventId(eventId.getEventHandleId(), eventId.getEventSeq());
     }
 

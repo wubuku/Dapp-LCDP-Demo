@@ -1,0 +1,8 @@
+package org.dddml.roochdemocontracts.rooch.contract.repository;
+
+import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId;
+import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderItemShipGroupAssocSubitemTableItemAddedRepository extends JpaRepository<OrderItemShipGroupAssocSubitemTableItemAdded, OrderItemShipGroupAssocSubitemId> {
+}
