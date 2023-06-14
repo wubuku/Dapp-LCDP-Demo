@@ -91,6 +91,14 @@ public class ReferenceEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "ReferenceEventId{" +
+                "articleId=" + '\'' + articleId + '\'' +
+                ", referenceNumber=" + referenceNumber +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "articleId",

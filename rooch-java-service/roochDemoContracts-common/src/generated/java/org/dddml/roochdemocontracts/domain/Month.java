@@ -110,6 +110,14 @@ public class Month implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "Month{" +
+                "year=" + year +
+                ", number=" + number +
+                ", isLeap=" + isLeap +
+                '}';
+    }
 
 
 }

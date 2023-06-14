@@ -73,6 +73,13 @@ public class Year implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "Year{" +
+                "number=" + number +
+                ", calendar=" + '\'' + calendar + '\'' +
+                '}';
+    }
 
 
 }

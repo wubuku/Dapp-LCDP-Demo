@@ -91,6 +91,14 @@ public class ReferenceVO implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "ReferenceVO{" +
+                "referenceNumber=" + referenceNumber +
+                ", title=" + '\'' + title + '\'' +
+                ", url=" + '\'' + url + '\'' +
+                '}';
+    }
 
 
 }

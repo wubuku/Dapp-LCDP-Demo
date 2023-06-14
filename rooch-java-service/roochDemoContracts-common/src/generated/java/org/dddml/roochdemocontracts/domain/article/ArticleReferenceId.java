@@ -74,6 +74,13 @@ public class ArticleReferenceId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "ArticleReferenceId{" +
+                "articleId=" + '\'' + articleId + '\'' +
+                ", referenceNumber=" + referenceNumber +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "articleId",

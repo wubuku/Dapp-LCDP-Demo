@@ -74,6 +74,13 @@ public class ArticleEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "ArticleEventId{" +
+                "id=" + '\'' + id + '\'' +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "id",

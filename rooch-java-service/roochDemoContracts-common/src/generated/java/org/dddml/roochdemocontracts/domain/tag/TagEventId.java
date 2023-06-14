@@ -74,6 +74,13 @@ public class TagEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "TagEventId{" +
+                "name=" + '\'' + name + '\'' +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "name",

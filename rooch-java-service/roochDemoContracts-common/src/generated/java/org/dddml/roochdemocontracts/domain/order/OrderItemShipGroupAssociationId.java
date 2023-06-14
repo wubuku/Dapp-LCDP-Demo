@@ -90,6 +90,14 @@ public class OrderItemShipGroupAssociationId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "OrderItemShipGroupAssociationId{" +
+                "orderId=" + '\'' + orderId + '\'' +
+                ", orderShipGroupShipGroupSeqId=" + orderShipGroupShipGroupSeqId +
+                ", productObjId=" + '\'' + productObjId + '\'' +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderId",
