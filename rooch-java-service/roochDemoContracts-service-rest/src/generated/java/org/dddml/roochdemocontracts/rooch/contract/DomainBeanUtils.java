@@ -5,28 +5,32 @@
 
 package org.dddml.roochdemocontracts.rooch.contract;
 
+import java.math.*;
+
 import com.github.wubuku.rooch.bean.AnnotatedEventView;
 import com.github.wubuku.rooch.bean.AnnotatedMoveOptionView;
 import com.github.wubuku.rooch.bean.EventID;
 import org.dddml.roochdemocontracts.domain.RoochEvent;
 import org.dddml.roochdemocontracts.domain.RoochEventId;
 import org.dddml.roochdemocontracts.domain.article.AbstractArticleEvent;
-import org.dddml.roochdemocontracts.domain.daysummary.AbstractDaySummaryEvent;
-import org.dddml.roochdemocontracts.domain.order.AbstractOrderEvent;
-import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId;
-import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssociationId;
-import org.dddml.roochdemocontracts.domain.product.AbstractProductEvent;
-import org.dddml.roochdemocontracts.domain.tag.AbstractTagEvent;
 import org.dddml.roochdemocontracts.rooch.contract.article.ArticleCreated;
 import org.dddml.roochdemocontracts.rooch.contract.article.ReferenceAdded;
-import org.dddml.roochdemocontracts.rooch.contract.article.ReferenceRemoved;
 import org.dddml.roochdemocontracts.rooch.contract.article.ReferenceUpdated;
-import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
-import org.dddml.roochdemocontracts.rooch.contract.order.*;
-import org.dddml.roochdemocontracts.rooch.contract.product.ProductCreated;
+import org.dddml.roochdemocontracts.rooch.contract.article.ReferenceRemoved;
+import org.dddml.roochdemocontracts.domain.tag.AbstractTagEvent;
 import org.dddml.roochdemocontracts.rooch.contract.tag.TagCreated;
-
-import java.math.BigInteger;
+import org.dddml.roochdemocontracts.domain.product.AbstractProductEvent;
+import org.dddml.roochdemocontracts.rooch.contract.product.ProductCreated;
+import org.dddml.roochdemocontracts.domain.order.AbstractOrderEvent;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderCreated;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemRemoved;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemQuantityUpdated;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderEstimatedShipDateUpdated;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupAdded;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupQuantityCanceled;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupItemRemoved;
+import org.dddml.roochdemocontracts.domain.daysummary.AbstractDaySummaryEvent;
+import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
 
 /**
  * Utils that convert beans in the contract package to domain beans.
@@ -300,23 +304,48 @@ public class DomainBeanUtils {
         return daySummaryCreated;
     }
 
-    public static org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded toPersistenceOrderItemShipGroupAssocSubitemTableItemAdded(AnnotatedEventView<OrderItemShipGroupAssocSubitemTableItemAdded> eventEnvelope) {
-        OrderItemShipGroupAssocSubitemTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
-        OrderItemShipGroupAssocSubitemId id = new OrderItemShipGroupAssocSubitemId(contractEvent.getOrderId(), contractEvent.getOrderShipGroupShipGroupSeqId(), contractEvent.getOrderItemShipGroupAssociationProductObjId(), toDay(contractEvent.getOrderItemShipGroupAssocSubitemDay()));
-        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded();
-        e.setOrderItemShipGroupAssocSubitemId(id);
+    public static org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded toPersistenceReferenceTableItemAdded(AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope) {
+        ReferenceTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
+        org.dddml.roochdemocontracts.domain.article.ArticleReferenceId id = new org.dddml.roochdemocontracts.domain.article.ArticleReferenceId(contractEvent.getArticleId(), contractEvent.getReferenceNumber());
+        org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded();
+        e.setArticleReferenceId(id);
         setRoochEventProperties(e, eventEnvelope);
-        //e.setCreatedAt(new Date());
+        return e;
+    }
+
+    public static org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemTableItemAdded toPersistenceOrderItemTableItemAdded(AnnotatedEventView<OrderItemTableItemAdded> eventEnvelope) {
+        OrderItemTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
+        org.dddml.roochdemocontracts.domain.order.OrderItemId id = new org.dddml.roochdemocontracts.domain.order.OrderItemId(contractEvent.getOrderId(), contractEvent.getProductObjectId());
+        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemTableItemAdded();
+        e.setOrderItemId(id);
+        setRoochEventProperties(e, eventEnvelope);
+        return e;
+    }
+
+    public static org.dddml.roochdemocontracts.rooch.contract.persistence.OrderShipGroupTableItemAdded toPersistenceOrderShipGroupTableItemAdded(AnnotatedEventView<OrderShipGroupTableItemAdded> eventEnvelope) {
+        OrderShipGroupTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
+        org.dddml.roochdemocontracts.domain.order.OrderShipGroupId id = new org.dddml.roochdemocontracts.domain.order.OrderShipGroupId(contractEvent.getOrderId(), contractEvent.getShipGroupSeqId());
+        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderShipGroupTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.OrderShipGroupTableItemAdded();
+        e.setOrderShipGroupId(id);
+        setRoochEventProperties(e, eventEnvelope);
         return e;
     }
 
     public static org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded toPersistenceOrderItemShipGroupAssociationTableItemAdded(AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded> eventEnvelope) {
         OrderItemShipGroupAssociationTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
-        OrderItemShipGroupAssociationId id = new OrderItemShipGroupAssociationId(contractEvent.getOrderId(), contractEvent.getOrderShipGroupShipGroupSeqId(), contractEvent.getProductObjId());
+        org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssociationId id = new org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssociationId(contractEvent.getOrderId(), contractEvent.getOrderShipGroupShipGroupSeqId(), contractEvent.getProductObjId());
         org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded();
         e.setOrderItemShipGroupAssociationId(id);
         setRoochEventProperties(e, eventEnvelope);
-        //e.setCreatedAt(new Date());
+        return e;
+    }
+
+    public static org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded toPersistenceOrderItemShipGroupAssocSubitemTableItemAdded(AnnotatedEventView<OrderItemShipGroupAssocSubitemTableItemAdded> eventEnvelope) {
+        OrderItemShipGroupAssocSubitemTableItemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
+        org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId id = new org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId(contractEvent.getOrderId(), contractEvent.getOrderShipGroupShipGroupSeqId(), contractEvent.getOrderItemShipGroupAssociationProductObjId(), toDay(contractEvent.getOrderItemShipGroupAssocSubitemDay()));
+        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded e = new org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded();
+        e.setOrderItemShipGroupAssocSubitemId(id);
+        setRoochEventProperties(e, eventEnvelope);
         return e;
     }
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.dddml.roochdemocontracts.rooch.contract.ContractConstants;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -34,7 +35,7 @@ public class RoochOrderService {
         if (contractAddress == null) {
             return;
         }
-        String eventType = contractAddress + "::" + "order_ship_group::OrderItemShipGroupAssociationTableItemAdded";//todo contractAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED;
+        String eventType = contractAddress + "::" + ContractConstants.ORDER_ITEM_SHIP_GROUP_ASSOCIATION_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderItemShipGroupAssociationTableItemAddedEventNextCursor();
         long limit = 1L;
         while (true) {
@@ -83,7 +84,7 @@ public class RoochOrderService {
         if (contractAddress == null) {
             return;
         }
-        String eventType = contractAddress + "::" + "order_item_ship_group_association::OrderItemShipGroupAssocSubitemTableItemAdded";//todo contractAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED;
+        String eventType = contractAddress + "::" + ContractConstants.ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderItemShipGroupAssocSubitemTableItemAddedEventNextCursor();
         long limit = 1L;
         while (true) {
