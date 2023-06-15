@@ -38,9 +38,15 @@ public class ContractConstants {
 
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
-    public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED = "order_item_ship_group_association::OrderItemShipGroupAssocSubitemTableItemAdded";
+    public static final String REFERENCE_TABLE_ITEM_ADDED = "article::ReferenceTableItemAdded";
+
+    public static final String ORDER_ITEM_TABLE_ITEM_ADDED = "order::OrderItemTableItemAdded";
+
+    public static final String ORDER_SHIP_GROUP_TABLE_ITEM_ADDED = "order::OrderShipGroupTableItemAdded";
+
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOCIATION_TABLE_ITEM_ADDED = "order_ship_group::OrderItemShipGroupAssociationTableItemAdded";
 
+    public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED = "order_item_ship_group_association::OrderItemShipGroupAssocSubitemTableItemAdded";
 
     public static String[] getMoveObjectIdGeneratorObjectTypes(String packageId) {
         return new String[]{
