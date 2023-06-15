@@ -23,6 +23,9 @@ public interface OrderShipGroupTableItemAddedRepository extends JpaRepository<Or
     List<OrderShipGroupTableItemAdded> findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
 
     @Transactional(readOnly = true)
+    OrderShipGroupTableItemAdded findFirstByOrderByRoochEventId_EventSeqDesc();
+
+    @Transactional(readOnly = true)
     List<OrderShipGroupTableItemAdded> findByOrderShipGroupId_OrderId(String orderId);
 
 }

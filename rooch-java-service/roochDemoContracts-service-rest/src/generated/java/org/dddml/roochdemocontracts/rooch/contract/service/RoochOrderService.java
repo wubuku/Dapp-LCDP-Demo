@@ -76,8 +76,8 @@ public class RoochOrderService {
 
 
     private BigInteger getOrderItemShipGroupAssociationTableItemAddedEventNextCursor() {
-        List<org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded> lastEvents = orderItemShipGroupAssociationTableItemAddedRepository.findByOrderByRoochEventId_EventSeqDesc(Pageable.ofSize(1));
-        return lastEvents == null || lastEvents.size() == 0 ? null : lastEvents.get(0).getRoochEventId().getEventSeq();
+        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded lastEvent = orderItemShipGroupAssociationTableItemAddedRepository.findFirstByOrderByRoochEventId_EventSeqDesc();
+        return lastEvent == null ? null : lastEvent.getRoochEventId().getEventSeq();
     }
 
     @Transactional
@@ -115,7 +115,7 @@ public class RoochOrderService {
     }
 
     private BigInteger getOrderItemShipGroupAssocSubitemTableItemAddedEventNextCursor() {
-        List<org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded> lastEvents = orderItemShipGroupAssocSubitemTableItemAddedRepository.findByOrderByRoochEventId_EventSeqDesc(Pageable.ofSize(1));
-        return lastEvents == null || lastEvents.size() == 0 ? null : lastEvents.get(0).getRoochEventId().getEventSeq();
+        org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded lastEvent = orderItemShipGroupAssocSubitemTableItemAddedRepository.findFirstByOrderByRoochEventId_EventSeqDesc();
+        return lastEvent == null  ? null : lastEvent.getRoochEventId().getEventSeq();
     }
 }

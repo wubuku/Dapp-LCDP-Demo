@@ -23,6 +23,9 @@ public interface OrderItemTableItemAddedRepository extends JpaRepository<OrderIt
     List<OrderItemTableItemAdded> findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
 
     @Transactional(readOnly = true)
+    OrderItemTableItemAdded findFirstByOrderByRoochEventId_EventSeqDesc();
+
+    @Transactional(readOnly = true)
     List<OrderItemTableItemAdded> findByOrderItemId_OrderId(String orderId);
 
 }

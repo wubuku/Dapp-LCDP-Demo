@@ -23,6 +23,9 @@ public interface OrderItemShipGroupAssociationTableItemAddedRepository extends J
     List<OrderItemShipGroupAssociationTableItemAdded> findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
 
     @Transactional(readOnly = true)
+    OrderItemShipGroupAssociationTableItemAdded findFirstByOrderByRoochEventId_EventSeqDesc();
+
+    @Transactional(readOnly = true)
     List<OrderItemShipGroupAssociationTableItemAdded> findByOrderItemShipGroupAssociationId_OrderIdAndOrderItemShipGroupAssociationId_OrderShipGroupShipGroupSeqId(String orderId, Integer orderShipGroupShipGroupSeqId);
 
 }

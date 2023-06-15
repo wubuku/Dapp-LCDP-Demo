@@ -23,6 +23,9 @@ public interface ReferenceTableItemAddedRepository extends JpaRepository<Referen
     List<ReferenceTableItemAdded> findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
 
     @Transactional(readOnly = true)
+    ReferenceTableItemAdded findFirstByOrderByRoochEventId_EventSeqDesc();
+
+    @Transactional(readOnly = true)
     List<ReferenceTableItemAdded> findByArticleReferenceId_ArticleId(String articleId);
 
 }
