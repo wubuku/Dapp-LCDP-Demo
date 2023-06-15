@@ -1,6 +1,8 @@
 package org.dddml.roochdemocontracts.rooch.contract.tests;
 
 import org.dddml.roochdemocontracts.RoochDemoContractsApplication;
+import org.dddml.roochdemocontracts.domain.Day;
+import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId;
 import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 //@RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -28,12 +31,21 @@ public class IntegrationTests {
         List<OrderItemShipGroupAssocSubitemTableItemAdded> list =
                 //orderItemShipGroupAssocSubitemTableItemAddedRepository.findAll();
                 orderItemShipGroupAssocSubitemTableItemAddedRepository
-                        .findAllByOrderByRoochEventId_EventSeqDesc(Pageable.ofSize(1));
+                        .findByOrderByRoochEventId_EventSeqDesc(Pageable.ofSize(1));
         System.out.println(list);
 
         list = orderItemShipGroupAssocSubitemTableItemAddedRepository
-                .findAllByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc("", Pageable.ofSize(1));
+                .findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc("", Pageable.ofSize(1));
         System.out.println(list);
+
+        list = orderItemShipGroupAssocSubitemTableItemAddedRepository
+                .findByOrderItemShipGroupAssocSubitemId_OrderIdAndOrderItemShipGroupAssocSubitemId_OrderShipGroupShipGroupSeqIdAndOrderItemShipGroupAssocSubitemId_OrderItemShipGroupAssociationProductObjId(
+                        "", 1, "");
+        System.out.println(list);
+
+        Optional<OrderItemShipGroupAssocSubitemTableItemAdded> itemAdded = orderItemShipGroupAssocSubitemTableItemAddedRepository.findById(new OrderItemShipGroupAssocSubitemId(
+                "",1, "",new Day()));
+        System.out.println(itemAdded);
     }
 
 

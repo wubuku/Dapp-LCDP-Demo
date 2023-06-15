@@ -11,8 +11,11 @@ import java.util.List;
 public interface OrderItemShipGroupAssocSubitemTableItemAddedRepository extends JpaRepository<OrderItemShipGroupAssocSubitemTableItemAdded, OrderItemShipGroupAssocSubitemId> {
 
     @Transactional(readOnly = true)
-    List<OrderItemShipGroupAssocSubitemTableItemAdded> findAllByOrderByRoochEventId_EventSeqDesc(Pageable pageable);
+    List<OrderItemShipGroupAssocSubitemTableItemAdded> findByOrderByRoochEventId_EventSeqDesc(Pageable pageable);
 
-    @Transactional
-    List<OrderItemShipGroupAssocSubitemTableItemAdded> findAllByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
+    @Transactional(readOnly = true)
+    List<OrderItemShipGroupAssocSubitemTableItemAdded> findByRoochEventId_EventHandleIdOrderByRoochEventId_EventSeqDesc(String eventHandleId, Pageable pageable);
+
+    @Transactional(readOnly = true)
+    List<OrderItemShipGroupAssocSubitemTableItemAdded> findByOrderItemShipGroupAssocSubitemId_OrderIdAndOrderItemShipGroupAssocSubitemId_OrderShipGroupShipGroupSeqIdAndOrderItemShipGroupAssocSubitemId_OrderItemShipGroupAssociationProductObjId(String orderId, Integer orderShipGroupShipGroupSeqId, String orderItemShipGroupAssociationProductObjId);
 }
