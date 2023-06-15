@@ -4,7 +4,9 @@ import org.dddml.roochdemocontracts.RoochDemoContractsApplication;
 import org.dddml.roochdemocontracts.domain.Day;
 import org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId;
 import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded;
+import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
+import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssociationTableItemAddedRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +28,9 @@ public class IntegrationTests {
     @Autowired
     private OrderItemShipGroupAssocSubitemTableItemAddedRepository orderItemShipGroupAssocSubitemTableItemAddedRepository;
 
+    @Autowired
+    private OrderItemShipGroupAssociationTableItemAddedRepository orderItemShipGroupAssociationTableItemAddedRepository;
+
     @Test
     void testRepository_1() {
         List<OrderItemShipGroupAssocSubitemTableItemAdded> list =
@@ -44,8 +49,14 @@ public class IntegrationTests {
         System.out.println(list);
 
         Optional<OrderItemShipGroupAssocSubitemTableItemAdded> itemAdded = orderItemShipGroupAssocSubitemTableItemAddedRepository.findById(new OrderItemShipGroupAssocSubitemId(
-                "",1, "",new Day()));
+                "", 1, "", new Day()));
         System.out.println(itemAdded);
+
+        List<OrderItemShipGroupAssociationTableItemAdded> assocList = orderItemShipGroupAssociationTableItemAddedRepository
+                .findByOrderItemShipGroupAssociationId_OrderIdAndOrderItemShipGroupAssociationId_OrderShipGroupShipGroupSeqId(
+                        "", 1
+                );
+        System.out.println(assocList);
     }
 
 
