@@ -14,13 +14,10 @@ spring:
 server:
   port: 1023
 
-sui:
+rooch:
   contract:
     jsonrpc:
-      #url: "https://fullnode.devnet.sui.io/"
-      url: "https://fullnode.testnet.sui.io/"
-      #url: "http://localhost:9000"
-    package-publish-transaction: "4mxSZCAkYwxhGQY79GDHQWFYoa8x3HQiQx4Azn9JbG8b"
+      url: "http://127.0.0.1:50051"
 #    pull-day-summary-events:
 #      day-summary-created:
 #        fixed-delay: 6000
