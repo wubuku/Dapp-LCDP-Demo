@@ -1,34 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.roochdemocontracts.domain.order">
-  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssocSubitemTableItemAdded" table="rooch_order_item_ship_group_assoc_subitem_table_item_added">
-    <composite-id name="orderItemShipGroupAssocSubitemId" class="org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId">
+  <class name="org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded" table="rooch_order_item_ship_group_association_table_item_added">
+    <composite-id name="orderItemShipGroupAssociationId" class="org.dddml.roochdemocontracts.domain.order.OrderItemShipGroupAssociationId">
       <key-property name="orderId">
-        <column name="order_v2_order_id" length="50" />
+        <column name="order_item_ship_group_association_id_order_id" length="50" />
       </key-property>
       <key-property name="orderShipGroupShipGroupSeqId">
-        <column name="order_ship_group_ship_group_seq_id" />
+        <column name="order_v2_ship_group_seq_id" />
       </key-property>
-      <key-property name="orderItemShipGroupAssociationProductObjId">
-        <column name="order_item_ship_group_association_product_id" sql-type="VARCHAR(66)" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayMonthYearNumber">
-        <column name="order_item_ship_group_assoc_subitem_day_month_year_number" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayMonthYearCalendar">
-        <column name="order_item_ship_group_assoc_subitem_day_month_year_calendar" length="50" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayMonthNumber">
-        <column name="order_item_ship_group_assoc_subitem_day_month_number" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayMonthIsLeap">
-        <column name="order_item_ship_group_assoc_subitem_day_month_is_leap" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayNumber">
-        <column name="order_item_ship_group_assoc_subitem_day_number" />
-      </key-property>
-      <key-property name="orderItemShipGroupAssocSubitemDayTimeZone">
-        <column name="order_item_ship_group_assoc_subitem_day_time_zone" length="50" />
+      <key-property name="productObjId">
+        <column name="order_v2_item_ship_group_assoc_product_id" sql-type="VARCHAR(66)" />
       </key-property>
     </composite-id>
     <component name="roochEventId" class="org.dddml.roochdemocontracts.domain.RoochEventId">
