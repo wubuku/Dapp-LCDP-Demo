@@ -7,7 +7,7 @@ import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGrou
 import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGroupAssociationTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssociationTableItemAddedRepository;
-import org.dddml.roochdemocontracts.rooch.contract.service.RoochOrderService;
+import org.dddml.roochdemocontracts.rooch.contract.service.OrderEventService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,7 +33,7 @@ public class IntegrationTests {
     private OrderItemShipGroupAssociationTableItemAddedRepository orderItemShipGroupAssociationTableItemAddedRepository;
 
     @Autowired
-    private RoochOrderService roochOrderService;
+    private OrderEventService orderEventService;
 
     @Test
     void testRepository_1() {
@@ -65,7 +65,7 @@ public class IntegrationTests {
 
     @Test
     void testPullOrderItemShipGroupAssociationTableItemAddedEvents() {
-        roochOrderService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
+        orderEventService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
     }
 
 }
