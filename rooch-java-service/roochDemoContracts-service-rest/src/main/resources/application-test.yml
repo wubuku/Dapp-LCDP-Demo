@@ -16,6 +16,7 @@ server:
 
 rooch:
   contract:
+    address: "0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4"
     jsonrpc:
       url: "http://127.0.0.1:50051"
 #    pull-day-summary-events:

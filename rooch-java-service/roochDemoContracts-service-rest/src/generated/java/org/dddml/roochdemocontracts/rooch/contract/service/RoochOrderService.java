@@ -8,6 +8,7 @@ import org.dddml.roochdemocontracts.rooch.contract.OrderItemShipGroupAssociation
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssociationTableItemAddedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,11 @@ import java.util.List;
 
 @Service
 public class RoochOrderService {
+    @Value("${rooch.contract.address}")
+    private String contractAddress;
+
+    @Autowired
+    private RoochJsonRpcClient roochJsonRpcClient;
 
     @Autowired
     private OrderItemShipGroupAssociationTableItemAddedRepository orderItemShipGroupAssociationTableItemAddedRepository;
@@ -25,13 +31,9 @@ public class RoochOrderService {
     @Autowired
     private OrderItemShipGroupAssocSubitemTableItemAddedRepository orderItemShipGroupAssocSubitemTableItemAddedRepository;
 
-    @Autowired
-    private RoochJsonRpcClient roochJsonRpcClient;
-
 
     @Transactional
     public void pullOrderItemShipGroupAssociationTableItemAddedEvents() {
-        String contractAddress = "0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4";//todo getDefaultContractAddress();
         if (contractAddress == null) {
             return;
         }
@@ -80,7 +82,6 @@ public class RoochOrderService {
 
     @Transactional
     public void pullOrderItemShipGroupAssocSubitemTableItemAddedEvents() {
-        String contractAddress = "0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4";//todo getDefaultContractAddress();
         if (contractAddress == null) {
             return;
         }
