@@ -2,7 +2,6 @@ package org.dddml.roochdemocontracts.rooch.contract.service;
 
 import com.github.wubuku.rooch.bean.GetAnnotatedStatesResponseMoveStructItem;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
-import org.dddml.roochdemocontracts.domain.Day;
 import org.dddml.roochdemocontracts.domain.order.OrderItemState;
 import org.dddml.roochdemocontracts.domain.order.OrderState;
 import org.dddml.roochdemocontracts.rooch.bcs.BcsDomainBeanUtils;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
 
 public class RoochOrderStateRetriever {
     private RoochJsonRpcClient roochJsonRpcClient;
@@ -71,27 +71,14 @@ public class RoochOrderStateRetriever {
 
         List<OrderItem> orderItems = new ArrayList<>();
         for (String productObjectId : productObjectIds) {
-            String key = formatRoochObjectIdHex(productObjectId);
+            String key = BcsDomainBeanUtils.formatRoochObjectIdHex(productObjectId);
             List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = roochJsonRpcClient
                     .getMoveStructAnnotatedStates("/table/" + orderItemTableHandle + "/" + key, OrderItem.class);
             if (getOrderItemTableItemResponse.size() == 1 && getOrderItemTableItemResponse.get(0) != null) {
                 orderItems.add(getOrderItemTableItemResponse.get(0).getMoveValue().getValue());
             }
-
         }
         return orderItems;
-    }
-
-    private static String formatRoochObjectIdHex(String objectId) {
-        return com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId);
-    }
-
-    private static String toBcsHex(Day day) {
-        try {
-            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(BcsDomainBeanUtils.toBcsDay(day).bcsSerialize());
-        } catch (com.novi.serde.SerializationError e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public interface OrderItemProductObjectIdsGetter {

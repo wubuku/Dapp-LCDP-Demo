@@ -5,6 +5,8 @@
 
 package org.dddml.roochdemocontracts.rooch.bcs;
 
+import com.github.wubuku.rooch.bcs.BcsUtils;
+
 import java.util.Optional;
 
 /**
@@ -55,6 +57,27 @@ public class BcsDomainBeanUtils {
         bcsYear.number = year.getNumber().shortValue();
         bcsYear.calendar = year.getCalendar();
         return bcsYear;
+    }
+
+
+    public static String formatRoochObjectIdHex(String objectId) {
+        return com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId);
+    }
+
+    public static String shortHex(Integer i) {
+        return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU16(i.shortValue()));
+    }
+
+    public static String u32Hex(Long i) {
+        return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU32(i.intValue()));
+    }
+
+    public static String toBcsHex(org.dddml.roochdemocontracts.domain.Day day) {
+        try {
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(BcsDomainBeanUtils.toBcsDay(day).bcsSerialize());
+        } catch (com.novi.serde.SerializationError e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
