@@ -8,6 +8,7 @@ import org.dddml.roochdemocontracts.rooch.contract.persistence.OrderItemShipGrou
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssociationTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.service.OrderEventService;
+import org.dddml.roochdemocontracts.rooch.contract.service.RoochOrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,6 +35,9 @@ public class IntegrationTests {
 
     @Autowired
     private OrderEventService orderEventService;
+
+    @Autowired
+    private RoochOrderService roochOrderService;
 
     @Test
     void testRepository_1() {
@@ -64,8 +68,15 @@ public class IntegrationTests {
     }
 
     @Test
-    void testPullOrderItemShipGroupAssociationTableItemAddedEvents() {
+    void testPullOrderTableItemAddedEvents_1() {
+        orderEventService.pullOrderItemTableItemAddedEvents();
+        orderEventService.pullOrderShipGroupTableItemAddedEvents();
         orderEventService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
     }
 
+    @Test
+    void testUpdateOrderState_1() {
+        String orderObjectId = "0xa29559906755a3e83c1d0c8802fbcfce0c887fd1feccb90053a95f8da5b4f38d";
+        roochOrderService.updateOrderState(orderObjectId);
+    }
 }

@@ -92,7 +92,10 @@ public class HibernateArticleStateRepository implements ArticleStateRepository {
             removeNonExistentReferences(persistent.getReferences(), detached.getReferences());
             for (ReferenceState d : detached.getReferences()) {
                 ReferenceState p = persistent.getReferences().get(d.getReferenceNumber());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
     }
