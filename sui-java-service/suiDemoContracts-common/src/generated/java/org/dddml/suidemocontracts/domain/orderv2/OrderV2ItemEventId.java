@@ -91,6 +91,14 @@ public class OrderV2ItemEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "OrderV2ItemEventId{" +
+                "orderV2OrderId=" + '\'' + orderV2OrderId + '\'' +
+                ", productId=" + '\'' + productId + '\'' +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderV2OrderId",

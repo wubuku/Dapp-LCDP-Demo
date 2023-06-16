@@ -73,6 +73,13 @@ public class OrderV2OrderShipGroupId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "OrderV2OrderShipGroupId{" +
+                "orderV2OrderId=" + '\'' + orderV2OrderId + '\'' +
+                ", shipGroupSeqId=" + shipGroupSeqId +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderV2OrderId",

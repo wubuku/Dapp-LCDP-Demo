@@ -135,6 +135,13 @@ public class DaySummaryEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "DaySummaryEventId{" +
+                "day=" + day +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "dayMonthYearNumber",

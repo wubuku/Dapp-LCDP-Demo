@@ -31,7 +31,7 @@ import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
 
 /**
- * Utils that converts beans in contract package to domain beans.
+ * Utils that convert beans in the contract package to domain beans.
  */
 public class DomainBeanUtils {
     private DomainBeanUtils() {

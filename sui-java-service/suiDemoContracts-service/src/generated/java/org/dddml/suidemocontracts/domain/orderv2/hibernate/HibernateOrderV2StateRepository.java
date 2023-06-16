@@ -92,14 +92,20 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository {
             removeNonExistentItems(persistent.getItems(), detached.getItems());
             for (OrderV2ItemState d : detached.getItems()) {
                 OrderV2ItemState p = persistent.getItems().get(d.getProductId());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
         if (detached.getOrderShipGroups() != null) {
             removeNonExistentOrderShipGroups(persistent.getOrderShipGroups(), detached.getOrderShipGroups());
             for (OrderShipGroupState d : detached.getOrderShipGroups()) {
                 OrderShipGroupState p = persistent.getOrderShipGroups().get(d.getShipGroupSeqId());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
     }
@@ -114,7 +120,10 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository {
             removeNonExistentOrderItemShipGroupAssociations(persistent.getOrderItemShipGroupAssociations(), detached.getOrderItemShipGroupAssociations());
             for (OrderItemShipGroupAssociationState d : detached.getOrderItemShipGroupAssociations()) {
                 OrderItemShipGroupAssociationState p = persistent.getOrderItemShipGroupAssociations().get(d.getProductId());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
     }
@@ -125,7 +134,10 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository {
             removeNonExistentSubitems(persistent.getSubitems(), detached.getSubitems());
             for (OrderItemShipGroupAssocSubitemState d : detached.getSubitems()) {
                 OrderItemShipGroupAssocSubitemState p = persistent.getSubitems().get(d.getOrderItemShipGroupAssocSubitemDay());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
     }

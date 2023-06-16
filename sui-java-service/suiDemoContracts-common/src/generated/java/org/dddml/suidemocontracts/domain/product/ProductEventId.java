@@ -74,6 +74,13 @@ public class ProductEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "ProductEventId{" +
+                "productId=" + '\'' + productId + '\'' +
+                ", version=" + version +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "productId",

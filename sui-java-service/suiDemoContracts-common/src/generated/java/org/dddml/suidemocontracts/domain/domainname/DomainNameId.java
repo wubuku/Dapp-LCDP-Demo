@@ -73,6 +73,13 @@ public class DomainNameId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "DomainNameId{" +
+                "topLevelDomain=" + '\'' + topLevelDomain + '\'' +
+                ", secondLevelDomain=" + '\'' + secondLevelDomain + '\'' +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "topLevelDomain",

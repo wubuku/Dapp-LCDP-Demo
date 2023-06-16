@@ -168,6 +168,15 @@ public class OrderV2OrderItemShipGroupAssocSubitemId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "OrderV2OrderItemShipGroupAssocSubitemId{" +
+                "orderV2OrderId=" + '\'' + orderV2OrderId + '\'' +
+                ", orderShipGroupShipGroupSeqId=" + orderShipGroupShipGroupSeqId +
+                ", orderItemShipGroupAssociationProductId=" + '\'' + orderItemShipGroupAssociationProductId + '\'' +
+                ", orderItemShipGroupAssocSubitemDay=" + orderItemShipGroupAssocSubitemDay +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderV2OrderId",

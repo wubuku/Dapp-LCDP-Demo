@@ -74,6 +74,13 @@ public class SuiEventId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "SuiEventId{" +
+                "txDigest=" + '\'' + txDigest + '\'' +
+                ", eventSeq=" + eventSeq +
+                '}';
+    }
 
 
 }

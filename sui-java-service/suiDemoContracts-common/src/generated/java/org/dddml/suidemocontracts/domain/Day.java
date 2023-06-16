@@ -130,6 +130,14 @@ public class Day implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "Day{" +
+                "month=" + month +
+                ", number=" + number +
+                ", timeZone=" + '\'' + timeZone + '\'' +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "monthYearNumber",

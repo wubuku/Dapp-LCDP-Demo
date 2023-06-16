@@ -73,6 +73,13 @@ public class OrderItemId implements Serializable {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "OrderItemId{" +
+                "orderId=" + '\'' + orderId + '\'' +
+                ", productId=" + '\'' + productId + '\'' +
+                '}';
+    }
 
     protected static final String[] FLATTENED_PROPERTY_NAMES = new String[]{
             "orderId",

@@ -92,7 +92,10 @@ public class HibernateOrderStateRepository implements OrderStateRepository {
             removeNonExistentItems(persistent.getItems(), detached.getItems());
             for (OrderItemState d : detached.getItems()) {
                 OrderItemState p = persistent.getItems().get(d.getProductId());
-                merge(p, d);
+                if (p == null)
+                    getCurrentSession().save(d);
+                else
+                    merge(p, d);
             }
         }
     }
