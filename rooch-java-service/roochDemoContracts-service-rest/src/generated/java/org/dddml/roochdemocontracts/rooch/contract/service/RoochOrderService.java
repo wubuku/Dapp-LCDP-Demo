@@ -31,17 +31,18 @@ public class RoochOrderService {
 
     @Autowired
     public RoochOrderService(RoochJsonRpcClient suiJsonRpcClient) {
-        this.suiOrderStateRetriever = new RoochOrderStateRetriever(suiJsonRpcClient,
-                orderId -> {
-                    OrderState.MutableOrderState s = new AbstractOrderState.SimpleOrderState();
-                    s.setOrderId(orderId);
-                    return s;
-                },
-                (orderState, productId) -> (OrderItemState.MutableOrderItemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId),
-                orderId -> orderItemTableItemAddedRepository.findByOrderItemId_OrderId(orderId).stream()
-                        .map(i -> i.getOrderItemId().getProductObjectId()).collect(Collectors.toList())
-        );
+        //todo
+//        this.suiOrderStateRetriever = new RoochOrderStateRetriever(suiJsonRpcClient,
+//                orderId -> {
+//                    OrderState.MutableOrderState s = new AbstractOrderState.SimpleOrderState();
+//                    s.setOrderId(orderId);
+//                    return s;
+//                },
+//                (orderState, productId) -> (OrderItemState.MutableOrderItemState)
+//                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId),
+//                orderId -> orderItemTableItemAddedRepository.findByOrderItemId_OrderId(orderId).stream()
+//                        .map(i -> i.getOrderItemId().getProductObjectId()).collect(Collectors.toList())
+//        );
     }
 
     @Transactional

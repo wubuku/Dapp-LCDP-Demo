@@ -5,8 +5,6 @@
 
 package org.dddml.roochdemocontracts.rooch.bcs;
 
-import com.github.wubuku.rooch.bcs.BcsUtils;
-
 import java.util.Optional;
 
 /**
@@ -27,6 +25,14 @@ public class BcsDomainBeanUtils {
         return bcsDay;
     }
 
+    public static String toBcsHex(org.dddml.roochdemocontracts.domain.Day day) {
+        try {
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(toBcsDay(day).bcsSerialize());
+        } catch (com.novi.serde.SerializationError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Month toBcsMonth(org.dddml.roochdemocontracts.domain.Month month) {
         if (month == null) {
             return null;
@@ -36,6 +42,14 @@ public class BcsDomainBeanUtils {
         bcsMonth.number = month.getNumber().byteValue();
         bcsMonth.isLeap = month.getIsLeap();
         return bcsMonth;
+    }
+
+    public static String toBcsHex(org.dddml.roochdemocontracts.domain.Month month) {
+        try {
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(toBcsMonth(month).bcsSerialize());
+        } catch (com.novi.serde.SerializationError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static ReferenceVO toBcsReferenceVO(org.dddml.roochdemocontracts.domain.ReferenceVO referenceVO) {
@@ -49,6 +63,14 @@ public class BcsDomainBeanUtils {
         return bcsReferenceVO;
     }
 
+    public static String toBcsHex(org.dddml.roochdemocontracts.domain.ReferenceVO referenceVO) {
+        try {
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(toBcsReferenceVO(referenceVO).bcsSerialize());
+        } catch (com.novi.serde.SerializationError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Year toBcsYear(org.dddml.roochdemocontracts.domain.Year year) {
         if (year == null) {
             return null;
@@ -59,26 +81,12 @@ public class BcsDomainBeanUtils {
         return bcsYear;
     }
 
-
-    public static String formatRoochObjectIdHex(String objectId) {
-        return com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId);
-    }
-
-    public static String shortHex(Integer i) {
-        return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU16(i.shortValue()));
-    }
-
-    public static String u32Hex(Long i) {
-        return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU32(i.intValue()));
-    }
-
-    public static String toBcsHex(org.dddml.roochdemocontracts.domain.Day day) {
+    public static String toBcsHex(org.dddml.roochdemocontracts.domain.Year year) {
         try {
-            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(BcsDomainBeanUtils.toBcsDay(day).bcsSerialize());
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(toBcsYear(year).bcsSerialize());
         } catch (com.novi.serde.SerializationError e) {
             throw new RuntimeException(e);
         }
     }
-
 
 }
