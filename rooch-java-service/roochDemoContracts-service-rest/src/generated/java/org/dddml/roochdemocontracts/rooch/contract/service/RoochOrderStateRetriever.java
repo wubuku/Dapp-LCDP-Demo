@@ -2,8 +2,10 @@ package org.dddml.roochdemocontracts.rooch.contract.service;
 
 import com.github.wubuku.rooch.bean.GetAnnotatedStatesResponseMoveStructItem;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
+import org.dddml.roochdemocontracts.domain.Day;
 import org.dddml.roochdemocontracts.domain.order.OrderItemState;
 import org.dddml.roochdemocontracts.domain.order.OrderState;
+import org.dddml.roochdemocontracts.rooch.bcs.BcsDomainBeanUtils;
 import org.dddml.roochdemocontracts.rooch.contract.Order;
 import org.dddml.roochdemocontracts.rooch.contract.OrderItem;
 
@@ -69,19 +71,27 @@ public class RoochOrderStateRetriever {
 
         List<OrderItem> orderItems = new ArrayList<>();
         for (String productObjectId : productObjectIds) {
-            //todo Here it may be needed to convert the id of the object to the hex of the BCS serialization result
-            String key = com.github.wubuku.rooch.utils.HexUtils.formatHex(productObjectId);
-//            try {
+            String key = formatRoochObjectIdHex(productObjectId);
             List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = roochJsonRpcClient
                     .getMoveStructAnnotatedStates("/table/" + orderItemTableHandle + "/" + key, OrderItem.class);
             if (getOrderItemTableItemResponse.size() == 1 && getOrderItemTableItemResponse.get(0) != null) {
                 orderItems.add(getOrderItemTableItemResponse.get(0).getMoveValue().getValue());
             }
-//            } catch (RuntimeException e) {
-//                System.out.println(e); // ignore "JSONRPC2Error{code=-32602"???
-//            }
+
         }
         return orderItems;
+    }
+
+    private static String formatRoochObjectIdHex(String objectId) {
+        return com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId);
+    }
+
+    private static String toBcsHex(Day day) {
+        try {
+            return com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(BcsDomainBeanUtils.toBcsDay(day).bcsSerialize());
+        } catch (com.novi.serde.SerializationError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public interface OrderItemProductObjectIdsGetter {
