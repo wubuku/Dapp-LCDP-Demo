@@ -6,12 +6,13 @@
 package org.dddml.roochdemocontracts.rooch.contract.service;
 
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
+import org.dddml.roochdemocontracts.domain.Day;
 import org.dddml.roochdemocontracts.domain.EntityStateCollection;
-import org.dddml.roochdemocontracts.domain.order.AbstractOrderState;
-import org.dddml.roochdemocontracts.domain.order.OrderItemState;
-import org.dddml.roochdemocontracts.domain.order.OrderState;
-import org.dddml.roochdemocontracts.domain.order.OrderStateRepository;
+import org.dddml.roochdemocontracts.domain.order.*;
+import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssocSubitemTableItemAddedRepository;
+import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemShipGroupAssociationTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemTableItemAddedRepository;
+import org.dddml.roochdemocontracts.rooch.contract.repository.OrderShipGroupTableItemAddedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,23 +27,40 @@ public class RoochOrderService {
 
     @Autowired
     private OrderItemTableItemAddedRepository orderItemTableItemAddedRepository;
+    @Autowired
+    private OrderShipGroupTableItemAddedRepository orderShipGroupTableItemAddedRepository;
+    @Autowired
+    private OrderItemShipGroupAssociationTableItemAddedRepository orderItemShipGroupAssociationTableItemAddedRepository;
+    @Autowired
+    private OrderItemShipGroupAssocSubitemTableItemAddedRepository orderItemShipGroupAssocSubitemTableItemAddedRepository;
 
     private RoochOrderStateRetriever suiOrderStateRetriever;
 
     @Autowired
     public RoochOrderService(RoochJsonRpcClient suiJsonRpcClient) {
-        //todo
-//        this.suiOrderStateRetriever = new RoochOrderStateRetriever(suiJsonRpcClient,
-//                orderId -> {
-//                    OrderState.MutableOrderState s = new AbstractOrderState.SimpleOrderState();
-//                    s.setOrderId(orderId);
-//                    return s;
-//                },
-//                (orderState, productId) -> (OrderItemState.MutableOrderItemState)
-//                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId),
-//                orderId -> orderItemTableItemAddedRepository.findByOrderItemId_OrderId(orderId).stream()
-//                        .map(i -> i.getOrderItemId().getProductObjectId()).collect(Collectors.toList())
-//        );
+        this.suiOrderStateRetriever = new RoochOrderStateRetriever(suiJsonRpcClient,
+                orderId -> {
+                    OrderState.MutableOrderState s = new AbstractOrderState.SimpleOrderState();
+                    s.setOrderId(orderId);
+                    return s;
+                },
+                (orderState, productId) -> (OrderItemState.MutableOrderItemState)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId),
+                orderId -> orderItemTableItemAddedRepository.findByOrderItemId_OrderId(orderId).stream()
+                        .map(i -> i.getOrderItemId().getProductObjectId()).collect(Collectors.toList()),
+                (orderState, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderState.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
+                orderId -> orderShipGroupTableItemAddedRepository.findByOrderShipGroupId_OrderId(orderId).stream()
+                        .map(i -> i.getOrderShipGroupId().getShipGroupSeqId()).collect(Collectors.toList()),
+                (orderShipGroupState, shipGroupSeqId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(shipGroupSeqId),
+                (orderId, shipGroupSeqId) -> orderItemShipGroupAssociationTableItemAddedRepository.findByOrderItemShipGroupAssociationId_OrderIdAndOrderItemShipGroupAssociationId_OrderShipGroupShipGroupSeqId(orderId, shipGroupSeqId).stream()
+                        .map(i -> i.getOrderItemShipGroupAssociationId().getProductObjId()).collect(Collectors.toList()),
+                (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay),
+                (orderId, shipGroupSeqId, productObjId) -> orderItemShipGroupAssocSubitemTableItemAddedRepository.findByOrderItemShipGroupAssocSubitemId_OrderIdAndOrderItemShipGroupAssocSubitemId_OrderShipGroupShipGroupSeqIdAndOrderItemShipGroupAssocSubitemId_OrderItemShipGroupAssociationProductObjId(orderId, shipGroupSeqId, productObjId).stream()
+                        .map(i -> i.getOrderItemShipGroupAssocSubitemId().getOrderItemShipGroupAssocSubitemDay()).collect(Collectors.toList())
+        );
     }
 
     @Transactional
