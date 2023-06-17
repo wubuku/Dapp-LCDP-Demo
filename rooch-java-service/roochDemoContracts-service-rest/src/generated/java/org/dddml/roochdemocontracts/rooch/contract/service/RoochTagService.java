@@ -24,6 +24,7 @@ public class RoochTagService {
     @Autowired
     private TagStateRepository tagStateRepository;
 
+
     private RoochTagStateRetriever roochTagStateRetriever;
 
     @Autowired

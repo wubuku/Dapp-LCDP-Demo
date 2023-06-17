@@ -24,6 +24,7 @@ public class RoochDaySummaryService {
     @Autowired
     private DaySummaryStateRepository daySummaryStateRepository;
 
+
     private RoochDaySummaryStateRetriever roochDaySummaryStateRetriever;
 
     @Autowired

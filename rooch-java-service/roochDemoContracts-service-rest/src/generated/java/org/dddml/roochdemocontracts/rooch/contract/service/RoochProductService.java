@@ -24,6 +24,7 @@ public class RoochProductService {
     @Autowired
     private ProductStateRepository productStateRepository;
 
+
     private RoochProductStateRetriever roochProductStateRetriever;
 
     @Autowired

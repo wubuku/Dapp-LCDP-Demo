@@ -26,6 +26,9 @@ public class RoochArticleService {
 
     @Autowired
     private ReferenceTableItemAddedRepository referenceTableItemAddedRepository;
+    @Autowired
+    private ArticleEventService articleEventService;
+
     private RoochArticleStateRetriever roochArticleStateRetriever;
 
     @Autowired
@@ -38,8 +41,11 @@ public class RoochArticleService {
                 },
                 (articleState, referenceNumber) -> (ReferenceState.MutableReferenceState)
                         ((EntityStateCollection.ModifiableEntityStateCollection<BigInteger, ReferenceState>) articleState.getReferences()).getOrAdd(referenceNumber),
-                articleId -> referenceTableItemAddedRepository.findByArticleReferenceId_ArticleId(articleId).stream()
-                        .map(i -> i.getArticleReferenceId().getReferenceNumber()).collect(Collectors.toList())
+                articleId -> {
+                    articleEventService.pullReferenceTableItemAddedEvents();
+                    return referenceTableItemAddedRepository.findByArticleReferenceId_ArticleId(articleId).stream()
+                            .map(i -> i.getArticleReferenceId().getReferenceNumber()).collect(Collectors.toList());
+                }
         );
     }
 
