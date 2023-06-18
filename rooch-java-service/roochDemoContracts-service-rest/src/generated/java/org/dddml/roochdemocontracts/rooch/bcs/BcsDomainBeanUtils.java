@@ -8,7 +8,7 @@ package org.dddml.roochdemocontracts.rooch.bcs;
 import java.util.Optional;
 
 /**
- * Utils that convert beans in the bcs package to domain beans.
+ * Utils for conversion between beans in the bcs package and domain beans.
  */
 public class BcsDomainBeanUtils {
     private BcsDomainBeanUtils() {
