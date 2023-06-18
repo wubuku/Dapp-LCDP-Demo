@@ -7,6 +7,8 @@ package org.dddml.roochdemocontracts.rooch.contract.service;
 
 import com.github.wubuku.rooch.bean.AnnotatedEventView;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
+import com.github.wubuku.rooch.bean.EventPageView;
+import com.github.wubuku.rooch.bean.PageView;
 
 import org.dddml.roochdemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.roochdemocontracts.rooch.contract.ContractConstants;
@@ -80,25 +82,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_CREATED;
         BigInteger cursor = getOrderCreatedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderCreated>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderCreated> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderCreated.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderCreated> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderCreated> eventEnvelope : eventPage.getData()) {
                     saveOrderCreated(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -126,25 +121,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED;
         BigInteger cursor = getOrderItemRemovedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderItemRemoved>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderItemRemoved> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderItemRemoved.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderItemRemoved> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemRemoved> eventEnvelope : eventPage.getData()) {
                     saveOrderItemRemoved(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -172,25 +160,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED;
         BigInteger cursor = getOrderItemQuantityUpdatedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderItemQuantityUpdated>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderItemQuantityUpdated> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderItemQuantityUpdated.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderItemQuantityUpdated> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemQuantityUpdated> eventEnvelope : eventPage.getData()) {
                     saveOrderItemQuantityUpdated(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -218,25 +199,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ESTIMATED_SHIP_DATE_UPDATED;
         BigInteger cursor = getOrderEstimatedShipDateUpdatedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderEstimatedShipDateUpdated>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderEstimatedShipDateUpdated> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderEstimatedShipDateUpdated.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderEstimatedShipDateUpdated> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderEstimatedShipDateUpdated> eventEnvelope : eventPage.getData()) {
                     saveOrderEstimatedShipDateUpdated(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -264,25 +238,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ADDED;
         BigInteger cursor = getOrderShipGroupAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderShipGroupAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderShipGroupAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderShipGroupAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderShipGroupAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderShipGroupAdded> eventEnvelope : eventPage.getData()) {
                     saveOrderShipGroupAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -310,25 +277,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED;
         BigInteger cursor = getOrderShipGroupQuantityCanceledEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderShipGroupQuantityCanceled>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderShipGroupQuantityCanceled> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderShipGroupQuantityCanceled.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderShipGroupQuantityCanceled> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderShipGroupQuantityCanceled> eventEnvelope : eventPage.getData()) {
                     saveOrderShipGroupQuantityCanceled(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -356,25 +316,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED;
         BigInteger cursor = getOrderShipGroupItemRemovedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderShipGroupItemRemoved>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderShipGroupItemRemoved> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderShipGroupItemRemoved.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderShipGroupItemRemoved> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderShipGroupItemRemoved> eventEnvelope : eventPage.getData()) {
                     saveOrderShipGroupItemRemoved(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -402,25 +355,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.REFERENCE_TABLE_ITEM_ADDED;
         BigInteger cursor = getReferenceTableItemAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<ReferenceTableItemAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<ReferenceTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, ReferenceTableItemAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope : eventPage.getData()) {
                     saveReferenceTableItemAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -448,25 +394,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_ITEM_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderItemTableItemAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderItemTableItemAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderItemTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderItemTableItemAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderItemTableItemAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemTableItemAdded> eventEnvelope : eventPage.getData()) {
                     saveOrderItemTableItemAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -494,25 +433,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_SHIP_GROUP_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderShipGroupTableItemAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderShipGroupTableItemAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderShipGroupTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderShipGroupTableItemAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderShipGroupTableItemAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderShipGroupTableItemAdded> eventEnvelope : eventPage.getData()) {
                     saveOrderShipGroupTableItemAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -540,25 +472,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_ITEM_SHIP_GROUP_ASSOCIATION_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderItemShipGroupAssociationTableItemAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderItemShipGroupAssociationTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderItemShipGroupAssociationTableItemAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded> eventEnvelope : eventPage.getData()) {
                     saveOrderItemShipGroupAssociationTableItemAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }
@@ -586,25 +511,18 @@ public class OrderEventService {
         String eventType = contractAddress + "::" + ContractConstants.ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED;
         BigInteger cursor = getOrderItemShipGroupAssocSubitemTableItemAddedEventNextCursor();
         while (true) {
-            List<AnnotatedEventView<OrderItemShipGroupAssocSubitemTableItemAdded>> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+            EventPageView<OrderItemShipGroupAssocSubitemTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
                     eventType, cursor, limit, OrderItemShipGroupAssocSubitemTableItemAdded.class
             );
-            if (eventPage != null && !eventPage.isEmpty()) {
-                // //////////////////////
-                BigInteger nextCursor = eventPage.get(0).getEvent().getEventId().getEventSeq();
-                if (cursor != null && nextCursor.compareTo(cursor) == 0) {
-                    System.out.println("nextCursor == cursor, exit");
-                    break;
-                }
-                cursor = nextCursor;
-                // /////////////////////
-                for (AnnotatedEventView<OrderItemShipGroupAssocSubitemTableItemAdded> eventEnvelope : eventPage) {
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemShipGroupAssocSubitemTableItemAdded> eventEnvelope : eventPage.getData()) {
                     saveOrderItemShipGroupAssocSubitemTableItemAdded(eventEnvelope);
                 }
             } else {
                 break;
             }
-            if (eventPage == null || eventPage.size() == 0) {
+            if (!PageView.hasNextPage(eventPage)) {
                 break;
             }
         }

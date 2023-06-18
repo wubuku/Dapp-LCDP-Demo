@@ -117,24 +117,24 @@ public class RoochJsonRpcClientTests {
         //Id: "0x53f32af12dc9236eb67f1c064cf55ee8891a90040f71ba17422cfdd91eb7358b";
         String eventHandleType = "0x565d5717526aecec1f9d464867f7d92d6eae2dc8ca73a0dc2613dd185d3d7bc7::day_summary::DaySummaryCreated";
         RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
-        List<AnnotatedEventView<Object>> getEventsResponse1 = rpcClient.getEventsByEventHandle(eventHandleType,
+        EventPageView<Object> getEventsResponse1 = rpcClient.getEventsByEventHandle(eventHandleType,
                 null,
                 null,
                 Object.class);
         System.out.println(getEventsResponse1);
-        System.out.println(getEventsResponse1.get(0).getParsedEventData().getValue().getClass());
+        System.out.println(getEventsResponse1.getData().get(0).getParsedEventData().getValue().getClass());
 
         System.out.println("------------------------");
         BigInteger cursor = null;
         Long limit = 1L;
         System.out.println("cursor: " + cursor);
-        List<AnnotatedEventView<DaySummaryCreated>> getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
+        EventPageView<DaySummaryCreated> getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
                 cursor, limit, DaySummaryCreated.class);
         System.out.println(getEventsResponse2);
-        System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().getDay().getValue().getNumber());
+        System.out.println(getEventsResponse2.getData().get(0).getParsedEventData().getValue().getDay().getValue().getNumber());
 
         System.out.println("------------------------");
-        cursor = getEventsResponse2.get(0).getEvent().getEventId().getEventSeq();
+        cursor = getEventsResponse2.getData().get(0).getEvent().getEventId().getEventSeq();
         cursor = cursor.add(BigInteger.ONE);
         System.out.println("cursor: " + cursor);
 
@@ -152,11 +152,11 @@ public class RoochJsonRpcClientTests {
 
         String eventHandleType2 = "0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4"
                 + "::order_ship_group::OrderItemShipGroupAssociationTableItemAdded";
-        List<AnnotatedEventView<OrderItemShipGroupAssociationTableItemAdded>> getEventsResponse3 = rpcClient.getEventsByEventHandle(eventHandleType2,
+        EventPageView<OrderItemShipGroupAssociationTableItemAdded> getEventsResponse3 = rpcClient.getEventsByEventHandle(eventHandleType2,
                 null, null, OrderItemShipGroupAssociationTableItemAdded.class);
         System.out.println(getEventsResponse3);
-        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().getOrderId());
-        System.out.println(getEventsResponse3.get(0).getParsedEventData().getValue().getOrderShipGroupShipGroupSeqId());
+        System.out.println(getEventsResponse3.getData().get(0).getParsedEventData().getValue().getOrderId());
+        System.out.println(getEventsResponse3.getData().get(0).getParsedEventData().getValue().getOrderShipGroupShipGroupSeqId());
     }
 
     @Test
