@@ -64,9 +64,14 @@ public class RoochJsonRpcClientTests {
         RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
         String productObjId = "0xd1e84ac071bea210a3b3644e4aaa4b04b385953b84293919993361210b8a5f7d";
         String orderObjId = "0x2c59aa01ef0fe5344ca44c987aeedf783d9472742dde74ce4a9c957319e21189";
+
+
         System.out.println(productObjId);
         System.out.println(orderObjId);
-        //if (true) return;
+
+        System.out.println(HexUtils.formatHex(productObjId));
+        System.out.println(HexUtils.formatHex(orderObjId));
+        if (true) return;
         List<GetAnnotatedStatesResponseMoveStructItem<Order.MoveObject>> getOrderResponse = rpcClient.getMoveStructAnnotatedStates(
                 "/object/" + orderObjId,
                 Order.MoveObject.class
