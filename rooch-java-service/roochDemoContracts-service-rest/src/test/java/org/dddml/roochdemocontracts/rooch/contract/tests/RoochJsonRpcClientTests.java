@@ -62,8 +62,11 @@ public class RoochJsonRpcClientTests {
     void testGetTableItem_1() throws MalformedURLException {
         String rpcBaseUrl = "http://127.0.0.1:50051/";
         RoochJsonRpcClient rpcClient = new RoochJsonRpcClient(rpcBaseUrl);
-        String orderObjId = "0xa29559906755a3e83c1d0c8802fbcfce0c887fd1feccb90053a95f8da5b4f38d";
-
+        String productObjId = "0xd1e84ac071bea210a3b3644e4aaa4b04b385953b84293919993361210b8a5f7d";
+        String orderObjId = "0x2c59aa01ef0fe5344ca44c987aeedf783d9472742dde74ce4a9c957319e21189";
+        System.out.println(productObjId);
+        System.out.println(orderObjId);
+        //if (true) return;
         List<GetAnnotatedStatesResponseMoveStructItem<Order.MoveObject>> getOrderResponse = rpcClient.getMoveStructAnnotatedStates(
                 "/object/" + orderObjId,
                 Order.MoveObject.class
@@ -85,7 +88,6 @@ public class RoochJsonRpcClientTests {
         //if (false) {
         String orderItemShipGroupAssociationTableHandle = getShipGroupTableItemResponse.get(0).getMoveValue().getValue().getOrderItemShipGroupAssociations().getValue().getHandle();
         System.out.println("orderItemShipGroupAssociationTableHandle: " + orderItemShipGroupAssociationTableHandle);
-        String productObjId = "0x0c321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a";
         System.out.println("Product ObjectID: " + productObjId);
         String orderItemShipGroupAssociationTableItemPath = "/table/" + orderItemShipGroupAssociationTableHandle + "/" + productObjId;
         System.out.println("OrderItemShipGroupAssociation TableItem Path: " + orderItemShipGroupAssociationTableItemPath);
@@ -98,7 +100,7 @@ public class RoochJsonRpcClientTests {
         //0xc4f1a312d456c28e0bdfefa16e4865fbe8049b256d339283936b3c6b7a107ec1
         String orderItemTableHandle = getOrderResponse.get(0).getMoveValue().getValue().getValue().getValue().getItems().getValue().getHandle();
         System.out.println("Order item table handle: " + orderItemTableHandle);
-        String orderItemKey = "0x0c321aff9a2cb8aea76e8e1e5e58d93d9affd044dcc6de7770eb519c2db2209a"; // Product Object Id.
+        String orderItemKey = productObjId; // Product Object Id.
         String orderItemTableItemPath = "/table/" + orderItemTableHandle + "/" + orderItemKey;
         System.out.println("Order Item TableItem Path: " + orderItemTableItemPath);
         List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = rpcClient
@@ -122,7 +124,7 @@ public class RoochJsonRpcClientTests {
                 null,
                 Object.class);
         System.out.println(getEventsResponse1);
-        System.out.println(getEventsResponse1.getData().get(0).getParsedEventData().getValue().getClass());
+        //System.out.println(getEventsResponse1.getData().get(0).getParsedEventData().getValue().getClass());
 
         System.out.println("------------------------");
         BigInteger cursor = null;
@@ -131,18 +133,19 @@ public class RoochJsonRpcClientTests {
         EventPageView<DaySummaryCreated> getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
                 cursor, limit, DaySummaryCreated.class);
         System.out.println(getEventsResponse2);
-        System.out.println(getEventsResponse2.getData().get(0).getParsedEventData().getValue().getDay().getValue().getNumber());
+        //System.out.println(getEventsResponse2.getData().get(0).getParsedEventData().getValue().getDay().getValue().getNumber());
 
-        System.out.println("------------------------");
-        cursor = getEventsResponse2.getData().get(0).getEvent().getEventId().getEventSeq();
-        cursor = cursor.add(BigInteger.ONE);
-        System.out.println("cursor: " + cursor);
+        if (getEventsResponse2.getHasNextPage()) {
+            System.out.println("------------------------");
+            //cursor = getEventsResponse2.getData().get(0).getEvent().getEventId().getEventSeq();
+            cursor = getEventsResponse2.getNextCursor();
+            System.out.println("cursor: " + cursor);
 
-        getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
-                cursor, limit, DaySummaryCreated.class);
-        System.out.println(getEventsResponse2);
-        //System.out.println(getEventsResponse2.get(0).getParsedEventData().getValue().i);
-        //System.out.println("cursor: " + cursor);
+            getEventsResponse2 = rpcClient.getEventsByEventHandle(eventHandleType,
+                    cursor, limit, DaySummaryCreated.class);
+            System.out.println(getEventsResponse2);
+        }
+
     }
 
     @Test
