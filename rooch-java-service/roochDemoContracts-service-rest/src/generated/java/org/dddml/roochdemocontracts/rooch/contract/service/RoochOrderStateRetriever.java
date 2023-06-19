@@ -153,7 +153,7 @@ public class RoochOrderStateRetriever {
         for (String productObjectId : productObjectIds) {
             String key = com.github.wubuku.rooch.utils.HexUtils.formatHex(productObjectId);
             List<GetAnnotatedStatesResponseMoveStructItem<OrderItem>> getOrderItemTableItemResponse = roochJsonRpcClient
-                    .getMoveStructAnnotatedStates("/table/" + orderItemTableHandle + "/" + key, OrderItem.class);
+                    .getMoveStructAnnotatedStates("/table/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(orderItemTableHandle) + "/" + key, OrderItem.class);
             if (getOrderItemTableItemResponse.size() == 1 && getOrderItemTableItemResponse.get(0) != null) {
                 orderItems.add(getOrderItemTableItemResponse.get(0).getMoveValue().getValue());
             }
@@ -167,7 +167,7 @@ public class RoochOrderStateRetriever {
         for (Integer shipGroupSeqId : shipGroupSeqIds) {
             String key = com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU8(shipGroupSeqId.byteValue()));
             List<GetAnnotatedStatesResponseMoveStructItem<OrderShipGroup>> getOrderShipGroupTableItemResponse = roochJsonRpcClient
-                    .getMoveStructAnnotatedStates("/table/" + orderShipGroupTableHandle + "/" + key, OrderShipGroup.class);
+                    .getMoveStructAnnotatedStates("/table/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(orderShipGroupTableHandle) + "/" + key, OrderShipGroup.class);
             if (getOrderShipGroupTableItemResponse.size() == 1 && getOrderShipGroupTableItemResponse.get(0) != null) {
                 orderShipGroups.add(getOrderShipGroupTableItemResponse.get(0).getMoveValue().getValue());
             }
@@ -181,7 +181,7 @@ public class RoochOrderStateRetriever {
         for (String productObjId : productObjIds) {
             String key = com.github.wubuku.rooch.utils.HexUtils.formatHex(productObjId);
             List<GetAnnotatedStatesResponseMoveStructItem<OrderItemShipGroupAssociation>> getOrderItemShipGroupAssociationTableItemResponse = roochJsonRpcClient
-                    .getMoveStructAnnotatedStates("/table/" + orderItemShipGroupAssociationTableHandle + "/" + key, OrderItemShipGroupAssociation.class);
+                    .getMoveStructAnnotatedStates("/table/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(orderItemShipGroupAssociationTableHandle) + "/" + key, OrderItemShipGroupAssociation.class);
             if (getOrderItemShipGroupAssociationTableItemResponse.size() == 1 && getOrderItemShipGroupAssociationTableItemResponse.get(0) != null) {
                 orderItemShipGroupAssociations.add(getOrderItemShipGroupAssociationTableItemResponse.get(0).getMoveValue().getValue());
             }
@@ -195,7 +195,7 @@ public class RoochOrderStateRetriever {
         for (Day orderItemShipGroupAssocSubitemDay : orderItemShipGroupAssocSubitemDays) {
             String key = BcsDomainBeanUtils.toBcsHex(orderItemShipGroupAssocSubitemDay);
             List<GetAnnotatedStatesResponseMoveStructItem<OrderItemShipGroupAssocSubitem>> getOrderItemShipGroupAssocSubitemTableItemResponse = roochJsonRpcClient
-                    .getMoveStructAnnotatedStates("/table/" + orderItemShipGroupAssocSubitemTableHandle + "/" + key, OrderItemShipGroupAssocSubitem.class);
+                    .getMoveStructAnnotatedStates("/table/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(orderItemShipGroupAssocSubitemTableHandle) + "/" + key, OrderItemShipGroupAssocSubitem.class);
             if (getOrderItemShipGroupAssocSubitemTableItemResponse.size() == 1 && getOrderItemShipGroupAssocSubitemTableItemResponse.get(0) != null) {
                 orderItemShipGroupAssocSubitems.add(getOrderItemShipGroupAssocSubitemTableItemResponse.get(0).getMoveValue().getValue());
             }

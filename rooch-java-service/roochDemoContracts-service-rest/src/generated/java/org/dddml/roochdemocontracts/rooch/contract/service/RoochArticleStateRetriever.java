@@ -89,7 +89,7 @@ public class RoochArticleStateRetriever {
         for (BigInteger referenceNumber : referenceNumbers) {
             String key = com.github.wubuku.rooch.utils.HexUtils.byteArrayToHexWithPrefix(com.github.wubuku.rooch.bcs.BcsUtils.serializeU64(referenceNumber.longValue()));
             List<GetAnnotatedStatesResponseMoveStructItem<Reference>> getReferenceTableItemResponse = roochJsonRpcClient
-                    .getMoveStructAnnotatedStates("/table/" + referenceTableHandle + "/" + key, Reference.class);
+                    .getMoveStructAnnotatedStates("/table/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(referenceTableHandle) + "/" + key, Reference.class);
             if (getReferenceTableItemResponse.size() == 1 && getReferenceTableItemResponse.get(0) != null) {
                 references.add(getReferenceTableItemResponse.get(0).getMoveValue().getValue());
             }
