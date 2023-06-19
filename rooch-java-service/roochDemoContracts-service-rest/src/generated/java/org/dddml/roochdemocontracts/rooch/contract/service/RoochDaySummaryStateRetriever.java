@@ -33,7 +33,7 @@ public class RoochDaySummaryStateRetriever {
 
     public DaySummaryState retrieveDaySummaryState(String objectId) {
         List<GetAnnotatedStatesResponseMoveStructItem<DaySummary.MoveObject>> getObjectListResponse = roochJsonRpcClient.getMoveStructAnnotatedStates(
-                "/object/" + objectId,
+                "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 DaySummary.MoveObject.class
         );
         if (getObjectListResponse.size() == 0) {

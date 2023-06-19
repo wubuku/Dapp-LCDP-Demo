@@ -33,7 +33,7 @@ public class RoochProductStateRetriever {
 
     public ProductState retrieveProductState(String objectId) {
         List<GetAnnotatedStatesResponseMoveStructItem<Product.MoveObject>> getObjectListResponse = roochJsonRpcClient.getMoveStructAnnotatedStates(
-                "/object/" + objectId,
+                "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Product.MoveObject.class
         );
         if (getObjectListResponse.size() == 0) {

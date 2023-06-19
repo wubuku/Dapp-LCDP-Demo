@@ -33,7 +33,7 @@ public class RoochTagStateRetriever {
 
     public TagState retrieveTagState(String objectId) {
         List<GetAnnotatedStatesResponseMoveStructItem<Tag.MoveObject>> getObjectListResponse = roochJsonRpcClient.getMoveStructAnnotatedStates(
-                "/object/" + objectId,
+                "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Tag.MoveObject.class
         );
         if (getObjectListResponse.size() == 0) {

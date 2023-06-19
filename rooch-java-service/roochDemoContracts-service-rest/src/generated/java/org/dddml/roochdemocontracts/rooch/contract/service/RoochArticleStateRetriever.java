@@ -42,7 +42,7 @@ public class RoochArticleStateRetriever {
 
     public ArticleState retrieveArticleState(String objectId) {
         List<GetAnnotatedStatesResponseMoveStructItem<Article.MoveObject>> getObjectListResponse = roochJsonRpcClient.getMoveStructAnnotatedStates(
-                "/object/" + objectId,
+                "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Article.MoveObject.class
         );
         if (getObjectListResponse.size() == 0) {
