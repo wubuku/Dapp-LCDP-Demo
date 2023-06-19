@@ -23,7 +23,7 @@ echo "$product_object_id"
 product_object_id=$(echo "$product_object_id" | sed 's/"//g')
 echo "$product_object_id"
 
-rooch move run --function $contract_address::order_aggregate::create --sender-account $contract_address --args string:"ord_002" object_id:"$product_object_id" u64:1
+rooch move run --function $contract_address::order_aggregate::create --sender-account $contract_address --args string:"ord_001" object_id:"$product_object_id" u64:1
 
 order_object_id=$(curl --location --request POST 'http://localhost:50051' \
 --header 'Content-Type: application/json' \
