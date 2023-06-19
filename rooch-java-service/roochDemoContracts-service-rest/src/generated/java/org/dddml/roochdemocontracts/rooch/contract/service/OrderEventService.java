@@ -18,6 +18,7 @@ import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemRemoved;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemQuantityUpdated;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderEstimatedShipDateUpdated;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupAdded;
+import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemShipGroupAssocSubitemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupQuantityCanceled;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupItemRemoved;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderEventRepository;
@@ -266,6 +267,45 @@ public class OrderEventService {
             return;
         }
         orderEventRepository.save(orderShipGroupAdded);
+    }
+
+    @Transactional
+    public void pullOrderItemShipGroupAssocSubitemAddedEvents() {
+        if (contractAddress == null) {
+            return;
+        }
+        long limit = 1L;
+        String eventType = contractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_ADDED;
+        BigInteger cursor = getOrderItemShipGroupAssocSubitemAddedEventNextCursor();
+        while (true) {
+            EventPageView<OrderItemShipGroupAssocSubitemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+                    eventType, cursor, limit, OrderItemShipGroupAssocSubitemAdded.class
+            );
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<OrderItemShipGroupAssocSubitemAdded> eventEnvelope : eventPage.getData()) {
+                    saveOrderItemShipGroupAssocSubitemAdded(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!PageView.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderItemShipGroupAssocSubitemAddedEventNextCursor() {
+        AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded lastEvent = orderEventRepository.findFirstOrderItemShipGroupAssocSubitemAddedByOrderByRoochEventId_EventSeqDesc();
+        return lastEvent != null ? lastEvent.getRoochEventId().getEventSeq() : null;
+    }
+
+    private void saveOrderItemShipGroupAssocSubitemAdded(AnnotatedEventView<OrderItemShipGroupAssocSubitemAdded> eventEnvelope) {
+        AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded orderItemShipGroupAssocSubitemAdded = DomainBeanUtils.toOrderItemShipGroupAssocSubitemAdded(eventEnvelope);
+        if (orderEventRepository.findById(orderItemShipGroupAssocSubitemAdded.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderItemShipGroupAssocSubitemAdded);
     }
 
     @Transactional

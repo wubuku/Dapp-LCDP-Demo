@@ -87,6 +87,13 @@ rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_:
 --args 'object_id:id' u8:ship_group_seq_id 'string:shipment_method' 'object_id:product_obj_id' u64:quantity
 ```
 
+### AddOrderItemShipGroupAssocSubitem method
+
+```shell
+rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::order_aggregate::add_order_item_ship_group_assoc_subitem' \
+--args 'object_id:id' u8:ship_group_seq_id 'object_id:product_obj_id' u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description'
+```
+
 ### CancelOrderShipGroupQuantity method
 
 ```shell

@@ -366,6 +366,104 @@ public class OrderCommands {
 
     }
 
+    public static class AddOrderItemShipGroupAssocSubitem extends AbstractOrderCommand implements OrderCommand {
+
+        public String getCommandType() {
+            return "AddOrderItemShipGroupAssocSubitem";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Id
+         */
+        private String id;
+
+        public String getId() {
+            return this.id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        /**
+         * Ship Group Seq Id
+         */
+        private Integer shipGroupSeqId;
+
+        public Integer getShipGroupSeqId() {
+            return this.shipGroupSeqId;
+        }
+
+        public void setShipGroupSeqId(Integer shipGroupSeqId) {
+            this.shipGroupSeqId = shipGroupSeqId;
+        }
+
+        /**
+         * Product Obj Id
+         */
+        private String productObjId;
+
+        public String getProductObjId() {
+            return this.productObjId;
+        }
+
+        public void setProductObjId(String productObjId) {
+            this.productObjId = productObjId;
+        }
+
+        /**
+         * Day
+         */
+        private Day day;
+
+        public Day getDay() {
+            return this.day;
+        }
+
+        public void setDay(Day day) {
+            this.day = day;
+        }
+
+        /**
+         * Description
+         */
+        private String description;
+
+        public String getDescription() {
+            return this.description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+        public String getOrderId() {
+            return this.getId();
+        }
+
+        public void setOrderId(String id) {
+            this.setId(id);
+        }
+
+    }
+
     public static class CancelOrderShipGroupQuantity extends AbstractOrderCommand implements OrderCommand {
 
         public String getCommandType() {

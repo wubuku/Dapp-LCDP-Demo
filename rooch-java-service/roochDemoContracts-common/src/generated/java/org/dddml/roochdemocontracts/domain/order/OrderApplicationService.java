@@ -25,6 +25,8 @@ public interface OrderApplicationService {
 
     void when(OrderCommands.AddOrderShipGroup c);
 
+    void when(OrderCommands.AddOrderItemShipGroupAssocSubitem c);
+
     void when(OrderCommands.CancelOrderShipGroupQuantity c);
 
     void when(OrderCommands.RemoveOrderShipGroupItem c);

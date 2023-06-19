@@ -27,6 +27,8 @@ public interface OrderAggregate {
 
     void addOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.AddOrderShipGroup c);
 
+    void addOrderItemShipGroupAssocSubitem(Integer shipGroupSeqId, String productObjId, Day day, String description, Long offChainVersion, String commandId, String requesterId, OrderCommands.AddOrderItemShipGroupAssocSubitem c);
+
     void cancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.CancelOrderShipGroupQuantity c);
 
     void removeOrderShipGroupItem(Integer shipGroupSeqId, String productObjId, Long offChainVersion, String commandId, String requesterId, OrderCommands.RemoveOrderShipGroupItem c);

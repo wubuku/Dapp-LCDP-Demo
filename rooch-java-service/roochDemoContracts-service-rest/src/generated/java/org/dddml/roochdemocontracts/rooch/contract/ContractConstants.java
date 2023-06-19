@@ -32,6 +32,8 @@ public class ContractConstants {
 
     public static final String ORDER_MODULE_ORDER_SHIP_GROUP_ADDED = "order::OrderShipGroupAdded";
 
+    public static final String ORDER_MODULE_ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_ADDED = "order::OrderItemShipGroupAssocSubitemAdded";
+
     public static final String ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED = "order::OrderShipGroupQuantityCanceled";
 
     public static final String ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED = "order::OrderShipGroupItemRemoved";

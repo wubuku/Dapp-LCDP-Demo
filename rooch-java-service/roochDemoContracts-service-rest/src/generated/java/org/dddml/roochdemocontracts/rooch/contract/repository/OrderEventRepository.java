@@ -23,6 +23,8 @@ public interface OrderEventRepository extends JpaRepository<AbstractOrderEvent, 
 
     AbstractOrderEvent.OrderShipGroupAdded findFirstOrderShipGroupAddedByOrderByRoochEventId_EventSeqDesc();
 
+    AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded findFirstOrderItemShipGroupAssocSubitemAddedByOrderByRoochEventId_EventSeqDesc();
+
     AbstractOrderEvent.OrderShipGroupQuantityCanceled findFirstOrderShipGroupQuantityCanceledByOrderByRoochEventId_EventSeqDesc();
 
     AbstractOrderEvent.OrderShipGroupItemRemoved findFirstOrderShipGroupItemRemovedByOrderByRoochEventId_EventSeqDesc();

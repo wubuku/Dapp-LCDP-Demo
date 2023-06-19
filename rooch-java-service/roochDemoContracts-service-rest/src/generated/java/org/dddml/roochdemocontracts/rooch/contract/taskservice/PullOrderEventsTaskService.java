@@ -41,6 +41,11 @@ public class PullOrderEventsTaskService {
         orderEventService.pullOrderShipGroupAddedEvents();
     }
 
+    @Scheduled(fixedDelayString = "${rooch.contract.pull-order-events.order-item-ship-group-assoc-subitem-added.fixed-delay:5000}")
+    public void pullOrderItemShipGroupAssocSubitemAddedEvents() {
+        orderEventService.pullOrderItemShipGroupAssocSubitemAddedEvents();
+    }
+
     @Scheduled(fixedDelayString = "${rooch.contract.pull-order-events.order-ship-group-quantity-canceled.fixed-delay:5000}")
     public void pullOrderShipGroupQuantityCanceledEvents() {
         orderEventService.pullOrderShipGroupQuantityCanceledEvents();

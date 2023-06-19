@@ -110,6 +110,14 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
+                    "verify",
+                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productObjId", "day", "description"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "verify",
                     new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
@@ -218,6 +226,14 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
                     new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productObjId", "quantity", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
+                    "mutate",
+                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "shipGroupSeqId", "productObjId", "day", "description", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 

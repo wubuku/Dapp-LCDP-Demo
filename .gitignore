@@ -29,3 +29,4 @@ rooch-java-service/scripts/2023*hbm2ddl_update.sql
 rooch-java-service/scripts/hbm2ddl_create.sql
 rooch-java-service/scripts/hbm2ddl_create_fix.sql
 rooch-java-service/scripts/hbm2ddl_drop.sql
+Move.lock

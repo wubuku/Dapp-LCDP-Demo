@@ -475,6 +475,63 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
+    public static class OrderItemShipGroupAssocSubitemAdded extends OrderClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderItemShipGroupAssocSubitemAdded";
+        }
+
+        public Integer getShipGroupSeqId() {
+            Object val = getDynamicProperties().get("shipGroupSeqId");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setShipGroupSeqId(Integer value) {
+            getDynamicProperties().put("shipGroupSeqId", value);
+        }
+
+        public String getProductObjId() {
+            Object val = getDynamicProperties().get("productObjId");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setProductObjId(String value) {
+            getDynamicProperties().put("productObjId", value);
+        }
+
+        public Day getDay() {
+            Object val = getDynamicProperties().get("day");
+            if (val instanceof Day) {
+                return (Day) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Day.class);
+        }
+
+        public void setDay(Day value) {
+            getDynamicProperties().put("day", value);
+        }
+
+        public String getDescription() {
+            Object val = getDynamicProperties().get("description");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setDescription(String value) {
+            getDynamicProperties().put("description", value);
+        }
+
+    }
+
     public static class OrderShipGroupQuantityCanceled extends OrderClobEvent {
 
         @Override

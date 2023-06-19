@@ -9,6 +9,7 @@ module rooch_demo::order_aggregate {
     use rooch_demo::day::{Self, Day};
     use rooch_demo::month;
     use rooch_demo::order;
+    use rooch_demo::order_add_order_item_ship_group_assoc_subitem_logic;
     use rooch_demo::order_add_order_ship_group_logic;
     use rooch_demo::order_cancel_order_ship_group_quantity_logic;
     use rooch_demo::order_create_logic;
@@ -157,6 +158,52 @@ module rooch_demo::order_aggregate {
         );
         order::update_version_and_add(storage_ctx, updated_order_obj);
         order::emit_order_ship_group_added(storage_ctx, order_ship_group_added);
+    }
+
+
+    public entry fun add_order_item_ship_group_assoc_subitem(
+        storage_ctx: &mut StorageContext,
+        account: &signer,
+        id: ObjectID,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        day_month_year_number: u16,
+        day_month_year_calendar: String,
+        day_month_number: u8,
+        day_month_is_leap: bool,
+        day_number: u8,
+        day_time_zone: String,
+        description: String,
+    ) {
+        let day: Day = day::new(
+            month::new(
+                year::new(
+                    day_month_year_number,
+                    day_month_year_calendar,
+                ),
+                day_month_number,
+                day_month_is_leap,
+            ),
+            day_number,
+            day_time_zone,
+        );
+        let order_obj = order::remove_order(storage_ctx, id);
+        let order_item_ship_group_assoc_subitem_added = order_add_order_item_ship_group_assoc_subitem_logic::verify(
+            storage_ctx,
+            account,
+            ship_group_seq_id,
+            product_obj_id,
+            day,
+            description,
+            &order_obj,
+        );
+        let updated_order_obj = order_add_order_item_ship_group_assoc_subitem_logic::mutate(
+            storage_ctx,
+            &order_item_ship_group_assoc_subitem_added,
+            order_obj,
+        );
+        order::update_version_and_add(storage_ctx, updated_order_obj);
+        order::emit_order_item_ship_group_assoc_subitem_added(storage_ctx, order_item_ship_group_assoc_subitem_added);
     }
 
 

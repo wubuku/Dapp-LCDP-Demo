@@ -70,6 +70,10 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         update(c, ar -> ar.addOrderShipGroup(c.getShipGroupSeqId(), c.getShipmentMethod(), c.getProductObjId(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
+        update(c, ar -> ar.addOrderItemShipGroupAssocSubitem(c.getShipGroupSeqId(), c.getProductObjId(), c.getDay(), c.getDescription(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public void when(OrderCommands.CancelOrderShipGroupQuantity c) {
         update(c, ar -> ar.cancelOrderShipGroupQuantity(c.getShipGroupSeqId(), c.getProductObjId(), c.getCancelQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }

@@ -24,6 +24,7 @@ module rooch_demo::order {
     friend rooch_demo::order_update_item_quantity_logic;
     friend rooch_demo::order_update_estimated_ship_date_logic;
     friend rooch_demo::order_add_order_ship_group_logic;
+    friend rooch_demo::order_add_order_item_ship_group_assoc_subitem_logic;
     friend rooch_demo::order_cancel_order_ship_group_quantity_logic;
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order_aggregate;
@@ -382,6 +383,58 @@ module rooch_demo::order {
         }
     }
 
+    struct OrderItemShipGroupAssocSubitemAdded has key {
+        id: ObjectID,
+        order_id: String,
+        version: u64,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        day: Day,
+        description: String,
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_id(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): ObjectID {
+        order_item_ship_group_assoc_subitem_added.id
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_order_id(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): String {
+        order_item_ship_group_assoc_subitem_added.order_id
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_ship_group_seq_id(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): u8 {
+        order_item_ship_group_assoc_subitem_added.ship_group_seq_id
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_product_obj_id(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): ObjectID {
+        order_item_ship_group_assoc_subitem_added.product_obj_id
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_day(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): Day {
+        order_item_ship_group_assoc_subitem_added.day
+    }
+
+    public fun order_item_ship_group_assoc_subitem_added_description(order_item_ship_group_assoc_subitem_added: &OrderItemShipGroupAssocSubitemAdded): String {
+        order_item_ship_group_assoc_subitem_added.description
+    }
+
+    public(friend) fun new_order_item_ship_group_assoc_subitem_added(
+        order_obj: &Object<Order>,
+        ship_group_seq_id: u8,
+        product_obj_id: ObjectID,
+        day: Day,
+        description: String,
+    ): OrderItemShipGroupAssocSubitemAdded {
+        OrderItemShipGroupAssocSubitemAdded {
+            id: id(order_obj),
+            order_id: order_id(order_obj),
+            version: version(order_obj),
+            ship_group_seq_id,
+            product_obj_id,
+            day,
+            description,
+        }
+    }
+
     struct OrderShipGroupQuantityCanceled has key {
         id: ObjectID,
         order_id: String,
@@ -560,6 +613,10 @@ module rooch_demo::order {
 
     public(friend) fun emit_order_ship_group_added(storage_ctx: &mut StorageContext, order_ship_group_added: OrderShipGroupAdded) {
         events::emit_event(storage_ctx, order_ship_group_added);
+    }
+
+    public(friend) fun emit_order_item_ship_group_assoc_subitem_added(storage_ctx: &mut StorageContext, order_item_ship_group_assoc_subitem_added: OrderItemShipGroupAssocSubitemAdded) {
+        events::emit_event(storage_ctx, order_item_ship_group_assoc_subitem_added);
     }
 
     public(friend) fun emit_order_ship_group_quantity_canceled(storage_ctx: &mut StorageContext, order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) {

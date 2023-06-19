@@ -251,6 +251,8 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
             when((AbstractOrderEvent.OrderEstimatedShipDateUpdated)e);
         } else if (e instanceof AbstractOrderEvent.OrderShipGroupAdded) {
             when((AbstractOrderEvent.OrderShipGroupAdded)e);
+        } else if (e instanceof AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded) {
+            when((AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded)e);
         } else if (e instanceof AbstractOrderEvent.OrderShipGroupQuantityCanceled) {
             when((AbstractOrderEvent.OrderShipGroupQuantityCanceled)e);
         } else if (e instanceof AbstractOrderEvent.OrderShipGroupItemRemoved) {
@@ -592,6 +594,61 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 //
 //public class AddOrderShipGroupLogic {
 //    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedOrderState) { merge(updatedOrderState); } //else do nothing
+
+    }
+
+    public void when(AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded e) {
+        throwOnWrongEvent(e);
+
+        Integer shipGroupSeqId = e.getShipGroupSeqId();
+        Integer ShipGroupSeqId = shipGroupSeqId;
+        String productObjId = e.getProductObjId();
+        String ProductObjId = productObjId;
+        Day day = e.getDay();
+        Day Day = day;
+        String description = e.getDescription();
+        String Description = description;
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        OrderState updatedOrderState = (OrderState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
+                    "mutate",
+                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, shipGroupSeqId, productObjId, day, description, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.roochdemocontracts.domain.order;
+//
+//public class AddOrderItemShipGroupAssocSubitemLogic {
+//    public static OrderState mutate(OrderState orderState, Integer shipGroupSeqId, String productObjId, Day day, String description, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<OrderState, OrderState.MutableOrderState> mutationContext) {
 //    }
 //}
 

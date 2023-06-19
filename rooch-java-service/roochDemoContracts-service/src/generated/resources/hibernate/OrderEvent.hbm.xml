@@ -56,6 +56,7 @@
       <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated" />
       <subclass name="AbstractOrderEvent$OrderEstimatedShipDateUpdated" discriminator-value="OrderEstimatedShipDateUpdated" />
       <subclass name="AbstractOrderEvent$OrderShipGroupAdded" discriminator-value="OrderShipGroupAdded" />
+      <subclass name="AbstractOrderEvent$OrderItemShipGroupAssocSubitemAdded" discriminator-value="OrderItemShipGroupAssocSubitemAdded" />
       <subclass name="AbstractOrderEvent$OrderShipGroupQuantityCanceled" discriminator-value="OrderShipGroupQuantityCanceled" />
       <subclass name="AbstractOrderEvent$OrderShipGroupItemRemoved" discriminator-value="OrderShipGroupItemRemoved" />
     </subclass>

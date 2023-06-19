@@ -107,6 +107,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         }
 
         @Override
+        public void addOrderItemShipGroupAssocSubitem(Integer shipGroupSeqId, String productObjId, Day day, String description, Long offChainVersion, String commandId, String requesterId, OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
+            try {
+                verifyAddOrderItemShipGroupAssocSubitem(shipGroupSeqId, productObjId, day, description, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderItemShipGroupAssocSubitemAdded(shipGroupSeqId, productObjId, day, description, offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
+        @Override
         public void cancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.CancelOrderShipGroupQuantity c) {
             try {
                 verifyCancelOrderShipGroupQuantity(shipGroupSeqId, productObjId, cancelQuantity, c);
@@ -229,6 +241,29 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 //
 //public class AddOrderShipGroupLogic {
 //    public static void verify(OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyAddOrderItemShipGroupAssocSubitem(Integer shipGroupSeqId, String productObjId, Day day, String description, OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
+            Integer ShipGroupSeqId = shipGroupSeqId;
+            String ProductObjId = productObjId;
+            Day Day = day;
+            String Description = description;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
+                    "verify",
+                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
+                    new Object[]{getState(), shipGroupSeqId, productObjId, day, description, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.roochdemocontracts.domain.order;
+//
+//public class AddOrderItemShipGroupAssocSubitemLogic {
+//    public static void verify(OrderState orderState, Integer shipGroupSeqId, String productObjId, Day day, String description, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -379,6 +414,31 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setShipmentMethod(shipmentMethod);
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderEventId(eventId);
+            return e;
+        }
+
+        protected AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded newOrderItemShipGroupAssocSubitemAdded(Integer shipGroupSeqId, String productObjId, Day day, String description, Long offChainVersion, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getOrderId(), null);
+            AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded e = new AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded();
+
+            e.setShipGroupSeqId(shipGroupSeqId);
+            e.setProductObjId(productObjId);
+            e.setDay(day);
+            e.setDescription(description);
             e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
             e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
             e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
