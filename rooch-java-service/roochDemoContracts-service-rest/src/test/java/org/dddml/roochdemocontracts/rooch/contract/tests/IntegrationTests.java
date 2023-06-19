@@ -75,9 +75,10 @@ public class IntegrationTests {
 
     @Test
     void testPullOrderTableItemAddedEvents_1() {
-        orderEventService.pullOrderItemTableItemAddedEvents();
-        orderEventService.pullOrderShipGroupTableItemAddedEvents();
-        orderEventService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
+//        orderEventService.pullOrderItemTableItemAddedEvents();
+//        orderEventService.pullOrderShipGroupTableItemAddedEvents();
+//        orderEventService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
+        orderEventService.pullOrderItemShipGroupAssocSubitemTableItemAddedEvents();
     }
 
     @Test

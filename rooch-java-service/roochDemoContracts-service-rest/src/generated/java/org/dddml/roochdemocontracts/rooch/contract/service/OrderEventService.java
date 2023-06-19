@@ -22,8 +22,6 @@ import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemShipGroupAssoc
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupQuantityCanceled;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupItemRemoved;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderEventRepository;
-import org.dddml.roochdemocontracts.rooch.contract.repository.ReferenceTableItemAddedRepository;
-import org.dddml.roochdemocontracts.rooch.contract.ReferenceTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderItemTableItemAddedRepository;
 import org.dddml.roochdemocontracts.rooch.contract.OrderItemTableItemAdded;
 import org.dddml.roochdemocontracts.rooch.contract.repository.OrderShipGroupTableItemAddedRepository;
@@ -51,9 +49,6 @@ public class OrderEventService {
 
     @Autowired
     private OrderEventRepository orderEventRepository;
-
-    @Autowired
-    private ReferenceTableItemAddedRepository referenceTableItemAddedRepository;
 
     @Autowired
     private OrderItemTableItemAddedRepository orderItemTableItemAddedRepository;
@@ -384,45 +379,6 @@ public class OrderEventService {
             return;
         }
         orderEventRepository.save(orderShipGroupItemRemoved);
-    }
-
-    @Transactional
-    public void pullReferenceTableItemAddedEvents() {
-        if (contractAddress == null) {
-            return;
-        }
-        long limit = 1L;
-        String eventType = contractAddress + "::" + ContractConstants.REFERENCE_TABLE_ITEM_ADDED;
-        BigInteger cursor = getReferenceTableItemAddedEventNextCursor();
-        while (true) {
-            EventPageView<ReferenceTableItemAdded> eventPage = roochJsonRpcClient.getEventsByEventHandle(
-                    eventType, cursor, limit, ReferenceTableItemAdded.class
-            );
-            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
-                cursor = eventPage.getNextCursor();
-                for (AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope : eventPage.getData()) {
-                    saveReferenceTableItemAdded(eventEnvelope);
-                }
-            } else {
-                break;
-            }
-            if (!PageView.hasNextPage(eventPage)) {
-                break;
-            }
-        }
-    }
-
-    private BigInteger getReferenceTableItemAddedEventNextCursor() {
-        org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded lastEvent = referenceTableItemAddedRepository.findFirstByOrderByRoochEventId_EventSeqDesc();
-        return lastEvent != null ? lastEvent.getRoochEventId().getEventSeq() : null;
-    }
-
-    private void saveReferenceTableItemAdded(AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope) {
-        org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded referenceTableItemAdded = DomainBeanUtils.toPersistenceReferenceTableItemAdded(eventEnvelope);
-        if (referenceTableItemAddedRepository.findById(referenceTableItemAdded.getArticleReferenceId()).isPresent()) {
-            return;
-        }
-        referenceTableItemAddedRepository.save(referenceTableItemAdded);
     }
 
     @Transactional

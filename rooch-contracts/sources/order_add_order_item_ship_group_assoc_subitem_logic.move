@@ -46,6 +46,7 @@ module rooch_demo::order_add_order_item_ship_group_assoc_subitem_logic {
         let description = order_item_ship_group_assoc_subitem_added::description(
             order_item_ship_group_assoc_subitem_added
         );
+        let order_id = order::order_id(&order_obj);
         let order_ship_group = order::borrow_mut_order_ship_group(&mut order_obj, ship_group_seq_id);
         let order_item_ship_group_association = order_ship_group::borrow_mut_order_item_ship_group_association(
             order_ship_group,
@@ -57,7 +58,7 @@ module rooch_demo::order_add_order_item_ship_group_assoc_subitem_logic {
         );
         order_item_ship_group_association::add_subitem(
             storage_ctx,
-            order::order_id(&order_obj),
+            order_id,
             ship_group_seq_id,
             order_item_ship_group_association,
             subitem,
