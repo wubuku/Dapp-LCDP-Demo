@@ -1,5 +1,7 @@
 # DDDML 简介：开启去中心化应用低代码开发的钥匙
 
+[English](IntroducingDDDML.md) | 中文
+
 ## 什么是 DDDML
 
 DDDML（Domain-Driven Design Modeling Language，领域驱动设计建模语言）是我们发明的一种 DSL（Domain-Specific Language，领域专用语言），它可以用来描述 DDD（领域驱动设计）风格的领域模型。
@@ -14,7 +16,7 @@ DDDML 的灵魂是一个抽象的数据结构，我们称之为 DDDML DOM（Docu
 
 至于什么是 DDD（领域驱动设计），本文只打算介绍几个 DDD 的最基本的概念。 关于 DDD 的更多内容已经有点超出本文的范畴，大家可以自行 Google 了解。
 
-### 实体
+#### 实体
 
 有一类对象拥有*标识符*（简称 *ID*），不管对象的状态如何变化，它的 ID 总是保持不变，这样的对象称之为*实体*。
 
@@ -22,7 +24,7 @@ DDDML 的灵魂是一个抽象的数据结构，我们称之为 DDDML DOM（Docu
 
 对于很多开发人员来说，实体是他们非常熟悉的概念。特别是对于使用过 ORM 框架的开发人员，当你提到“实体”，他们可能马上就会想到“就是需要映射为数据表（Table）的那些对象嘛”。
 
-### 值对象
+#### 值对象
 
 下面这几句话基本是从 DDD 一书中摘录出来的（有少量改写），我们认为它们是理解 DDD *值对象*的关键点：
 
@@ -34,7 +36,7 @@ DDDML 的灵魂是一个抽象的数据结构，我们称之为 DDDML DOM（Docu
 
 使用过 Hibernate ORM 的开发人员可能会注意到在 Hibernate 中有一个概念：*Dependent Objects*（非独立的对象）。你可以认为它所指的就是值对象。Dependent Objects 是不会被映射为数据库中的表（Table）的，它们会被映射为表中的列。
 
-### 聚合与聚合根、聚合内部实体
+#### 聚合与聚合根、聚合内部实体
 
 *聚合*（Aggregate）是 DDD 在战术层面最为重要的一个概念。它是 DDD 可以在战术层面应对“软件核心复杂性”的关键。
 
@@ -44,7 +46,7 @@ DDDML 的灵魂是一个抽象的数据结构，我们称之为 DDDML DOM（Docu
 
 从一个聚合根出发能够访问到的实体可以认为是一个整体。聚合内部实体的生命周期由它们所属的聚合根控制。很多时候，一个聚合内就只有聚合根这一个实体。
 
-#### 例子：Order、OrderHeader、OrderItem
+##### 例子：Order、OrderHeader、OrderItem
 
 为“订单”建模，我们可能会得到：
 
@@ -67,7 +69,7 @@ DDDML 的灵魂是一个抽象的数据结构，我们称之为 DDDML DOM（Docu
 
 在 DDDML DOM 中，我们把 JSON 的对象称为 Map，它是一个无序的键值对的集合。我们把 JSON 的数组称为 List，它是一个有序的值的集合。我们把 JSON 的值称为 Object，它可以是任意类型的值。我们还有一些其他类型的结点，比如 String、Number、Boolean 等，它们和 JSON 中的同名概念所指一致。
 
-我们可以使用*路径*来选取 DDDML DOM 中的结点。路径是由斜杠分隔的结点名称组成的字符串。比如说，/aggregates/Car/entities/Tire/entities/Position/properties/MileAge 这样一个路径，就可以选取下面的 YAML 文档倒数第二行那个名为 MileAge 的键结点。
+我们可以使用*路径*来选取 DDDML DOM 中的结点。路径是由斜杠分隔的结点名称组成的字符串。比如说，`/aggregates/Car/entities/Tire/entities/Position/properties/MileAge` 这样一个路径，就可以选取下面的 YAML 文档倒数第二行那个名为 MileAge 的键结点。
 
 ```yaml
 aggregates:
@@ -305,7 +307,7 @@ Day 对象有三个属性：Month、Number 和 TimeZone。它嵌入了一个 Mon
 
 这些属性都有不同的类型，如 u16、u8、bool 和 String。
 
-### 示例 X：一个 Blog 系统
+### 示例 4：一个 Blog 系统
 
 这是一个描述 blog 系统的 DDDML 模型文档：
 
