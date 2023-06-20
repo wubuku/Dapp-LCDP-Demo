@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class TagResource {
      * Retrieve Tags
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public TagStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class TagResource {
      * Retrieve Tags in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<TagStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class TagResource {
      * Retrieves Tag with the specified ID.
      */
     @GetMapping("{name}")
+    @Transactional(readOnly = true)
     public TagStateDto get(@PathVariable("name") String name, @RequestParam(value = "fields", required = false) String fields) {
         try {
             String idObj = name;
@@ -146,6 +149,7 @@ public class TagResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -198,6 +202,7 @@ public class TagResource {
     }
 
     @GetMapping("{name}/_events/{version}")
+    @Transactional(readOnly = true)
     public TagEvent getEvent(@PathVariable("name") String name, @PathVariable("version") long version) {
         try {
 
@@ -209,6 +214,7 @@ public class TagResource {
     }
 
     @GetMapping("{name}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public TagStateDto getHistoryState(@PathVariable("name") String name, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class ArticleResource {
      * Retrieve Articles
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public ArticleStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class ArticleResource {
      * Retrieve Articles in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<ArticleStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class ArticleResource {
      * Retrieves Article with the specified ID.
      */
     @GetMapping("{id}")
+    @Transactional(readOnly = true)
     public ArticleStateDto get(@PathVariable("id") String id, @RequestParam(value = "fields", required = false) String fields) {
         try {
             String idObj = id;
@@ -146,6 +149,7 @@ public class ArticleResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -252,6 +256,7 @@ public class ArticleResource {
     }
 
     @GetMapping("{id}/_events/{version}")
+    @Transactional(readOnly = true)
     public ArticleEvent getEvent(@PathVariable("id") String id, @PathVariable("version") long version) {
         try {
 
@@ -263,6 +268,7 @@ public class ArticleResource {
     }
 
     @GetMapping("{id}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public ArticleStateDto getHistoryState(@PathVariable("id") String id, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 
@@ -283,6 +289,7 @@ public class ArticleResource {
      * Retrieves Reference with the specified ReferenceNumber.
      */
     @GetMapping("{id}/References/{referenceNumber}")
+    @Transactional(readOnly = true)
     public ReferenceStateDto getReference(@PathVariable("id") String id, @PathVariable("referenceNumber") BigInteger referenceNumber) {
         try {
 
@@ -300,6 +307,7 @@ public class ArticleResource {
      * Reference List
      */
     @GetMapping("{id}/References")
+    @Transactional(readOnly = true)
     public ReferenceStateDto[] getReferences(@PathVariable("id") String id,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,

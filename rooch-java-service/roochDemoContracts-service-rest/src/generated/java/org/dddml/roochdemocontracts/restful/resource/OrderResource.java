@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import org.dddml.roochdemocontracts.domain.*;
@@ -42,6 +42,7 @@ public class OrderResource {
      * Retrieve Orders
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public OrderStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class OrderResource {
      * Retrieve Orders in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<OrderStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class OrderResource {
      * Retrieves Order with the specified ID.
      */
     @GetMapping("{orderId}")
+    @Transactional(readOnly = true)
     public OrderStateDto get(@PathVariable("orderId") String orderId, @RequestParam(value = "fields", required = false) String fields) {
         try {
             String idObj = orderId;
@@ -146,6 +149,7 @@ public class OrderResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -324,6 +328,7 @@ public class OrderResource {
     }
 
     @GetMapping("{orderId}/_events/{version}")
+    @Transactional(readOnly = true)
     public OrderEvent getEvent(@PathVariable("orderId") String orderId, @PathVariable("version") long version) {
         try {
 
@@ -335,6 +340,7 @@ public class OrderResource {
     }
 
     @GetMapping("{orderId}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public OrderStateDto getHistoryState(@PathVariable("orderId") String orderId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 
@@ -355,6 +361,7 @@ public class OrderResource {
      * Retrieves OrderItem with the specified ProductObjectId.
      */
     @GetMapping("{orderId}/OrderItems/{productObjectId}")
+    @Transactional(readOnly = true)
     public OrderItemStateDto getOrderItem(@PathVariable("orderId") String orderId, @PathVariable("productObjectId") String productObjectId) {
         try {
 
@@ -372,6 +379,7 @@ public class OrderResource {
      * OrderItem List
      */
     @GetMapping("{orderId}/OrderItems")
+    @Transactional(readOnly = true)
     public OrderItemStateDto[] getOrderItems(@PathVariable("orderId") String orderId,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -406,6 +414,7 @@ public class OrderResource {
      * Retrieves OrderShipGroup with the specified ShipGroupSeqId.
      */
     @GetMapping("{orderId}/OrderShipGroups/{shipGroupSeqId}")
+    @Transactional(readOnly = true)
     public OrderShipGroupStateDto getOrderShipGroup(@PathVariable("orderId") String orderId, @PathVariable("shipGroupSeqId") Integer shipGroupSeqId) {
         try {
 
@@ -423,6 +432,7 @@ public class OrderResource {
      * OrderShipGroup List
      */
     @GetMapping("{orderId}/OrderShipGroups")
+    @Transactional(readOnly = true)
     public OrderShipGroupStateDto[] getOrderShipGroups(@PathVariable("orderId") String orderId,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -457,6 +467,7 @@ public class OrderResource {
      * Retrieves OrderItemShipGroupAssociation with the specified ProductObjId.
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{productObjId}")
+    @Transactional(readOnly = true)
     public OrderItemShipGroupAssociationStateDto getOrderItemShipGroupAssociation(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("productObjId") String productObjId) {
         try {
 
@@ -474,6 +485,7 @@ public class OrderResource {
      * OrderItemShipGroupAssociation List
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations")
+    @Transactional(readOnly = true)
     public OrderItemShipGroupAssociationStateDto[] getOrderItemShipGroupAssociations(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -508,6 +520,7 @@ public class OrderResource {
      * Retrieves OrderItemShipGroupAssocSubitem with the specified OrderItemShipGroupAssocSubitemDay.
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductObjId}/OrderItemShipGroupAssocSubitems/{orderItemShipGroupAssocSubitemDay}")
+    @Transactional(readOnly = true)
     public OrderItemShipGroupAssocSubitemStateDto getOrderItemShipGroupAssocSubitem(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductObjId") String orderItemShipGroupAssociationProductObjId, @PathVariable("orderItemShipGroupAssocSubitemDay") String orderItemShipGroupAssocSubitemDay) {
         try {
 
@@ -530,6 +543,7 @@ public class OrderResource {
      * OrderItemShipGroupAssocSubitem List
      */
     @GetMapping("{orderId}/OrderShipGroups/{orderShipGroupShipGroupSeqId}/OrderItemShipGroupAssociations/{orderItemShipGroupAssociationProductObjId}/OrderItemShipGroupAssocSubitems")
+    @Transactional(readOnly = true)
     public OrderItemShipGroupAssocSubitemStateDto[] getOrderItemShipGroupAssocSubitems(@PathVariable("orderId") String orderId, @PathVariable("orderShipGroupShipGroupSeqId") Integer orderShipGroupShipGroupSeqId, @PathVariable("orderItemShipGroupAssociationProductObjId") String orderItemShipGroupAssociationProductObjId,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
