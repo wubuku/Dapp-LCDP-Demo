@@ -109,7 +109,10 @@ configuration:
 
     # --------------------------------------------------------------
     AutoAggregateMethodJavaDefaultLogicEnabled: true
+    # Disable automatically generating Create, Update, Delete commands for the backend service
+    # (in the case of Dapp, the off-chain service).
     AutoGeneratingCrUDCommandsDisabled: true
+    # Making event objects mutable may be useful for generating off-chain services.
     AllEventsMutable: true
 
     # OptimisticLockingVersionDisabled: true
