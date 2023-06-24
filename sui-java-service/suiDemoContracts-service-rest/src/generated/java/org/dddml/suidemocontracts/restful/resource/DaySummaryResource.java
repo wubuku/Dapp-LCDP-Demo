@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import org.dddml.suidemocontracts.domain.*;
 import java.math.BigInteger;
@@ -42,6 +42,7 @@ public class DaySummaryResource {
      * Retrieve DaySummaries
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public DaySummaryStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class DaySummaryResource {
      * Retrieve DaySummaries in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<DaySummaryStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class DaySummaryResource {
      * Retrieves DaySummary with the specified ID.
      */
     @GetMapping("{day}")
+    @Transactional(readOnly = true)
     public DaySummaryStateDto get(@PathVariable("day") String day, @RequestParam(value = "fields", required = false) String fields) {
         try {
             Day idObj = DaySummaryResourceUtils.parseIdString(day);
@@ -146,6 +149,7 @@ public class DaySummaryResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -198,6 +202,7 @@ public class DaySummaryResource {
     }
 
     @GetMapping("{day}/_events/{version}")
+    @Transactional(readOnly = true)
     public DaySummaryEvent getEvent(@PathVariable("day") String day, @PathVariable("version") long version) {
         try {
 
@@ -209,6 +214,7 @@ public class DaySummaryResource {
     }
 
     @GetMapping("{day}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public DaySummaryStateDto getHistoryState(@PathVariable("day") String day, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 

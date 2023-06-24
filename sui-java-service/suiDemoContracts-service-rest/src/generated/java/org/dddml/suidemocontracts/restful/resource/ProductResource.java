@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class ProductResource {
      * Retrieve Products
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public ProductStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class ProductResource {
      * Retrieve Products in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<ProductStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class ProductResource {
      * Retrieves Product with the specified ID.
      */
     @GetMapping("{productId}")
+    @Transactional(readOnly = true)
     public ProductStateDto get(@PathVariable("productId") String productId, @RequestParam(value = "fields", required = false) String fields) {
         try {
             String idObj = productId;
@@ -146,6 +149,7 @@ public class ProductResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -198,6 +202,7 @@ public class ProductResource {
     }
 
     @GetMapping("{productId}/_events/{version}")
+    @Transactional(readOnly = true)
     public ProductEvent getEvent(@PathVariable("productId") String productId, @PathVariable("version") long version) {
         try {
 
@@ -209,6 +214,7 @@ public class ProductResource {
     }
 
     @GetMapping("{productId}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public ProductStateDto getHistoryState(@PathVariable("productId") String productId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 

@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class OrderResource {
      * Retrieve Orders
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public OrderStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class OrderResource {
      * Retrieve Orders in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<OrderStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class OrderResource {
      * Retrieves Order with the specified ID.
      */
     @GetMapping("{id}")
+    @Transactional(readOnly = true)
     public OrderStateDto get(@PathVariable("id") String id, @RequestParam(value = "fields", required = false) String fields) {
         try {
             String idObj = id;
@@ -146,6 +149,7 @@ public class OrderResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -234,6 +238,7 @@ public class OrderResource {
     }
 
     @GetMapping("{id}/_events/{version}")
+    @Transactional(readOnly = true)
     public OrderEvent getEvent(@PathVariable("id") String id, @PathVariable("version") long version) {
         try {
 
@@ -245,6 +250,7 @@ public class OrderResource {
     }
 
     @GetMapping("{id}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public OrderStateDto getHistoryState(@PathVariable("id") String id, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 
@@ -265,6 +271,7 @@ public class OrderResource {
      * Retrieves OrderItem with the specified ProductId.
      */
     @GetMapping("{id}/OrderItems/{productId}")
+    @Transactional(readOnly = true)
     public OrderItemStateDto getOrderItem(@PathVariable("id") String id, @PathVariable("productId") String productId) {
         try {
 
@@ -282,6 +289,7 @@ public class OrderResource {
      * OrderItem List
      */
     @GetMapping("{id}/OrderItems")
+    @Transactional(readOnly = true)
     public OrderItemStateDto[] getOrderItems(@PathVariable("id") String id,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,

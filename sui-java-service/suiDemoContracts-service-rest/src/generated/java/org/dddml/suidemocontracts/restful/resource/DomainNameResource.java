@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.dddml.support.criterion.*;
 import java.math.BigInteger;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class DomainNameResource {
      * Retrieve DomainNames
      */
     @GetMapping
+    @Transactional(readOnly = true)
     public DomainNameStateDto[] getAll( HttpServletRequest request,
                     @RequestParam(value = "sort", required = false) String sort,
                     @RequestParam(value = "fields", required = false) String fields,
@@ -84,6 +85,7 @@ public class DomainNameResource {
      * Retrieve DomainNames in pages.
      */
     @GetMapping("_page")
+    @Transactional(readOnly = true)
     public Page<DomainNameStateDto> getPage( HttpServletRequest request,
                     @RequestParam(value = "fields", required = false) String fields,
                     @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -128,6 +130,7 @@ public class DomainNameResource {
      * Retrieves DomainName with the specified ID.
      */
     @GetMapping("{domainNameId}")
+    @Transactional(readOnly = true)
     public DomainNameStateDto get(@PathVariable("domainNameId") String domainNameId, @RequestParam(value = "fields", required = false) String fields) {
         try {
             DomainNameId idObj = DomainNameResourceUtils.parseIdString(domainNameId);
@@ -146,6 +149,7 @@ public class DomainNameResource {
     }
 
     @GetMapping("_count")
+    @Transactional(readOnly = true)
     public long getCount( HttpServletRequest request,
                          @RequestParam(value = "filter", required = false) String filter) {
         try {
@@ -216,6 +220,7 @@ public class DomainNameResource {
     }
 
     @GetMapping("{domainNameId}/_events/{version}")
+    @Transactional(readOnly = true)
     public DomainNameEvent getEvent(@PathVariable("domainNameId") String domainNameId, @PathVariable("version") long version) {
         try {
 
@@ -227,6 +232,7 @@ public class DomainNameResource {
     }
 
     @GetMapping("{domainNameId}/_historyStates/{version}")
+    @Transactional(readOnly = true)
     public DomainNameStateDto getHistoryState(@PathVariable("domainNameId") String domainNameId, @PathVariable("version") long version, @RequestParam(value = "fields", required = false) String fields) {
         try {
 
