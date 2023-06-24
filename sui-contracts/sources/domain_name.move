@@ -245,7 +245,7 @@ module sui_contracts::domain_name {
 
     fun update_object_version(domain_name: &mut DomainName) {
         domain_name.version = domain_name.version + 1;
-        assert!(domain_name.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(domain_name.version != 0, EINAPPROPRIATE_VERSION);
     }
 
     public(friend) fun emit_registered(registered: Registered) {

@@ -329,7 +329,7 @@ module rooch_demo::article {
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, article_obj: Object<Article>) {
         object::borrow_mut(&mut article_obj).version = object::borrow( &mut article_obj).version + 1;
-        assert!(object::borrow(&article_obj).version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(object::borrow(&article_obj).version != 0, EINAPPROPRIATE_VERSION);
         private_add_article(storage_ctx, article_obj);
     }
 

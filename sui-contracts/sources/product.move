@@ -210,7 +210,7 @@ module sui_contracts::product {
 
     fun update_object_version(product: &mut Product) {
         product.version = product.version + 1;
-        assert!(product.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(product.version != 0, EINAPPROPRIATE_VERSION);
     }
 
     public(friend) fun emit_product_created(product_created: ProductCreated) {
