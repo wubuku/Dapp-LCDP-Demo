@@ -577,6 +577,7 @@ module rooch_demo::order {
     }
 
     fun private_add_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
+        assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EID_DATA_TOO_LONG);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, order_obj);
     }

@@ -149,6 +149,7 @@ module rooch_demo::tag {
     }
 
     fun private_add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
+        assert!(std::string::length(&object::borrow(&tag_obj).name) <= 50, EID_DATA_TOO_LONG);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, tag_obj);
     }

@@ -204,6 +204,7 @@ module rooch_demo::product {
     }
 
     fun private_add_product(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
+        assert!(std::string::length(&object::borrow(&product_obj).product_id) <= 20, EID_DATA_TOO_LONG);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, product_obj);
     }
