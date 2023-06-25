@@ -356,6 +356,19 @@ module rooch_demo::article {
         private_add_article(storage_ctx, article_obj);
     }
 
+    public(friend) fun drop_article(article_obj: Object<Article>) {
+        let (_id, _owner, article) =  object::unpack(article_obj);
+        let Article {
+            version: _version,
+            title: _title,
+            author: _author,
+            content: _content,
+            tags: _tags,
+            references,
+        } = article;
+        table::destroy_empty(references);
+    }
+
     public(friend) fun emit_article_created(storage_ctx: &mut StorageContext, article_created: ArticleCreated) {
         events::emit_event(storage_ctx, article_created);
     }

@@ -347,6 +347,23 @@ module rooch_demo::day_summary {
         private_add_day_summary(storage_ctx, day_summary_obj);
     }
 
+    public(friend) fun drop_day_summary(day_summary_obj: Object<DaySummary>) {
+        let (_id, _owner, day_summary) =  object::unpack(day_summary_obj);
+        let DaySummary {
+            version: _version,
+            day: _day,
+            description: _description,
+            metadata: _metadata,
+            array_data: _array_data,
+            optional_data: _optional_data,
+            u16_array_data: _u16_array_data,
+            u32_array_data: _u32_array_data,
+            u64_array_data: _u64_array_data,
+            u128_array_data: _u128_array_data,
+            u256_array_data: _u256_array_data,
+        } = day_summary;
+    }
+
     public(friend) fun emit_day_summary_created(storage_ctx: &mut StorageContext, day_summary_created: DaySummaryCreated) {
         events::emit_event(storage_ctx, day_summary_created);
     }

@@ -168,6 +168,14 @@ module rooch_demo::tag {
         private_add_tag(storage_ctx, tag_obj);
     }
 
+    public(friend) fun drop_tag(tag_obj: Object<Tag>) {
+        let (_id, _owner, tag) =  object::unpack(tag_obj);
+        let Tag {
+            version: _version,
+            name: _name,
+        } = tag;
+    }
+
     public(friend) fun emit_tag_created(storage_ctx: &mut StorageContext, tag_created: TagCreated) {
         events::emit_event(storage_ctx, tag_created);
     }

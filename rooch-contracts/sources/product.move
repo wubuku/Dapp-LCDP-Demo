@@ -217,6 +217,16 @@ module rooch_demo::product {
         private_add_product(storage_ctx, product_obj);
     }
 
+    public(friend) fun drop_product(product_obj: Object<Product>) {
+        let (_id, _owner, product) =  object::unpack(product_obj);
+        let Product {
+            version: _version,
+            product_id: _product_id,
+            name: _name,
+            unit_price: _unit_price,
+        } = product;
+    }
+
     public(friend) fun emit_product_created(storage_ctx: &mut StorageContext, product_created: ProductCreated) {
         events::emit_event(storage_ctx, product_created);
     }
