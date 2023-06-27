@@ -5,7 +5,7 @@
 
 module rooch_demo::tag {
     use moveos_std::account_storage;
-    use moveos_std::events;
+    use moveos_std::event;
     use moveos_std::object::{Self, Object};
     use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
@@ -177,7 +177,7 @@ module rooch_demo::tag {
     }
 
     public(friend) fun emit_tag_created(storage_ctx: &mut StorageContext, tag_created: TagCreated) {
-        events::emit_event(storage_ctx, tag_created);
+        event::emit_event(storage_ctx, tag_created);
     }
 
 }

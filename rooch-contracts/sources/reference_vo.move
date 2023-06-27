@@ -29,7 +29,7 @@ module rooch_demo::reference_vo {
     }
 
     public fun vector_from_bytes(bytes: vector<u8>): vector<ReferenceVO> {
-        moveos_std::bcd::from_bytes<vector<ReferenceVO>>(bytes)
+        moveos_std::bcs::from_bytes<vector<ReferenceVO>>(bytes)
     }
 
     fun validate(reference_vo: &ReferenceVO) {

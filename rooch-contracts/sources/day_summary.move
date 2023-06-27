@@ -5,7 +5,7 @@
 
 module rooch_demo::day_summary {
     use moveos_std::account_storage;
-    use moveos_std::events;
+    use moveos_std::event;
     use moveos_std::object::{Self, Object};
     use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
@@ -365,7 +365,7 @@ module rooch_demo::day_summary {
     }
 
     public(friend) fun emit_day_summary_created(storage_ctx: &mut StorageContext, day_summary_created: DaySummaryCreated) {
-        events::emit_event(storage_ctx, day_summary_created);
+        event::emit_event(storage_ctx, day_summary_created);
     }
 
 }

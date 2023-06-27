@@ -5,7 +5,7 @@
 
 module rooch_demo::product {
     use moveos_std::account_storage;
-    use moveos_std::events;
+    use moveos_std::event;
     use moveos_std::object::{Self, Object};
     use moveos_std::object_id::ObjectID;
     use moveos_std::object_storage;
@@ -228,7 +228,7 @@ module rooch_demo::product {
     }
 
     public(friend) fun emit_product_created(storage_ctx: &mut StorageContext, product_created: ProductCreated) {
-        events::emit_event(storage_ctx, product_created);
+        event::emit_event(storage_ctx, product_created);
     }
 
 }
