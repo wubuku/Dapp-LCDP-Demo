@@ -8,6 +8,7 @@ module sui_contracts::order_aggregate {
     use sui::tx_context;
     use sui_contracts::order;
     use sui_contracts::order_create_logic;
+    use sui_contracts::order_delete_logic;
     use sui_contracts::order_remove_item_logic;
     use sui_contracts::order_update_item_quantity_logic;
     use sui_contracts::product::Product;
@@ -71,6 +72,24 @@ module sui_contracts::order_aggregate {
         );
         order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
         order::emit_order_item_quantity_updated(order_item_quantity_updated);
+    }
+
+
+    public entry fun delete(
+        order: order::Order,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        let order_deleted = order_delete_logic::verify(
+            &order,
+            ctx,
+        );
+        let updated_order = order_delete_logic::mutate(
+            &order_deleted,
+            order,
+            ctx,
+        );
+        order::drop_order(updated_order);
+        order::emit_order_deleted(order_deleted);
     }
 
 }

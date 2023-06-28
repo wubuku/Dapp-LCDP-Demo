@@ -82,6 +82,18 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             apply(e);
         }
 
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, OrderCommands.Delete c) {
+            try {
+                verifyDelete(c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newOrderDeleted(offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
         protected void verifyCreate(String product, BigInteger quantity, OrderCommands.Create c) {
             String Product = product;
             BigInteger Quantity = quantity;
@@ -144,6 +156,25 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
         }
            
 
+        protected void verifyDelete(OrderCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.order.DeleteLogic",
+                    "verify",
+                    new Class[]{OrderState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.order;
+//
+//public class DeleteLogic {
+//    public static void verify(OrderState orderState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
         protected AbstractOrderEvent.OrderCreated newOrderCreated(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId) {
             OrderEventId eventId = new OrderEventId(getState().getId(), null);
             AbstractOrderEvent.OrderCreated e = new AbstractOrderEvent.OrderCreated();
@@ -198,6 +229,27 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProductId(productId);
             e.setQuantity(quantity);
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setOrderEventId(eventId);
+            return e;
+        }
+
+        protected AbstractOrderEvent.OrderDeleted newOrderDeleted(Long offChainVersion, String commandId, String requesterId) {
+            OrderEventId eventId = new OrderEventId(getState().getId(), null);
+            AbstractOrderEvent.OrderDeleted e = new AbstractOrderEvent.OrderDeleted();
+
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.

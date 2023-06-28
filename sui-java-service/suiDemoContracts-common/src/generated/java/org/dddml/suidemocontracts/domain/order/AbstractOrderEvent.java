@@ -361,6 +361,15 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
+    public static class OrderDeleted extends OrderClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "OrderDeleted";
+        }
+
+    }
+
 
 }
 

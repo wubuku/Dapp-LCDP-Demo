@@ -15,6 +15,7 @@ module sui_contracts::order {
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
+    friend sui_contracts::order_delete_logic;
     friend sui_contracts::order_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
@@ -192,6 +193,24 @@ module sui_contracts::order {
         }
     }
 
+    struct OrderDeleted has copy, drop {
+        id: object::ID,
+        version: u64,
+    }
+
+    public fun order_deleted_id(order_deleted: &OrderDeleted): object::ID {
+        order_deleted.id
+    }
+
+    public(friend) fun new_order_deleted(
+        order: &Order,
+    ): OrderDeleted {
+        OrderDeleted {
+            id: id(order),
+            version: version(order),
+        }
+    }
+
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
         assert!(order.version == 0, EINAPPROPRIATE_VERSION);
@@ -223,6 +242,17 @@ module sui_contracts::order {
         transfer::freeze_object(order);
     }
 
+    public (friend) fun drop_order(order: Order) {
+        let Order {
+            id,
+            version: _version,
+            total_amount: _total_amount,
+            items,
+        } = order;
+        object::delete(id);
+        table::destroy_empty(items);
+    }
+
     fun update_object_version(order: &mut Order) {
         order.version = order.version + 1;
         //assert!(order.version != 0, EINAPPROPRIATE_VERSION);
@@ -238,6 +268,10 @@ module sui_contracts::order {
 
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) {
         event::emit(order_item_quantity_updated);
+    }
+
+    public(friend) fun emit_order_deleted(order_deleted: OrderDeleted) {
+        event::emit(order_deleted);
     }
 
 }

@@ -62,6 +62,10 @@ public abstract class AbstractOrderApplicationService implements OrderApplicatio
         update(c, ar -> ar.updateItemQuantity(c.getProductId(), c.getQuantity(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(OrderCommands.Delete c) {
+        update(c, ar -> ar.delete(c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public OrderState get(String id) {
         OrderState state = getStateRepository().get(id, true);
         return state;

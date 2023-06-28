@@ -8,6 +8,7 @@ module sui_contracts::order_item {
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
+    friend sui_contracts::order_delete_logic;
     friend sui_contracts::order;
 
     const EID_DATA_TOO_LONG: u64 = 102;

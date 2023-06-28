@@ -31,4 +31,9 @@ public class PullOrderEventsTaskService {
         orderEventService.pullOrderItemQuantityUpdatedEvents();
     }
 
+    @Scheduled(fixedDelayString = "${sui.contract.pull-order-events.order-deleted.fixed-delay:5000}")
+    public void pullOrderDeletedEvents() {
+        orderEventService.pullOrderDeletedEvents();
+    }
+
 }

@@ -23,6 +23,8 @@ public interface OrderAggregate {
 
     void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c);
 
+    void delete(Long offChainVersion, String commandId, String requesterId, OrderCommands.Delete c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

@@ -17,6 +17,7 @@ import org.dddml.suidemocontracts.sui.contract.SuiPackage;
 import org.dddml.suidemocontracts.sui.contract.order.OrderCreated;
 import org.dddml.suidemocontracts.sui.contract.order.OrderItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.order.OrderItemQuantityUpdated;
+import org.dddml.suidemocontracts.sui.contract.order.OrderDeleted;
 import org.dddml.suidemocontracts.sui.contract.repository.OrderEventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +160,46 @@ public class OrderEventService {
             return;
         }
         orderEventRepository.save(orderItemQuantityUpdated);
+    }
+
+    @Transactional
+    public void pullOrderDeletedEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getOrderDeletedEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<OrderDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(
+                    packageId + "::" + ContractConstants.ORDER_MODULE_ORDER_DELETED,
+                    cursor, limit, false, OrderDeleted.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<OrderDeleted> eventEnvelope : eventPage.getData()) {
+                    saveOrderDeleted(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!Page.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private EventId getOrderDeletedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderDeletedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
+    }
+
+    private void saveOrderDeleted(SuiMoveEventEnvelope<OrderDeleted> eventEnvelope) {
+        AbstractOrderEvent.OrderDeleted orderDeleted = DomainBeanUtils.toOrderDeleted(eventEnvelope);
+        if (orderEventRepository.findById(orderDeleted.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderDeleted);
     }
 
 

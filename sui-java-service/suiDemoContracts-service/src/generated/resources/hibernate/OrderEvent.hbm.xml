@@ -46,6 +46,7 @@
       <subclass name="AbstractOrderEvent$OrderCreated" discriminator-value="OrderCreated" />
       <subclass name="AbstractOrderEvent$OrderItemRemoved" discriminator-value="OrderItemRemoved" />
       <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated" />
+      <subclass name="AbstractOrderEvent$OrderDeleted" discriminator-value="OrderDeleted" />
     </subclass>
   </class>
 </hibernate-mapping>

@@ -46,6 +46,14 @@ sui client call --package _PACKAGE_ID_ --module order_aggregate --function updat
 --gas-budget 100000
 ```
 
+### Delete method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module order_aggregate --function delete \
+--args order::order_order \
+--gas-budget 100000
+```
+
 ## Product aggregate
 
 ### Create method

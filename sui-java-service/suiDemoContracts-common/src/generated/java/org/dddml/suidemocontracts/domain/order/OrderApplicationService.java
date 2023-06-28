@@ -21,6 +21,8 @@ public interface OrderApplicationService {
 
     void when(OrderCommands.UpdateItemQuantity c);
 
+    void when(OrderCommands.Delete c);
+
     OrderState get(String id);
 
     Iterable<OrderState> getAll(Integer firstResult, Integer maxResults);

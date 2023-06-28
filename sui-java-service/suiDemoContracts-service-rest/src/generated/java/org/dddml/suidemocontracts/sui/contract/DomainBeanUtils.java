@@ -16,6 +16,7 @@ import org.dddml.suidemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.suidemocontracts.sui.contract.order.OrderCreated;
 import org.dddml.suidemocontracts.sui.contract.order.OrderItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.order.OrderItemQuantityUpdated;
+import org.dddml.suidemocontracts.sui.contract.order.OrderDeleted;
 import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
 import org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Event;
@@ -224,6 +225,24 @@ public class DomainBeanUtils {
         orderItemQuantityUpdated.setSuiSender(eventEnvelope.getSender());
 
         return orderItemQuantityUpdated;
+    }
+
+    public static AbstractOrderEvent.OrderDeleted toOrderDeleted(SuiMoveEventEnvelope<OrderDeleted> eventEnvelope) {
+        OrderDeleted contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractOrderEvent.OrderDeleted orderDeleted = new AbstractOrderEvent.OrderDeleted();
+        orderDeleted.setId(contractEvent.getId());
+        orderDeleted.setVersion(contractEvent.getVersion());
+
+        orderDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        orderDeleted.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        orderDeleted.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        orderDeleted.setSuiPackageId(eventEnvelope.getPackageId());
+        orderDeleted.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        orderDeleted.setSuiSender(eventEnvelope.getSender());
+
+        return orderDeleted;
     }
 
     public static AbstractProductEvent.ProductCreated toProductCreated(SuiMoveEventEnvelope<ProductCreated> eventEnvelope) {

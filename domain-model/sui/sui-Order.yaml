@@ -63,3 +63,8 @@ aggregates:
             type: u64
         event:
           name: OrderItemQuantityUpdated
+
+      Delete:
+        isDeletionCommand: true
+        event:
+          name: OrderDeleted
