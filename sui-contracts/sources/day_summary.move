@@ -240,6 +240,19 @@ module sui_contracts::day_summary {
         //assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
     }
 
+    public(friend) fun drop_day_summary(day_summary: DaySummary) {
+        let DaySummary {
+            id,
+            version: _version,
+            day: _day,
+            description: _description,
+            metadata: _metadata,
+            array_data: _array_data,
+            optional_data: _optional_data,
+        } = day_summary;
+        object::delete(id);
+    }
+
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) {
         event::emit(day_summary_created);
     }

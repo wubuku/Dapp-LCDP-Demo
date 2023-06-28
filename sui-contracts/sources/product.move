@@ -213,6 +213,17 @@ module sui_contracts::product {
         //assert!(product.version != 0, EINAPPROPRIATE_VERSION);
     }
 
+    public(friend) fun drop_product(product: Product) {
+        let Product {
+            id,
+            version: _version,
+            product_id: _product_id,
+            name: _name,
+            unit_price: _unit_price,
+        } = product;
+        object::delete(id);
+    }
+
     public(friend) fun emit_product_created(product_created: ProductCreated) {
         event::emit(product_created);
     }

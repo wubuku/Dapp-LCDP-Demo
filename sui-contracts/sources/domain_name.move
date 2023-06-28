@@ -248,6 +248,16 @@ module sui_contracts::domain_name {
         //assert!(domain_name.version != 0, EINAPPROPRIATE_VERSION);
     }
 
+    public(friend) fun drop_domain_name(domain_name: DomainName) {
+        let DomainName {
+            id,
+            version: _version,
+            domain_name_id: _domain_name_id,
+            expiration_date: _expiration_date,
+        } = domain_name;
+        object::delete(id);
+    }
+
     public(friend) fun emit_registered(registered: Registered) {
         event::emit(registered);
     }

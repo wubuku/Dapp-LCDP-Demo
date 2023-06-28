@@ -242,7 +242,12 @@ module sui_contracts::order {
         transfer::freeze_object(order);
     }
 
-    public (friend) fun drop_order(order: Order) {
+    fun update_object_version(order: &mut Order) {
+        order.version = order.version + 1;
+        //assert!(order.version != 0, EINAPPROPRIATE_VERSION);
+    }
+
+    public(friend) fun drop_order(order: Order) {
         let Order {
             id,
             version: _version,
@@ -251,11 +256,6 @@ module sui_contracts::order {
         } = order;
         object::delete(id);
         table::destroy_empty(items);
-    }
-
-    fun update_object_version(order: &mut Order) {
-        order.version = order.version + 1;
-        //assert!(order.version != 0, EINAPPROPRIATE_VERSION);
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) {
