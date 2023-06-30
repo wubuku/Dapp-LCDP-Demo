@@ -1,11 +1,13 @@
 aggregates:
   Product:
-    immutable: true # need ignore this setting when generate off-chain service
+    immutable: true # This true value needs to be ignored when generating the off-chain service.
+    metadata:
+      Preprocessors: ["MOVE_CRUD_IT"]
     id:
       name: ProductId
       type: String
       length: 20
-      generator: 
+      generator:
         class: sequence
         structName: ProductIdGenerator # Used to generate ProductId
     properties:
@@ -16,13 +18,14 @@ aggregates:
 
     methods:
       Create:
-        isCreationCommand: true
-        parameters:
-          Name:
-            type: String
-          UnitPrice:
-            type: u128
+#        isCreationCommand: true
+#        parameters:
+#          Name:
+#            type: String
+#          UnitPrice:
+#            type: u128
         event:
-          name: ProductCreated
-          isObjectFrozen: true # This is true because the Product is immutable.
+          #name: ProductCreated
+          #isObjectShared: true
+          #isObjectFrozen: true # This is true when the Product is immutable.
 
