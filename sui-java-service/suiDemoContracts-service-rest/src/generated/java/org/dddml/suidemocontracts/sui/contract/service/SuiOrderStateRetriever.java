@@ -38,7 +38,9 @@ public class SuiOrderStateRetriever {
         SuiMoveObjectResponse<Order> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
                 objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), Order.class
         );
-
+        if (getObjectDataResponse.getData() == null) {
+            return null;
+        }
         Order order = getObjectDataResponse.getData().getContent().getFields();
         return toOrderState(order);
     }

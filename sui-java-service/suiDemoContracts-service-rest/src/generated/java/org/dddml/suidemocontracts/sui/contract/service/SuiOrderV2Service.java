@@ -46,6 +46,9 @@ public class SuiOrderV2Service {
     @Transactional
     public void updateOrderV2State(String objectId) {
         OrderV2State orderV2State = suiOrderV2StateRetriever.retrieveOrderV2State(objectId);
+        if (orderV2State == null) {
+            return;
+        }
         orderV2StateRepository.merge(orderV2State);
     }
 

@@ -40,6 +40,9 @@ public class SuiOrderService {
     @Transactional
     public void updateOrderState(String objectId) {
         OrderState orderState = suiOrderStateRetriever.retrieveOrderState(objectId);
+        if (orderState == null) {
+            return;
+        }
         orderStateRepository.merge(orderState);
     }
 

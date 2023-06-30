@@ -33,7 +33,9 @@ public class SuiProductStateRetriever {
         SuiMoveObjectResponse<Product> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
                 objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), Product.class
         );
-
+        if (getObjectDataResponse.getData() == null) {
+            return null;
+        }
         Product product = getObjectDataResponse.getData().getContent().getFields();
         return toProductState(product);
     }

@@ -38,6 +38,9 @@ public class SuiDaySummaryService {
     @Transactional
     public void updateDaySummaryState(String objectId) {
         DaySummaryState daySummaryState = suiDaySummaryStateRetriever.retrieveDaySummaryState(objectId);
+        if (daySummaryState == null) {
+            return;
+        }
         daySummaryStateRepository.merge(daySummaryState);
     }
 

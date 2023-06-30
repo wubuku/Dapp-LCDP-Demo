@@ -33,7 +33,9 @@ public class SuiDaySummaryStateRetriever {
         SuiMoveObjectResponse<DaySummary> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
                 objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), DaySummary.class
         );
-
+        if (getObjectDataResponse.getData() == null) {
+            return null;
+        }
         DaySummary daySummary = getObjectDataResponse.getData().getContent().getFields();
         return toDaySummaryState(daySummary);
     }

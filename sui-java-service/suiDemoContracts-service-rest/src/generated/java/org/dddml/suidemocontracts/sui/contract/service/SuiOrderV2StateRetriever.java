@@ -53,7 +53,9 @@ public class SuiOrderV2StateRetriever {
         SuiMoveObjectResponse<OrderV2> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
                 objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), OrderV2.class
         );
-
+        if (getObjectDataResponse.getData() == null) {
+            return null;
+        }
         OrderV2 orderV2 = getObjectDataResponse.getData().getContent().getFields();
         return toOrderV2State(orderV2);
     }

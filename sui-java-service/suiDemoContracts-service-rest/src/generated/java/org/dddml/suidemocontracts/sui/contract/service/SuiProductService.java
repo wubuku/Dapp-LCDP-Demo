@@ -38,6 +38,9 @@ public class SuiProductService {
     @Transactional
     public void updateProductState(String objectId) {
         ProductState productState = suiProductStateRetriever.retrieveProductState(objectId);
+        if (productState == null) {
+            return;
+        }
         productStateRepository.merge(productState);
     }
 

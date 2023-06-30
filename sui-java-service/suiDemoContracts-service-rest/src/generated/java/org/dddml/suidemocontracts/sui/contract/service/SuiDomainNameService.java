@@ -38,6 +38,9 @@ public class SuiDomainNameService {
     @Transactional
     public void updateDomainNameState(String objectId) {
         DomainNameState domainNameState = suiDomainNameStateRetriever.retrieveDomainNameState(objectId);
+        if (domainNameState == null) {
+            return;
+        }
         domainNameStateRepository.merge(domainNameState);
     }
 

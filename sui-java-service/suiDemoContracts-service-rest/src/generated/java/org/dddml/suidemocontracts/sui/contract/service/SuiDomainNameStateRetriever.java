@@ -33,7 +33,9 @@ public class SuiDomainNameStateRetriever {
         SuiMoveObjectResponse<DomainName> getObjectDataResponse = suiJsonRpcClient.getMoveObject(
                 objectId, new SuiObjectDataOptions(true, true, true, true, true, true, true), DomainName.class
         );
-
+        if (getObjectDataResponse.getData() == null) {
+            return null;
+        }
         DomainName domainName = getObjectDataResponse.getData().getContent().getFields();
         return toDomainNameState(domainName);
     }
