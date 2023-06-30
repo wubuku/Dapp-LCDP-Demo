@@ -36,7 +36,7 @@ public class RoochDaySummaryStateRetriever {
                 "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 DaySummary.MoveObject.class
         );
-        if (getObjectListResponse.size() == 0) {
+        if (getObjectListResponse.size() == 0 || getObjectListResponse.get(0) == null) {
             return null;
         }
         DaySummary.MoveObject daySummary = getObjectListResponse.get(0).getMoveValue().getValue();

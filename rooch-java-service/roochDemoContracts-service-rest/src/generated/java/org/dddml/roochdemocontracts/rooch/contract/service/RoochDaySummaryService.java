@@ -41,6 +41,9 @@ public class RoochDaySummaryService {
     @Transactional
     public void updateDaySummaryState(String objectId) {
         DaySummaryState daySummaryState = roochDaySummaryStateRetriever.retrieveDaySummaryState(objectId);
+        if (daySummaryState == null) {
+            return;
+        }
         daySummaryStateRepository.merge(daySummaryState);
     }
 

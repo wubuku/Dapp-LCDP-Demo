@@ -41,6 +41,9 @@ public class RoochTagService {
     @Transactional
     public void updateTagState(String objectId) {
         TagState tagState = roochTagStateRetriever.retrieveTagState(objectId);
+        if (tagState == null) {
+            return;
+        }
         tagStateRepository.merge(tagState);
     }
 

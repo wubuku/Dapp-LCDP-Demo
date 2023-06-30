@@ -52,6 +52,9 @@ public class RoochArticleService {
     @Transactional
     public void updateArticleState(String objectId) {
         ArticleState articleState = roochArticleStateRetriever.retrieveArticleState(objectId);
+        if (articleState == null) {
+            return;
+        }
         articleStateRepository.merge(articleState);
     }
 

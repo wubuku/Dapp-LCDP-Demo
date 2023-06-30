@@ -45,7 +45,7 @@ public class RoochArticleStateRetriever {
                 "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Article.MoveObject.class
         );
-        if (getObjectListResponse.size() == 0) {
+        if (getObjectListResponse.size() == 0 || getObjectListResponse.get(0) == null) {
             return null;
         }
         Article.MoveObject article = getObjectListResponse.get(0).getMoveValue().getValue();

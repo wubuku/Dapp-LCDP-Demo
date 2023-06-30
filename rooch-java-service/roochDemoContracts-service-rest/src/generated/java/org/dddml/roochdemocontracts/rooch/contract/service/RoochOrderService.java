@@ -79,6 +79,9 @@ public class RoochOrderService {
     @Transactional
     public void updateOrderState(String objectId) {
         OrderState orderState = roochOrderStateRetriever.retrieveOrderState(objectId);
+        if (orderState == null) {
+            return;
+        }
         orderStateRepository.merge(orderState);
     }
 

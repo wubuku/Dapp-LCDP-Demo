@@ -41,6 +41,9 @@ public class RoochProductService {
     @Transactional
     public void updateProductState(String objectId) {
         ProductState productState = roochProductStateRetriever.retrieveProductState(objectId);
+        if (productState == null) {
+            return;
+        }
         productStateRepository.merge(productState);
     }
 

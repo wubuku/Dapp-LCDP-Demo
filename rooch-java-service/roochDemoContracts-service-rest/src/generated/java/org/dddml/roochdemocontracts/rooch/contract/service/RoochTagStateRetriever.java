@@ -36,7 +36,7 @@ public class RoochTagStateRetriever {
                 "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Tag.MoveObject.class
         );
-        if (getObjectListResponse.size() == 0) {
+        if (getObjectListResponse.size() == 0 || getObjectListResponse.get(0) == null) {
             return null;
         }
         Tag.MoveObject tag = getObjectListResponse.get(0).getMoveValue().getValue();

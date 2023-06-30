@@ -36,7 +36,7 @@ public class RoochProductStateRetriever {
                 "/object/" + com.github.wubuku.rooch.utils.HexUtils.formatHex(objectId),
                 Product.MoveObject.class
         );
-        if (getObjectListResponse.size() == 0) {
+        if (getObjectListResponse.size() == 0 || getObjectListResponse.get(0) == null) {
             return null;
         }
         Product.MoveObject product = getObjectListResponse.get(0).getMoveValue().getValue();
