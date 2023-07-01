@@ -10,6 +10,7 @@ module rooch_demo::order_create_logic {
     use rooch_demo::order_created;
     use rooch_demo::order_item;
     use rooch_demo::product;
+    use std::vector;
 
     friend rooch_demo::order_aggregate;
 
@@ -43,6 +44,8 @@ module rooch_demo::order_create_logic {
             storage_ctx,
             order_created::order_id(order_created),
             order_created::total_amount(order_created),
+            option::none(),
+            vector::empty(),
             option::none(),
         );
         let order_item = order_item::new_order_item(

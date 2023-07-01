@@ -66,6 +66,8 @@ module rooch_demo::order {
         version: u64,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
+        delivery_weekdays: vector<u8>,
+        favorite_delivery_weekday: Option<String>,
         items: Table<ObjectID, OrderItem>,
         order_ship_groups: Table<u8, OrderShipGroup>,
     }
@@ -97,6 +99,22 @@ module rooch_demo::order {
 
     public(friend) fun set_estimated_ship_date(order_obj: &mut Object<Order>, estimated_ship_date: Option<Day>) {
         object::borrow_mut(order_obj).estimated_ship_date = estimated_ship_date;
+    }
+
+    public fun delivery_weekdays(order_obj: &Object<Order>): vector<u8> {
+        object::borrow(order_obj).delivery_weekdays
+    }
+
+    public(friend) fun set_delivery_weekdays(order_obj: &mut Object<Order>, delivery_weekdays: vector<u8>) {
+        object::borrow_mut(order_obj).delivery_weekdays = delivery_weekdays;
+    }
+
+    public fun favorite_delivery_weekday(order_obj: &Object<Order>): Option<String> {
+        object::borrow(order_obj).favorite_delivery_weekday
+    }
+
+    public(friend) fun set_favorite_delivery_weekday(order_obj: &mut Object<Order>, favorite_delivery_weekday: Option<String>) {
+        object::borrow_mut(order_obj).favorite_delivery_weekday = favorite_delivery_weekday;
     }
 
     public(friend) fun add_item(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, item: OrderItem) {
@@ -158,6 +176,8 @@ module rooch_demo::order {
         order_id: String,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
+        delivery_weekdays: vector<u8>,
+        favorite_delivery_weekday: Option<String>,
     ): Order {
         assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
         Order {
@@ -165,6 +185,8 @@ module rooch_demo::order {
             version: 0,
             total_amount,
             estimated_ship_date,
+            delivery_weekdays,
+            favorite_delivery_weekday,
             items: table::new<ObjectID, OrderItem>(tx_ctx),
             order_ship_groups: table::new<u8, OrderShipGroup>(tx_ctx),
         }
@@ -524,6 +546,8 @@ module rooch_demo::order {
         order_id: String,
         total_amount: u128,
         estimated_ship_date: Option<Day>,
+        delivery_weekdays: vector<u8>,
+        favorite_delivery_weekday: Option<String>,
     ): Object<Order> {
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
         let order = new_order(
@@ -531,6 +555,8 @@ module rooch_demo::order {
             order_id,
             total_amount,
             estimated_ship_date,
+            delivery_weekdays,
+            favorite_delivery_weekday,
         );
         let obj_owner = tx_context::sender(tx_ctx);
         let order_obj = object::new(

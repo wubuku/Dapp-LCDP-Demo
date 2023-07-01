@@ -12,6 +12,12 @@ aggregates:
       EstimatedShipDate:
         type: Day
         optional: true
+      DeliveryWeekdays:
+        itemType: Weekday
+        description: "Preferred delivery weekdays"
+      FavoriteDeliveryWeekday:
+        type: Weekday2
+        optional: true
       Items:
         itemType: OrderItem
       OrderShipGroups:

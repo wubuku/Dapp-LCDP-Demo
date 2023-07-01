@@ -26,6 +26,8 @@ public interface OrderState extends VersionedRoochMoveObject
 
     Day getEstimatedShipDate();
 
+    String getFavoriteDeliveryWeekday();
+
     Long getOffChainVersion();
 
     String getCreatedBy();
@@ -40,6 +42,8 @@ public interface OrderState extends VersionedRoochMoveObject
 
     Boolean getDeleted();
 
+    Set<Integer> getDeliveryWeekdays();
+
     EntityStateCollection<String, OrderItemState> getItems();
 
     EntityStateCollection<Integer, OrderShipGroupState> getOrderShipGroups();
@@ -52,6 +56,8 @@ public interface OrderState extends VersionedRoochMoveObject
         void setTotalAmount(BigInteger totalAmount);
 
         void setEstimatedShipDate(Day estimatedShipDate);
+
+        void setFavoriteDeliveryWeekday(String favoriteDeliveryWeekday);
 
         void setOffChainVersion(Long offChainVersion);
 
@@ -66,6 +72,8 @@ public interface OrderState extends VersionedRoochMoveObject
         void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
+
+        void setDeliveryWeekdays(Set<Integer> deliveryWeekdays);
 
 
         void mutate(Event e);

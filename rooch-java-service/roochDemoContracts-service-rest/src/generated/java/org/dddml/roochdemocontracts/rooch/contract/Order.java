@@ -23,6 +23,10 @@ public class Order {
 
     private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<Day> estimatedShipDate;
 
+    private Integer[] deliveryWeekdays;
+
+    private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> favoriteDeliveryWeekday;
+
     private BigInteger version;
 
     private AnnotatedMoveTableView items;
@@ -61,6 +65,22 @@ public class Order {
         this.estimatedShipDate = estimatedShipDate;
     }
 
+    public Integer[] getDeliveryWeekdays() {
+        return deliveryWeekdays;
+    }
+
+    public void setDeliveryWeekdays(Integer[] deliveryWeekdays) {
+        this.deliveryWeekdays = deliveryWeekdays;
+    }
+
+    public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getFavoriteDeliveryWeekday() {
+        return favoriteDeliveryWeekday;
+    }
+
+    public void setFavoriteDeliveryWeekday(com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> favoriteDeliveryWeekday) {
+        this.favoriteDeliveryWeekday = favoriteDeliveryWeekday;
+    }
+
     public BigInteger getVersion() {
         return version;
     }
@@ -92,6 +112,8 @@ public class Order {
                 ", offChainVersion=" + offChainVersion +
                 ", totalAmount=" + totalAmount +
                 ", estimatedShipDate=" + estimatedShipDate +
+                ", deliveryWeekdays=" + Arrays.toString(deliveryWeekdays) +
+                ", favoriteDeliveryWeekday=" + favoriteDeliveryWeekday +
                 ", version=" + version +
                 ", items=" + items +
                 ", orderShipGroups=" + orderShipGroups +

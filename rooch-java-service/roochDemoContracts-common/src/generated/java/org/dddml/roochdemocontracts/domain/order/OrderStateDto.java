@@ -63,6 +63,18 @@ public class OrderStateDto {
         this.estimatedShipDate = estimatedShipDate;
     }
 
+    private String favoriteDeliveryWeekday;
+
+    public String getFavoriteDeliveryWeekday()
+    {
+        return this.favoriteDeliveryWeekday;
+    }
+
+    public void setFavoriteDeliveryWeekday(String favoriteDeliveryWeekday)
+    {
+        this.favoriteDeliveryWeekday = favoriteDeliveryWeekday;
+    }
+
     private BigInteger version;
 
     public BigInteger getVersion()
@@ -171,6 +183,16 @@ public class OrderStateDto {
         this.orderShipGroups = orderShipGroups;
     }
 
+    private Integer[] deliveryWeekdays;
+
+    public Integer[] getDeliveryWeekdays() {
+        return this.deliveryWeekdays;
+    }
+
+    public void setDeliveryWeekdays(Integer[] deliveryWeekdays) {
+        this.deliveryWeekdays = deliveryWeekdays;
+    }
+
 
     public static class DtoConverter extends AbstractStateDtoConverter
     {
@@ -212,6 +234,9 @@ public class OrderStateDto {
             if (returnedFieldsContains("EstimatedShipDate")) {
                 dto.setEstimatedShipDate(state.getEstimatedShipDate());
             }
+            if (returnedFieldsContains("FavoriteDeliveryWeekday")) {
+                dto.setFavoriteDeliveryWeekday(state.getFavoriteDeliveryWeekday());
+            }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());
             }
@@ -232,6 +257,15 @@ public class OrderStateDto {
             }
             if (returnedFieldsContains("UpdatedAt")) {
                 dto.setUpdatedAt(state.getUpdatedAt());
+            }
+            if (returnedFieldsContains("DeliveryWeekdays")) {
+                ArrayList<Integer> arrayList = new ArrayList();
+                if (state.getDeliveryWeekdays() != null) {
+                    for (Integer s : state.getDeliveryWeekdays()) {
+                        arrayList.add(s);
+                    }
+                }
+                dto.setDeliveryWeekdays(arrayList.toArray(new Integer[0]));
             }
             if (returnedFieldsContains("Items")) {
                 ArrayList<OrderItemStateDto> arrayList = new ArrayList();

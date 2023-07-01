@@ -44,6 +44,9 @@
         <column name="estimated_ship_date_time_zone" length="50" />
       </property>
     </component>
+    <property name="favoriteDeliveryWeekday">
+      <column name="favorite_delivery_weekday" />
+    </property>
     <property name="version">
       <column name="version" sql-type="DECIMAL(20,0)" />
     </property>
@@ -61,5 +64,9 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
+    <set name="deliveryWeekdays" table="order_delivery_weekdays" lazy="false">
+      <key column="OrderId" />
+      <element column="delivery_weekdays_item" type="java.lang.Integer" not-null="true" />
+    </set>
   </class>
 </hibernate-mapping>
