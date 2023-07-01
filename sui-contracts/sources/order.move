@@ -6,12 +6,17 @@
 module sui_contracts::order {
     use std::option::{Self, Option};
     use std::string::String;
+
     use sui::event;
     use sui::object::{Self, UID};
     use sui::table;
     use sui::transfer;
     use sui::tx_context::TxContext;
+
     use sui_contracts::order_item::{Self, OrderItem};
+    use sui_contracts::weekday;
+    use sui_contracts::weekday2;
+
     friend sui_contracts::order_create_logic;
     friend sui_contracts::order_remove_item_logic;
     friend sui_contracts::order_update_item_quantity_logic;
@@ -20,6 +25,7 @@ module sui_contracts::order {
 
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EINVALID_ENUM_VALUE: u64 = 104;
 
     struct Order has key {
         id: UID,
@@ -51,6 +57,7 @@ module sui_contracts::order {
     }
 
     public(friend) fun set_delivery_weekdays(order: &mut Order, delivery_weekdays: vector<u8>) {
+        assert!(weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
         order.delivery_weekdays = delivery_weekdays;
     }
 
@@ -59,6 +66,9 @@ module sui_contracts::order {
     }
 
     public(friend) fun set_favorite_delivery_weekday(order: &mut Order, favorite_delivery_weekday: Option<String>) {
+        if (option::is_some(&favorite_delivery_weekday)) {
+            assert!(weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+        };
         order.favorite_delivery_weekday = favorite_delivery_weekday;
     }
 
@@ -94,6 +104,10 @@ module sui_contracts::order {
         favorite_delivery_weekday: Option<String>,
         ctx: &mut TxContext,
     ): Order {
+        assert!(weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        if (option::is_some(&favorite_delivery_weekday)) {
+            assert!(weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+        };
         Order {
             id: object::new(ctx),
             version: 0,
@@ -297,5 +311,4 @@ module sui_contracts::order {
     public(friend) fun emit_order_deleted(order_deleted: OrderDeleted) {
         event::emit(order_deleted);
     }
-
 }
