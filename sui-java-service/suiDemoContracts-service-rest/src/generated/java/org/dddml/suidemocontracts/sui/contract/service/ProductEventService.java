@@ -15,6 +15,8 @@ import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
 import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
+import org.dddml.suidemocontracts.sui.contract.product.ProductUpdated;
+import org.dddml.suidemocontracts.sui.contract.product.ProductDeleted;
 import org.dddml.suidemocontracts.sui.contract.repository.ProductEventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,86 @@ public class ProductEventService {
             return;
         }
         productEventRepository.save(productCreated);
+    }
+
+    @Transactional
+    public void pullProductUpdatedEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getProductUpdatedEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<ProductUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
+                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_UPDATED,
+                    cursor, limit, false, ProductUpdated.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<ProductUpdated> eventEnvelope : eventPage.getData()) {
+                    saveProductUpdated(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!Page.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private EventId getProductUpdatedEventNextCursor() {
+        AbstractProductEvent lastEvent = productEventRepository.findFirstProductUpdatedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
+    }
+
+    private void saveProductUpdated(SuiMoveEventEnvelope<ProductUpdated> eventEnvelope) {
+        AbstractProductEvent.ProductUpdated productUpdated = DomainBeanUtils.toProductUpdated(eventEnvelope);
+        if (productEventRepository.findById(productUpdated.getProductEventId()).isPresent()) {
+            return;
+        }
+        productEventRepository.save(productUpdated);
+    }
+
+    @Transactional
+    public void pullProductDeletedEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getProductDeletedEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<ProductDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(
+                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_DELETED,
+                    cursor, limit, false, ProductDeleted.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<ProductDeleted> eventEnvelope : eventPage.getData()) {
+                    saveProductDeleted(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!Page.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private EventId getProductDeletedEventNextCursor() {
+        AbstractProductEvent lastEvent = productEventRepository.findFirstProductDeletedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
+    }
+
+    private void saveProductDeleted(SuiMoveEventEnvelope<ProductDeleted> eventEnvelope) {
+        AbstractProductEvent.ProductDeleted productDeleted = DomainBeanUtils.toProductDeleted(eventEnvelope);
+        if (productEventRepository.findById(productDeleted.getProductEventId()).isPresent()) {
+            return;
+        }
+        productEventRepository.save(productDeleted);
     }
 
 

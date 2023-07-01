@@ -255,6 +255,48 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     }
 
+    public static class ProductUpdated extends ProductClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "ProductUpdated";
+        }
+
+        public String getName() {
+            Object val = getDynamicProperties().get("name");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setName(String value) {
+            getDynamicProperties().put("name", value);
+        }
+
+        public BigInteger getUnitPrice() {
+            Object val = getDynamicProperties().get("unitPrice");
+            if (val instanceof BigInteger) {
+                return (BigInteger) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
+        }
+
+        public void setUnitPrice(BigInteger value) {
+            getDynamicProperties().put("unitPrice", value);
+        }
+
+    }
+
+    public static class ProductDeleted extends ProductClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "ProductDeleted";
+        }
+
+    }
+
 
 }
 

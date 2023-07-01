@@ -19,6 +19,8 @@ import org.dddml.suidemocontracts.sui.contract.order.OrderItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.order.OrderDeleted;
 import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
+import org.dddml.suidemocontracts.sui.contract.product.ProductUpdated;
+import org.dddml.suidemocontracts.sui.contract.product.ProductDeleted;
 import org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Event;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2Created;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
@@ -264,6 +266,46 @@ public class DomainBeanUtils {
         productCreated.setSuiSender(eventEnvelope.getSender());
 
         return productCreated;
+    }
+
+    public static AbstractProductEvent.ProductUpdated toProductUpdated(SuiMoveEventEnvelope<ProductUpdated> eventEnvelope) {
+        ProductUpdated contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractProductEvent.ProductUpdated productUpdated = new AbstractProductEvent.ProductUpdated();
+        productUpdated.setProductId(contractEvent.getProductId());
+        productUpdated.setId_(contractEvent.getId());
+        productUpdated.setName(contractEvent.getName());
+        productUpdated.setUnitPrice(contractEvent.getUnitPrice());
+        productUpdated.setVersion(contractEvent.getVersion());
+
+        productUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        productUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        productUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        productUpdated.setSuiPackageId(eventEnvelope.getPackageId());
+        productUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        productUpdated.setSuiSender(eventEnvelope.getSender());
+
+        return productUpdated;
+    }
+
+    public static AbstractProductEvent.ProductDeleted toProductDeleted(SuiMoveEventEnvelope<ProductDeleted> eventEnvelope) {
+        ProductDeleted contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractProductEvent.ProductDeleted productDeleted = new AbstractProductEvent.ProductDeleted();
+        productDeleted.setProductId(contractEvent.getProductId());
+        productDeleted.setId_(contractEvent.getId());
+        productDeleted.setVersion(contractEvent.getVersion());
+
+        productDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        productDeleted.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        productDeleted.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        productDeleted.setSuiPackageId(eventEnvelope.getPackageId());
+        productDeleted.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        productDeleted.setSuiSender(eventEnvelope.getSender());
+
+        return productDeleted;
     }
 
     public static AbstractOrderV2Event.OrderV2Created toOrderV2Created(SuiMoveEventEnvelope<OrderV2Created> eventEnvelope) {

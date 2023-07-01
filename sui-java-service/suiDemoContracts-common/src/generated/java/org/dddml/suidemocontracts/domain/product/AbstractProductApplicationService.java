@@ -54,6 +54,14 @@ public abstract class AbstractProductApplicationService implements ProductApplic
         update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(ProductCommands.Update c) {
+        update(c, ar -> ar.update(c.getName(), c.getUnitPrice(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
+    public void when(ProductCommands.Delete c) {
+        update(c, ar -> ar.delete(c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public ProductState get(String id) {
         ProductState state = getStateRepository().get(id, true);
         return state;

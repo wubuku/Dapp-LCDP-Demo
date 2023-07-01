@@ -12,6 +12,8 @@ module sui_contracts::product {
     use sui::transfer;
     use sui::tx_context::TxContext;
     friend sui_contracts::product_create_logic;
+    friend sui_contracts::product_update_logic;
+    friend sui_contracts::product_delete_logic;
     friend sui_contracts::product_aggregate;
 
     const EID_DATA_TOO_LONG: u64 = 102;
@@ -133,6 +135,68 @@ module sui_contracts::product {
         }
     }
 
+    struct ProductUpdated has copy, drop {
+        id: object::ID,
+        product_id: String,
+        version: u64,
+        name: String,
+        unit_price: u128,
+    }
+
+    public fun product_updated_id(product_updated: &ProductUpdated): object::ID {
+        product_updated.id
+    }
+
+    public fun product_updated_product_id(product_updated: &ProductUpdated): String {
+        product_updated.product_id
+    }
+
+    public fun product_updated_name(product_updated: &ProductUpdated): String {
+        product_updated.name
+    }
+
+    public fun product_updated_unit_price(product_updated: &ProductUpdated): u128 {
+        product_updated.unit_price
+    }
+
+    public(friend) fun new_product_updated(
+        product: &Product,
+        name: String,
+        unit_price: u128,
+    ): ProductUpdated {
+        ProductUpdated {
+            id: id(product),
+            product_id: product_id(product),
+            version: version(product),
+            name,
+            unit_price,
+        }
+    }
+
+    struct ProductDeleted has copy, drop {
+        id: object::ID,
+        product_id: String,
+        version: u64,
+    }
+
+    public fun product_deleted_id(product_deleted: &ProductDeleted): object::ID {
+        product_deleted.id
+    }
+
+    public fun product_deleted_product_id(product_deleted: &ProductDeleted): String {
+        product_deleted.product_id
+    }
+
+    public(friend) fun new_product_deleted(
+        product: &Product,
+    ): ProductDeleted {
+        ProductDeleted {
+            id: id(product),
+            product_id: product_id(product),
+            version: version(product),
+        }
+    }
+
 
     public(friend) fun create_product(
         name: String,
@@ -226,6 +290,14 @@ module sui_contracts::product {
 
     public(friend) fun emit_product_created(product_created: ProductCreated) {
         event::emit(product_created);
+    }
+
+    public(friend) fun emit_product_updated(product_updated: ProductUpdated) {
+        event::emit(product_updated);
+    }
+
+    public(friend) fun emit_product_deleted(product_deleted: ProductDeleted) {
+        event::emit(product_deleted);
     }
 
     #[test_only]

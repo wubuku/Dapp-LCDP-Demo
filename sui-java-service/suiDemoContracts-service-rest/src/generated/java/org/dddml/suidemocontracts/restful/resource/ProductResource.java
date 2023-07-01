@@ -188,6 +188,42 @@ public class ProductResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{productId}/_commands/Update")
+    public void update(@PathVariable("productId") String productId, @RequestBody ProductCommands.Update content) {
+        try {
+
+            ProductCommands.Update cmd = content;//.toUpdate();
+            String idObj = productId;
+            if (cmd.getProductId() == null) {
+                cmd.setProductId(idObj);
+            } else if (!cmd.getProductId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", productId, cmd.getProductId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            productApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
+    @PutMapping("{productId}/_commands/Delete")
+    public void delete(@PathVariable("productId") String productId, @RequestBody ProductCommands.Delete content) {
+        try {
+
+            ProductCommands.Delete cmd = content;//.toDelete();
+            String idObj = productId;
+            if (cmd.getProductId() == null) {
+                cmd.setProductId(idObj);
+            } else if (!cmd.getProductId().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", productId, cmd.getProductId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            productApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

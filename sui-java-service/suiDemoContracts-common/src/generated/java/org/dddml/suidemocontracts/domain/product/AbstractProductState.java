@@ -201,6 +201,10 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
             ;
         } else if (e instanceof AbstractProductEvent.ProductCreated) {
             when((AbstractProductEvent.ProductCreated)e);
+        } else if (e instanceof AbstractProductEvent.ProductUpdated) {
+            when((AbstractProductEvent.ProductUpdated)e);
+        } else if (e instanceof AbstractProductEvent.ProductDeleted) {
+            when((AbstractProductEvent.ProductDeleted)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -260,6 +264,104 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
 //
 //public class CreateLogic {
 //    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedProductState) { merge(updatedProductState); } //else do nothing
+
+    }
+
+    public void when(AbstractProductEvent.ProductUpdated e) {
+        throwOnWrongEvent(e);
+
+        String name = e.getName();
+        String Name = name;
+        BigInteger unitPrice = e.getUnitPrice();
+        BigInteger UnitPrice = unitPrice;
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        BigInteger suiEventSeq = e.getSuiEventSeq();
+        BigInteger SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.UpdateLogic",
+                    "mutate",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class UpdateLogic {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedProductState) { merge(updatedProductState); } //else do nothing
+
+    }
+
+    public void when(AbstractProductEvent.ProductDeleted e) {
+        throwOnWrongEvent(e);
+
+        Long suiTimestamp = e.getSuiTimestamp();
+        Long SuiTimestamp = suiTimestamp;
+        String suiTxDigest = e.getSuiTxDigest();
+        String SuiTxDigest = suiTxDigest;
+        BigInteger suiEventSeq = e.getSuiEventSeq();
+        BigInteger SuiEventSeq = suiEventSeq;
+        String suiPackageId = e.getSuiPackageId();
+        String SuiPackageId = suiPackageId;
+        String suiTransactionModule = e.getSuiTransactionModule();
+        String SuiTransactionModule = suiTransactionModule;
+        String suiSender = e.getSuiSender();
+        String SuiSender = suiSender;
+        String suiType = e.getSuiType();
+        String SuiType = suiType;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.DeleteLogic",
+                    "mutate",
+                    new Class[]{ProductState.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class DeleteLogic {
+//    public static ProductState mutate(ProductState productState, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 

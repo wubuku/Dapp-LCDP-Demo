@@ -58,6 +58,30 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
             apply(e);
         }
 
+        @Override
+        public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
+            try {
+                verifyUpdate(name, unitPrice, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
+            try {
+                verifyDelete(c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newProductDeleted(offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
         protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
@@ -79,12 +103,96 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
            
 
+        protected void verifyUpdate(String name, BigInteger unitPrice, ProductCommands.Update c) {
+            String Name = name;
+            BigInteger UnitPrice = unitPrice;
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.UpdateLogic",
+                    "verify",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class UpdateLogic {
+//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
+        protected void verifyDelete(ProductCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.product.DeleteLogic",
+                    "verify",
+                    new Class[]{ProductState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.product;
+//
+//public class DeleteLogic {
+//    public static void verify(ProductState productState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
         protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
             ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
             AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
 
             e.setName(name);
             e.setUnitPrice(unitPrice);
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductUpdated newProductUpdated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductUpdated e = new AbstractProductEvent.ProductUpdated();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductDeleted newProductDeleted(Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductDeleted e = new AbstractProductEvent.ProductDeleted();
+
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.

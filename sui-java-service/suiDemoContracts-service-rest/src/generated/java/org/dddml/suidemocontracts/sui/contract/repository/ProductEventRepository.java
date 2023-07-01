@@ -15,4 +15,8 @@ public interface ProductEventRepository extends JpaRepository<AbstractProductEve
 
     AbstractProductEvent.ProductCreated findFirstProductCreatedByOrderBySuiTimestampDesc();
 
+    AbstractProductEvent.ProductUpdated findFirstProductUpdatedByOrderBySuiTimestampDesc();
+
+    AbstractProductEvent.ProductDeleted findFirstProductDeletedByOrderBySuiTimestampDesc();
+
 }

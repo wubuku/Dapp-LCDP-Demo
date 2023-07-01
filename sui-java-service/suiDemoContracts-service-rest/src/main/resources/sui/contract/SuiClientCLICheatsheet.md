@@ -64,6 +64,22 @@ sui client call --package _PACKAGE_ID_ --module product_aggregate --function cre
 --gas-budget 100000
 ```
 
+### Update method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module product_aggregate --function update \
+--args product_Object_ID '"string_name"' \"u128_unit_price\" \
+--gas-budget 100000
+```
+
+### Delete method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module product_aggregate --function delete \
+--args product_Object_ID \
+--gas-budget 100000
+```
+
 ## OrderV2 aggregate
 
 ### Create method

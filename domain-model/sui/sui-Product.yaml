@@ -1,6 +1,6 @@
 aggregates:
   Product:
-    immutable: true # This true value needs to be ignored when generating the off-chain service.
+    #immutable: true # This `true` value needs to be ignored when generating the off-chain service.
     metadata:
       Preprocessors: ["MOVE_CRUD_IT"]
     id:
@@ -26,6 +26,6 @@ aggregates:
 #            type: u128
         event:
           #name: ProductCreated
-          #isObjectShared: true
-          #isObjectFrozen: true # This is true when the Product is immutable.
+          isObjectShared: true
+          #isObjectFrozen: true # This is `true` when the Product is immutable.
 
