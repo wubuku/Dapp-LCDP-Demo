@@ -12,6 +12,7 @@ project:
     - "rooch/rooch-Product.yaml"
     - "rooch/rooch-Order.yaml"
     - "rooch/rooch-DaySummary.yaml"
+    - "rooch/rooch-EnumObjects.yaml"
 
   # directories:
     # - path: "."
