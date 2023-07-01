@@ -14,12 +14,14 @@ module sui_contracts::product_aggregate {
     public entry fun create(
         name: String,
         unit_price: u128,
+        owner: address,
         product_id_generator: &mut product::ProductIdGenerator,
         ctx: &mut tx_context::TxContext,
     ) {
         let product_created = product_create_logic::verify(
             name,
             unit_price,
+            owner,
             product_id_generator,
             ctx,
         );
@@ -38,11 +40,13 @@ module sui_contracts::product_aggregate {
         product: product::Product,
         name: String,
         unit_price: u128,
+        owner: address,
         ctx: &mut tx_context::TxContext,
     ) {
         let product_updated = product_update_logic::verify(
             name,
             unit_price,
+            owner,
             &product,
             ctx,
         );

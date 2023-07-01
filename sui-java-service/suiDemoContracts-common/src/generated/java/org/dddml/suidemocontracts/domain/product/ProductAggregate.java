@@ -17,9 +17,9 @@ public interface ProductAggregate {
 
     List<Event> getChanges();
 
-    void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c);
+    void create(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c);
 
-    void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c);
+    void update(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c);
 
     void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c);
 

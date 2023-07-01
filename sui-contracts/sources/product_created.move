@@ -26,4 +26,8 @@ module sui_contracts::product_created {
         product::product_created_unit_price(product_created)
     }
 
+    public fun owner(product_created: &ProductCreated): address {
+        product::product_created_owner(product_created)
+    }
+
 }

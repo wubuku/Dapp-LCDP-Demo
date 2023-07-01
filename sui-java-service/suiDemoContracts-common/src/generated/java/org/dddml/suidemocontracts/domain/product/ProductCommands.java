@@ -64,6 +64,19 @@ public class ProductCommands {
         }
 
         /**
+         * Owner
+         */
+        private String owner;
+
+        public String getOwner() {
+            return this.owner;
+        }
+
+        public void setOwner(String owner) {
+            this.owner = owner;
+        }
+
+        /**
          * Off Chain Version
          */
         private Long offChainVersion;
@@ -125,6 +138,19 @@ public class ProductCommands {
 
         public void setUnitPrice(BigInteger unitPrice) {
             this.unitPrice = unitPrice;
+        }
+
+        /**
+         * Owner
+         */
+        private String owner;
+
+        public String getOwner() {
+            return this.owner;
+        }
+
+        public void setOwner(String owner) {
+            this.owner = owner;
         }
 
         /**

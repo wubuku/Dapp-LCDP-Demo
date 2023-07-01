@@ -47,26 +47,26 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
 
         @Override
-        public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
+        public void create(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
             try {
-                verifyCreate(name, unitPrice, c);
+                verifyCreate(name, unitPrice, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
+            Event e = newProductCreated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
-        public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
+        public void update(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
             try {
-                verifyUpdate(name, unitPrice, c);
+                verifyUpdate(name, unitPrice, owner, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
+            Event e = newProductUpdated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
@@ -82,42 +82,44 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
             apply(e);
         }
 
-        protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
+        protected void verifyCreate(String name, BigInteger unitPrice, String owner, ProductCommands.Create c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
+            String Owner = owner;
 
             ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new Object[]{getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    public static void verify(ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
         }
            
 
-        protected void verifyUpdate(String name, BigInteger unitPrice, ProductCommands.Update c) {
+        protected void verifyUpdate(String name, BigInteger unitPrice, String owner, ProductCommands.Update c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
+            String Owner = owner;
 
             ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new Object[]{getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class UpdateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    public static void verify(ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
@@ -143,12 +145,13 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
            
 
-        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
             ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
             AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
 
             e.setName(name);
             e.setUnitPrice(unitPrice);
+            e.setOwner(owner);
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
@@ -166,12 +169,13 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
             return e;
         }
 
-        protected AbstractProductEvent.ProductUpdated newProductUpdated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+        protected AbstractProductEvent.ProductUpdated newProductUpdated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
             ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
             AbstractProductEvent.ProductUpdated e = new AbstractProductEvent.ProductUpdated();
 
             e.setName(name);
             e.setUnitPrice(unitPrice);
+            e.setOwner(owner);
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.

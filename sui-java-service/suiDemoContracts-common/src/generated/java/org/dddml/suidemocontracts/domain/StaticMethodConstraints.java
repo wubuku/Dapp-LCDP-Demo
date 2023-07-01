@@ -72,16 +72,16 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new String[]{"_", "name", "unitPrice", "owner"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new String[]{"_", "name", "unitPrice", "owner"}
             );
 
 
@@ -216,16 +216,16 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new String[]{"_", "name", "unitPrice", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "unitPrice", "owner", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.product.UpdateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new String[]{"_", "name", "unitPrice", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "unitPrice", "owner", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
 

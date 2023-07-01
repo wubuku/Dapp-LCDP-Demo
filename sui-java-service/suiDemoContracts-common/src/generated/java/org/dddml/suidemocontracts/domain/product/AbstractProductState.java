@@ -55,6 +55,16 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.unitPrice = unitPrice;
     }
 
+    private String owner;
+
+    public String getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     private BigInteger version;
 
     public BigInteger getVersion() {
@@ -216,6 +226,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         }
         this.setName(s.getName());
         this.setUnitPrice(s.getUnitPrice());
+        this.setOwner(s.getOwner());
         this.setVersion(s.getVersion());
         this.setActive(s.getActive());
     }
@@ -227,6 +238,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String Name = name;
         BigInteger unitPrice = e.getUnitPrice();
         BigInteger UnitPrice = unitPrice;
+        String owner = e.getOwner();
+        String Owner = owner;
         Long suiTimestamp = e.getSuiTimestamp();
         Long SuiTimestamp = suiTimestamp;
         String suiTxDigest = e.getSuiTxDigest();
@@ -256,14 +269,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, String owner, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 
@@ -278,6 +291,8 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         String Name = name;
         BigInteger unitPrice = e.getUnitPrice();
         BigInteger UnitPrice = unitPrice;
+        String owner = e.getOwner();
+        String Owner = owner;
         Long suiTimestamp = e.getSuiTimestamp();
         Long SuiTimestamp = suiTimestamp;
         String suiTxDigest = e.getSuiTxDigest();
@@ -307,14 +322,14 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.UpdateLogic",
                     "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new Object[]{this, name, unitPrice, owner, suiTimestamp, suiTxDigest, suiEventSeq, suiPackageId, suiTransactionModule, suiSender, suiType, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class UpdateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
+//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, String owner, Long suiTimestamp, String suiTxDigest, BigInteger suiEventSeq, String suiPackageId, String suiTransactionModule, String suiSender, String suiType, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
 //    }
 //}
 

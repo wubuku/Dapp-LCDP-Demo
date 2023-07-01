@@ -255,6 +255,7 @@ public class DomainBeanUtils {
         productCreated.setId_(contractEvent.getId());
         productCreated.setName(contractEvent.getName());
         productCreated.setUnitPrice(contractEvent.getUnitPrice());
+        productCreated.setOwner(contractEvent.getOwner());
         productCreated.setVersion(BigInteger.valueOf(-1));
 
         productCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
@@ -276,6 +277,7 @@ public class DomainBeanUtils {
         productUpdated.setId_(contractEvent.getId());
         productUpdated.setName(contractEvent.getName());
         productUpdated.setUnitPrice(contractEvent.getUnitPrice());
+        productUpdated.setOwner(contractEvent.getOwner());
         productUpdated.setVersion(contractEvent.getVersion());
 
         productUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());

@@ -432,6 +432,7 @@ public class M {
             "productId",
             "name",
             "unitPrice",
+            "owner",
             "version",
             "offChainVersion",
             "createdBy",
@@ -446,6 +447,7 @@ public class M {
             "String",
             "String",
             "BigInteger",
+            "String",
             "BigInteger",
             "Long",
             "String",
@@ -474,6 +476,8 @@ public class M {
         aliasMap.put("Name", "name");
         aliasMap.put("unitPrice", "unitPrice");
         aliasMap.put("UnitPrice", "unitPrice");
+        aliasMap.put("owner", "owner");
+        aliasMap.put("Owner", "owner");
         aliasMap.put("version", "version");
         aliasMap.put("Version", "version");
         aliasMap.put("offChainVersion", "offChainVersion");

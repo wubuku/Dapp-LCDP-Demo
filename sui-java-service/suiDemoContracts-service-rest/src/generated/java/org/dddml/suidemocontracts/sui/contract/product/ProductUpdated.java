@@ -25,6 +25,8 @@ public class ProductUpdated {
 
     private BigInteger unitPrice;
 
+    private String owner;
+
     public String getId() {
         return id;
     }
@@ -65,6 +67,14 @@ public class ProductUpdated {
         this.unitPrice = unitPrice;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "ProductUpdated{" +
@@ -73,6 +83,7 @@ public class ProductUpdated {
                 ", version=" + version +
                 ", name=" + '\'' + name + '\'' +
                 ", unitPrice=" + unitPrice +
+                ", owner=" + '\'' + owner + '\'' +
                 '}';
     }
 

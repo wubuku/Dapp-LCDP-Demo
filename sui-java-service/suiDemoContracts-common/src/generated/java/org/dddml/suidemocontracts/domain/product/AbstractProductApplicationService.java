@@ -51,11 +51,11 @@ public abstract class AbstractProductApplicationService implements ProductApplic
     }
 
     public void when(ProductCommands.Create c) {
-        update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.create(c.getName(), c.getUnitPrice(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(ProductCommands.Update c) {
-        update(c, ar -> ar.update(c.getName(), c.getUnitPrice(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+        update(c, ar -> ar.update(c.getName(), c.getUnitPrice(), c.getOwner(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
     public void when(ProductCommands.Delete c) {

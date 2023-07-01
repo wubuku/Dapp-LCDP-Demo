@@ -253,6 +253,18 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
             getDynamicProperties().put("unitPrice", value);
         }
 
+        public String getOwner() {
+            Object val = getDynamicProperties().get("owner");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setOwner(String value) {
+            getDynamicProperties().put("owner", value);
+        }
+
     }
 
     public static class ProductUpdated extends ProductClobEvent {
@@ -284,6 +296,18 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setUnitPrice(BigInteger value) {
             getDynamicProperties().put("unitPrice", value);
+        }
+
+        public String getOwner() {
+            Object val = getDynamicProperties().get("owner");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setOwner(String value) {
+            getDynamicProperties().put("owner", value);
         }
 
     }

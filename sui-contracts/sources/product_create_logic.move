@@ -1,8 +1,6 @@
 module sui_contracts::product_create_logic {
     use std::string::String;
-
     use sui::tx_context::TxContext;
-
     use sui_contracts::product;
     use sui_contracts::product_created;
 
@@ -11,6 +9,7 @@ module sui_contracts::product_create_logic {
     public(friend) fun verify(
         name: String,
         unit_price: u128,
+        owner: address,
         product_id_generator: &mut product::ProductIdGenerator,
         ctx: &mut TxContext,
     ): product::ProductCreated {
@@ -18,6 +17,7 @@ module sui_contracts::product_create_logic {
         product::new_product_created(
             name,
             unit_price,
+            owner,
             product_id_generator,
         )
     }
@@ -29,11 +29,14 @@ module sui_contracts::product_create_logic {
     ): product::Product {
         let name = product_created::name(product_created);
         let unit_price = product_created::unit_price(product_created);
+        let owner = product_created::owner(product_created);
         product::create_product(
             name,
             unit_price,
+            owner,
             product_id_generator,
             ctx,
         )
     }
+
 }

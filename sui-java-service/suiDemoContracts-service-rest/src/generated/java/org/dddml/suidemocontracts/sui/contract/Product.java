@@ -25,6 +25,8 @@ public class Product {
 
     private BigInteger unitPrice;
 
+    private String owner;
+
     private BigInteger version;
 
     public UID getId() {
@@ -67,6 +69,14 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public BigInteger getVersion() {
         return version;
     }
@@ -83,6 +93,7 @@ public class Product {
                 ", offChainVersion=" + offChainVersion +
                 ", name=" + '\'' + name + '\'' +
                 ", unitPrice=" + unitPrice +
+                ", owner=" + '\'' + owner + '\'' +
                 ", version=" + version +
                 '}';
     }

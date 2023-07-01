@@ -25,4 +25,8 @@ module sui_contracts::product_updated {
         product::product_updated_unit_price(product_updated)
     }
 
+    public fun owner(product_updated: &ProductUpdated): address {
+        product::product_updated_owner(product_updated)
+    }
+
 }

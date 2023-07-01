@@ -48,6 +48,7 @@ module sui_contracts::product {
         version: u64,
         name: String,
         unit_price: u128,
+        owner: address,
     }
 
     public fun id(product: &Product): object::ID {
@@ -78,10 +79,19 @@ module sui_contracts::product {
         product.unit_price = unit_price;
     }
 
+    public fun owner(product: &Product): address {
+        product.owner
+    }
+
+    public(friend) fun set_owner(product: &mut Product, owner: address) {
+        product.owner = owner;
+    }
+
     fun new_product(
         product_id: String,
         name: String,
         unit_price: u128,
+        owner: address,
         ctx: &mut TxContext,
     ): Product {
         assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
@@ -91,6 +101,7 @@ module sui_contracts::product {
             version: 0,
             name,
             unit_price,
+            owner,
         }
     }
 
@@ -99,6 +110,7 @@ module sui_contracts::product {
         product_id: String,
         name: String,
         unit_price: u128,
+        owner: address,
     }
 
     public fun product_created_id(product_created: &ProductCreated): option::Option<object::ID> {
@@ -121,9 +133,14 @@ module sui_contracts::product {
         product_created.unit_price
     }
 
+    public fun product_created_owner(product_created: &ProductCreated): address {
+        product_created.owner
+    }
+
     public(friend) fun new_product_created(
         name: String,
         unit_price: u128,
+        owner: address,
         product_id_generator: &mut ProductIdGenerator,
     ): ProductCreated {
         let product_id = next_product_id(product_id_generator);
@@ -132,6 +149,7 @@ module sui_contracts::product {
             product_id,
             name,
             unit_price,
+            owner,
         }
     }
 
@@ -141,6 +159,7 @@ module sui_contracts::product {
         version: u64,
         name: String,
         unit_price: u128,
+        owner: address,
     }
 
     public fun product_updated_id(product_updated: &ProductUpdated): object::ID {
@@ -159,10 +178,15 @@ module sui_contracts::product {
         product_updated.unit_price
     }
 
+    public fun product_updated_owner(product_updated: &ProductUpdated): address {
+        product_updated.owner
+    }
+
     public(friend) fun new_product_updated(
         product: &Product,
         name: String,
         unit_price: u128,
+        owner: address,
     ): ProductUpdated {
         ProductUpdated {
             id: id(product),
@@ -170,6 +194,7 @@ module sui_contracts::product {
             version: version(product),
             name,
             unit_price,
+            owner,
         }
     }
 
@@ -201,6 +226,7 @@ module sui_contracts::product {
     public(friend) fun create_product(
         name: String,
         unit_price: u128,
+        owner: address,
         product_id_generator: &ProductIdGenerator,
         ctx: &mut TxContext,
     ): Product {
@@ -209,6 +235,7 @@ module sui_contracts::product {
             product_id,
             name,
             unit_price,
+            owner,
             ctx,
         );
         product
@@ -284,6 +311,7 @@ module sui_contracts::product {
             product_id: _product_id,
             name: _name,
             unit_price: _unit_price,
+            owner: _owner,
         } = product;
         object::delete(id);
     }

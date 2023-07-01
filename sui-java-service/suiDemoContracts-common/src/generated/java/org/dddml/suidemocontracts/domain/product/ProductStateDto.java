@@ -63,6 +63,18 @@ public class ProductStateDto {
         this.unitPrice = unitPrice;
     }
 
+    private String owner;
+
+    public String getOwner()
+    {
+        return this.owner;
+    }
+
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
+
     private BigInteger version;
 
     public BigInteger getVersion()
@@ -187,6 +199,9 @@ public class ProductStateDto {
             }
             if (returnedFieldsContains("UnitPrice")) {
                 dto.setUnitPrice(state.getUnitPrice());
+            }
+            if (returnedFieldsContains("Owner")) {
+                dto.setOwner(state.getOwner());
             }
             if (returnedFieldsContains("Version")) {
                 dto.setVersion(state.getVersion());

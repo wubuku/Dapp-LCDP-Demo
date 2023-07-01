@@ -26,6 +26,8 @@ public interface ProductState extends VersionedSuiMoveObject
 
     BigInteger getUnitPrice();
 
+    String getOwner();
+
     Long getOffChainVersion();
 
     String getCreatedBy();
@@ -48,6 +50,8 @@ public interface ProductState extends VersionedSuiMoveObject
         void setName(String name);
 
         void setUnitPrice(BigInteger unitPrice);
+
+        void setOwner(String owner);
 
         void setOffChainVersion(Long offChainVersion);
 

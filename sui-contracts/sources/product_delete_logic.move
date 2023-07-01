@@ -1,6 +1,5 @@
 module sui_contracts::product_delete_logic {
     use sui::tx_context::TxContext;
-
     use sui_contracts::product;
 
     friend sui_contracts::product_aggregate;
@@ -26,4 +25,5 @@ module sui_contracts::product_delete_logic {
         let _ = product_deleted;
         product
     }
+
 }

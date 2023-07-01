@@ -46,6 +46,7 @@ public class SuiProductStateRetriever {
         productState.setVersion(product.getVersion());
         productState.setName(product.getName());
         productState.setUnitPrice(product.getUnitPrice());
+        productState.setOwner(product.getOwner());
         return productState;
     }
 
