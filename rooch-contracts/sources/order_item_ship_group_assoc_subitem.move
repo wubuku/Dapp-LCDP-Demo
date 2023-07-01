@@ -33,6 +33,7 @@ module rooch_demo::order_item_ship_group_assoc_subitem {
     }
 
     public(friend) fun set_description(order_item_ship_group_assoc_subitem: &mut OrderItemShipGroupAssocSubitem, description: String) {
+        assert!(std::string::length(&description) <= 100, EID_DATA_TOO_LONG);
         order_item_ship_group_assoc_subitem.description = description;
     }
 
