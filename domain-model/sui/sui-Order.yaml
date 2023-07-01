@@ -7,6 +7,12 @@ aggregates:
     properties:
       TotalAmount:
         type: u128
+      DeliveryWeekdays:
+        itemType: Weekday
+        description: "Preferred delivery weekdays"
+      FavoriteDeliveryWeekday:
+        type: Weekday2
+        optional: true
       Items:
         itemType: OrderItem
 

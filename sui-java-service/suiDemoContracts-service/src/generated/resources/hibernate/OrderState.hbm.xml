@@ -15,6 +15,9 @@
     <property name="totalAmount">
       <column name="total_amount" sql-type="DECIMAL(20,0)" />
     </property>
+    <property name="favoriteDeliveryWeekday">
+      <column name="favorite_delivery_weekday" />
+    </property>
     <property name="version">
       <column name="version" sql-type="DECIMAL(20,0)" />
     </property>
@@ -32,5 +35,9 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
+    <set name="deliveryWeekdays" table="order_delivery_weekdays" lazy="false">
+      <key column="Id" />
+      <element column="delivery_weekdays_item" type="java.lang.Integer" not-null="true" />
+    </set>
   </class>
 </hibernate-mapping>

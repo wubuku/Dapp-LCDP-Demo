@@ -22,6 +22,8 @@ public interface OrderState extends VersionedSuiMoveObject
 
     BigInteger getTotalAmount();
 
+    String getFavoriteDeliveryWeekday();
+
     Long getOffChainVersion();
 
     String getCreatedBy();
@@ -36,12 +38,16 @@ public interface OrderState extends VersionedSuiMoveObject
 
     Boolean getDeleted();
 
+    Set<Integer> getDeliveryWeekdays();
+
     EntityStateCollection<String, OrderItemState> getItems();
 
     interface MutableOrderState extends OrderState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setId(String id);
 
         void setTotalAmount(BigInteger totalAmount);
+
+        void setFavoriteDeliveryWeekday(String favoriteDeliveryWeekday);
 
         void setOffChainVersion(Long offChainVersion);
 
@@ -56,6 +62,8 @@ public interface OrderState extends VersionedSuiMoveObject
         void setActive(Boolean active);
 
         void setDeleted(Boolean deleted);
+
+        void setDeliveryWeekdays(Set<Integer> deliveryWeekdays);
 
 
         void mutate(Event e);

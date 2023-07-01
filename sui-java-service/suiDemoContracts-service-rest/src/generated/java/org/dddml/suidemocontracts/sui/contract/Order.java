@@ -21,6 +21,10 @@ public class Order {
 
     private BigInteger totalAmount;
 
+    private Integer[] deliveryWeekdays;
+
+    private String favoriteDeliveryWeekday;
+
     private BigInteger version;
 
     private Table items;
@@ -49,6 +53,22 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
+    public Integer[] getDeliveryWeekdays() {
+        return deliveryWeekdays;
+    }
+
+    public void setDeliveryWeekdays(Integer[] deliveryWeekdays) {
+        this.deliveryWeekdays = deliveryWeekdays;
+    }
+
+    public String getFavoriteDeliveryWeekday() {
+        return favoriteDeliveryWeekday;
+    }
+
+    public void setFavoriteDeliveryWeekday(String favoriteDeliveryWeekday) {
+        this.favoriteDeliveryWeekday = favoriteDeliveryWeekday;
+    }
+
     public BigInteger getVersion() {
         return version;
     }
@@ -71,6 +91,8 @@ public class Order {
                 "id=" + id +
                 ", offChainVersion=" + offChainVersion +
                 ", totalAmount=" + totalAmount +
+                ", deliveryWeekdays=" + Arrays.toString(deliveryWeekdays) +
+                ", favoriteDeliveryWeekday=" + '\'' + favoriteDeliveryWeekday + '\'' +
                 ", version=" + version +
                 ", items=" + items +
                 '}';

@@ -1,5 +1,9 @@
 module sui_contracts::order_create_logic {
+    use std::option;
+    use std::vector;
+
     use sui::tx_context::{Self, TxContext};
+
     use sui_contracts::order;
     use sui_contracts::order_created;
     use sui_contracts::order_item;
@@ -35,6 +39,8 @@ module sui_contracts::order_create_logic {
     ): order::Order {
         let order = order::new_order(
             order::order_created_total_amount(order_created),
+            vector::empty(),
+            option::none(),
             ctx,
         );
         let order_item = order_item::new_order_item(

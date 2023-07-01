@@ -35,6 +35,16 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         this.totalAmount = totalAmount;
     }
 
+    private String favoriteDeliveryWeekday;
+
+    public String getFavoriteDeliveryWeekday() {
+        return this.favoriteDeliveryWeekday;
+    }
+
+    public void setFavoriteDeliveryWeekday(String favoriteDeliveryWeekday) {
+        this.favoriteDeliveryWeekday = favoriteDeliveryWeekday;
+    }
+
     private BigInteger version;
 
     public BigInteger getVersion() {
@@ -113,6 +123,16 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    private Set<Integer> deliveryWeekdays;
+
+    public Set<Integer> getDeliveryWeekdays() {
+        return this.deliveryWeekdays;
+    }
+
+    public void setDeliveryWeekdays(Set<Integer> deliveryWeekdays) {
+        this.deliveryWeekdays = deliveryWeekdays;
     }
 
     public boolean isStateUnsaved() {
@@ -218,6 +238,8 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
             return;
         }
         this.setTotalAmount(s.getTotalAmount());
+        this.setDeliveryWeekdays(s.getDeliveryWeekdays());
+        this.setFavoriteDeliveryWeekday(s.getFavoriteDeliveryWeekday());
         this.setVersion(s.getVersion());
         this.setActive(s.getActive());
 

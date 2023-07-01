@@ -17,3 +17,21 @@ enumObjects:
         value: 6
       Sunday:
         value: 7
+
+  Weekday2:
+    baseType: String
+    values:
+      Monday:
+        value: "Mon"
+      Tuesday:
+        value: "Tue"
+      Wednesday:
+        value: "Wed"
+      Thursday:
+        value: "Thur"
+      Friday:
+        value: "Fri"
+      Saturday:
+        value: "Sat"
+      Sunday:
+        value: "Sun"
