@@ -613,6 +613,10 @@ module rooch_demo::order {
 
     fun private_add_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
         assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(rooch_demo::weekday::are_all_valid(&object::borrow(&order_obj).delivery_weekdays), EINVALID_ENUM_VALUE);
+        if (option::is_some(&object::borrow(&order_obj).favorite_delivery_weekday)) {
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&object::borrow(&order_obj).favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+        };
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, order_obj);
     }
