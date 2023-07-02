@@ -31,3 +31,7 @@ aggregates:
           isObjectShared: true
           #isObjectFrozen: true # This is `true` when the Product is immutable.
 
+      Update:
+        verificationLogic:
+          Move:
+            "assert!(sui::tx_context::sender(ctx) == product::owner(product), 111);"

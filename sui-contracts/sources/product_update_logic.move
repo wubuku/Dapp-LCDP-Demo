@@ -14,6 +14,7 @@ module sui_contracts::product_update_logic {
         ctx: &TxContext,
     ): product::ProductUpdated {
         let _ = ctx;
+        assert!(sui::tx_context::sender(ctx) == product::owner(product), 111);
         product::new_product_updated(
             product,
             name,
