@@ -33,6 +33,7 @@ module rooch_demo::order {
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EINVALID_ENUM_VALUE: u64 = 106;
 
     struct Tables has key {
         order_id_table: Table<String, ObjectID>,
@@ -106,6 +107,7 @@ module rooch_demo::order {
     }
 
     public(friend) fun set_delivery_weekdays(order_obj: &mut Object<Order>, delivery_weekdays: vector<u8>) {
+        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
         object::borrow_mut(order_obj).delivery_weekdays = delivery_weekdays;
     }
 
@@ -114,6 +116,9 @@ module rooch_demo::order {
     }
 
     public(friend) fun set_favorite_delivery_weekday(order_obj: &mut Object<Order>, favorite_delivery_weekday: Option<String>) {
+        if (option::is_some(&favorite_delivery_weekday)) {
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+        };
         object::borrow_mut(order_obj).favorite_delivery_weekday = favorite_delivery_weekday;
     }
 
@@ -180,6 +185,10 @@ module rooch_demo::order {
         favorite_delivery_weekday: Option<String>,
     ): Order {
         assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        if (option::is_some(&favorite_delivery_weekday)) {
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+        };
         Order {
             order_id,
             version: 0,
