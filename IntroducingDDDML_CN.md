@@ -490,4 +490,56 @@ Tag 对象实例的 ID 由一个类型（class）为 `assigned` 的生成器生�
 该值对象的属性包括： 引用编号、标题、网址和作者。其中有些属性是可选的。
 
 
+### 示例 5：枚举对象
+
+下面的 DDDML 文档描述了两个枚举对象：
+
+```yaml
+enumObjects:
+  Weekday:
+    baseType: u8
+    values:
+      Monday:
+        value: 1
+      Tuesday:
+        value: 2
+      Wednesday:
+        value: 3
+      Thursday:
+        value: 4
+      Friday:
+        value: 5
+      Saturday:
+        value: 6
+      Sunday:
+        value: 7
+
+  Weekday2:
+    baseType: String
+    values:
+      Monday:
+        value: "Mon"
+      Tuesday:
+        value: "Tue"
+      Wednesday:
+        value: "Wed"
+      Thursday:
+        value: "Thu"
+      Friday:
+        value: "Fri"
+      Saturday:
+        value: "Sat"
+      Sunday:
+        value: "Sun"
+```
+
+这两个枚举对象都用来表示“星期几”的概念，但它们有不同的基类型（`baseType`）。`Weekday` 的基类型是 `u8`，即无符号 8 位整数。它的值从 1 到 7 对应星期一到星期日。这意味着生成的代码会用一个数字来代表一个星期的某天，例如 3 就是星期三。
+
+`Weekday2` 的基类型是 String，即字符串。它的值是每个星期的英文缩写，例如 Mon 就是 Monday，Tue 就是 Tuesday，依此类推。这意味着生成的代码会用一个简短的字符串来代表一个星期的某天，例如 Wed 就是星期三。
+
+需要注意的是，DDDML 中的枚举对象类似于 C 系语言中的 enum 类型，而与 Rust 中的 enum 类型不太相同。
+
+按照 DDDML 规范，枚举对象的 `baseType` 并不是必须指定的。 DDDML 代码生成工具可以视不同语言能够提供的特性，以及开发团队的编码规范等因素，为 DDDML 定义的枚举对象生成合适的代码。
+
+有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 baseType（基类型），有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 

@@ -490,3 +490,57 @@ Finally, under the `/valueObjects` key node, we define a value object named `Ref
 
 The properties of this value object include: reference number, title, URL and author. Some properties are optional.
 
+
+### Example 5: Enum Objects
+
+The following DDDML document describes two enum objects:
+
+```yaml
+enumObjects:
+  Weekday:
+    baseType: u8
+    values:
+      Monday:
+        value: 1
+      Tuesday:
+        value: 2
+      Wednesday:
+        value: 3
+      Thursday:
+        value: 4
+      Friday:
+        value: 5
+      Saturday:
+        value: 6
+      Sunday:
+        value: 7
+
+  Weekday2:
+    baseType: String
+    values:
+      Monday:
+        value: "Mon"
+      Tuesday:
+        value: "Tue"
+      Wednesday:
+        value: "Wed"
+      Thursday:
+        value: "Thu"
+      Friday:
+        value: "Fri"
+      Saturday:
+        value: "Sat"
+      Sunday:
+        value: "Sun"
+```
+
+These two enum objects are both used to represent the concept of "weekday", but they have different base types (`baseType`). The base type of `Weekday` is `u8`, which is an unsigned 8-bit integer. Its values range from 1 to 7, corresponding to Monday to Sunday. This means that the generated code will use a number to represent a day of the week, such as 3 for Wednesday.
+
+The base type of `Weekday2` is `String`, which is a string. Its values are the English abbreviations of each weekday, such as `Mon` for Monday, `Tue` for Tuesday, and so on. This means that the generated code will use a short string to represent a day of the week, such as `Wed` for Wednesday.
+
+It should be noted that the enum objects in DDDML are similar to the enum type in C-like languages, but not quite the same as the enum type in Rust.
+
+According to the DDDML specification, the `baseType` of an enum object is not required to be specified. The DDDML code generation tool can generate appropriate code for the enum objects defined by DDDML according to the features provided by different languages, as well as the coding standards of the development team.
+
+Some languages, such as Java and C#, have an `enum` keyword, while some languages do not have an `enum` type. In this case, the DDDML tool may replace the enum object (type) with the `baseType` declared in the enum object definition. Sometimes this is not a bad choice, as it may bring convenience in serialization and persistence processing.
+
