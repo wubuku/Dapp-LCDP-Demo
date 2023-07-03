@@ -30,7 +30,7 @@ public class UpdateProductStateTaskService {
         productEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
             if (ProductEventService.isDeletionCommand(e.getEventType())) {
-                suiProductService.deleteProduct(objectId);
+                suiProductService.deleteProduct(e.getProductId());
             } else {
                 suiProductService.updateProductState(objectId);
             }

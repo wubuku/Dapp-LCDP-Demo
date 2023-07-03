@@ -45,8 +45,8 @@ public class SuiProductService {
     }
 
     @Transactional
-    public void deleteProduct(String objectId) {
-        ProductState.MutableProductState s = (ProductState.MutableProductState) productStateRepository.get(objectId, true);
+    public void deleteProduct(String productId) {
+        ProductState.MutableProductState s = (ProductState.MutableProductState) productStateRepository.get(productId, true);
         if (s != null) {
             s.setDeleted(true);
             productStateRepository.merge(s);
