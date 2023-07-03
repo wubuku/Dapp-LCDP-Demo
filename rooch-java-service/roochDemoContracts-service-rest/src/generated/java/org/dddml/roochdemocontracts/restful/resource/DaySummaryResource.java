@@ -195,11 +195,8 @@ public class DaySummaryResource {
 
             DaySummaryCommands.Delete cmd = content;//.toDelete();
             Day idObj = DaySummaryResourceUtils.parseIdString(day);
-            if (cmd.getDay() == null) {
-                cmd.setDay(idObj);
-            } else if (!cmd.getDay().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", day, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             daySummaryApplicationService.when(cmd);
 

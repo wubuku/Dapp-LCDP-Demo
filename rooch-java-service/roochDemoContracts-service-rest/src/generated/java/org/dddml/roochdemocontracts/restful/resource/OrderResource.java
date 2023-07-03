@@ -195,11 +195,8 @@ public class OrderResource {
 
             OrderCommands.RemoveItem cmd = content;//.toRemoveItem();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -213,11 +210,8 @@ public class OrderResource {
 
             OrderCommands.UpdateItemQuantity cmd = content;//.toUpdateItemQuantity();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -231,11 +225,8 @@ public class OrderResource {
 
             OrderCommands.UpdateEstimatedShipDate cmd = content;//.toUpdateEstimatedShipDate();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -249,11 +240,8 @@ public class OrderResource {
 
             OrderCommands.AddOrderShipGroup cmd = content;//.toAddOrderShipGroup();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -267,11 +255,8 @@ public class OrderResource {
 
             OrderCommands.AddOrderItemShipGroupAssocSubitem cmd = content;//.toAddOrderItemShipGroupAssocSubitem();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -285,11 +270,8 @@ public class OrderResource {
 
             OrderCommands.CancelOrderShipGroupQuantity cmd = content;//.toCancelOrderShipGroupQuantity();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
@@ -303,11 +285,8 @@ public class OrderResource {
 
             OrderCommands.RemoveOrderShipGroupItem cmd = content;//.toRemoveOrderShipGroupItem();
             String idObj = orderId;
-            if (cmd.getId() == null) {
-                cmd.setId(idObj);
-            } else if (!cmd.getId().equals(idObj)) {
-                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", orderId, cmd.getId());
-            }
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
             cmd.setRequesterId(SecurityContextUtil.getRequesterId());
             orderApplicationService.when(cmd);
 
