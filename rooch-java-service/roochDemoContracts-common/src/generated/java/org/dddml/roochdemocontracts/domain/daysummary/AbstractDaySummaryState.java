@@ -271,6 +271,8 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
             ;
         } else if (e instanceof AbstractDaySummaryEvent.DaySummaryCreated) {
             when((AbstractDaySummaryEvent.DaySummaryCreated)e);
+        } else if (e instanceof AbstractDaySummaryEvent.DaySummaryDeleted) {
+            when((AbstractDaySummaryEvent.DaySummaryDeleted)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -351,6 +353,53 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
 //
 //public class CreateLogic {
 //    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    }
+//}
+
+        if (this != updatedDaySummaryState) { merge(updatedDaySummaryState); } //else do nothing
+
+    }
+
+    public void when(AbstractDaySummaryEvent.DaySummaryDeleted e) {
+        throwOnWrongEvent(e);
+
+        RoochEventId roochEventId = e.getRoochEventId();
+        RoochEventId RoochEventId = roochEventId;
+        String roochSender = e.getRoochSender();
+        String RoochSender = roochSender;
+        String roochTxHash = e.getRoochTxHash();
+        String RoochTxHash = roochTxHash;
+        String roochTypeTag = e.getRoochTypeTag();
+        String RoochTypeTag = roochTypeTag;
+        Long roochTimestampMs = e.getRoochTimestampMs();
+        Long RoochTimestampMs = roochTimestampMs;
+        BigInteger roochBlockHeight = e.getRoochBlockHeight();
+        BigInteger RoochBlockHeight = roochBlockHeight;
+        Long roochEventIndex = e.getRoochEventIndex();
+        Long RoochEventIndex = roochEventIndex;
+        String status = e.getStatus();
+        String Status = status;
+
+        if (this.getCreatedBy() == null){
+            this.setCreatedBy(e.getCreatedBy());
+        }
+        if (this.getCreatedAt() == null){
+            this.setCreatedAt(e.getCreatedAt());
+        }
+        this.setUpdatedBy(e.getCreatedBy());
+        this.setUpdatedAt(e.getCreatedAt());
+
+        DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
+                    "mutate",
+                    new Class[]{DaySummaryState.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new Object[]{this, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
+            );
+
+//package org.dddml.roochdemocontracts.domain.daysummary;
+//
+//public class DeleteLogic {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 

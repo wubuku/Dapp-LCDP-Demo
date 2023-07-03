@@ -58,6 +58,18 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             apply(e);
         }
 
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Delete c) {
+            try {
+                verifyDelete(c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newDaySummaryDeleted(offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
         protected void verifyCreate(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
             String Description = description;
             String MetaData = metaData;
@@ -86,6 +98,25 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         }
            
 
+        protected void verifyDelete(DaySummaryCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
+                    "verify",
+                    new Class[]{DaySummaryState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.roochdemocontracts.domain.daysummary;
+//
+//public class DeleteLogic {
+//    public static void verify(DaySummaryState daySummaryState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
         protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId) {
             DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
@@ -99,6 +130,27 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             e.setU64ArrayData(u64ArrayData);
             e.setU128ArrayData(u128ArrayData);
             e.setU256ArrayData(u256ArrayData);
+            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setDaySummaryEventId(eventId);
+            return e;
+        }
+
+        protected AbstractDaySummaryEvent.DaySummaryDeleted newDaySummaryDeleted(Long offChainVersion, String commandId, String requesterId) {
+            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
+            AbstractDaySummaryEvent.DaySummaryDeleted e = new AbstractDaySummaryEvent.DaySummaryDeleted();
+
             e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
             e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
             e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.

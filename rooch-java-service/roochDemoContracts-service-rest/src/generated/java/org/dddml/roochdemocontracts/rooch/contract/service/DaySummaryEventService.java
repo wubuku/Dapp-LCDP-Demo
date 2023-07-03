@@ -14,6 +14,7 @@ import org.dddml.roochdemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.roochdemocontracts.rooch.contract.ContractConstants;
 import org.dddml.roochdemocontracts.rooch.contract.DomainBeanUtils;
 import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
+import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryDeleted;
 import org.dddml.roochdemocontracts.rooch.contract.repository.DaySummaryEventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ import java.util.*;
 
 @Service
 public class DaySummaryEventService {
+    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("DaySummaryDeleted"));
+
+    public static boolean isDeletionCommand(String eventType) {
+        return DELETION_COMMAND_EVENTS.contains(eventType);
+    }
+
     @Value("${rooch.contract.address}")
     private String contractAddress;
 
@@ -79,6 +86,45 @@ public class DaySummaryEventService {
             return;
         }
         daySummaryEventRepository.save(daySummaryCreated);
+    }
+
+    @Transactional
+    public void pullDaySummaryDeletedEvents() {
+        if (contractAddress == null) {
+            return;
+        }
+        long limit = 1L;
+        String eventType = contractAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_DELETED;
+        BigInteger cursor = getDaySummaryDeletedEventNextCursor();
+        while (true) {
+            EventPageView<DaySummaryDeleted> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+                    eventType, cursor, limit, DaySummaryDeleted.class
+            );
+            if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
+                cursor = eventPage.getNextCursor();
+                for (AnnotatedEventView<DaySummaryDeleted> eventEnvelope : eventPage.getData()) {
+                    saveDaySummaryDeleted(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!PageView.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getDaySummaryDeletedEventNextCursor() {
+        AbstractDaySummaryEvent.DaySummaryDeleted lastEvent = daySummaryEventRepository.findFirstDaySummaryDeletedByOrderByRoochEventId_EventSeqDesc();
+        return lastEvent != null ? lastEvent.getRoochEventId().getEventSeq() : null;
+    }
+
+    private void saveDaySummaryDeleted(AnnotatedEventView<DaySummaryDeleted> eventEnvelope) {
+        AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = DomainBeanUtils.toDaySummaryDeleted(eventEnvelope);
+        if (daySummaryEventRepository.findById(daySummaryDeleted.getDaySummaryEventId()).isPresent()) {
+            return;
+        }
+        daySummaryEventRepository.save(daySummaryDeleted);
     }
 
 }

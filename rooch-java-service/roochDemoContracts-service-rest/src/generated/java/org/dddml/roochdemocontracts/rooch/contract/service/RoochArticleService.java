@@ -58,6 +58,5 @@ public class RoochArticleService {
         articleStateRepository.merge(articleState);
     }
 
-
 }
 

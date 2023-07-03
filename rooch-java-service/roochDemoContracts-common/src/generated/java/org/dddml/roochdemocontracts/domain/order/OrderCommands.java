@@ -127,14 +127,6 @@ public class OrderCommands {
             this.offChainVersion = offChainVersion;
         }
 
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
-        }
-
     }
 
     public static class UpdateItemQuantity extends AbstractOrderCommand implements OrderCommand {
@@ -199,14 +191,6 @@ public class OrderCommands {
             this.offChainVersion = offChainVersion;
         }
 
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
-        }
-
     }
 
     public static class UpdateEstimatedShipDate extends AbstractOrderCommand implements OrderCommand {
@@ -256,14 +240,6 @@ public class OrderCommands {
 
         public void setOffChainVersion(Long offChainVersion) {
             this.offChainVersion = offChainVersion;
-        }
-
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
         }
 
     }
@@ -356,14 +332,6 @@ public class OrderCommands {
             this.offChainVersion = offChainVersion;
         }
 
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
-        }
-
     }
 
     public static class AddOrderItemShipGroupAssocSubitem extends AbstractOrderCommand implements OrderCommand {
@@ -454,14 +422,6 @@ public class OrderCommands {
             this.offChainVersion = offChainVersion;
         }
 
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
-        }
-
     }
 
     public static class CancelOrderShipGroupQuantity extends AbstractOrderCommand implements OrderCommand {
@@ -539,14 +499,6 @@ public class OrderCommands {
             this.offChainVersion = offChainVersion;
         }
 
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
-        }
-
     }
 
     public static class RemoveOrderShipGroupItem extends AbstractOrderCommand implements OrderCommand {
@@ -609,14 +561,6 @@ public class OrderCommands {
 
         public void setOffChainVersion(Long offChainVersion) {
             this.offChainVersion = offChainVersion;
-        }
-
-        public String getOrderId() {
-            return this.getId();
-        }
-
-        public void setOrderId(String id) {
-            this.setId(id);
         }
 
     }

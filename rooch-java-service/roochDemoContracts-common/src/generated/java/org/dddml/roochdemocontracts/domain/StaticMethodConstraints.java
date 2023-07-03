@@ -142,6 +142,14 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
+                    "verify",
+                    new Class[]{DaySummaryState.class, VerificationContext.class},
+                    new String[]{"_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.CreateLogic",
                     "mutate",
                     new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, String.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
@@ -258,6 +266,14 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
                     new String[]{"_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
+                    "mutate",
+                    new Class[]{DaySummaryState.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 

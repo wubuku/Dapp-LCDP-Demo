@@ -117,3 +117,10 @@ rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_:
 --args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item' 'vector<string>:array_data_item' 'vector<string>:optional_data_item' 'vector<u16>:u16_array_data_item' 'vector<u32>:u32_array_data_item' 'vector<u64>:u64_array_data_item' 'vector<u128>:u128_array_data_item' 'vector<u256>:u256_array_data_item'
 ```
 
+### Delete method
+
+```shell
+rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::day_summary_aggregate::delete' \
+--args 'object_id:id'
+```
+

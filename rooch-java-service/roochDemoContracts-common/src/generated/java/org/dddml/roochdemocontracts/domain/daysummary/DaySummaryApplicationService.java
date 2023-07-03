@@ -17,6 +17,8 @@ import org.dddml.roochdemocontracts.domain.Command;
 public interface DaySummaryApplicationService {
     void when(DaySummaryCommands.Create c);
 
+    void when(DaySummaryCommands.Delete c);
+
     DaySummaryState get(Day id);
 
     Iterable<DaySummaryState> getAll(Integer firstResult, Integer maxResults);

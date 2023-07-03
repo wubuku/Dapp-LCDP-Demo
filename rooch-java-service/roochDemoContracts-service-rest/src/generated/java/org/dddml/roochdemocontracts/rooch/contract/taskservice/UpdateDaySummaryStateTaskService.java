@@ -29,7 +29,11 @@ public class UpdateDaySummaryStateTaskService {
     public void updateDaySummaryStates() {
         daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
-            roochDaySummaryService.updateDaySummaryState(objectId);
+            if (DaySummaryEventService.isDeletionCommand(e.getEventType())) {
+                roochDaySummaryService.deleteDaySummary(e.getDay());
+            } else {
+                roochDaySummaryService.updateDaySummaryState(objectId);
+            }
             daySummaryEventService.updateStatusToProcessed(e);
         });
     }

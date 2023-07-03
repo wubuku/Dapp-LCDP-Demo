@@ -339,6 +339,15 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     }
 
+    public static class DaySummaryDeleted extends DaySummaryClobEvent {
+
+        @Override
+        public String getEventType() {
+            return "DaySummaryDeleted";
+        }
+
+    }
+
 
 }
 

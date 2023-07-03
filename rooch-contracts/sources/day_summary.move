@@ -18,6 +18,7 @@ module rooch_demo::day_summary {
     use std::signer;
     use std::string::String;
     friend rooch_demo::day_summary_create_logic;
+    friend rooch_demo::day_summary_delete_logic;
     friend rooch_demo::day_summary_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -257,6 +258,30 @@ module rooch_demo::day_summary {
         }
     }
 
+    struct DaySummaryDeleted has key {
+        id: ObjectID,
+        day: Day,
+        version: u64,
+    }
+
+    public fun day_summary_deleted_id(day_summary_deleted: &DaySummaryDeleted): ObjectID {
+        day_summary_deleted.id
+    }
+
+    public fun day_summary_deleted_day(day_summary_deleted: &DaySummaryDeleted): Day {
+        day_summary_deleted.day
+    }
+
+    public(friend) fun new_day_summary_deleted(
+        day_summary_obj: &Object<DaySummary>,
+    ): DaySummaryDeleted {
+        DaySummaryDeleted {
+            id: id(day_summary_obj),
+            day: day(day_summary_obj),
+            version: version(day_summary_obj),
+        }
+    }
+
 
     public(friend) fun create_day_summary(
         storage_ctx: &mut StorageContext,
@@ -366,6 +391,10 @@ module rooch_demo::day_summary {
 
     public(friend) fun emit_day_summary_created(storage_ctx: &mut StorageContext, day_summary_created: DaySummaryCreated) {
         event::emit_event(storage_ctx, day_summary_created);
+    }
+
+    public(friend) fun emit_day_summary_deleted(storage_ctx: &mut StorageContext, day_summary_deleted: DaySummaryDeleted) {
+        event::emit_event(storage_ctx, day_summary_deleted);
     }
 
 }

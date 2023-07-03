@@ -15,4 +15,6 @@ public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySumm
 
     AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderByRoochEventId_EventSeqDesc();
 
+    AbstractDaySummaryEvent.DaySummaryDeleted findFirstDaySummaryDeletedByOrderByRoochEventId_EventSeqDesc();
+
 }

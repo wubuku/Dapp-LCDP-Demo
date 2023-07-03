@@ -32,6 +32,7 @@ import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupQuantityC
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderShipGroupItemRemoved;
 import org.dddml.roochdemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryCreated;
+import org.dddml.roochdemocontracts.rooch.contract.daysummary.DaySummaryDeleted;
 
 /**
  * Utils that convert beans in the contract package to domain beans.
@@ -320,6 +321,19 @@ public class DomainBeanUtils {
         setRoochEventProperties(daySummaryCreated, eventEnvelope);
 
         return daySummaryCreated;
+    }
+
+    public static AbstractDaySummaryEvent.DaySummaryDeleted toDaySummaryDeleted(AnnotatedEventView<DaySummaryDeleted> eventEnvelope) {
+        DaySummaryDeleted contractEvent = eventEnvelope.getParsedEventData().getValue();
+
+        AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = new AbstractDaySummaryEvent.DaySummaryDeleted();
+        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
+        daySummaryDeleted.setId_(contractEvent.getId());
+        daySummaryDeleted.setVersion(contractEvent.getVersion());
+
+        setRoochEventProperties(daySummaryDeleted, eventEnvelope);
+
+        return daySummaryDeleted;
     }
 
     public static org.dddml.roochdemocontracts.rooch.contract.persistence.ReferenceTableItemAdded toPersistenceReferenceTableItemAdded(AnnotatedEventView<ReferenceTableItemAdded> eventEnvelope) {

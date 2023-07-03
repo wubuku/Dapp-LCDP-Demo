@@ -53,3 +53,8 @@ aggregates:
         event:
           name: DaySummaryCreated
 
+      Delete:
+        isDeletionCommand: true
+        event:
+          name: DaySummaryDeleted
+

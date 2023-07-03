@@ -47,6 +47,5 @@ public class RoochProductService {
         productStateRepository.merge(productState);
     }
 
-
 }
 

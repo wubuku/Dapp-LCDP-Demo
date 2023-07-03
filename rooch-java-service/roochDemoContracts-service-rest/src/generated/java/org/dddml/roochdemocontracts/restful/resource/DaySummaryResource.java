@@ -188,6 +188,24 @@ public class DaySummaryResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{day}/_commands/Delete")
+    public void delete(@PathVariable("day") String day, @RequestBody DaySummaryCommands.Delete content) {
+        try {
+
+            DaySummaryCommands.Delete cmd = content;//.toDelete();
+            Day idObj = DaySummaryResourceUtils.parseIdString(day);
+            if (cmd.getDay() == null) {
+                cmd.setDay(idObj);
+            } else if (!cmd.getDay().equals(idObj)) {
+                throw DomainError.named("inconsistentId", "Argument Id %1$s NOT equals body Id %2$s", day, cmd.getId());
+            }
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            daySummaryApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

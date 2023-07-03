@@ -54,6 +54,10 @@ public abstract class AbstractDaySummaryApplicationService implements DaySummary
         update(c, ar -> ar.create(c.getDescription(), c.getMetaData(), c.getArrayData(), c.getOptionalData(), c.getU16ArrayData(), c.getU32ArrayData(), c.getU64ArrayData(), c.getU128ArrayData(), c.getU256ArrayData(), c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
     }
 
+    public void when(DaySummaryCommands.Delete c) {
+        update(c, ar -> ar.delete(c.getOffChainVersion(), c.getCommandId(), c.getRequesterId(), c));
+    }
+
     public DaySummaryState get(Day id) {
         DaySummaryState state = getStateRepository().get(id, true);
         return state;

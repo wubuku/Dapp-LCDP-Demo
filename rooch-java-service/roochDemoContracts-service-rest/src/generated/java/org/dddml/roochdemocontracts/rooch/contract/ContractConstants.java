@@ -40,6 +40,8 @@ public class ContractConstants {
 
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
+    public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_DELETED = "day_summary::DaySummaryDeleted";
+
     public static final String REFERENCE_TABLE_ITEM_ADDED = "article::ReferenceTableItemAdded";
 
     public static final String ORDER_ITEM_TABLE_ITEM_ADDED = "order::OrderItemTableItemAdded";

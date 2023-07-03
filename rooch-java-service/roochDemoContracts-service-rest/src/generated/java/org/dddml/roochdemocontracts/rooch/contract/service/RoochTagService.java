@@ -47,6 +47,5 @@ public class RoochTagService {
         tagStateRepository.merge(tagState);
     }
 
-
 }
 

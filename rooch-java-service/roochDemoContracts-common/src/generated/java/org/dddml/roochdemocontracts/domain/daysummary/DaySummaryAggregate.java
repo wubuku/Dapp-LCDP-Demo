@@ -19,6 +19,8 @@ public interface DaySummaryAggregate {
 
     void create(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c);
 
+    void delete(Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Delete c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 
