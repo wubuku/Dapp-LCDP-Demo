@@ -58,6 +58,18 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             apply(e);
         }
 
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Delete c) {
+            try {
+                verifyDelete(c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            Event e = newDaySummaryDeleted(offChainVersion, commandId, requesterId);
+            apply(e);
+        }
+
         protected void verifyCreate(String description, int[] metaData, String[] arrayData, int[] optionalData, DaySummaryCommands.Create c) {
             String Description = description;
             int[] MetaData = metaData;
@@ -81,6 +93,25 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
         }
            
 
+        protected void verifyDelete(DaySummaryCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.suidemocontracts.domain.daysummary.DeleteLogic",
+                    "verify",
+                    new Class[]{DaySummaryState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.suidemocontracts.domain.daysummary;
+//
+//public class DeleteLogic {
+//    public static void verify(DaySummaryState daySummaryState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
+
         protected AbstractDaySummaryEvent.DaySummaryCreated newDaySummaryCreated(String description, int[] metaData, String[] arrayData, int[] optionalData, Long offChainVersion, String commandId, String requesterId) {
             DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryCreated e = new AbstractDaySummaryEvent.DaySummaryCreated();
@@ -89,6 +120,27 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             e.setMetaData(metaData);
             e.setArrayData(arrayData);
             e.setOptionalData(optionalData);
+            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
+            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setDaySummaryEventId(eventId);
+            return e;
+        }
+
+        protected AbstractDaySummaryEvent.DaySummaryDeleted newDaySummaryDeleted(Long offChainVersion, String commandId, String requesterId) {
+            DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
+            AbstractDaySummaryEvent.DaySummaryDeleted e = new AbstractDaySummaryEvent.DaySummaryDeleted();
+
             e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
             e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.

@@ -10,6 +10,7 @@ module sui_contracts::day_summary_aggregate {
     use sui_contracts::day::{Self, Day};
     use sui_contracts::day_summary;
     use sui_contracts::day_summary_create_logic;
+    use sui_contracts::day_summary_delete_logic;
     use sui_contracts::month;
     use sui_contracts::year;
 
@@ -57,6 +58,24 @@ module sui_contracts::day_summary_aggregate {
         day_summary::set_day_summary_created_id(&mut day_summary_created, day_summary::id(&day_summary));
         day_summary::transfer_object(day_summary, tx_context::sender(ctx));
         day_summary::emit_day_summary_created(day_summary_created);
+    }
+
+
+    public entry fun delete(
+        day_summary: day_summary::DaySummary,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        let day_summary_deleted = day_summary_delete_logic::verify(
+            &day_summary,
+            ctx,
+        );
+        let updated_day_summary = day_summary_delete_logic::mutate(
+            &day_summary_deleted,
+            day_summary,
+            ctx,
+        );
+        day_summary::drop_day_summary(updated_day_summary);
+        day_summary::emit_day_summary_deleted(day_summary_deleted);
     }
 
 }

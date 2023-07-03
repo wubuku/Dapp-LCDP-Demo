@@ -52,6 +52,8 @@ public class ContractConstants {
 
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
 
+    public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_DELETED = "day_summary::DaySummaryDeleted";
+
 
     public static String[] getMoveObjectIdGeneratorObjectTypes(String packageId) {
         return new String[]{

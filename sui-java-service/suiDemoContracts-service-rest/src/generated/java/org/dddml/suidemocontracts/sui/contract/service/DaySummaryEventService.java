@@ -15,6 +15,7 @@ import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
+import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryDeleted;
 import org.dddml.suidemocontracts.sui.contract.repository.DaySummaryEventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DaySummaryEventService {
+
+    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("DaySummaryDeleted"));
+
+    public static boolean isDeletionCommand(String eventType) {
+        return DELETION_COMMAND_EVENTS.contains(eventType);
+    }
 
     @Autowired
     private SuiPackageRepository suiPackageRepository;
@@ -77,6 +84,46 @@ public class DaySummaryEventService {
             return;
         }
         daySummaryEventRepository.save(daySummaryCreated);
+    }
+
+    @Transactional
+    public void pullDaySummaryDeletedEvents() {
+        String packageId = getDefaultSuiPackageId();
+        if (packageId == null) {
+            return;
+        }
+        int limit = 1;
+        EventId cursor = getDaySummaryDeletedEventNextCursor();
+        while (true) {
+            PaginatedMoveEvents<DaySummaryDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(
+                    packageId + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_DELETED,
+                    cursor, limit, false, DaySummaryDeleted.class);
+
+            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
+                cursor = eventPage.getNextCursor();
+                for (SuiMoveEventEnvelope<DaySummaryDeleted> eventEnvelope : eventPage.getData()) {
+                    saveDaySummaryDeleted(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+            if (!Page.hasNextPage(eventPage)) {
+                break;
+            }
+        }
+    }
+
+    private EventId getDaySummaryDeletedEventNextCursor() {
+        AbstractDaySummaryEvent lastEvent = daySummaryEventRepository.findFirstDaySummaryDeletedByOrderBySuiTimestampDesc();
+        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
+    }
+
+    private void saveDaySummaryDeleted(SuiMoveEventEnvelope<DaySummaryDeleted> eventEnvelope) {
+        AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = DomainBeanUtils.toDaySummaryDeleted(eventEnvelope);
+        if (daySummaryEventRepository.findById(daySummaryDeleted.getDaySummaryEventId()).isPresent()) {
+            return;
+        }
+        daySummaryEventRepository.save(daySummaryDeleted);
     }
 
 

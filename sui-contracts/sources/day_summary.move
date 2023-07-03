@@ -13,6 +13,7 @@ module sui_contracts::day_summary {
     use sui::tx_context::TxContext;
     use sui_contracts::day::Day;
     friend sui_contracts::day_summary_create_logic;
+    friend sui_contracts::day_summary_delete_logic;
     friend sui_contracts::day_summary_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
@@ -167,6 +168,30 @@ module sui_contracts::day_summary {
         }
     }
 
+    struct DaySummaryDeleted has copy, drop {
+        id: object::ID,
+        day: Day,
+        version: u64,
+    }
+
+    public fun day_summary_deleted_id(day_summary_deleted: &DaySummaryDeleted): object::ID {
+        day_summary_deleted.id
+    }
+
+    public fun day_summary_deleted_day(day_summary_deleted: &DaySummaryDeleted): Day {
+        day_summary_deleted.day
+    }
+
+    public(friend) fun new_day_summary_deleted(
+        day_summary: &DaySummary,
+    ): DaySummaryDeleted {
+        DaySummaryDeleted {
+            id: id(day_summary),
+            day: day(day_summary),
+            version: version(day_summary),
+        }
+    }
+
 
     public(friend) fun create_day_summary(
         day: Day,
@@ -255,6 +280,10 @@ module sui_contracts::day_summary {
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) {
         event::emit(day_summary_created);
+    }
+
+    public(friend) fun emit_day_summary_deleted(day_summary_deleted: DaySummaryDeleted) {
+        event::emit(day_summary_deleted);
     }
 
     #[test_only]

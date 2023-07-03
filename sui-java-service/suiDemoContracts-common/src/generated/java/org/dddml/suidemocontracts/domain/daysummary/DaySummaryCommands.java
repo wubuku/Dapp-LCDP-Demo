@@ -104,5 +104,43 @@ public class DaySummaryCommands {
 
     }
 
+    public static class Delete extends AbstractDaySummaryCommand implements DaySummaryCommand {
+
+        public String getCommandType() {
+            return "Delete";
+        }
+
+        public void setCommandType(String commandType) {
+            //do nothing
+        }
+
+        /**
+         * Day
+         */
+        private Day day;
+
+        public Day getDay() {
+            return this.day;
+        }
+
+        public void setDay(Day day) {
+            this.day = day;
+        }
+
+        /**
+         * Off Chain Version
+         */
+        private Long offChainVersion;
+
+        public Long getOffChainVersion() {
+            return this.offChainVersion;
+        }
+
+        public void setOffChainVersion(Long offChainVersion) {
+            this.offChainVersion = offChainVersion;
+        }
+
+    }
+
 }
 

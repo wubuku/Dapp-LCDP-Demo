@@ -44,5 +44,14 @@ public class SuiDaySummaryService {
         daySummaryStateRepository.merge(daySummaryState);
     }
 
+    @Transactional
+    public void deleteDaySummary(Day day) {
+        DaySummaryState.MutableDaySummaryState s = (DaySummaryState.MutableDaySummaryState) daySummaryStateRepository.get(day, true);
+        if (s != null) {
+            s.setDeleted(true);
+            daySummaryStateRepository.merge(s);
+        }
+    }
+
 }
 

@@ -62,6 +62,7 @@
         <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
       </property>
       <subclass name="AbstractDaySummaryEvent$DaySummaryCreated" discriminator-value="DaySummaryCreated" />
+      <subclass name="AbstractDaySummaryEvent$DaySummaryDeleted" discriminator-value="DaySummaryDeleted" />
     </subclass>
   </class>
 </hibernate-mapping>

@@ -21,4 +21,9 @@ public class PullDaySummaryEventsTaskService {
         daySummaryEventService.pullDaySummaryCreatedEvents();
     }
 
+    @Scheduled(fixedDelayString = "${sui.contract.pull-day-summary-events.day-summary-deleted.fixed-delay:5000}")
+    public void pullDaySummaryDeletedEvents() {
+        daySummaryEventService.pullDaySummaryDeletedEvents();
+    }
+
 }

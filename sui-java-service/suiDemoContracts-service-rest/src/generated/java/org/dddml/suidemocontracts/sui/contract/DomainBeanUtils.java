@@ -32,6 +32,7 @@ import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupItemRemoved
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderShipGroupRemoved;
 import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryCreated;
+import org.dddml.suidemocontracts.sui.contract.daysummary.DaySummaryDeleted;
 
 /**
  * Utils that convert beans in the contract package to domain beans.
@@ -502,6 +503,25 @@ public class DomainBeanUtils {
         daySummaryCreated.setSuiSender(eventEnvelope.getSender());
 
         return daySummaryCreated;
+    }
+
+    public static AbstractDaySummaryEvent.DaySummaryDeleted toDaySummaryDeleted(SuiMoveEventEnvelope<DaySummaryDeleted> eventEnvelope) {
+        DaySummaryDeleted contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = new AbstractDaySummaryEvent.DaySummaryDeleted();
+        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
+        daySummaryDeleted.setId_(contractEvent.getId());
+        daySummaryDeleted.setVersion(contractEvent.getVersion());
+
+        daySummaryDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        daySummaryDeleted.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        daySummaryDeleted.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        daySummaryDeleted.setSuiPackageId(eventEnvelope.getPackageId());
+        daySummaryDeleted.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        daySummaryDeleted.setSuiSender(eventEnvelope.getSender());
+
+        return daySummaryDeleted;
     }
 
 }

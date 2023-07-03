@@ -156,6 +156,14 @@ sui client call --package _PACKAGE_ID_ --module day_summary_aggregate --function
 --gas-budget 100000
 ```
 
+### Delete method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module day_summary_aggregate --function delete \
+--args day_summary_Object_ID \
+--gas-budget 100000
+```
+
 
 ---
 

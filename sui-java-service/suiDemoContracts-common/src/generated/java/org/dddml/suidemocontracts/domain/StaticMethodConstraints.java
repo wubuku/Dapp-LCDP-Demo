@@ -166,6 +166,14 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.daysummary.DeleteLogic",
+                    "verify",
+                    new Class[]{DaySummaryState.class, VerificationContext.class},
+                    new String[]{"_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "mutate",
                     new Class[]{DomainNameState.class, BigInteger.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
@@ -306,6 +314,14 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new String[]{"_", "description", "metaData", "arrayData", "optionalData", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.daysummary.DeleteLogic",
+                    "mutate",
+                    new Class[]{DaySummaryState.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
 
