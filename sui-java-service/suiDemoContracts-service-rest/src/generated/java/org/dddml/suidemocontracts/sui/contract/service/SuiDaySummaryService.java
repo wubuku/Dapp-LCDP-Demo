@@ -44,6 +44,5 @@ public class SuiDaySummaryService {
         daySummaryStateRepository.merge(daySummaryState);
     }
 
-
 }
 

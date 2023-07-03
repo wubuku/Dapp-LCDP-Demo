@@ -44,6 +44,14 @@ public class SuiProductService {
         productStateRepository.merge(productState);
     }
 
+    @Transactional
+    public void deleteProduct(String objectId) {
+        ProductState.MutableProductState s = (ProductState.MutableProductState) productStateRepository.get(objectId, true);
+        if (s != null) {
+            s.setDeleted(true);
+            productStateRepository.merge(s);
+        }
+    }
 
 }
 

@@ -46,6 +46,14 @@ public class SuiOrderService {
         orderStateRepository.merge(orderState);
     }
 
+    @Transactional
+    public void deleteOrder(String objectId) {
+        OrderState.MutableOrderState s = (OrderState.MutableOrderState) orderStateRepository.get(objectId, true);
+        if (s != null) {
+            s.setDeleted(true);
+            orderStateRepository.merge(s);
+        }
+    }
 
 }
 

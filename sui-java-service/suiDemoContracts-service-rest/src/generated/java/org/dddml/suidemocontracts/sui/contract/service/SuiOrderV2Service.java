@@ -52,6 +52,5 @@ public class SuiOrderV2Service {
         orderV2StateRepository.merge(orderV2State);
     }
 
-
 }
 

@@ -26,6 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductEventService {
 
+    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("ProductDeleted"));
+
+    public static boolean isDeletionCommand(String eventType) {
+        return DELETION_COMMAND_EVENTS.contains(eventType);
+    }
+
     @Autowired
     private SuiPackageRepository suiPackageRepository;
 

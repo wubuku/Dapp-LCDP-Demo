@@ -44,6 +44,5 @@ public class SuiDomainNameService {
         domainNameStateRepository.merge(domainNameState);
     }
 
-
 }
 

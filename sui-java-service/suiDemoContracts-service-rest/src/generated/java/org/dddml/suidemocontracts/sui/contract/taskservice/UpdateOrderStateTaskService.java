@@ -29,7 +29,11 @@ public class UpdateOrderStateTaskService {
     public void updateOrderStates() {
         orderEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId();
-            suiOrderService.updateOrderState(objectId);
+            if (OrderEventService.isDeletionCommand(e.getEventType())) {
+                suiOrderService.deleteOrder(objectId);
+            } else {
+                suiOrderService.updateOrderState(objectId);
+            }
             orderEventService.updateStatusToProcessed(e);
         });
     }
