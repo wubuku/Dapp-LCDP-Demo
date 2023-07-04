@@ -54,9 +54,9 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public Iterable<OrderV2State> getAll(Integer firstResult, Integer maxResults)
-    {
+    public Iterable<OrderV2State> getAll(Integer firstResult, Integer maxResults) {
         Criteria criteria = getCurrentSession().createCriteria(OrderV2State.class);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         if (firstResult != null) { criteria.setFirstResult(firstResult); }
         if (maxResults != null) { criteria.setMaxResults(maxResults); }
          addNotDeletedRestriction(criteria);
@@ -64,28 +64,25 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public Iterable<OrderV2State> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults)
-    {
+    public Iterable<OrderV2State> get(Iterable<Map.Entry<String, Object>> filter, List<String> orders, Integer firstResult, Integer maxResults) {
         Criteria criteria = getCurrentSession().createCriteria(OrderV2State.class);
-
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, firstResult, maxResults);
         addNotDeletedRestriction(criteria);
         return criteria.list();
     }
 
     @Transactional(readOnly = true)
-    public Iterable<OrderV2State> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults)
-    {
+    public Iterable<OrderV2State> get(org.dddml.support.criterion.Criterion filter, List<String> orders, Integer firstResult, Integer maxResults) {
         Criteria criteria = getCurrentSession().createCriteria(OrderV2State.class);
-
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         HibernateUtils.criteriaAddFilterAndOrdersAndSetFirstResultAndMaxResults(criteria, filter, orders, firstResult, maxResults);
         addNotDeletedRestriction(criteria);
         return criteria.list();
     }
 
     @Transactional(readOnly = true)
-    public OrderV2State getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders)
-    {
+    public OrderV2State getFirst(Iterable<Map.Entry<String, Object>> filter, List<String> orders) {
         List<OrderV2State> list = (List<OrderV2State>)get(filter, orders, 0, 1);
         if (list == null || list.size() <= 0)
         {
@@ -95,16 +92,14 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public OrderV2State getFirst(Map.Entry<String, Object> keyValue, List<String> orders)
-    {
+    public OrderV2State getFirst(Map.Entry<String, Object> keyValue, List<String> orders) {
         List<Map.Entry<String, Object>> filter = new ArrayList<>();
         filter.add(keyValue);
         return getFirst(filter, orders);
     }
 
     @Transactional(readOnly = true)
-    public Iterable<OrderV2State> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults)
-    {
+    public Iterable<OrderV2State> getByProperty(String propertyName, Object propertyValue, List<String> orders, Integer firstResult, Integer maxResults) {
         Map.Entry<String, Object> keyValue = new java.util.AbstractMap.SimpleEntry<String, Object> (propertyName, propertyValue);
         List<Map.Entry<String, Object>> filter = new ArrayList<Map.Entry<String, Object>>();
         filter.add(keyValue);
@@ -112,8 +107,7 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public long getCount(Iterable<Map.Entry<String, Object>> filter)
-    {
+    public long getCount(Iterable<Map.Entry<String, Object>> filter) {
         Criteria criteria = getCurrentSession().createCriteria(OrderV2State.class);
         criteria.setProjection(Projections.rowCount());
         if (filter != null) {
@@ -124,8 +118,7 @@ public class HibernateOrderV2StateQueryRepository implements OrderV2StateQueryRe
     }
 
     @Transactional(readOnly = true)
-    public long getCount(org.dddml.support.criterion.Criterion filter)
-    {
+    public long getCount(org.dddml.support.criterion.Criterion filter) {
         Criteria criteria = getCurrentSession().createCriteria(OrderV2State.class);
         criteria.setProjection(Projections.rowCount());
         if (filter != null)
