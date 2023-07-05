@@ -196,6 +196,10 @@ aggregates:
         id:
           name: ProductObjectId
           type: ObjectID
+#      OrderItem:
+#        id:
+#          name: ProductId # for Sui
+#          type: String
         properties:
           Quantity:
             type: u64
@@ -208,6 +212,8 @@ aggregates:
         parameters:
           ProductObjId:
             type: ObjectID
+#          Product: # for Sui
+#            referenceType: Product
           Quantity:
             type: u64
         event:
@@ -317,6 +323,7 @@ aggregates:
     id:
       name: Id
       type: ObjectID # only for Rooch
+      #type: UID # only for Sui
       arbitrary: true
 
     properties:
