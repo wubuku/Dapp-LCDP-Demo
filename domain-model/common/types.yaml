@@ -54,11 +54,11 @@ typeDefinitions:
     sqlType: DECIMAL(20,0)
     cSharpType: long?
     javaType: Long
-  id:
-    #name: id
-    sqlType: VARCHAR(20)
-    cSharpType: string
-    javaType: String
+#  id:
+#    #name: id
+#    sqlType: VARCHAR(20)
+#    cSharpType: string
+#    javaType: String
   id-long:
     #name: id-long
     sqlType: VARCHAR(60)
@@ -134,11 +134,11 @@ typeDefinitions:
     sqlType: VARCHAR(2000)
     cSharpType: string
     javaType: String
-  id-ne:
-    #name: id-ne
-    sqlType: VARCHAR(20)
-    cSharpType: string
-    javaType: String
+#  id-ne:
+#    #name: id-ne
+#    sqlType: VARCHAR(20)
+#    cSharpType: string
+#    javaType: String
   id-long-ne:
     #name: id-long-ne
     sqlType: VARCHAR(60)
@@ -154,6 +154,3 @@ typeDefinitions:
     sqlType: VARCHAR(60)
     cSharpType: string
     javaType: String
-
-    
-    

@@ -98,7 +98,6 @@ public class M {
         clsMap.put("floating-point", Double.class);
         clsMap.put("Double", Double.class);
         clsMap.put("numeric", Long.class);
-        clsMap.put("id", String.class);
         clsMap.put("id-long", String.class);
         clsMap.put("id-vlong", String.class);
         clsMap.put("indicator", String.class);
@@ -114,7 +113,6 @@ public class M {
         clsMap.put("credit-card-date", String.class);
         clsMap.put("email", String.class);
         clsMap.put("url", String.class);
-        clsMap.put("id-ne", String.class);
         clsMap.put("id-long-ne", String.class);
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);

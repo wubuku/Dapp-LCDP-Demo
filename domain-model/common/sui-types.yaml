@@ -5,6 +5,11 @@ typeDefinitions:
     cSharpType: string
     javaType: String
 
+  ID:
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
+
   address:
     sqlType: VARCHAR(66)
     cSharpType: string

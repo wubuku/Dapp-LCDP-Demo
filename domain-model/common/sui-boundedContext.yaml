@@ -26,6 +26,12 @@ configuration:
     moveObjectVersionPropertyType: "u64"
     offChainObjectNames: [ "SuiEventId" ]
 
+    typeMappings:
+      "ID": "ID"
+
+    typeModules:
+      "ID": "sui::object"
+
 
   java:
     boundedContextPackage: "org.dddml.suidemocontracts"
