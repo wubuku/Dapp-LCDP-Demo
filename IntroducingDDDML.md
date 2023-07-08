@@ -551,3 +551,25 @@ According to the DDDML specification, the `baseType` of an enum object is not re
 
 Some languages, such as Java and C#, have an `enum` keyword, while some languages do not have an `enum` type. In this case, the DDDML tool may replace the enum object (type) with the `baseType` declared in the enum object definition. Sometimes this is not a bad choice, as it may bring convenience in serialization and persistence processing.
 
+## How to Write DDDML models
+
+### Using JSON Schema
+
+Here is a schema file that still needs to be improved: https://raw.githubusercontent.com/wubuku/dddml-spec/master/schemas/dddml-schema.json
+
+DDDML is a YAML-based DSL, and YAML is a superset of JSON, so JSON schema can be effective.
+
+If your IDE supports it, you can configure it, and then have support for features like automatic completion when writing DDDML models.
+
+For example, in VS Code's `.vscode/settings.json` file, you can set it up like this:
+
+```json
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/wubuku/dddml-spec/master/schemas/dddml-schema.json": [
+            "dddml/*.yaml", //file match pattern
+            "dddml/*.yml"
+        ]
+    }
+}
+```

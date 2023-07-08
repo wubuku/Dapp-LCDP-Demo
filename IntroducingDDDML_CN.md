@@ -550,3 +550,25 @@ enumObjects:
 
 有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 baseType（基类型），有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 
+## 如何编写 DDDML 模型
+
+### 使用 JSON Schema
+
+这里有一个尚待完善的 DDDML JSON Schema 文件：https://raw.githubusercontent.com/wubuku/dddml-spec/master/schemas/dddml-schema.json
+
+DDDML 是一种基于 YAML 的 DSL，而 YAML 是 JSON 的超集，所以 JSON Schema 可以生效。
+
+如果你的 IDE 支持，你可以配置一下，然后在编写 DDDML 模型的时候，就有自动补全之类的支持了。
+
+比如，在 VS Code 的 `.vscode/settings.json` 文件中可以像这样设置：
+
+```json
+{
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/wubuku/dddml-spec/master/schemas/dddml-schema.json": [
+            "dddml/*.yaml", //file match pattern
+            "dddml/*.yml"
+        ]
+    }
+}
+```
