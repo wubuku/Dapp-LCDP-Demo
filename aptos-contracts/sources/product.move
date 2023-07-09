@@ -209,6 +209,15 @@ module aptos_demo::product {
         private_add_product(product);
     }
 
+    public(friend) fun drop_product(product: Product) {
+        let Product {
+            version: _version,
+            product_id: _product_id,
+            name: _name,
+            unit_price: _unit_price,
+        } = product;
+    }
+
     public(friend) fun emit_product_created(product_created: ProductCreated) acquires Events {
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.product_created_handle, product_created);
