@@ -18,6 +18,7 @@ module aptos_demo::day_summary {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const ENOT_INITIALIZED: u64 = 110;
 
     struct Events has key {
         day_summary_created_handle: event::EventHandle<DaySummaryCreated>,
@@ -276,6 +277,7 @@ module aptos_demo::day_summary {
     public(friend) fun asset_day_summary_not_exists(
         day: Day,
     ) acquires Tables {
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         assert!(!table::contains(&tables.day_summary_table, day), EID_ALREADY_EXISTS);
     }
@@ -292,11 +294,13 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun remove_day_summary(day: Day): DaySummary acquires Tables {
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.day_summary_table, day)
     }
 
     fun private_add_day_summary(day_summary: DaySummary) acquires Tables {
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.day_summary_table, day(&day_summary), day_summary);
     }
@@ -328,6 +332,7 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.day_summary_created_handle, day_summary_created);
     }

@@ -16,6 +16,7 @@ module aptos_demo::product {
 
     const EID_DATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const ENOT_INITIALIZED: u64 = 110;
     const PRODUCT_ID_LENGTH: u64 = 20;
 
 
@@ -126,6 +127,7 @@ module aptos_demo::product {
         name: String,
         unit_price: u128,
     ): ProductCreated acquires ProductIdGenerator {
+        assert!(exists<ProductIdGenerator>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let product_id_generator = borrow_global_mut<ProductIdGenerator>(genesis_account::resouce_account_address());
         let product_id = next_product_id(product_id_generator);
         ProductCreated {
@@ -140,6 +142,7 @@ module aptos_demo::product {
         name: String,
         unit_price: u128,
     ): Product acquires ProductIdGenerator {
+        assert!(exists<ProductIdGenerator>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let product_id_generator = borrow_global<ProductIdGenerator>(genesis_account::resouce_account_address());
         let product_id = current_product_id(product_id_generator);
         let product = new_product(
@@ -190,11 +193,13 @@ module aptos_demo::product {
     }
 
     public(friend) fun remove_product(product_id: String): Product acquires Tables {
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.product_table, product_id)
     }
 
     fun private_add_product(product: Product) acquires Tables {
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.product_table, product_id(&product), product);
     }
@@ -219,6 +224,7 @@ module aptos_demo::product {
     }
 
     public(friend) fun emit_product_created(product_created: ProductCreated) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.product_created_handle, product_created);
     }
