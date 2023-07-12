@@ -16,7 +16,7 @@ module sui_contracts::product {
     friend sui_contracts::product_delete_logic;
     friend sui_contracts::product_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const PRODUCT_ID_LENGTH: u64 = 20;
 
@@ -94,7 +94,7 @@ module sui_contracts::product {
         owner: address,
         ctx: &mut TxContext,
     ): Product {
-        assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 20, EDATA_TOO_LONG);
         Product {
             id: object::new(ctx),
             product_id,

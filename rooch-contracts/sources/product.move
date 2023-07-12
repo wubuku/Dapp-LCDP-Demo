@@ -19,7 +19,7 @@ module rooch_demo::product {
     friend rooch_demo::product_create_logic;
     friend rooch_demo::product_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
     const PRODUCT_ID_LENGTH: u64 = 20;
@@ -85,7 +85,7 @@ module rooch_demo::product {
         name: String,
         unit_price: u128,
     ): Product {
-        assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 20, EDATA_TOO_LONG);
         Product {
             product_id,
             version: 0,
@@ -204,7 +204,7 @@ module rooch_demo::product {
     }
 
     fun private_add_product(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
-        assert!(std::string::length(&object::borrow(&product_obj).product_id) <= 20, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&object::borrow(&product_obj).product_id) <= 20, EDATA_TOO_LONG);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, product_obj);
     }

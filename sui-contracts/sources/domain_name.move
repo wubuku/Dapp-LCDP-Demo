@@ -16,7 +16,7 @@ module sui_contracts::domain_name {
     friend sui_contracts::domain_name_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct DomainNameId has store, drop, copy {

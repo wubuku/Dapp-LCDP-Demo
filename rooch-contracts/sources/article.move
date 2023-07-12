@@ -23,7 +23,7 @@ module rooch_demo::article {
     friend rooch_demo::article_remove_reference_logic;
     friend rooch_demo::article_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 

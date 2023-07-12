@@ -17,7 +17,7 @@ module aptos_demo::order_ship_group {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderShipGroup has store {
         ship_group_seq_id: u8,

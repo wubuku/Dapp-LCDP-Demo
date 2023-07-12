@@ -14,7 +14,7 @@ module aptos_demo::product {
     friend aptos_demo::product_create_logic;
     friend aptos_demo::product_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
     const PRODUCT_ID_LENGTH: u64 = 20;
@@ -96,7 +96,7 @@ module aptos_demo::product {
         name: String,
         unit_price: u128,
     ): Product {
-        assert!(std::string::length(&product_id) <= 20, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 20, EDATA_TOO_LONG);
         Product {
             product_id,
             version: 0,

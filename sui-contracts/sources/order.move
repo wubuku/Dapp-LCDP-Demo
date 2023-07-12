@@ -18,7 +18,7 @@ module sui_contracts::order {
     friend sui_contracts::order_delete_logic;
     friend sui_contracts::order_aggregate;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const EINVALID_ENUM_VALUE: u64 = 106;
 

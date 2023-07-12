@@ -5,7 +5,7 @@
 
 module rooch_demo::year {
     use std::string::String;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct Year has store, drop, copy {
         number: u16,
@@ -25,7 +25,7 @@ module rooch_demo::year {
     }
 
     fun validate(year: &Year) {
-        assert!(std::string::length(&year.calendar) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&year.calendar) <= 50, EDATA_TOO_LONG);
     }
 
     public fun number(year: &Year): u16 {

@@ -18,7 +18,7 @@ module aptos_demo::order_item_ship_group_association {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_ship_group;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssociation has store {
         product_id: String,
@@ -78,7 +78,7 @@ module aptos_demo::order_item_ship_group_association {
         quantity: u64,
         cancel_quantity: u64,
     ): OrderItemShipGroupAssociation {
-        assert!(std::string::length(&product_id) <= 100, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 100, EDATA_TOO_LONG);
         OrderItemShipGroupAssociation {
             product_id,
             quantity,

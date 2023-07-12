@@ -20,7 +20,7 @@ module rooch_demo::tag {
     friend rooch_demo::tag_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
 
@@ -62,7 +62,7 @@ module rooch_demo::tag {
     fun new_tag(
         name: String,
     ): Tag {
-        assert!(std::string::length(&name) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&name) <= 50, EDATA_TOO_LONG);
         Tag {
             name,
             version: 0,
@@ -149,7 +149,7 @@ module rooch_demo::tag {
     }
 
     fun private_add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
-        assert!(std::string::length(&object::borrow(&tag_obj).name) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&object::borrow(&tag_obj).name) <= 50, EDATA_TOO_LONG);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, tag_obj);
     }

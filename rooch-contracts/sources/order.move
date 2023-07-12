@@ -30,7 +30,7 @@ module rooch_demo::order {
     friend rooch_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
     const EINVALID_ENUM_VALUE: u64 = 106;
@@ -184,7 +184,7 @@ module rooch_demo::order {
         delivery_weekdays: vector<u8>,
         favorite_delivery_weekday: Option<String>,
     ): Order {
-        assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&order_id) <= 50, EDATA_TOO_LONG);
         assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
         if (option::is_some(&favorite_delivery_weekday)) {
             assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
@@ -612,7 +612,7 @@ module rooch_demo::order {
     }
 
     fun private_add_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
-        assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EDATA_TOO_LONG);
         assert!(rooch_demo::weekday::are_all_valid(&object::borrow(&order_obj).delivery_weekdays), EINVALID_ENUM_VALUE);
         if (option::is_some(&object::borrow(&order_obj).favorite_delivery_weekday)) {
             assert!(rooch_demo::weekday2::is_valid(*option::borrow(&object::borrow(&order_obj).favorite_delivery_weekday)), EINVALID_ENUM_VALUE);

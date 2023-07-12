@@ -15,7 +15,7 @@ module aptos_demo::order_item {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderItem has store {
         product_id: String,
@@ -48,7 +48,7 @@ module aptos_demo::order_item {
         quantity: u64,
         item_amount: u128,
     ): OrderItem {
-        assert!(std::string::length(&product_id) <= 100, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 100, EDATA_TOO_LONG);
         OrderItem {
             product_id,
             quantity,

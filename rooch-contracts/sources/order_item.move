@@ -15,7 +15,7 @@ module rooch_demo::order_item {
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderItem has store {
         product_object_id: ObjectID,

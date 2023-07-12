@@ -12,7 +12,7 @@ module rooch_demo::reference {
     friend rooch_demo::article_remove_reference_logic;
     friend rooch_demo::article;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct Reference has store {
         reference_number: u64,

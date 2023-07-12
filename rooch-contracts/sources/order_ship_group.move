@@ -21,7 +21,7 @@ module rooch_demo::order_ship_group {
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssociationTableItemAdded has key {
         order_id: String,

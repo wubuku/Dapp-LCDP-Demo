@@ -25,7 +25,7 @@ module sui_contracts::order_v2 {
     friend sui_contracts::order_v2_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
 
     struct OrderIdTable has key {
@@ -147,7 +147,7 @@ module sui_contracts::order_v2 {
         estimated_ship_date: Option<Day>,
         ctx: &mut TxContext,
     ): OrderV2 {
-        assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&order_id) <= 50, EDATA_TOO_LONG);
         OrderV2 {
             id: object::new(ctx),
             order_id,

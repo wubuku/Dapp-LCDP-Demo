@@ -26,7 +26,7 @@ module aptos_demo::order {
     friend aptos_demo::order_aggregate;
 
     const EID_ALREADY_EXISTS: u64 = 101;
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_INITIALIZED: u64 = 110;
 
@@ -161,7 +161,7 @@ module aptos_demo::order {
         total_amount: u128,
         estimated_ship_date: Option<Day>,
     ): Order {
-        assert!(std::string::length(&order_id) <= 50, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&order_id) <= 50, EDATA_TOO_LONG);
         Order {
             order_id,
             version: 0,

@@ -18,7 +18,7 @@ module sui_contracts::order_ship_group {
     friend sui_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_contracts::order_v2;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderShipGroup has store {
         ship_group_seq_id: u8,

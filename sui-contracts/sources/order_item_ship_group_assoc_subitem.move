@@ -16,7 +16,7 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
     friend sui_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_contracts::order_item_ship_group_association;
 
-    const EID_DATA_TOO_LONG: u64 = 102;
+    const EDATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssocSubitem has store, drop {
         order_item_ship_group_assoc_subitem_day: Day,
@@ -32,7 +32,7 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
     }
 
     public(friend) fun set_description(order_item_ship_group_assoc_subitem: &mut OrderItemShipGroupAssocSubitem, description: String) {
-        assert!(std::string::length(&description) <= 100, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&description) <= 100, EDATA_TOO_LONG);
         order_item_ship_group_assoc_subitem.description = description;
     }
 
@@ -40,7 +40,7 @@ module sui_contracts::order_item_ship_group_assoc_subitem {
         order_item_ship_group_assoc_subitem_day: Day,
         description: String,
     ): OrderItemShipGroupAssocSubitem {
-        assert!(std::string::length(&description) <= 100, EID_DATA_TOO_LONG);
+        assert!(std::string::length(&description) <= 100, EDATA_TOO_LONG);
         OrderItemShipGroupAssocSubitem {
             order_item_ship_group_assoc_subitem_day,
             description,
