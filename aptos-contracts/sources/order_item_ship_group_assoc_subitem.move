@@ -16,7 +16,6 @@ module aptos_demo::order_item_ship_group_assoc_subitem {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_item_ship_group_association;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
     const EID_DATA_TOO_LONG: u64 = 102;
 
     struct OrderItemShipGroupAssocSubitem has store, drop {
