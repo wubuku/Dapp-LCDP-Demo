@@ -18,7 +18,9 @@ module aptos_demo::order_item_ship_group_association {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_ship_group;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct OrderItemShipGroupAssociation has store {
         product_id: String,
@@ -49,10 +51,12 @@ module aptos_demo::order_item_ship_group_association {
 
     public(friend) fun add_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
         let key = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
+        assert!(!table_with_length::contains(&order_item_ship_group_association.subitems, key), EID_ALREADY_EXISTS);
         table_with_length::add(&mut order_item_ship_group_association.subitems, key, subitem);
     }
 
     public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {
+        assert!(table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_NOT_FOUND);
         let subitem = table_with_length::remove(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day);
         order_item_ship_group_assoc_subitem::drop_order_item_ship_group_assoc_subitem(subitem);
     }

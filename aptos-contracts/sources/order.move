@@ -28,6 +28,7 @@ module aptos_demo::order {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EID_NOT_FOUND: u64 = 106;
     const ENOT_INITIALIZED: u64 = 110;
 
     struct Events has key {
@@ -104,10 +105,12 @@ module aptos_demo::order {
 
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
         let key = order_item::product_id(&item);
+        assert!(!table_with_length::contains(&order.items, key), EID_ALREADY_EXISTS);
         table_with_length::add(&mut order.items, key, item);
     }
 
     public(friend) fun remove_item(order: &mut Order, product_id: String) {
+        assert!(table_with_length::contains(&order.items, product_id), EID_NOT_FOUND);
         let item = table_with_length::remove(&mut order.items, product_id);
         order_item::drop_order_item(item);
     }
@@ -130,11 +133,13 @@ module aptos_demo::order {
 
     public(friend) fun add_order_ship_group(order: &mut Order, order_ship_group: OrderShipGroup) {
         let key = order_ship_group::ship_group_seq_id(&order_ship_group);
+        assert!(!table_with_length::contains(&order.order_ship_groups, key), EID_ALREADY_EXISTS);
         table_with_length::add(&mut order.order_ship_groups, key, order_ship_group);
     }
 
     /*
     public(friend) fun remove_order_ship_group(order: &mut Order, ship_group_seq_id: u8) {
+        assert!(table_with_length::contains(&order.order_ship_groups, ship_group_seq_id), EID_NOT_FOUND);
         let order_ship_group = table_with_length::remove(&mut order.order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }

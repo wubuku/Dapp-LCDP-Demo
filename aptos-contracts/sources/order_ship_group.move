@@ -17,7 +17,9 @@ module aptos_demo::order_ship_group {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct OrderShipGroup has store {
         ship_group_seq_id: u8,
@@ -39,10 +41,12 @@ module aptos_demo::order_ship_group {
 
     public(friend) fun add_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
         let key = order_item_ship_group_association::product_id(&order_item_ship_group_association);
+        assert!(!table_with_length::contains(&order_ship_group.order_item_ship_group_associations, key), EID_ALREADY_EXISTS);
         table_with_length::add(&mut order_ship_group.order_item_ship_group_associations, key, order_item_ship_group_association);
     }
 
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
+        assert!(table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EID_NOT_FOUND);
         let order_item_ship_group_association = table_with_length::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }

@@ -27,6 +27,7 @@ module sui_contracts::order_v2 {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct OrderIdTable has key {
         id: UID,

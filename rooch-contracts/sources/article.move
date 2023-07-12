@@ -23,9 +23,11 @@ module rooch_demo::article {
     friend rooch_demo::article_remove_reference_logic;
     friend rooch_demo::article_aggregate;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct ReferenceTableItemAdded has key {
         article_id: ObjectID,

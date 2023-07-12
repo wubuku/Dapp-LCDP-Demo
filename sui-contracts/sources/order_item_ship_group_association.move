@@ -19,7 +19,9 @@ module sui_contracts::order_item_ship_group_association {
     friend sui_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_contracts::order_ship_group;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct OrderItemShipGroupAssociation has store {
         product_id: String,

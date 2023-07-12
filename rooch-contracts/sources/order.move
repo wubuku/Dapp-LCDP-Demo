@@ -33,6 +33,7 @@ module rooch_demo::order {
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
     const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EID_NOT_FOUND: u64 = 106;
     const EINVALID_ENUM_VALUE: u64 = 106;
 
     struct Tables has key {

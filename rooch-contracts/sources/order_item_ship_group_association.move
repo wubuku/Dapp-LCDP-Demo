@@ -22,7 +22,9 @@ module rooch_demo::order_item_ship_group_association {
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order_ship_group;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
+    const EID_NOT_FOUND: u64 = 106;
 
     struct OrderItemShipGroupAssocSubitemTableItemAdded has key {
         order_id: String,

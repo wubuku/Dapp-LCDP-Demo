@@ -18,8 +18,10 @@ module sui_contracts::order {
     friend sui_contracts::order_delete_logic;
     friend sui_contracts::order_aggregate;
 
+    const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EID_NOT_FOUND: u64 = 106;
     const EINVALID_ENUM_VALUE: u64 = 106;
 
     struct Order has key {
