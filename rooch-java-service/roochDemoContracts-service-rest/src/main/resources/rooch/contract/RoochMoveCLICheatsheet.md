@@ -8,21 +8,21 @@
 
 ```shell
 rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::article_aggregate::create' \
---args 'string:title' address:author 'string:content' 'vector<u8>:references_item' 'vector<object_id>:tags_item'
+--args 'string:title' address:author 'string:content' 'vector<u8>:references_item_1,references_item_2' 'vector<object_id>:tags_item_1,tags_item_2'
 ```
 
 ### AddReference method
 
 ```shell
 rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::article_aggregate::add_reference' \
---args 'object_id:id' u64:reference_number 'string:title' 'vector<string>:url_item'
+--args 'object_id:id' u64:reference_number 'string:title' 'vector<string>:url'
 ```
 
 ### UpdateReference method
 
 ```shell
 rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::article_aggregate::update_reference' \
---args 'object_id:id' u64:reference_number 'string:title' 'vector<string>:url_item' 'vector<string>:author_item'
+--args 'object_id:id' u64:reference_number 'string:title' 'vector<string>:url' 'vector<string>:author'
 ```
 
 ### RemoveReference method
@@ -114,7 +114,7 @@ rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_:
 
 ```shell
 rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::day_summary_aggregate::create' \
---args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item' 'vector<string>:array_data_item' 'vector<string>:optional_data_item' 'vector<u16>:u16_array_data_item' 'vector<u32>:u32_array_data_item' 'vector<u64>:u64_array_data_item' 'vector<u128>:u128_array_data_item' 'vector<u256>:u256_array_data_item'
+--args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item_1,meta_data_item_2' 'vector<string>:array_data_item_1,array_data_item_2' 'vector<string>:optional_data' 'vector<u16>:u16_array_data_item_1,u16_array_data_item_2' 'vector<u32>:u32_array_data_item_1,u32_array_data_item_2' 'vector<u64>:u64_array_data_item_1,u64_array_data_item_2' 'vector<u128>:u128_array_data_item_1,u128_array_data_item_2' 'vector<u256>:u256_array_data_item_1,u256_array_data_item_2'
 ```
 
 ### Delete method
