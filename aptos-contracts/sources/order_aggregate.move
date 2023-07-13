@@ -31,6 +31,7 @@ module aptos_demo::order_aggregate {
             quantity,
         );
         let order = order_create_logic::mutate(
+            account,
             &order_created,
         );
         order::add_order(order);
@@ -50,6 +51,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_remove_item_logic::mutate(
+            account,
             &order_item_removed,
             order,
         );
@@ -72,6 +74,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_update_item_quantity_logic::mutate(
+            account,
             &order_item_quantity_updated,
             order,
         );
@@ -109,6 +112,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_update_estimated_ship_date_logic::mutate(
+            account,
             &order_estimated_ship_date_updated,
             order,
         );
@@ -135,6 +139,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_add_order_ship_group_logic::mutate(
+            account,
             &order_ship_group_added,
             order,
         );
@@ -159,6 +164,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_cancel_order_ship_group_quantity_logic::mutate(
+            account,
             &order_ship_group_quantity_canceled,
             order,
         );
@@ -181,6 +187,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_remove_order_ship_group_item_logic::mutate(
+            account,
             &order_ship_group_item_removed,
             order,
         );
@@ -201,6 +208,7 @@ module aptos_demo::order_aggregate {
             &order,
         );
         let updated_order = order_remove_order_ship_group_logic::mutate(
+            account,
             &order_ship_group_removed,
             order,
         );

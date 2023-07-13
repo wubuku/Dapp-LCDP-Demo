@@ -32,6 +32,7 @@ module aptos_demo::product_create_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         product_created: &product::ProductCreated,
         //product_id_generator: &product::ProductIdGenerator,
         //ctx: &mut TxContext,

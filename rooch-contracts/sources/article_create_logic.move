@@ -52,6 +52,7 @@ module rooch_demo::article_create_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         article_created: &article::ArticleCreated,
     ): Object<article::Article> {
         let article = article::create_article(

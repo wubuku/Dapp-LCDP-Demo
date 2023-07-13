@@ -25,6 +25,7 @@ module aptos_demo::order_cancel_order_ship_group_quantity_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_ship_group_quantity_canceled: &order::OrderShipGroupQuantityCanceled,
         order: order::Order,
     ): order::Order {

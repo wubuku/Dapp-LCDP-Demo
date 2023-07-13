@@ -30,6 +30,7 @@ module rooch_demo::article_add_reference_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         reference_added: &article::ReferenceAdded,
         article_obj: Object<article::Article>,
     ): Object<article::Article> {

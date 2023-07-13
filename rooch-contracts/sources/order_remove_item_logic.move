@@ -21,6 +21,7 @@ module rooch_demo::order_remove_item_logic {
 
     public(friend) fun mutate(
         _storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_item_removed: &order::OrderItemRemoved,
         order_obj: Object<order::Order>,
     ): Object<order::Order> {

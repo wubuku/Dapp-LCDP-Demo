@@ -19,6 +19,7 @@ module rooch_demo::day_summary_delete_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         day_summary_deleted: &day_summary::DaySummaryDeleted,
         day_summary_obj: Object<day_summary::DaySummary>,
     ): Object<day_summary::DaySummary> {

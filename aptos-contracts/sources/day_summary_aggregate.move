@@ -58,6 +58,7 @@ module aptos_demo::day_summary_aggregate {
             u256_array_data,
         );
         let day_summary = day_summary_create_logic::mutate(
+            account,
             &day_summary_created,
         );
         day_summary::add_day_summary(day_summary);

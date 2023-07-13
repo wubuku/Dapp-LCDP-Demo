@@ -36,6 +36,7 @@ module rooch_demo::article_aggregate {
         );
         let article_obj = article_create_logic::mutate(
             storage_ctx,
+            account,
             &article_created,
         );
         article::set_article_created_id(&mut article_created, article::id(&article_obj));
@@ -63,6 +64,7 @@ module rooch_demo::article_aggregate {
         );
         let updated_article_obj = article_add_reference_logic::mutate(
             storage_ctx,
+            account,
             &reference_added,
             article_obj,
         );
@@ -92,6 +94,7 @@ module rooch_demo::article_aggregate {
         );
         let updated_article_obj = article_update_reference_logic::mutate(
             storage_ctx,
+            account,
             &reference_updated,
             article_obj,
         );
@@ -115,6 +118,7 @@ module rooch_demo::article_aggregate {
         );
         let updated_article_obj = article_remove_reference_logic::mutate(
             storage_ctx,
+            account,
             &reference_removed,
             article_obj,
         );

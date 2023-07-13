@@ -23,6 +23,7 @@ module rooch_demo::order_update_estimated_ship_date_logic {
 
     public(friend) fun mutate(
         _storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_estimated_ship_date_updated: &order::OrderEstimatedShipDateUpdated,
         order_obj: Object<order::Order>,
     ): Object<order::Order> {

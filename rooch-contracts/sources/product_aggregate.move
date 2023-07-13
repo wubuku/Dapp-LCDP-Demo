@@ -23,6 +23,7 @@ module rooch_demo::product_aggregate {
         );
         let product_obj = product_create_logic::mutate(
             storage_ctx,
+            account,
             &product_created,
         );
         product::set_product_created_id(&mut product_created, product::id(&product_obj));

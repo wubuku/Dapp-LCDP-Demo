@@ -37,6 +37,7 @@ module rooch_demo::order_add_order_ship_group_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_ship_group_added: &order::OrderShipGroupAdded,
         order_obj: Object<order::Order>,
     ): Object<order::Order> {

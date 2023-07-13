@@ -23,6 +23,7 @@ module rooch_demo::product_create_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         product_created: &product::ProductCreated,
     ): Object<product::Product> {
         let product = product::create_product(

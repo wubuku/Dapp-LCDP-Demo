@@ -36,6 +36,7 @@ module rooch_demo::order_aggregate {
         );
         let order_obj = order_create_logic::mutate(
             storage_ctx,
+            account,
             &order_created,
         );
         order::set_order_created_id(&mut order_created, order::id(&order_obj));
@@ -59,6 +60,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_remove_item_logic::mutate(
             storage_ctx,
+            account,
             &order_item_removed,
             order_obj,
         );
@@ -84,6 +86,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_update_item_quantity_logic::mutate(
             storage_ctx,
+            account,
             &order_item_quantity_updated,
             order_obj,
         );
@@ -124,6 +127,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_update_estimated_ship_date_logic::mutate(
             storage_ctx,
+            account,
             &order_estimated_ship_date_updated,
             order_obj,
         );
@@ -153,6 +157,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_add_order_ship_group_logic::mutate(
             storage_ctx,
+            account,
             &order_ship_group_added,
             order_obj,
         );
@@ -199,6 +204,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_add_order_item_ship_group_assoc_subitem_logic::mutate(
             storage_ctx,
+            account,
             &order_item_ship_group_assoc_subitem_added,
             order_obj,
         );
@@ -226,6 +232,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_cancel_order_ship_group_quantity_logic::mutate(
             storage_ctx,
+            account,
             &order_ship_group_quantity_canceled,
             order_obj,
         );
@@ -251,6 +258,7 @@ module rooch_demo::order_aggregate {
         );
         let updated_order_obj = order_remove_order_ship_group_item_logic::mutate(
             storage_ctx,
+            account,
             &order_ship_group_item_removed,
             order_obj,
         );

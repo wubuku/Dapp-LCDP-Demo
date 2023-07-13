@@ -27,6 +27,7 @@ module rooch_demo::order_cancel_order_ship_group_quantity_logic {
 
     public(friend) fun mutate(
         _storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_ship_group_quantity_canceled: &order::OrderShipGroupQuantityCanceled,
         order_obj: Object<order::Order>,
     ): Object<order::Order> {

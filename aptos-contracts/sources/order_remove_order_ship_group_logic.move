@@ -16,6 +16,7 @@ module aptos_demo::order_remove_order_ship_group_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_ship_group_removed: &order::OrderShipGroupRemoved,
         order: order::Order,
     ): order::Order {

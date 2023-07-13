@@ -24,6 +24,7 @@ module rooch_demo::order_update_item_quantity_logic {
 
     public(friend) fun mutate(
         _storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_item_quantity_updated: &order::OrderItemQuantityUpdated,
         order_obj: Object<order::Order>,
     ): Object<order::Order> {

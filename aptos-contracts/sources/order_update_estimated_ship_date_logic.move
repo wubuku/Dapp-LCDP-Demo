@@ -20,6 +20,7 @@ module aptos_demo::order_update_estimated_ship_date_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_estimated_ship_date_updated: &order::OrderEstimatedShipDateUpdated,
         order: order::Order,
     ): order::Order {

@@ -38,6 +38,7 @@ module rooch_demo::order_create_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         order_created: &order::OrderCreated,
     ): Object<order::Order> {
         let order = order::create_order(

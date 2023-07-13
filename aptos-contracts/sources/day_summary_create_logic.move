@@ -38,6 +38,7 @@ module aptos_demo::day_summary_create_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         day_summary_created: &day_summary::DaySummaryCreated,
     ): day_summary::DaySummary {
         let day_summary = day_summary::create_day_summary(

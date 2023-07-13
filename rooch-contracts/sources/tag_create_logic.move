@@ -21,6 +21,7 @@ module rooch_demo::tag_create_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         create_event: &tag::TagCreated,
     ): Object<tag::Tag> {
         let tag = tag::create_tag(

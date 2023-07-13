@@ -40,6 +40,7 @@ module rooch_demo::day_summary_create_logic {
 
     public(friend) fun mutate(
         storage_ctx: &mut StorageContext,
+        _account: &signer,
         day_summary_created: &day_summary::DaySummaryCreated,
     ): Object<day_summary::DaySummary> {
         let day_summary = day_summary::create_day_summary(

@@ -23,6 +23,7 @@ module aptos_demo::order_remove_item_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_item_removed: &order::OrderItemRemoved,
         order: order::Order,
         //ctx: &TxContext, // keep this for future use?

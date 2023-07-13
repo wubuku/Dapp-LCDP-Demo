@@ -21,6 +21,7 @@ module rooch_demo::tag_aggregate {
         );
         let tag_obj = tag_create_logic::mutate(
             storage_ctx,
+            account,
             &tag_created,
         );
         tag::set_tag_created_id(&mut tag_created, tag::id(&tag_obj));

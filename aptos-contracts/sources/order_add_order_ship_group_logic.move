@@ -33,6 +33,7 @@ module aptos_demo::order_add_order_ship_group_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_ship_group_added: &order::OrderShipGroupAdded,
         order: order::Order,
     ): order::Order {

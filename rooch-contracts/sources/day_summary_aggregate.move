@@ -64,6 +64,7 @@ module rooch_demo::day_summary_aggregate {
         );
         let day_summary_obj = day_summary_create_logic::mutate(
             storage_ctx,
+            account,
             &day_summary_created,
         );
         day_summary::set_day_summary_created_id(&mut day_summary_created, day_summary::id(&day_summary_obj));
@@ -85,6 +86,7 @@ module rooch_demo::day_summary_aggregate {
         );
         let updated_day_summary_obj = day_summary_delete_logic::mutate(
             storage_ctx,
+            account,
             &day_summary_deleted,
             day_summary_obj,
         );

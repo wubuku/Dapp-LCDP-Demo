@@ -19,6 +19,7 @@ module aptos_demo::product_aggregate {
             unit_price,
         );
         let product = product_create_logic::mutate(
+            account,
             &product_created,
         );
         product::add_product(product);

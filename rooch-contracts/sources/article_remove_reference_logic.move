@@ -20,6 +20,7 @@ module rooch_demo::article_remove_reference_logic {
 
     public(friend) fun mutate(
         _storage_ctx: &mut StorageContext,
+        _account: &signer,
         reference_removed: &article::ReferenceRemoved,
         article_obj: Object<article::Article>,
     ): Object<article::Article> {

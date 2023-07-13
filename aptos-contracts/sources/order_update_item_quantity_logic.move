@@ -27,6 +27,7 @@ module aptos_demo::order_update_item_quantity_logic {
     }
 
     public(friend) fun mutate(
+        _account: &signer,
         order_item_quantity_updated: &order::OrderItemQuantityUpdated,
         order: order::Order,
         //ctx: &TxContext, // keep this for future use?
