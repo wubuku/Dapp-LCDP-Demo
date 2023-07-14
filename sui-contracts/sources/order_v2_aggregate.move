@@ -44,7 +44,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::emit_order_v2_created(order_v2_created);
     }
 
-
     public entry fun remove_item(
         order_v2: order_v2::OrderV2,
         product_id: String,
@@ -63,7 +62,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
         order_v2::emit_order_v2_item_removed(order_v2_item_removed);
     }
-
 
     public entry fun update_item_quantity(
         order_v2: order_v2::OrderV2,
@@ -85,7 +83,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
         order_v2::emit_order_v2_item_quantity_updated(order_v2_item_quantity_updated);
     }
-
 
     public entry fun update_estimated_ship_date(
         order_v2: order_v2::OrderV2,
@@ -123,7 +120,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::emit_order_v2_estimated_ship_date_updated(order_v2_estimated_ship_date_updated);
     }
 
-
     public entry fun add_order_ship_group(
         order_v2: order_v2::OrderV2,
         ship_group_seq_id: u8,
@@ -149,7 +145,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::emit_order_ship_group_added(order_ship_group_added);
     }
 
-
     public entry fun cancel_order_ship_group_quantity(
         order_v2: order_v2::OrderV2,
         ship_group_seq_id: u8,
@@ -173,7 +168,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled);
     }
 
-
     public entry fun remove_order_ship_group_item(
         order_v2: order_v2::OrderV2,
         ship_group_seq_id: u8,
@@ -194,7 +188,6 @@ module sui_contracts::order_v2_aggregate {
         order_v2::update_version_and_transfer_object(updated_order_v2, tx_context::sender(ctx));
         order_v2::emit_order_ship_group_item_removed(order_ship_group_item_removed);
     }
-
 
     public entry fun remove_order_ship_group(
         order_v2: order_v2::OrderV2,

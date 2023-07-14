@@ -32,7 +32,6 @@ module sui_contracts::order_aggregate {
         order::emit_order_created(order_created);
     }
 
-
     public entry fun remove_item(
         order: order::Order,
         product_id: String,
@@ -51,7 +50,6 @@ module sui_contracts::order_aggregate {
         order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
         order::emit_order_item_removed(order_item_removed);
     }
-
 
     public entry fun update_item_quantity(
         order: order::Order,
@@ -73,7 +71,6 @@ module sui_contracts::order_aggregate {
         order::update_version_and_transfer_object(updated_order, tx_context::sender(ctx));
         order::emit_order_item_quantity_updated(order_item_quantity_updated);
     }
-
 
     public entry fun delete(
         order: order::Order,

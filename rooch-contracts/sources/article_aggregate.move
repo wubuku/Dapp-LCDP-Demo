@@ -44,7 +44,6 @@ module rooch_demo::article_aggregate {
         article::emit_article_created(storage_ctx, article_created);
     }
 
-
     public entry fun add_reference(
         storage_ctx: &mut StorageContext,
         account: &signer,
@@ -71,7 +70,6 @@ module rooch_demo::article_aggregate {
         article::update_version_and_add(storage_ctx, updated_article_obj);
         article::emit_reference_added(storage_ctx, reference_added);
     }
-
 
     public entry fun update_reference(
         storage_ctx: &mut StorageContext,
@@ -101,7 +99,6 @@ module rooch_demo::article_aggregate {
         article::update_version_and_add(storage_ctx, updated_article_obj);
         article::emit_reference_updated(storage_ctx, reference_updated);
     }
-
 
     public entry fun remove_reference(
         storage_ctx: &mut StorageContext,

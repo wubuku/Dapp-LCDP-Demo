@@ -72,7 +72,6 @@ module rooch_demo::day_summary_aggregate {
         day_summary::emit_day_summary_created(storage_ctx, day_summary_created);
     }
 
-
     public entry fun delete(
         storage_ctx: &mut StorageContext,
         account: &signer,

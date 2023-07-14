@@ -35,7 +35,6 @@ module sui_contracts::product_aggregate {
         product::emit_product_created(product_created);
     }
 
-
     public entry fun update(
         product: product::Product,
         name: String,
@@ -58,7 +57,6 @@ module sui_contracts::product_aggregate {
         product::update_version_and_transfer_object(updated_product, tx_context::sender(ctx));
         product::emit_product_updated(product_updated);
     }
-
 
     public entry fun delete(
         product: product::Product,

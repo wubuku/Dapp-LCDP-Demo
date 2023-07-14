@@ -60,7 +60,6 @@ module sui_contracts::day_summary_aggregate {
         day_summary::emit_day_summary_created(day_summary_created);
     }
 
-
     public entry fun delete(
         day_summary: day_summary::DaySummary,
         ctx: &mut tx_context::TxContext,

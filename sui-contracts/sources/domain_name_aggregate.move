@@ -38,7 +38,6 @@ module sui_contracts::domain_name_aggregate {
         domain_name::emit_registered(registered);
     }
 
-
     public entry fun renew(
         domain_name: domain_name::DomainName,
         renew_period: u64,

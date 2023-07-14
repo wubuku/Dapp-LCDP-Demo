@@ -44,7 +44,6 @@ module rooch_demo::order_aggregate {
         order::emit_order_created(storage_ctx, order_created);
     }
 
-
     public entry fun remove_item(
         storage_ctx: &mut StorageContext,
         account: &signer,
@@ -67,7 +66,6 @@ module rooch_demo::order_aggregate {
         order::update_version_and_add(storage_ctx, updated_order_obj);
         order::emit_order_item_removed(storage_ctx, order_item_removed);
     }
-
 
     public entry fun update_item_quantity(
         storage_ctx: &mut StorageContext,
@@ -93,7 +91,6 @@ module rooch_demo::order_aggregate {
         order::update_version_and_add(storage_ctx, updated_order_obj);
         order::emit_order_item_quantity_updated(storage_ctx, order_item_quantity_updated);
     }
-
 
     public entry fun update_estimated_ship_date(
         storage_ctx: &mut StorageContext,
@@ -135,7 +132,6 @@ module rooch_demo::order_aggregate {
         order::emit_order_estimated_ship_date_updated(storage_ctx, order_estimated_ship_date_updated);
     }
 
-
     public entry fun add_order_ship_group(
         storage_ctx: &mut StorageContext,
         account: &signer,
@@ -164,7 +160,6 @@ module rooch_demo::order_aggregate {
         order::update_version_and_add(storage_ctx, updated_order_obj);
         order::emit_order_ship_group_added(storage_ctx, order_ship_group_added);
     }
-
 
     public entry fun add_order_item_ship_group_assoc_subitem(
         storage_ctx: &mut StorageContext,
@@ -212,7 +207,6 @@ module rooch_demo::order_aggregate {
         order::emit_order_item_ship_group_assoc_subitem_added(storage_ctx, order_item_ship_group_assoc_subitem_added);
     }
 
-
     public entry fun cancel_order_ship_group_quantity(
         storage_ctx: &mut StorageContext,
         account: &signer,
@@ -239,7 +233,6 @@ module rooch_demo::order_aggregate {
         order::update_version_and_add(storage_ctx, updated_order_obj);
         order::emit_order_ship_group_quantity_canceled(storage_ctx, order_ship_group_quantity_canceled);
     }
-
 
     public entry fun remove_order_ship_group_item(
         storage_ctx: &mut StorageContext,

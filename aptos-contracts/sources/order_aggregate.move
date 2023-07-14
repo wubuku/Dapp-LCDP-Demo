@@ -38,7 +38,6 @@ module aptos_demo::order_aggregate {
         order::emit_order_created(order_created);
     }
 
-
     public entry fun remove_item(
         account: &signer,
         order_id: String,
@@ -58,7 +57,6 @@ module aptos_demo::order_aggregate {
         order::update_version_and_add(updated_order);
         order::emit_order_item_removed(order_item_removed);
     }
-
 
     public entry fun update_item_quantity(
         account: &signer,
@@ -81,7 +79,6 @@ module aptos_demo::order_aggregate {
         order::update_version_and_add(updated_order);
         order::emit_order_item_quantity_updated(order_item_quantity_updated);
     }
-
 
     public entry fun update_estimated_ship_date(
         account: &signer,
@@ -120,7 +117,6 @@ module aptos_demo::order_aggregate {
         order::emit_order_estimated_ship_date_updated(order_estimated_ship_date_updated);
     }
 
-
     public entry fun add_order_ship_group(
         account: &signer,
         order_id: String,
@@ -147,7 +143,6 @@ module aptos_demo::order_aggregate {
         order::emit_order_ship_group_added(order_ship_group_added);
     }
 
-
     public entry fun cancel_order_ship_group_quantity(
         account: &signer,
         order_id: String,
@@ -172,7 +167,6 @@ module aptos_demo::order_aggregate {
         order::emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled);
     }
 
-
     public entry fun remove_order_ship_group_item(
         account: &signer,
         order_id: String,
@@ -194,7 +188,6 @@ module aptos_demo::order_aggregate {
         order::update_version_and_add(updated_order);
         order::emit_order_ship_group_item_removed(order_ship_group_item_removed);
     }
-
 
     public entry fun remove_order_ship_group(
         account: &signer,
