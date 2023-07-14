@@ -42,10 +42,12 @@ module sui_contracts::order_ship_group {
 
     public(friend) fun add_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
         let key = order_item_ship_group_association::product_id(&order_item_ship_group_association);
+        assert!(!table::contains(&order_ship_group.order_item_ship_group_associations, key), EID_ALREADY_EXISTS);
         table::add(&mut order_ship_group.order_item_ship_group_associations, key, order_item_ship_group_association);
     }
 
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
+        assert!(table::contains(&order_ship_group.order_item_ship_group_associations, product_id), EID_NOT_FOUND);
         let order_item_ship_group_association = table::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }

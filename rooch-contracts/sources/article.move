@@ -92,6 +92,7 @@ module rooch_demo::article {
 
     public(friend) fun add_reference(storage_ctx: &mut StorageContext, article_obj: &mut Object<Article>, reference: Reference) {
         let reference_number = reference::reference_number(&reference);
+        assert!(!table::contains(&object::borrow_mut(article_obj).references, reference_number), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(article_obj).references, reference_number, reference);
         event::emit_event(storage_ctx, ReferenceTableItemAdded {
             article_id: id(article_obj),
@@ -100,6 +101,7 @@ module rooch_demo::article {
     }
 
     public(friend) fun remove_reference(article_obj: &mut Object<Article>, reference_number: u64) {
+        assert!(table::contains(&object::borrow_mut(article_obj).references, reference_number), EID_NOT_FOUND);
         let reference = table::remove(&mut object::borrow_mut(article_obj).references, reference_number);
         reference::drop_reference(reference);
     }

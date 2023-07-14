@@ -51,6 +51,7 @@ module rooch_demo::order_ship_group {
 
     public(friend) fun add_order_item_ship_group_association(storage_ctx: &mut StorageContext, order_id: String, order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
         let product_obj_id = order_item_ship_group_association::product_obj_id(&order_item_ship_group_association);
+        assert!(!table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EID_ALREADY_EXISTS);
         table::add(&mut order_ship_group.order_item_ship_group_associations, product_obj_id, order_item_ship_group_association);
         event::emit_event(storage_ctx, OrderItemShipGroupAssociationTableItemAdded {
             order_id,
@@ -61,6 +62,7 @@ module rooch_demo::order_ship_group {
 
     /*
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_obj_id: ObjectID) {
+        assert!(table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EID_NOT_FOUND);
         let order_item_ship_group_association = table::remove(&mut order_ship_group.order_item_ship_group_associations, product_obj_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }

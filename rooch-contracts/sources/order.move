@@ -125,6 +125,7 @@ module rooch_demo::order {
 
     public(friend) fun add_item(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, item: OrderItem) {
         let product_object_id = order_item::product_object_id(&item);
+        assert!(!table::contains(&object::borrow_mut(order_obj).items, product_object_id), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(order_obj).items, product_object_id, item);
         event::emit_event(storage_ctx, OrderItemTableItemAdded {
             order_id: order_id(order_obj),
@@ -133,6 +134,7 @@ module rooch_demo::order {
     }
 
     public(friend) fun remove_item(order_obj: &mut Object<Order>, product_object_id: ObjectID) {
+        assert!(table::contains(&object::borrow_mut(order_obj).items, product_object_id), EID_NOT_FOUND);
         let item = table::remove(&mut object::borrow_mut(order_obj).items, product_object_id);
         order_item::drop_order_item(item);
     }
@@ -151,6 +153,7 @@ module rooch_demo::order {
 
     public(friend) fun add_order_ship_group(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, order_ship_group: OrderShipGroup) {
         let ship_group_seq_id = order_ship_group::ship_group_seq_id(&order_ship_group);
+        assert!(!table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id, order_ship_group);
         event::emit_event(storage_ctx, OrderShipGroupTableItemAdded {
             order_id: order_id(order_obj),
@@ -160,6 +163,7 @@ module rooch_demo::order {
 
     /*
     public(friend) fun remove_order_ship_group(order_obj: &mut Object<Order>, ship_group_seq_id: u8) {
+        assert!(table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EID_NOT_FOUND);
         let order_ship_group = table::remove(&mut object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }

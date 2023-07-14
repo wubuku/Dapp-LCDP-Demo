@@ -90,10 +90,12 @@ module sui_contracts::order_v2 {
 
     public(friend) fun add_item(order_v2: &mut OrderV2, item: OrderV2Item) {
         let key = order_v2_item::product_id(&item);
+        assert!(!table::contains(&order_v2.items, key), EID_ALREADY_EXISTS);
         table::add(&mut order_v2.items, key, item);
     }
 
     public(friend) fun remove_item(order_v2: &mut OrderV2, product_id: String) {
+        assert!(table::contains(&order_v2.items, product_id), EID_NOT_FOUND);
         let item = table::remove(&mut order_v2.items, product_id);
         order_v2_item::drop_order_v2_item(item);
     }
@@ -116,11 +118,13 @@ module sui_contracts::order_v2 {
 
     public(friend) fun add_order_ship_group(order_v2: &mut OrderV2, order_ship_group: OrderShipGroup) {
         let key = order_ship_group::ship_group_seq_id(&order_ship_group);
+        assert!(!table::contains(&order_v2.order_ship_groups, key), EID_ALREADY_EXISTS);
         table::add(&mut order_v2.order_ship_groups, key, order_ship_group);
     }
 
     /*
     public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
+        assert!(table::contains(&order_v2.order_ship_groups, ship_group_seq_id), EID_NOT_FOUND);
         let order_ship_group = table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }

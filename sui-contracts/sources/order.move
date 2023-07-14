@@ -71,10 +71,12 @@ module sui_contracts::order {
 
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
         let key = order_item::product_id(&item);
+        assert!(!table::contains(&order.items, key), EID_ALREADY_EXISTS);
         table::add(&mut order.items, key, item);
     }
 
     public(friend) fun remove_item(order: &mut Order, product_id: String) {
+        assert!(table::contains(&order.items, product_id), EID_NOT_FOUND);
         let item = table::remove(&mut order.items, product_id);
         order_item::drop_order_item(item);
     }

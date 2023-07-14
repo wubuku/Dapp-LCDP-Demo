@@ -62,6 +62,7 @@ module rooch_demo::order_item_ship_group_association {
 
     public(friend) fun add_subitem(storage_ctx: &mut StorageContext, order_id: String, order_ship_group_ship_group_seq_id: u8, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
         let order_item_ship_group_assoc_subitem_day = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
+        assert!(!table::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_ALREADY_EXISTS);
         table::add(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day, subitem);
         event::emit_event(storage_ctx, OrderItemShipGroupAssocSubitemTableItemAdded {
             order_id,
@@ -72,6 +73,7 @@ module rooch_demo::order_item_ship_group_association {
     }
 
     public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {
+        assert!(table::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_NOT_FOUND);
         let subitem = table::remove(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day);
         order_item_ship_group_assoc_subitem::drop_order_item_ship_group_assoc_subitem(subitem);
     }
