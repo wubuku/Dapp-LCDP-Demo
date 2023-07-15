@@ -25,6 +25,33 @@ aggregates:
           UnitPrice:
             type: u128
         event:
-          name: ProductCreated
           #isObjectFrozen: true # This is true because the Product is immutable.
+          name: ProductCreated
+          #todo type: ProductEvent
+          discriminatorValue: 0
+      Update:
+        event:
+          name: ProductUpdated
+          #todo type: ProductEvent
+          discriminatorValue: 1
+      Delete:
+        event:
+          name: ProductDeleted
+          #todo type: ProductEvent
+          discriminatorValue: 2
 
+    eventObjects:
+      ProductEvent:
+        discriminator: EventType
+        properties:
+          EventType:
+            type: u8
+          ProductId:
+            type: String
+            length: 20
+          Version:
+            type: u64
+          Name:
+            type: String
+          UnitPrice:
+            type: u128
