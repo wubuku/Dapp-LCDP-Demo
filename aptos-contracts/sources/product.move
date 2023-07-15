@@ -12,6 +12,8 @@ module aptos_demo::product {
     use std::string::{Self, String};
     use std::vector;
     friend aptos_demo::product_create_logic;
+    friend aptos_demo::product_update_logic;
+    friend aptos_demo::product_delete_logic;
     friend aptos_demo::product_aggregate;
 
     const EDATA_TOO_LONG: u64 = 102;
@@ -23,6 +25,8 @@ module aptos_demo::product {
     struct Events has key {
         // product_id_generator_created_handle: event::EventHandle<ProductIdGeneratorCreated>,
         product_created_handle: event::EventHandle<ProductCreated>,
+        product_updated_handle: event::EventHandle<ProductUpdated>,
+        product_deleted_handle: event::EventHandle<ProductDeleted>,
     }
 
     struct Tables has key {
@@ -41,6 +45,8 @@ module aptos_demo::product {
         move_to(&res_account, Events {
             // product_id_generator_created_handle: account::new_event_handle<ProductIdGeneratorCreated>(&res_account),
             product_created_handle: account::new_event_handle<ProductCreated>(&res_account),
+            product_updated_handle: account::new_event_handle<ProductUpdated>(&res_account),
+            product_deleted_handle: account::new_event_handle<ProductDeleted>(&res_account),
         });
 
         let product_id_generator = ProductIdGenerator {
@@ -137,6 +143,56 @@ module aptos_demo::product {
         }
     }
 
+    struct ProductUpdated has store, drop {
+        product_id: String,
+        version: u64,
+        name: String,
+        unit_price: u128,
+    }
+
+    public fun product_updated_product_id(product_updated: &ProductUpdated): String {
+        product_updated.product_id
+    }
+
+    public fun product_updated_name(product_updated: &ProductUpdated): String {
+        product_updated.name
+    }
+
+    public fun product_updated_unit_price(product_updated: &ProductUpdated): u128 {
+        product_updated.unit_price
+    }
+
+    public(friend) fun new_product_updated(
+        product: &Product,
+        name: String,
+        unit_price: u128,
+    ): ProductUpdated {
+        ProductUpdated {
+            product_id: product_id(product),
+            version: version(product),
+            name,
+            unit_price,
+        }
+    }
+
+    struct ProductDeleted has store, drop {
+        product_id: String,
+        version: u64,
+    }
+
+    public fun product_deleted_product_id(product_deleted: &ProductDeleted): String {
+        product_deleted.product_id
+    }
+
+    public(friend) fun new_product_deleted(
+        product: &Product,
+    ): ProductDeleted {
+        ProductDeleted {
+            product_id: product_id(product),
+            version: version(product),
+        }
+    }
+
 
     public(friend) fun create_product(
         name: String,
@@ -227,6 +283,18 @@ module aptos_demo::product {
         assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.product_created_handle, product_created);
+    }
+
+    public(friend) fun emit_product_updated(product_updated: ProductUpdated) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.product_updated_handle, product_updated);
+    }
+
+    public(friend) fun emit_product_deleted(product_deleted: ProductDeleted) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.product_deleted_handle, product_deleted);
     }
 
 }

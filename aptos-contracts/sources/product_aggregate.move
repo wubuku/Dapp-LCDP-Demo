@@ -6,6 +6,8 @@
 module aptos_demo::product_aggregate {
     use aptos_demo::product;
     use aptos_demo::product_create_logic;
+    use aptos_demo::product_delete_logic;
+    use aptos_demo::product_update_logic;
     use std::string::String;
 
     public entry fun create(
@@ -24,6 +26,46 @@ module aptos_demo::product_aggregate {
         );
         product::add_product(product);
         product::emit_product_created(product_created);
+    }
+
+    public entry fun update(
+        account: &signer,
+        product_id: String,
+        name: String,
+        unit_price: u128,
+    ) {
+        let product = product::remove_product(product_id);
+        let product_updated = product_update_logic::verify(
+            account,
+            name,
+            unit_price,
+            &product,
+        );
+        let updated_product = product_update_logic::mutate(
+            account,
+            &product_updated,
+            product,
+        );
+        product::update_version_and_add(updated_product);
+        product::emit_product_updated(product_updated);
+    }
+
+    public entry fun delete(
+        account: &signer,
+        product_id: String,
+    ) {
+        let product = product::remove_product(product_id);
+        let product_deleted = product_delete_logic::verify(
+            account,
+            &product,
+        );
+        let updated_product = product_delete_logic::mutate(
+            account,
+            &product_deleted,
+            product,
+        );
+        product::drop_product(updated_product);
+        product::emit_product_deleted(product_deleted);
     }
 
 }

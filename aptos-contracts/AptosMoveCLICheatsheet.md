@@ -78,6 +78,22 @@ aptos move run --function-id 'default::product_aggregate::create' \
 --assume-yes
 ```
 
+### Update method
+
+```shell
+aptos move run --function-id 'default::product_aggregate::update' \
+--args 'string:product_id' 'string:name' u128:unit_price \
+--assume-yes
+```
+
+### Delete method
+
+```shell
+aptos move run --function-id 'default::product_aggregate::delete' \
+--args 'string:product_id' \
+--assume-yes
+```
+
 ## DaySummary aggregate
 
 ### Create method
