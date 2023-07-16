@@ -27,17 +27,17 @@ aggregates:
         event:
           #isObjectFrozen: true # This is true because the Product is immutable.
           name: ProductCreated
-          #todo type: ProductEvent
+          type: ProductEvent
           discriminatorValue: 0
       Update:
         event:
           name: ProductUpdated
-          #todo type: ProductEvent
+          type: ProductEvent
           discriminatorValue: 1
       Delete:
         event:
           name: ProductDeleted
-          #todo type: ProductEvent
+          type: ProductEvent
           discriminatorValue: 2
 
     eventObjects:

@@ -6,7 +6,7 @@ module aptos_demo::product_delete_logic {
     public(friend) fun verify(
         account: &signer,
         product: &product::Product,
-    ): product::ProductDeleted {
+    ): product::ProductEvent {
         let _ = account;
         product::new_product_deleted(
             product,
@@ -15,7 +15,7 @@ module aptos_demo::product_delete_logic {
 
     public(friend) fun mutate(
         _account: &signer,
-        product_deleted: &product::ProductDeleted,
+        product_deleted: &product::ProductEvent,
         product: product::Product,
     ): product::Product {
         let product_id = product::product_id(&product);
