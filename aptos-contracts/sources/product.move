@@ -141,7 +141,7 @@ module aptos_demo::product {
         ProductEvent {
             event_type: 0,
             product_id,
-            version: 18446744073709551615, // max u64
+            version: 18446744073709551615, // max u64 for null
             name,
             unit_price,
         }
