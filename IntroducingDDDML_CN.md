@@ -550,6 +550,97 @@ enumObjects:
 
 有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 baseType（基类型），有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 
+### 示例 6：自动添加 CrUD 方法以及控制事件
+
+下面是一个使用 `MOVE_CRUD_IT` 预处理器自动给一个 `Post` 聚合根实体添加 CrUD（Create / Update / Delete）方法的例子：
+
+```yaml
+aggregates:
+  Post:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+      CRUD_IT_NO_UPDATE: true
+    id:
+      name: PostId
+      type: u128
+      generator:
+        class: sequence
+        # structName: PostIdGenerator #The default value is actually this
+    properties:
+      Poster:
+        type: address
+      UserId:
+        type: String
+        length: 66
+      Content:
+        type: String
+        length: 1000
+      Digest: 
+        type: String
+        length: 66
+```
+
+当然，我们也可以让预处理器忽略其中某些 CrUD 方法的生成。
+
+你可能已经发现，在上面的例子中，聚合根的元数据中存在 `CRUD_IT_NO_UPDATE: true` 这一行。
+那是因为，上面的例子假设了的业务需求是：用户不能更新贴子，只能创建和删除贴子。
+
+---
+
+查看生成的合约代码，你可能发现，添加贴子触发的是 `PostCreated` 事件，删除贴子触发的是 `PostDeleted` 事件，在代码使用两个不同的对象（对于 Move 代码来说，是结构体）来表示它们。这看着有点冗余。
+还有就是，这种情况下，链下的服务拉取事件的时候可能需要从两个事件流拉取，代码写起来可能也会相对麻烦一点。
+
+你可能希望将操作 `Post` 操作的事件合并为一种，这可以减少不少的代码量。
+
+这当然可以做到。你可以修改模型文件，添加以下几行：
+
+```yaml
+    methods:
+      Create:
+        event:
+          type: PostEvent
+          discriminatorValue: 0
+      Delete:
+        event:
+          type: PostEvent
+          discriminatorValue: 2
+
+    eventObjects:
+      PostEvent:
+        discriminator: EventType
+        properties:
+          EventType:
+            type: u8
+```
+
+具体来说，上面添加的代码表示的是，“创建”和“删除”帖子触发的事件都用同一个名为 `PostEvent` 的对象来表示，仅使用一个 `EventType` 字段来区分它们。
+
+你可能已经发现，你不需要像下面这样，在 `PostEvent` 这个事件对象中定义 `PostId`、`Poster` 等属性，`MOVE_CRUD_IT` 预处理器会自动为你生成它们。
+
+```yaml
+      PostEvent:
+        discriminator: EventType
+        properties:
+          EventType:
+            type: u8
+          # 
+          # You don't actually need to key in the following properties.
+          # The preprocessor generates them automatically.            
+          # 
+          PostId:
+            type: u128
+          Version:
+            type: u64
+          Poster:
+            type: address
+          UserId:
+            type: String
+          Content:
+            type: String
+          Digest:
+            type: String
+```
+
 ## 如何编写 DDDML 模型
 
 ### 使用 JSON Schema

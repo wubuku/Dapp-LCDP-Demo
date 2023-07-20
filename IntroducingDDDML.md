@@ -551,6 +551,100 @@ According to the DDDML specification, the `baseType` of an enum object is not re
 
 Some languages, such as Java and C#, have an `enum` keyword, while some languages do not have an `enum` type. In this case, the DDDML tool may replace the enum object (type) with the `baseType` declared in the enum object definition. Sometimes this is not a bad choice, as it may bring convenience in serialization and persistence processing.
 
+### Example 6: Automatically Adding CrUD Methods and Control Events
+
+The following is an example of using the `MOVE_CRUD_IT` preprocessor to automatically add CrUD (Create / Update / Delete) methods to a `Post` aggregate root entity:
+
+```yaml
+aggregates:
+  Post:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+      CRUD_IT_NO_UPDATE: true
+    id:
+      name: PostId
+      type: u128
+      generator:
+        class: sequence
+        # structName: PostIdGenerator #The default value is actually this
+    properties:
+      Poster:
+        type: address
+      UserId:
+        type: String
+        length: 66
+      Content:
+        type: String
+        length: 1000
+      Digest: 
+        type: String
+        length: 66
+```
+
+Of course, we can also tell the preprocessor to ignore the generation of some of CrUD methods.
+
+You may have noticed that in the above example, there is a `CRUD_IT_NO_UPDATE: true` line in the metadata of the aggregate root.
+That's because the above example assumes the business requirement that users can't update posts, but only create and delete them.
+
+---
+
+Looking at the generated contract code, you may notice that creating a post triggers the `PostCreated` event, and deleting a post triggers the `PostDeleted` event, and that the code uses two different objects (`struct`s in the case of Move code) to represent them.
+Also, in this case, an off-chain service pulling events may need to pull from both event streams, which may also be a bit cumbersome for the off-chain code to write.
+
+You might want to merge the three event types for `Post` operations into one. This would reduce the amount of code by quite a bit.
+
+We can do that. Modify the model file by adding these lines:
+
+```yaml
+    methods:
+      Create:
+        event:
+          type: PostEvent
+          discriminatorValue: 0
+      Delete:
+        event:
+          type: PostEvent
+          discriminatorValue: 2
+
+    eventObjects:
+      PostEvent:
+        discriminator: EventType
+        properties:
+          EventType:
+            type: u8
+```
+
+Specifically, the code added above means that the events triggered by `Create` and `Delete` posts are represented by the same object called `PostEvent`,
+using only an `EventType` field to distinguish between them.
+
+As you may have noticed, you don't need to define the `PostId`, `Poster`, etc. properties in the `PostEvent` event object, as you can see below;
+the `MOVE_CRUD_IT` preprocessor generates them for you automatically.
+
+```yaml
+      PostEvent:
+        discriminator: EventType
+        properties:
+          EventType:
+            type: u8
+          # 
+          # You don't actually need to key in the following properties.
+          # The preprocessor generates them automatically.            
+          # 
+          PostId:
+            type: u128
+          Version:
+            type: u64
+          Poster:
+            type: address
+          UserId:
+            type: String
+          Content:
+            type: String
+          Digest:
+            type: String
+```
+
+
 ## How to Write DDDML models
 
 ### Using JSON Schema
