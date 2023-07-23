@@ -10,6 +10,7 @@ configuration:
     name: "Dddml.SuiDemoContracts"
 
   isSurrogateIdMandatory: true
+  isSingletonObjectSurrogateIdMandatory: true
 
   defaultSurrogateId:
     name: Id
@@ -31,6 +32,8 @@ configuration:
 
     typeModules:
       "ID": "sui::object"
+      "Coin": "sui::coin"
+      "SUI": "sui::sui"
 
 
   java:
