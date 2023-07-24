@@ -114,6 +114,7 @@ module rooch_demo::order_item_ship_group_association {
             cancel_quantity: _,
             subitems,
         } = order_item_ship_group_association;
+        table::destroy_empty<Day, OrderItemShipGroupAssocSubitem>(subitems);
     }
 
     */

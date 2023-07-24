@@ -101,6 +101,7 @@ module rooch_demo::order_ship_group {
             shipment_method: _,
             order_item_ship_group_associations,
         } = order_ship_group;
+        table::destroy_empty<ObjectID, OrderItemShipGroupAssociation>(order_item_ship_group_associations);
     }
 
     */
