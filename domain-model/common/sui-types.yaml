@@ -33,6 +33,13 @@ typeDefinitions:
   Balance:
     moveType: "sui::balance::Balance"
     isResource: true
+    defaultLogic:
+      Move:
+        'sui::balance::zero()'
+    dropLogic:
+      Move:
+        'sui::balance::destroy_zero({0})'
+
   SUI:
     moveType: "sui::sui::SUI"
 
