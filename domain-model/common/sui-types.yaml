@@ -30,8 +30,8 @@ typeDefinitions:
     sqlType: DECIMAL(50,0)
 
 
-  Coin:
-    moveType: "sui::coin::Coin"
+  Balance:
+    moveType: "sui::balance::Balance"
     isResource: true
   SUI:
     moveType: "sui::sui::SUI"

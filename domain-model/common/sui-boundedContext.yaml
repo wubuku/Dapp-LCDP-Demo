@@ -32,9 +32,6 @@ configuration:
 
     typeModules:
       "ID": "sui::object"
-#      "Coin": "sui::coin"
-#      "SUI": "sui::sui"
-
 
   java:
     boundedContextPackage: "org.dddml.suidemocontracts"
