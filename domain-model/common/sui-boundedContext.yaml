@@ -32,8 +32,8 @@ configuration:
 
     typeModules:
       "ID": "sui::object"
-      "Coin": "sui::coin"
-      "SUI": "sui::sui"
+#      "Coin": "sui::coin"
+#      "SUI": "sui::sui"
 
 
   java:
