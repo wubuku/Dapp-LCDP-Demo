@@ -644,6 +644,11 @@ the `MOVE_CRUD_IT` preprocessor generates them for you automatically.
             type: String
 ```
 
+### Example 7: Using Resources
+
+In resource-oriented programming, a resource refers to a special kind of data that is non-copyable and non-droppable.
+
+
 
 ## How to Write DDDML models
 

@@ -641,6 +641,67 @@ aggregates:
             type: String
 ```
 
+### 示例 7：使用资源
+
+在面向资源编程中，资源指的是一种不可复制、不可丢弃的特殊数据。
+
+```yaml
+typeDefinitions:
+  Balance:
+    moveType: "sui::balance::Balance"
+    isResource: true
+    defaultLogic:
+      Move:
+        'sui::balance::zero()'
+    destroyLogic:
+      Move:
+        'sui::balance::destroy_zero({0})'
+
+  SUI:
+    moveType: "sui::sui::SUI"
+
+singletonObjects:
+  Blog:
+    properties:
+      Name:
+        type: String
+        length: 200
+        defaultLogic:
+          Move:
+            'std::string::utf8(b"Unnamed Blog")'
+      Articles:
+        itemType: ID #Object ID
+      Vault:
+        type: "Balance<SUI>"
+
+    methods:
+      "__Init__":
+        event:
+          isObjectShared: true # Share the object after initialization.
+
+      Donate:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: Balance<SUI>
+        event:
+          name: DonationReceived
+          properties:
+            Amount:
+              type: u64
+      Withdraw:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: Balance<SUI>
+        event:
+          name: VaultWithdrawn
+```
+
+
+
 ## 如何编写 DDDML 模型
 
 ### 使用 JSON Schema
