@@ -36,7 +36,7 @@ typeDefinitions:
     defaultLogic:
       Move:
         'sui::balance::zero()'
-    dropLogic:
+    destroyLogic:
       Move:
         'sui::balance::destroy_zero({0})'
 
