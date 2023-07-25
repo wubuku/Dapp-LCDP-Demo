@@ -703,6 +703,32 @@ singletonObjects:
           name: VaultWithdrawn
 ```
 
+In the example above, a type named "Balance" is defined under the `/typeDefinitions/Balance` key node, 
+which is a resource type that represents a movable asset.
+We use the `moveType` keyword to specify the corresponding type of this type in Move code, 
+which is `sui::balance::Balance` - here we assume that we are developing a Dapp based on Sui.
+Then, we specify the logic for creating the default value (empty value) required for initialization (`defaultLogic`) and the logic for destruction (`destroyLogic`) for this resource type.
+
+A token type named "SUI" is defined under the `/typeDefinitions/SUI` key node.
+We specify that the corresponding type of this type in Move code is `sui::sui::SUI`.
+
+In Sui Move, singleton objects are generally created using the One-Time-Witness pattern in the module's `init` function.
+We can define a method named `__Init__` in DDDML to control the logic of the `init` function.
+In the example above, we indicate that the `Blog` singleton object is shared after it is created (`event/isObjectShared: true`), 
+so that others can also use it.
+
+We use the `Donate` method to accept `SUI` tokens donated by users.
+`shouldCallByReference: true` indicates that this method needs to be called by a mutable reference of a Blog object. 
+The keyword `shouldCallByReference` is currently only valid for the Sui Move platform.
+The type of parameter `Amount` is `Balance<SUI>`, as mentioned above, this is a resource type.
+This method will trigger an event named `DonationReceived` after execution.
+The properties of the event are described under the `event/properties` key node. 
+The event property `Amount` has a type of `u64`, which represents the amount of tokens donated. 
+Obviously, the type of event properties cannot use resource types.
+
+The `Withdraw` method, if executed successfully, can withdraw a certain `Amount` of `SUI` tokens from the blog's vault.
+The return type of the method is described under the `result` key node as `Balance<SUI>`, as mentioned above, this is a resource type.
+
 
 ## How to Write DDDML models
 
