@@ -648,6 +648,60 @@ the `MOVE_CRUD_IT` preprocessor generates them for you automatically.
 
 In resource-oriented programming, a resource refers to a special kind of data that is non-copyable and non-droppable.
 
+```yaml
+typeDefinitions:
+  Balance:
+    moveType: "sui::balance::Balance"
+    isResource: true
+    defaultLogic:
+      Move:
+        'sui::balance::zero()'
+    destroyLogic:
+      Move:
+        'sui::balance::destroy_zero({0})'
+
+  SUI:
+    moveType: "sui::sui::SUI"
+
+singletonObjects:
+  Blog:
+    properties:
+      Name:
+        type: String
+        length: 200
+        defaultLogic:
+          Move:
+            'std::string::utf8(b"Unnamed Blog")'
+      Articles:
+        itemType: ID #Object ID
+      Vault:
+        type: "Balance<SUI>"
+
+    methods:
+      "__Init__":
+        event:
+          isObjectShared: true # Share the object after initialization.
+
+      Donate:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: Balance<SUI>
+        event:
+          name: DonationReceived
+          properties:
+            Amount:
+              type: u64
+      Withdraw:
+        shouldCallByReference: true
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: Balance<SUI>
+        event:
+          name: VaultWithdrawn
+```
 
 
 ## How to Write DDDML models

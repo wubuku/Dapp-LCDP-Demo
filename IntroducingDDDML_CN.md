@@ -700,6 +700,25 @@ singletonObjects:
           name: VaultWithdrawn
 ```
 
+上面的例子中，在 `/typeDefinitions/Balance` 这个键结点下定义了一个名为“余额”的类型，它是一个资源类型，表示一种可移动的资产。
+我们使用 `moveType` 这个关键字来指定这个类型在 Move 代码中的对应类型，即 `sui::balance::Balance`——这里我们假设正在开发的是基于 Sui 的 Dapp。
+然后，我们为这个资源类型指定初始化时需要的创建默认值（空值）的逻辑（`defaultLogic`），以及销毁操作的逻辑（`destroyLogic`）。
+
+在 `/typeDefinitions/SUI` 这个键结点下定义了一个名为“SUI”的代币类型。
+我们指定这个类型在 Move 代码中的对应类型为 `sui::sui::SUI`。
+
+在 Sui Move 中，单例对象一般使用 One-Time-Witness 模式在模块的 `init` 函数中创建。
+我们可以在 DDDML 中定义一个名为 `__Init__` 的方法来控制 `init` 函数的逻辑。
+在上面的例子中，我们指示 `Blog` 单例对象创建之后即共享出去（`event/isObjectShared: true`），让其他人可以也可以使用它。
+
+我们使用 `Donate` 这个方法接受用户捐赠的 `SUI` 代币。
+`shouldCallByReference: true` 指出这个方法需要通过一个 `Blog` 对象的 Mutable 引用来调用。关键字 `shouldCallByReference` 目前只针对 Sui Move 平台有效。
+参数 `Amount` 的类型是 `Balance<SUI>`，如上面所言，这是一个资源类型。
+这个方法执行后会触发一个名为“捐赠已收到”（`DonationReceived`）的事件。
+在 `event/properties` 这个键结点下描述了事件的属性。事件属性 `Amount` 的类型是 `u64`，表示捐赠的代币数量。显然，事件属性的类型不能使用资源类型。
+
+`Withdraw` 方法如果执行成功，可以从博客的资金库中提取出一定数量（`Amount`）的 `SUI` 代币。
+在 `result` 这个键结点下描述了方法的返回值类型是 `Balance<SUI>`，如上所述，这是一个资源类型。
 
 
 ## 如何编写 DDDML 模型
