@@ -24,4 +24,16 @@ typeDefinitions:
   U256:
     sqlType: DECIMAL(50,0)
 
+  Coin:
+    moveType: "aptos_framework::coin::Coin"
+    isResource: true
+    defaultLogic:
+      Move:
+        'aptos_framework::coin::zero()'
+    destroyLogic:
+      Move:
+        'aptos_framework::coin::destroy_zero({0})'
+
+  APT:
+    moveType: "aptos_framework::aptos_coin::AptosCoin"
 
