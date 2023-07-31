@@ -643,7 +643,7 @@ aggregates:
 
 ### 示例 7：使用资源
 
-在面向资源编程中，资源指的是一种不可复制、不可丢弃的特殊数据。
+在面向资源编程中，资源指的是一种不可复制、不可丢弃的特殊数据。Move 是面向资源编程的代表性语言。
 
 ```yaml
 typeDefinitions:
@@ -720,6 +720,31 @@ singletonObjects:
 `Withdraw` 方法如果执行成功，可以从博客的资金库中提取出一定数量（`Amount`）的 `SUI` 代币。
 在 `result` 这个键结点下描述了方法的返回值类型是 `Balance<SUI>`，如上所述，这是一个资源类型。
 
+根据上面的模型，dddappp 工具生成的 Move 代码类似下面这样：
+
+```move
+
+module sui_blog_example::blog_aggregate {
+
+    public fun donate(
+        blog: &mut blog::Blog,
+        amount: Balance<SUI>,
+        ctx: &mut tx_context::TxContext,
+    ) {
+        //...
+    }
+
+    public fun withdraw(
+        blog: &mut blog::Blog,
+        amount: u64,
+        ctx: &mut tx_context::TxContext,
+    ): Balance<SUI> {
+        //...
+    }
+}
+```
+
+对 Move 语言有所了解的开发人员就会明白，类似这样的函数充分体现了资源的可组合性。它们作为组件，为资产编程提供了极大的便利。
 
 ## 如何编写 DDDML 模型
 
