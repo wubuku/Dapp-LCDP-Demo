@@ -746,6 +746,62 @@ module sui_blog_example::blog_aggregate {
 
 对 Move 语言有所了解的开发人员就会明白，类似这样的函数充分体现了资源的可组合性。它们作为组件，为资产编程提供了极大的便利。
 
+如果你需要开发基于 Aptos 的 Dapp，那么，上面的模型对应的 Aptos 版本如下，你可以比较、体会它们的差别：
+
+```yaml
+typeDefinitions:
+  Coin:
+    moveType: "aptos_framework::coin::Coin"
+    isResource: true
+    defaultLogic:
+      Move:
+        'aptos_framework::coin::zero()'
+    destroyLogic:
+      Move:
+        'aptos_framework::coin::destroy_zero({0})'
+
+  APT:
+    moveType: "aptos_framework::aptos_coin::AptosCoin"
+
+singletonObjects:
+  Blog:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+    friends: [ "Article.Create", "Article.Delete" ]
+    properties:
+      Name:
+        type: String
+        length: 200
+      Articles:
+        itemType: u128
+      Vault:
+        type: "Coin<APT>"
+
+    methods:
+      Create:
+        parameters:
+          Name:
+            type: String
+      Donate:
+        parameters:
+          Amount:
+            type: Coin<APT>
+        event:
+          name: DonationReceived
+          properties:
+            Amount:
+              type: u64
+      Withdraw:
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: Coin<APT>
+        event:
+          name: VaultWithdrawn
+```
+
+
 ## 如何编写 DDDML 模型
 
 ### 使用 JSON Schema

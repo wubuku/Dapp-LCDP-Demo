@@ -757,6 +757,61 @@ module sui_blog_example::blog_aggregate {
 Developers with some knowledge of the Move language will understand that functions like these fully reflect the composability of resources. 
 They act as components and provide a great convenience for asset programming.
 
+If you need to develop Aptos based Dapps, the Aptos versions corresponding to the above models are as follows, so you can compare and appreciate their differences:
+
+```yaml
+typeDefinitions:
+  Coin:
+    moveType: "aptos_framework::coin::Coin"
+    isResource: true
+    defaultLogic:
+      Move:
+        'aptos_framework::coin::zero()'
+    destroyLogic:
+      Move:
+        'aptos_framework::coin::destroy_zero({0})'
+
+  APT:
+    moveType: "aptos_framework::aptos_coin::AptosCoin"
+
+singletonObjects:
+  Blog:
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+    friends: [ "Article.Create", "Article.Delete" ]
+    properties:
+      Name:
+        type: String
+        length: 200
+      Articles:
+        itemType: u128
+      Vault:
+        type: "Coin<APT>"
+
+    methods:
+      Create:
+        parameters:
+          Name:
+            type: String
+      Donate:
+        parameters:
+          Amount:
+            type: Coin<APT>
+        event:
+          name: DonationReceived
+          properties:
+            Amount:
+              type: u64
+      Withdraw:
+        parameters:
+          Amount:
+            type: u64
+        result:
+          type: Coin<APT>
+        event:
+          name: VaultWithdrawn
+```
+
 ## How to Write DDDML models
 
 ### Using JSON Schema
