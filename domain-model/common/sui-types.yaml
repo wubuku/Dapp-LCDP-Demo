@@ -40,7 +40,7 @@ typeDefinitions:
       Move:
         'sui::balance::destroy_zero({0})'
     javaType: "java.math.BigInteger"
-#    dataDescriptor:
+#    dataStruct:
 #      properties:
 #        Value:
 #          type: u64
