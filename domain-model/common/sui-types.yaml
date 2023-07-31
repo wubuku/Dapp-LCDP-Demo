@@ -39,6 +39,11 @@ typeDefinitions:
     destroyLogic:
       Move:
         'sui::balance::destroy_zero({0})'
+    javaType: "java.math.BigInteger"
+#    dataDescriptor:
+#      properties:
+#        Value:
+#          type: u64
 
   SUI:
     moveType: "sui::sui::SUI"
