@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.aptosdemocontracts.domain.order">
+  <class name="AbstractOrderEvent" table="order_event" abstract="true">
+    <composite-id name="orderEventId" class="org.dddml.aptosdemocontracts.domain.order.OrderEventId">
+      <key-property name="orderId">
+        <column name="order_id" length="50" />
+      </key-property>
+      <key-property name="version">
+        <column name="version" sql-type="DECIMAL(20,0)" />
+      </key-property>
+    </composite-id>
+    <discriminator column="event_type" type="string" />
+    <property name="createdBy" column="created_by" />
+    <property name="createdAt" column="created_at" />
+    <property name="commandId" column="command_id" />
+    <property name="aptosEventVersion">
+      <column name="aptos_event_version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventSequenceNumber">
+      <column name="aptos_event_sequence_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventType">
+      <column name="aptos_event_type" length="500" />
+    </property>
+    <component name="aptosEventGuid" class="org.dddml.aptosdemocontracts.domain.AptosEventGuid">
+      <property name="creationNumber">
+        <column name="aptos_event_guid_creation_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="accountAddress">
+        <column name="aptos_event_guid_account_address" sql-type="VARCHAR(66)" />
+      </property>
+    </component>
+    <property name="status">
+      <column name="status" sql-type="CHAR(1)" />
+    </property>
+    <property name="commandType" column="command_type" length="50" />
+    <subclass name="AbstractOrderEvent$OrderClobEvent" discriminator-value="OrderClobEvent">
+      <property name="DynamicPropertiesLob">
+        <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
+      </property>
+      <subclass name="AbstractOrderEvent$OrderCreated" discriminator-value="OrderCreated" />
+      <subclass name="AbstractOrderEvent$OrderItemRemoved" discriminator-value="OrderItemRemoved" />
+      <subclass name="AbstractOrderEvent$OrderItemQuantityUpdated" discriminator-value="OrderItemQuantityUpdated" />
+      <subclass name="AbstractOrderEvent$OrderEstimatedShipDateUpdated" discriminator-value="OrderEstimatedShipDateUpdated" />
+      <subclass name="AbstractOrderEvent$OrderShipGroupAdded" discriminator-value="OrderShipGroupAdded" />
+      <subclass name="AbstractOrderEvent$OrderShipGroupQuantityCanceled" discriminator-value="OrderShipGroupQuantityCanceled" />
+      <subclass name="AbstractOrderEvent$OrderShipGroupItemRemoved" discriminator-value="OrderShipGroupItemRemoved" />
+      <subclass name="AbstractOrderEvent$OrderShipGroupRemoved" discriminator-value="OrderShipGroupRemoved" />
+    </subclass>
+  </class>
+</hibernate-mapping>

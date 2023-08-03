@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/test2?characterEncoding=utf8&serverTimezone=GMT%2b0&useLegacyDatetimeCode=false
+    username: root
+    password: 123456
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
+server:
+  port: 1023
+
+sui:
+  contract:
+    jsonrpc:
+      #url: "https://fullnode.devnet.sui.io/"
+      url: "https://fullnode.testnet.sui.io/"
+      #url: "http://localhost:9000"
+    package-publish-transaction: "4mxSZCAkYwxhGQY79GDHQWFYoa8x3HQiQx4Azn9JbG8b"
+#    pull-day-summary-events:
+#      day-summary-created:
+#        fixed-delay: 6000
+#    pull-order-v2-events:
+#      order-v2-created:
+#        fixed-delay: 6000

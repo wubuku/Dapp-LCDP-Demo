@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.dddml.aptosdemocontracts.tool.hibernate">
+
+    <class name="Hello" table="hibernate_hello">
+
+        <id name="id">
+            <generator class="enhanced-table">
+                <param name="initial_value">10000</param>
+                <param name="increment_size">10</param>
+                <param name="optimizer">pooled-lo</param>
+            </generator>
+        </id>
+        <property name="message"></property>
+
+    </class>
+
+</hibernate-mapping>
+

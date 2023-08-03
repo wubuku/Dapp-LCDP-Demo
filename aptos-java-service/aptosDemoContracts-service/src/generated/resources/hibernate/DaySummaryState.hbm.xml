@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.aptosdemocontracts.domain.daysummary">
+  <class name="org.dddml.aptosdemocontracts.domain.daysummary.AbstractDaySummaryState$SimpleDaySummaryState" table="day_summary">
+    <composite-id name="day" class="org.dddml.aptosdemocontracts.domain.Day">
+      <key-property name="monthYearNumber">
+        <column name="day_month_year_number" />
+      </key-property>
+      <key-property name="monthYearCalendar">
+        <column name="day_month_year_calendar" length="50" />
+      </key-property>
+      <key-property name="monthNumber">
+        <column name="day_month_number" />
+      </key-property>
+      <key-property name="monthIsLeap">
+        <column name="day_month_is_leap" />
+      </key-property>
+      <key-property name="number">
+        <column name="day_number" />
+      </key-property>
+      <key-property name="timeZone">
+        <column name="day_time_zone" length="50" />
+      </key-property>
+    </composite-id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <property name="description">
+      <column name="description" />
+    </property>
+    <property name="metadata">
+      <column name="metadata" />
+    </property>
+    <property name="optionalData">
+      <column name="optional_data" />
+    </property>
+    <property name="version">
+      <column name="version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+    <set name="arrayData" table="day_summary_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="array_data_item" type="string" not-null="true" />
+    </set>
+    <set name="u16ArrayData" table="day_summary_u16_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="u16_array_data_item" type="java.lang.Integer" not-null="true" />
+    </set>
+    <set name="u32ArrayData" table="day_summary_u32_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="u32_array_data_item" type="java.lang.Long" not-null="true" />
+    </set>
+    <set name="u64ArrayData" table="day_summary_u64_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="u64_array_data_item" type="java.math.BigInteger" not-null="true" />
+    </set>
+    <set name="u128ArrayData" table="day_summary_u128_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="u128_array_data_item" type="java.math.BigInteger" not-null="true" />
+    </set>
+    <set name="u256ArrayData" table="day_summary_u256_array_data" lazy="false">
+      <key>
+        <column name="day_month_year_number" />
+        <column name="day_month_year_calendar" />
+        <column name="day_month_number" />
+        <column name="day_month_is_leap" />
+        <column name="day_number" />
+        <column name="day_time_zone" />
+      </key>
+      <element column="u256_array_data_item" type="java.math.BigInteger" not-null="true" />
+    </set>
+  </class>
+</hibernate-mapping>

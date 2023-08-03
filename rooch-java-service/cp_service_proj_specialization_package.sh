@@ -10,7 +10,7 @@ fi
 old_keyword="suidemocontracts"
 new_keyword="roochdemocontracts"
 
-# Iterate through all java files or subdirectories of java files under source_dir
+# Iterate over all java files in source_dir or its subdirectories
 find "$source_dir" -name "*.java" | while read file; do
   # Check if the file contains old keywords
   if grep -q "$old_keyword" "$file"; then

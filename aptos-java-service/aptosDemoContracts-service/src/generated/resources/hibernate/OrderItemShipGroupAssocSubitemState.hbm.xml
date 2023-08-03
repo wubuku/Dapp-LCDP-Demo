@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.aptosdemocontracts.domain.order">
+  <class name="org.dddml.aptosdemocontracts.domain.order.AbstractOrderItemShipGroupAssocSubitemState$SimpleOrderItemShipGroupAssocSubitemState" table="order_item_ship_group_assoc_subitem">
+    <composite-id name="orderItemShipGroupAssocSubitemId" class="org.dddml.aptosdemocontracts.domain.order.OrderItemShipGroupAssocSubitemId">
+      <key-property name="orderId">
+        <column name="order_v2_order_id" length="50" />
+      </key-property>
+      <key-property name="orderShipGroupShipGroupSeqId">
+        <column name="order_ship_group_ship_group_seq_id" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssociationProductId">
+        <column name="order_item_ship_group_association_product_id" length="100" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayMonthYearNumber">
+        <column name="order_item_ship_group_assoc_subitem_day_month_year_number" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayMonthYearCalendar">
+        <column name="order_item_ship_group_assoc_subitem_day_month_year_calendar" length="50" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayMonthNumber">
+        <column name="order_item_ship_group_assoc_subitem_day_month_number" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayMonthIsLeap">
+        <column name="order_item_ship_group_assoc_subitem_day_month_is_leap" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayNumber">
+        <column name="order_item_ship_group_assoc_subitem_day_number" />
+      </key-property>
+      <key-property name="orderItemShipGroupAssocSubitemDayTimeZone">
+        <column name="order_item_ship_group_assoc_subitem_day_time_zone" length="50" />
+      </key-property>
+    </composite-id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <many-to-one name="protectedOrderItemShipGroupAssociationState" class="org.dddml.aptosdemocontracts.domain.order.AbstractOrderItemShipGroupAssociationState$SimpleOrderItemShipGroupAssociationState" insert="false" update="false">
+      <column name="order_v2_order_id" />
+      <column name="order_ship_group_ship_group_seq_id" />
+      <column name="order_item_ship_group_association_product_id" />
+    </many-to-one>
+    <property name="description">
+      <column name="description" length="100" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>

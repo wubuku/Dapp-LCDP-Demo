@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.aptosdemocontracts.domain.order">
+  <class name="org.dddml.aptosdemocontracts.domain.order.AbstractOrderState$SimpleOrderState" table="order_t">
+    <id name="orderId" length="50" column="order_id">
+      <generator class="assigned" />
+    </id>
+    <version name="offChainVersion" column="off_chain_version" type="long" />
+    <set name="protectedItems" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_item_id_order_id" />
+      </key>
+      <one-to-many class="org.dddml.aptosdemocontracts.domain.order.AbstractOrderItemState$SimpleOrderItemState" />
+    </set>
+    <set name="protectedOrderShipGroups" inverse="true" cascade="all-delete-orphan" fetch="join">
+      <key>
+        <column name="order_ship_group_id_order_id" />
+      </key>
+      <one-to-many class="org.dddml.aptosdemocontracts.domain.order.AbstractOrderShipGroupState$SimpleOrderShipGroupState" />
+    </set>
+    <property name="totalAmount">
+      <column name="total_amount" sql-type="DECIMAL(20,0)" />
+    </property>
+    <component name="estimatedShipDate" class="org.dddml.aptosdemocontracts.domain.Day">
+      <property name="monthYearNumber">
+        <column name="estimated_ship_date_month_year_number" />
+      </property>
+      <property name="monthYearCalendar">
+        <column name="estimated_ship_date_month_year_calendar" length="50" />
+      </property>
+      <property name="monthNumber">
+        <column name="estimated_ship_date_month_number" />
+      </property>
+      <property name="monthIsLeap">
+        <column name="estimated_ship_date_month_is_leap" />
+      </property>
+      <property name="number">
+        <column name="estimated_ship_date_number" />
+      </property>
+      <property name="timeZone">
+        <column name="estimated_ship_date_time_zone" length="50" />
+      </property>
+    </component>
+    <property name="version">
+      <column name="version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="active">
+      <column name="active" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>
