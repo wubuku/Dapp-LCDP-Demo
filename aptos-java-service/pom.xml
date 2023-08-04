@@ -46,8 +46,8 @@
             </dependency>
             <dependency>
                 <groupId>com.github.wubuku</groupId>
-                <artifactId>rooch-java-sdk</artifactId>
-                <version>ebbe3eeee2</version>
+                <artifactId>aptos-java-sdk</artifactId>
+                <version>f46742502e</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>

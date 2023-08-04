@@ -2,7 +2,6 @@ package org.dddml.aptosdemocontracts;
 
 import org.dddml.aptosdemocontracts.specialization.ApplicationContext;
 import org.dddml.aptosdemocontracts.specialization.spring.SpringApplicationContext;
-//import org.dddml.aptosdemocontracts.sui.contract.service.MoveObjectIdGeneratorObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,9 +23,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 //@EnableAutoConfiguration
 public class AptosDemoContractsApplication {
-
-    //@Autowired
-    //private MoveObjectIdGeneratorObjectService moveObjectIdGeneratorObjectService;
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(AptosDemoContractsApplication.class, args);

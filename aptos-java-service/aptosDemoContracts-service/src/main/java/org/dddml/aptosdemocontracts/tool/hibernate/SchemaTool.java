@@ -1,7 +1,7 @@
 package org.dddml.aptosdemocontracts.tool.hibernate;
 
-//import org.dddml.aptosdemocontracts.sui.contract.MoveObjectIdGeneratorObject;
-//import org.dddml.aptosdemocontracts.sui.contract.SuiPackage;
+
+import org.dddml.aptosdemocontracts.aptos.contract.AptosAccount;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -313,7 +313,7 @@ public class SchemaTool {
 
     private List<Class<?>> getAnnotationClasses() {
         return Arrays.stream(new Class<?>[]{
-                //SuiPackage.class,
+                AptosAccount.class,
                 //MoveObjectIdGeneratorObject.class
         }).collect(Collectors.toList());
     }
