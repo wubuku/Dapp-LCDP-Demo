@@ -5,7 +5,10 @@
 
 module aptos_demo::order_item_ship_group_association {
     use aptos_demo::day::Day;
+    use aptos_demo::genesis_account;
     use aptos_demo::order_item_ship_group_assoc_subitem::{Self, OrderItemShipGroupAssocSubitem};
+    use aptos_framework::account;
+    use aptos_framework::event;
     use aptos_std::table_with_length::{Self, TableWithLength};
     use std::string::String;
     friend aptos_demo::order_create_logic;
@@ -21,6 +24,34 @@ module aptos_demo::order_item_ship_group_association {
     const EID_ALREADY_EXISTS: u64 = 101;
     const EDATA_TOO_LONG: u64 = 102;
     const EID_NOT_FOUND: u64 = 106;
+    const ENOT_INITIALIZED: u64 = 110;
+
+    struct Events has key {
+        order_item_ship_group_assoc_subitem_table_item_added_handle: event::EventHandle<OrderItemShipGroupAssocSubitemTableItemAdded>,
+    }
+
+    struct OrderItemShipGroupAssocSubitemTableItemAdded has store, drop {
+        order_id: String,
+        order_ship_group_ship_group_seq_id: u8,
+        order_item_ship_group_association_product_id: String,
+        order_item_ship_group_assoc_subitem_day: Day,
+    }
+
+    fun emit_order_item_ship_group_assoc_subitem_table_item_added(table_item_added: OrderItemShipGroupAssocSubitemTableItemAdded) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_item_ship_group_assoc_subitem_table_item_added_handle, table_item_added);
+    }
+
+    public fun initialize(account: &signer) {
+        genesis_account::assert_genesis_account(account);
+
+        let res_account = genesis_account::resource_account_signer();
+        move_to(&res_account, Events {
+            order_item_ship_group_assoc_subitem_table_item_added_handle: account::new_event_handle<OrderItemShipGroupAssocSubitemTableItemAdded>(&res_account),
+        });
+
+    }
 
     struct OrderItemShipGroupAssociation has store {
         product_id: String,
@@ -49,10 +80,16 @@ module aptos_demo::order_item_ship_group_association {
         order_item_ship_group_association.cancel_quantity = cancel_quantity;
     }
 
-    public(friend) fun add_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) {
-        let key = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
-        assert!(!table_with_length::contains(&order_item_ship_group_association.subitems, key), EID_ALREADY_EXISTS);
-        table_with_length::add(&mut order_item_ship_group_association.subitems, key, subitem);
+    public(friend) fun add_subitem(order_id: String, order_ship_group_ship_group_seq_id: u8, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) acquires Events {
+        let order_item_ship_group_assoc_subitem_day = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
+        assert!(!table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_ALREADY_EXISTS);
+        table_with_length::add(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day, subitem);
+        emit_order_item_ship_group_assoc_subitem_table_item_added(OrderItemShipGroupAssocSubitemTableItemAdded {
+            order_id,
+            order_ship_group_ship_group_seq_id,
+            order_item_ship_group_association_product_id: product_id(order_item_ship_group_association),
+            order_item_ship_group_assoc_subitem_day,
+        });
     }
 
     public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {

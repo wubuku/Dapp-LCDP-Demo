@@ -48,7 +48,11 @@ module aptos_demo::order_add_order_ship_group_logic {
             0,
             //
         );
-        order_ship_group::add_order_item_ship_group_association(&mut order_ship_group, assc);
+        order_ship_group::add_order_item_ship_group_association(
+            order_ship_group_added::order_id(order_ship_group_added),
+            &mut order_ship_group,
+            assc
+        );
         order::add_order_ship_group(
             &mut order,
             order_ship_group

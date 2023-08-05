@@ -112,6 +112,8 @@ aggregates:
       #              isOwner: true # Transfer the object to the account address indicated by this property
 
       UpdateItemQuantity:
+        metadata:
+          "NO_MOVE_EVENT_MODULE": true
         parameters:
           ProductId:
             type: String
@@ -121,6 +123,8 @@ aggregates:
           name: OrderItemQuantityUpdated
 
       UpdateEstimatedShipDate:
+        metadata:
+          "NO_MOVE_EVENT_MODULE": true
         parameters:
           EstimatedShipDate:
             type: Day
@@ -152,6 +156,8 @@ aggregates:
           name: OrderShipGroupQuantityCanceled
 
       RemoveOrderShipGroupItem:
+        metadata:
+          "NO_MOVE_EVENT_MODULE": true
         parameters:
           ShipGroupSeqId:
             type: u8

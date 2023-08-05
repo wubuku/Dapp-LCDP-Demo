@@ -11,6 +11,8 @@ module aptos_demo::genesis_account {
     use std::signer;
 
     friend aptos_demo::order;
+    friend aptos_demo::order_ship_group;
+    friend aptos_demo::order_item_ship_group_association;
     friend aptos_demo::product;
     friend aptos_demo::day_summary;
 

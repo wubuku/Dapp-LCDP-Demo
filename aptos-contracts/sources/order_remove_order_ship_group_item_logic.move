@@ -3,7 +3,6 @@ module aptos_demo::order_remove_order_ship_group_item_logic {
 
     use aptos_demo::order;
     use aptos_demo::order_ship_group;
-    use aptos_demo::order_ship_group_item_removed;
 
     friend aptos_demo::order_aggregate;
 
@@ -28,11 +27,11 @@ module aptos_demo::order_remove_order_ship_group_item_logic {
     ): order::Order {
         let order_ship_group = order::borrow_mut_order_ship_group(
             &mut order,
-            order_ship_group_item_removed::ship_group_seq_id(order_ship_group_item_removed),
+            order::order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed),
         );
         order_ship_group::remove_order_item_ship_group_association(
             order_ship_group,
-            order_ship_group_item_removed::product_id(order_ship_group_item_removed),
+            order::order_ship_group_item_removed_product_id(order_ship_group_item_removed),
         );
         order
     }

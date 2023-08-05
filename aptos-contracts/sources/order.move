@@ -40,6 +40,30 @@ module aptos_demo::order {
         order_ship_group_quantity_canceled_handle: event::EventHandle<OrderShipGroupQuantityCanceled>,
         order_ship_group_item_removed_handle: event::EventHandle<OrderShipGroupItemRemoved>,
         order_ship_group_removed_handle: event::EventHandle<OrderShipGroupRemoved>,
+        order_item_table_item_added_handle: event::EventHandle<OrderItemTableItemAdded>,
+        order_ship_group_table_item_added_handle: event::EventHandle<OrderShipGroupTableItemAdded>,
+    }
+
+    struct OrderItemTableItemAdded has store, drop {
+        order_id: String,
+        product_id: String,
+    }
+
+    fun emit_order_item_table_item_added(table_item_added: OrderItemTableItemAdded) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_item_table_item_added_handle, table_item_added);
+    }
+
+    struct OrderShipGroupTableItemAdded has store, drop {
+        order_id: String,
+        ship_group_seq_id: u8,
+    }
+
+    fun emit_order_ship_group_table_item_added(table_item_added: OrderShipGroupTableItemAdded) acquires Events {
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        event::emit_event(&mut events.order_ship_group_table_item_added_handle, table_item_added);
     }
 
     struct Tables has key {
@@ -59,6 +83,8 @@ module aptos_demo::order {
             order_ship_group_quantity_canceled_handle: account::new_event_handle<OrderShipGroupQuantityCanceled>(&res_account),
             order_ship_group_item_removed_handle: account::new_event_handle<OrderShipGroupItemRemoved>(&res_account),
             order_ship_group_removed_handle: account::new_event_handle<OrderShipGroupRemoved>(&res_account),
+            order_item_table_item_added_handle: account::new_event_handle<OrderItemTableItemAdded>(&res_account),
+            order_ship_group_table_item_added_handle: account::new_event_handle<OrderShipGroupTableItemAdded>(&res_account),
         });
 
         move_to(
@@ -68,6 +94,7 @@ module aptos_demo::order {
             },
         );
 
+        order_ship_group::initialize(account);
     }
 
     struct Order has store {
@@ -103,10 +130,14 @@ module aptos_demo::order {
         order.estimated_ship_date = estimated_ship_date;
     }
 
-    public(friend) fun add_item(order: &mut Order, item: OrderItem) {
-        let key = order_item::product_id(&item);
-        assert!(!table_with_length::contains(&order.items, key), EID_ALREADY_EXISTS);
-        table_with_length::add(&mut order.items, key, item);
+    public(friend) fun add_item(order: &mut Order, item: OrderItem) acquires Events {
+        let product_id = order_item::product_id(&item);
+        assert!(!table_with_length::contains(&order.items, product_id), EID_ALREADY_EXISTS);
+        table_with_length::add(&mut order.items, product_id, item);
+        emit_order_item_table_item_added(OrderItemTableItemAdded {
+            order_id: order_id(order),
+            product_id,
+        });
     }
 
     public(friend) fun remove_item(order: &mut Order, product_id: String) {
@@ -131,10 +162,14 @@ module aptos_demo::order {
         table_with_length::length(&order.items)
     }
 
-    public(friend) fun add_order_ship_group(order: &mut Order, order_ship_group: OrderShipGroup) {
-        let key = order_ship_group::ship_group_seq_id(&order_ship_group);
-        assert!(!table_with_length::contains(&order.order_ship_groups, key), EID_ALREADY_EXISTS);
-        table_with_length::add(&mut order.order_ship_groups, key, order_ship_group);
+    public(friend) fun add_order_ship_group(order: &mut Order, order_ship_group: OrderShipGroup) acquires Events {
+        let ship_group_seq_id = order_ship_group::ship_group_seq_id(&order_ship_group);
+        assert!(!table_with_length::contains(&order.order_ship_groups, ship_group_seq_id), EID_ALREADY_EXISTS);
+        table_with_length::add(&mut order.order_ship_groups, ship_group_seq_id, order_ship_group);
+        emit_order_ship_group_table_item_added(OrderShipGroupTableItemAdded {
+            order_id: order_id(order),
+            ship_group_seq_id,
+        });
     }
 
     /*

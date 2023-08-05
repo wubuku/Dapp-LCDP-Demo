@@ -4,7 +4,6 @@ module aptos_demo::order_update_item_quantity_logic {
     //use sui::tx_context::TxContext;
     use aptos_demo::order;
     use aptos_demo::order_item;
-    use aptos_demo::order_item_quantity_updated;
 
     friend aptos_demo::order_aggregate;
 
@@ -33,13 +32,13 @@ module aptos_demo::order_update_item_quantity_logic {
         //ctx: &TxContext, // keep this for future use?
     ): order::Order {
         //let _ = ctx;
-        let product_id = order_item_quantity_updated::product_id(order_item_quantity_updated);
-        let quantity = order_item_quantity_updated::quantity(order_item_quantity_updated);
+        let product_id = order::order_item_quantity_updated_product_id(order_item_quantity_updated);
+        let quantity = order::order_item_quantity_updated_quantity(order_item_quantity_updated);
         let item = order::borrow_mut_item(&mut order, product_id);
         let unit_price = order_item::item_amount(item) / (order_item::quantity(item) as u128);
         order_item::set_quantity(item, quantity);
         let old_item_amount = order_item::item_amount(item);
-        let new_item_amount = unit_price * (order_item_quantity_updated::quantity(
+        let new_item_amount = unit_price * (order::order_item_quantity_updated_quantity(
             order_item_quantity_updated
         ) as u128);
         order_item::set_item_amount(
