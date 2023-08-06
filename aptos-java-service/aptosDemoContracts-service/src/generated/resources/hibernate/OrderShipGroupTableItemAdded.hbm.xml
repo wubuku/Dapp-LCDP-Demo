@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
+<hibernate-mapping package="org.dddml.aptosdemocontracts.domain.order">
+  <class name="org.dddml.aptosdemocontracts.aptos.contract.persistence.OrderShipGroupTableItemAdded" table="aptos_order_ship_group_table_item_added">
+    <composite-id name="orderShipGroupId" class="org.dddml.aptosdemocontracts.domain.order.OrderShipGroupId">
+      <key-property name="orderId">
+        <column name="order_ship_group_id_order_id" length="50" />
+      </key-property>
+      <key-property name="shipGroupSeqId">
+        <column name="order_v2_ship_group_seq_id" />
+      </key-property>
+    </composite-id>
+    <property name="aptosEventVersion">
+      <column name="aptos_event_version" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventSequenceNumber">
+      <column name="aptos_event_sequence_number" sql-type="DECIMAL(20,0)" />
+    </property>
+    <property name="aptosEventType">
+      <column name="aptos_event_type" length="500" />
+    </property>
+    <component name="aptosEventGuid" class="org.dddml.aptosdemocontracts.domain.AptosEventGuid">
+      <property name="creationNumber">
+        <column name="aptos_event_guid_creation_number" sql-type="DECIMAL(20,0)" />
+      </property>
+      <property name="accountAddress">
+        <column name="aptos_event_guid_account_address" sql-type="VARCHAR(66)" />
+      </property>
+    </component>
+    <property name="createdBy">
+      <column name="created_by" />
+    </property>
+    <property name="updatedBy">
+      <column name="updated_by" />
+    </property>
+    <property name="deleted">
+      <column name="deleted" />
+    </property>
+    <property name="createdAt" column="created_at" />
+    <property name="updatedAt" column="updated_at" />
+  </class>
+</hibernate-mapping>
