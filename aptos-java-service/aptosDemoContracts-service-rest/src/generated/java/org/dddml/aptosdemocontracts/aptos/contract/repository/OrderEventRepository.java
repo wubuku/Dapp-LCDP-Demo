@@ -13,20 +13,20 @@ public interface OrderEventRepository extends JpaRepository<AbstractOrderEvent, 
 
     List<AbstractOrderEvent> findByStatusIsNull();
 
-    AbstractOrderEvent.OrderCreated findFirstOrderCreatedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderCreated findFirstOrderCreatedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderItemRemoved findFirstOrderItemRemovedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderItemRemoved findFirstOrderItemRemovedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderItemQuantityUpdated findFirstOrderItemQuantityUpdatedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderItemQuantityUpdated findFirstOrderItemQuantityUpdatedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderEstimatedShipDateUpdated findFirstOrderEstimatedShipDateUpdatedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderEstimatedShipDateUpdated findFirstOrderEstimatedShipDateUpdatedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderShipGroupAdded findFirstOrderShipGroupAddedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderShipGroupAdded findFirstOrderShipGroupAddedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderShipGroupQuantityCanceled findFirstOrderShipGroupQuantityCanceledByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderShipGroupQuantityCanceled findFirstOrderShipGroupQuantityCanceledByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderShipGroupItemRemoved findFirstOrderShipGroupItemRemovedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderShipGroupItemRemoved findFirstOrderShipGroupItemRemovedByOrderByAptosEventSequenceNumber();
 
-    AbstractOrderEvent.OrderShipGroupRemoved findFirstOrderShipGroupRemovedByOrderBySequenceNumber();
+    AbstractOrderEvent.OrderShipGroupRemoved findFirstOrderShipGroupRemovedByOrderByAptosEventSequenceNumber();
 
 }

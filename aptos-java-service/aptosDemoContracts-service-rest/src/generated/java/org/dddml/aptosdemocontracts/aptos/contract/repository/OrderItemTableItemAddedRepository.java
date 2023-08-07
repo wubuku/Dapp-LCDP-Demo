@@ -17,10 +17,10 @@ import java.util.List;
 public interface OrderItemTableItemAddedRepository extends JpaRepository<OrderItemTableItemAdded, OrderItemId> {
 
     @Transactional(readOnly = true)
-    List<OrderItemTableItemAdded> findByOrderBySequenceNumber(Pageable pageable);
+    List<OrderItemTableItemAdded> findByOrderByAptosEventSequenceNumber(Pageable pageable);
 
     @Transactional(readOnly = true)
-    OrderItemTableItemAdded findFirstByOrderBySequenceNumber();
+    OrderItemTableItemAdded findFirstByOrderByAptosEventSequenceNumber();
 
     @Transactional(readOnly = true)
     List<OrderItemTableItemAdded> findByOrderItemId_OrderId(String orderId);

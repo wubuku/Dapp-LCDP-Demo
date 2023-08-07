@@ -1,5 +1,6 @@
 package org.dddml.aptosdemocontracts;
 
+import org.dddml.aptosdemocontracts.apots.contract.service.ContractInitService;
 import org.dddml.aptosdemocontracts.specialization.ApplicationContext;
 import org.dddml.aptosdemocontracts.specialization.spring.SpringApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //@EnableAutoConfiguration
 public class AptosDemoContractsApplication {
 
+    @Autowired
+    private ContractInitService contractInitService;
+
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(AptosDemoContractsApplication.class, args);
         ApplicationContext.current = new SpringApplicationContext(ctx);
         ctx.publishEvent(new ContextStartedEvent(ctx));
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void initMoveObjectIdGeneratorObjects() {
-//        moveObjectIdGeneratorObjectService.initMoveObjectIdGeneratorObjects();
-//    }
+    @EventListener(ApplicationReadyEvent.class)
+    public void initAccountAddresses() {
+        contractInitService.initAccountAddresses();
+    }
 }

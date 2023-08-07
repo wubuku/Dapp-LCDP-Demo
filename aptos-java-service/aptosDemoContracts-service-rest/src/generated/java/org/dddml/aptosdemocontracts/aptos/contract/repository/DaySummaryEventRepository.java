@@ -13,6 +13,6 @@ public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySumm
 
     List<AbstractDaySummaryEvent> findByStatusIsNull();
 
-    AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderBySequenceNumber();
+    AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderByAptosEventSequenceNumber();
 
 }

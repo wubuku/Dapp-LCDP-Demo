@@ -17,10 +17,10 @@ import java.util.List;
 public interface OrderShipGroupTableItemAddedRepository extends JpaRepository<OrderShipGroupTableItemAdded, OrderShipGroupId> {
 
     @Transactional(readOnly = true)
-    List<OrderShipGroupTableItemAdded> findByOrderBySequenceNumber(Pageable pageable);
+    List<OrderShipGroupTableItemAdded> findByOrderByAptosEventSequenceNumber(Pageable pageable);
 
     @Transactional(readOnly = true)
-    OrderShipGroupTableItemAdded findFirstByOrderBySequenceNumber();
+    OrderShipGroupTableItemAdded findFirstByOrderByAptosEventSequenceNumber();
 
     @Transactional(readOnly = true)
     List<OrderShipGroupTableItemAdded> findByOrderShipGroupId_OrderId(String orderId);
