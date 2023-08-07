@@ -9,9 +9,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.aptos.bean.*;
 
-import org.dddml.aptosdemocontracts.domain.*;
-import org.dddml.aptosdemocontracts.domain.daysummary.*;
-
 import java.math.*;
 import java.util.*;
 

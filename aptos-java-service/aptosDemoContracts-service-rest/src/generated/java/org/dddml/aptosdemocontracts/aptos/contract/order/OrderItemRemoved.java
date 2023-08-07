@@ -8,8 +8,6 @@ package org.dddml.aptosdemocontracts.aptos.contract.order;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-import org.dddml.aptosdemocontracts.domain.*;
-import org.dddml.aptosdemocontracts.domain.order.*;
 import org.dddml.aptosdemocontracts.aptos.contract.*;
 
 import java.math.*;
