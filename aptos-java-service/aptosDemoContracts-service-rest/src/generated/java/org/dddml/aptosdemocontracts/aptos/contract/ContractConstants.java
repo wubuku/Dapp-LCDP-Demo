@@ -9,6 +9,7 @@ public class ContractConstants {
     public static final String RESOURCE_ACCOUNT_ADDRESS = "RESOURCE_ACCOUNT_ADDRESS";
 
     public static final String ORDER_MODULE_ORDER_CREATED = "order::OrderCreated";
+    public static final String ORDER_MODULE_ORDER_CREATED_HANDLE_FIELD = "order_created_handle";
 
     public static final String ORDER_MODULE_ORDER_ITEM_REMOVED = "order::OrderItemRemoved";
 
