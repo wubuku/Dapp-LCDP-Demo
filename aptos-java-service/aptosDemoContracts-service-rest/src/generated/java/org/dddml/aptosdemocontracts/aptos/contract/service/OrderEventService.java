@@ -55,7 +55,10 @@ public class OrderEventService {
             return;
         }
         int limit = 1;
-        long cursor = getOrderCreatedEventNextCursor().longValue();
+        BigInteger cursor = getOrderCreatedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
         while (true) {
             List<Event<OrderCreated>> eventPage;
             try {
@@ -64,13 +67,15 @@ public class OrderEventService {
                         accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_CREATED,
                         ContractConstants.ORDER_MODULE_ORDER_CREATED_HANDLE_FIELD,
                         OrderCreated.class,
-                        cursor, limit);
+                        cursor.longValue(),
+                        limit
+                );
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             if (eventPage != null && eventPage.size() > 0) {
-                cursor = cursor + 1;
+                cursor = cursor.add(BigInteger.ONE);
                 for (Event<OrderCreated> eventEnvelope : eventPage) {
                     saveOrderCreated(eventEnvelope);
                 }
