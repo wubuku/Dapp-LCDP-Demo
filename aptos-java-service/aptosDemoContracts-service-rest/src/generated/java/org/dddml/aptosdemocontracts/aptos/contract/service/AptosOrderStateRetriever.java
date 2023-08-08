@@ -22,6 +22,8 @@ public class AptosOrderStateRetriever {
 
     private NodeApiClient aptosNodeApiClient;
 
+    private String aptosContractAddress;
+
     private AptosAccountRepository aptosAccountRepository;
 
     private Function<String, OrderState.MutableOrderState> orderStateFactory;
@@ -30,12 +32,14 @@ public class AptosOrderStateRetriever {
     private OrderItemProductIdsGetter orderItemProductIdsGetter;
 
     public AptosOrderStateRetriever(NodeApiClient aptosNodeApiClient,
+                                    String aptosContractAddress,
                                     AptosAccountRepository aptosAccountRepository,
                                     Function<String, OrderState.MutableOrderState> orderStateFactory,
                                     BiFunction<OrderState, String, OrderItemState.MutableOrderItemState> orderItemStateFactory,
                                     OrderItemProductIdsGetter orderItemProductIdsGetter
     ) {
         this.aptosNodeApiClient = aptosNodeApiClient;
+        this.aptosContractAddress = aptosContractAddress;
         this.aptosAccountRepository = aptosAccountRepository;
         this.orderStateFactory = orderStateFactory;
         this.orderItemStateFactory = orderItemStateFactory;
@@ -59,7 +63,7 @@ public class AptosOrderStateRetriever {
             order = aptosNodeApiClient.getTableItem(
                     tableHandle,
                     "0x1::string::String",//todo
-                    "0x2239450816c09cef0202c090ec15f648a33e3fff0209167cad1ef6830b1d5d1f::order::Order",//todo
+                    this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER,
                     orderId,
                     Order.class,
                     null
@@ -101,7 +105,7 @@ public class AptosOrderStateRetriever {
                 orderItem = aptosNodeApiClient.getTableItem(
                         orderItemTableHandle,
                         "0x1::string::String",//todo
-                        "0x2239450816c09cef0202c090ec15f648a33e3fff0209167cad1ef6830b1d5d1f::order_item::OrderItem",//todo
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_ITEM_MODULE_ORDER_ITEM,
                         productId,
                         OrderItem.class,
                         null
