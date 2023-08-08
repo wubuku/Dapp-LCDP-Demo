@@ -62,7 +62,7 @@ public class AptosOrderStateRetriever {
         try {
             order = aptosNodeApiClient.getTableItem(
                     tableHandle,
-                    "0x1::string::String",//todo
+                    ContractConstants.toNumericalAddressType(ContractConstants.ORDER_ID_TYPE, this.aptosContractAddress),
                     this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_ORDER,
                     orderId,
                     Order.class,
@@ -104,7 +104,7 @@ public class AptosOrderStateRetriever {
             try {
                 orderItem = aptosNodeApiClient.getTableItem(
                         orderItemTableHandle,
-                        "0x1::string::String",//todo
+                        ContractConstants.toNumericalAddressType(ContractConstants.ORDER_ITEM_ID_TYPE, this.aptosContractAddress),
                         this.aptosContractAddress + "::" + ContractConstants.ORDER_ITEM_MODULE_ORDER_ITEM,
                         productId,
                         OrderItem.class,
