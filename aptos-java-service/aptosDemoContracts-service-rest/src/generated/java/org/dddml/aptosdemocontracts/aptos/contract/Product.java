@@ -5,6 +5,7 @@
 
 package org.dddml.aptosdemocontracts.aptos.contract;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.aptos.bean.*;
@@ -74,6 +75,26 @@ public class Product {
                 ", unitPrice=" + unitPrice +
                 ", version=" + version +
                 '}';
+    }
+
+    public static class Tables {
+        @JsonProperty("product_table")
+        private Table productTable;
+
+        public Table getProductTable() {
+            return productTable;
+        }
+
+        public void setProductTable(Table productTable) {
+            this.productTable = productTable;
+        }
+
+        @Override
+        public String toString() {
+            return "Product.Tables{" +
+                    "productTable=" + productTable +
+                    '}';
+        }
     }
 
 }

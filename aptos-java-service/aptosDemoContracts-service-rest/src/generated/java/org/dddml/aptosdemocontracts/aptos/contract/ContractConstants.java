@@ -54,4 +54,8 @@ public class ContractConstants {
 
     public static final String ORDER_MODULE_TABLES = "order::Tables";
 
+    public static final String PRODUCT_MODULE_TABLES = "product::Tables";
+
+    public static final String DAY_SUMMARY_MODULE_TABLES = "day_summary::Tables";
+
 }
