@@ -52,4 +52,6 @@ public class ContractConstants {
 
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED = "order_item_ship_group_association::OrderItemShipGroupAssocSubitemTableItemAdded";
 
+    public static final String ORDER_MODULE_TABLES = "order::Tables";
+
 }

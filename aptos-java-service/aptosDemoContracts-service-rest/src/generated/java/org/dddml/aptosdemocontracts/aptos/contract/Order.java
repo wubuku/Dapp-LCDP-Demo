@@ -5,6 +5,7 @@
 
 package org.dddml.aptosdemocontracts.aptos.contract;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.aptos.bean.*;
@@ -96,6 +97,26 @@ public class Order {
                 ", items=" + items +
                 ", orderShipGroups=" + orderShipGroups +
                 '}';
+    }
+
+    public static class Tables {
+        @JsonProperty("order_table")
+        private Table orderTable;
+
+        public Table getOrderTable() {
+            return orderTable;
+        }
+
+        public void setOrderTable(Table orderTable) {
+            this.orderTable = orderTable;
+        }
+
+        @Override
+        public String toString() {
+            return "Order.Tables{" +
+                    "orderTable=" + orderTable +
+                    '}';
+        }
     }
 
 }
