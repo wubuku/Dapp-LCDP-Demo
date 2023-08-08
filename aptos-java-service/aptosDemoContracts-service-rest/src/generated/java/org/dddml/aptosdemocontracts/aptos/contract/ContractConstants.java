@@ -84,9 +84,15 @@ public class ContractConstants {
 
     public static final String ORDER_MODULE_TABLES = "order::Tables";
 
+    public static final String ORDER_MODULE_EVENTS = "order::Events";
+
     public static final String PRODUCT_MODULE_TABLES = "product::Tables";
 
+    public static final String PRODUCT_MODULE_EVENTS = "product::Events";
+
     public static final String DAY_SUMMARY_MODULE_TABLES = "day_summary::Tables";
+
+    public static final String DAY_SUMMARY_MODULE_EVENTS = "day_summary::Events";
 
     public static String toNumericalAddressType(String type, String contractAddress) {
         if (type.startsWith(CONTRACT_NAMED_ADDRESS + "::")) {

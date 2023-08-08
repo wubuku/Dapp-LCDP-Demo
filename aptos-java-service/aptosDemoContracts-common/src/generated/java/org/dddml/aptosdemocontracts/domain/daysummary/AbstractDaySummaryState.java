@@ -35,13 +35,13 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.description = description;
     }
 
-    private int[] metadata;
+    private String metadata;
 
-    public int[] getMetadata() {
+    public String getMetadata() {
         return this.metadata;
     }
 
-    public void setMetadata(int[] metadata) {
+    public void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 
@@ -288,8 +288,8 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
 
         String description = e.getDescription();
         String Description = description;
-        int[] metaData = e.getMetaData();
-        int[] MetaData = metaData;
+        String metaData = e.getMetaData();
+        String MetaData = metaData;
         String[] arrayData = e.getArrayData();
         String[] ArrayData = arrayData;
         String optionalData = e.getOptionalData();
@@ -327,14 +327,14 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         DaySummaryState updatedDaySummaryState = (DaySummaryState) ReflectUtils.invokeStaticMethod(
                     "org.dddml.aptosdemocontracts.domain.daysummary.CreateLogic",
                     "mutate",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
+                    new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, BigInteger.class, BigInteger.class, String.class, AptosEventGuid.class, String.class, MutationContext.class},
                     new Object[]{this, description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, aptosEventVersion, aptosEventSequenceNumber, aptosEventType, aptosEventGuid, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
             );
 
 //package org.dddml.aptosdemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
+//    public static DaySummaryState mutate(DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, BigInteger aptosEventVersion, BigInteger aptosEventSequenceNumber, String aptosEventType, AptosEventGuid aptosEventGuid, String status, MutationContext<DaySummaryState, DaySummaryState.MutableDaySummaryState> mutationContext) {
 //    }
 //}
 

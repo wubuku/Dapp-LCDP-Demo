@@ -31,4 +31,4 @@ configuration:
     specializationPackage: "org.dddml.aptosdemocontracts.specialization"
 
     typeMappings:
-      "vector<u8>": "int[]"
+      "vector<u8>": "String" # Mapped to Hex String, not byte[]

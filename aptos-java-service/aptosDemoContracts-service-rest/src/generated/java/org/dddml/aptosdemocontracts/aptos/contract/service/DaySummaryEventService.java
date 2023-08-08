@@ -17,6 +17,7 @@ import org.dddml.aptosdemocontracts.aptos.contract.daysummary.DaySummaryCreated;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.DaySummaryEventRepository;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.AptosAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,9 @@ import java.util.*;
 
 @Service
 public class DaySummaryEventService {
+
+    @Value("${aptos.contract.address}")
+    private String aptosContractAddress;
 
     @Autowired
     private AptosAccountRepository aptosAccountRepository;
@@ -45,8 +49,8 @@ public class DaySummaryEventService {
 
     @Transactional
     public void pullDaySummaryCreatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -58,8 +62,8 @@ public class DaySummaryEventService {
             List<Event<DaySummaryCreated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_EVENTS,
                         ContractConstants.DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED_HANDLE_FIELD,
                         DaySummaryCreated.class,
                         cursor.longValue(),

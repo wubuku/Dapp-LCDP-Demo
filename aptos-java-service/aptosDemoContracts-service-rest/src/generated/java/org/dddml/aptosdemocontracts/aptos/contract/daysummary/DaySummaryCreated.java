@@ -20,7 +20,7 @@ public class DaySummaryCreated {
 
     private String description;
 
-    private int[] metaData;
+    private String metaData;
 
     private String[] arrayData;
 
@@ -52,11 +52,11 @@ public class DaySummaryCreated {
         this.description = description;
     }
 
-    public int[] getMetaData() {
+    public String getMetaData() {
         return metaData;
     }
 
-    public void setMetaData(int[] metaData) {
+    public void setMetaData(String metaData) {
         this.metaData = metaData;
     }
 
@@ -121,7 +121,7 @@ public class DaySummaryCreated {
         return "DaySummaryCreated{" +
                 "day=" + day +
                 ", description=" + '\'' + description + '\'' +
-                ", metaData=" + Arrays.toString(metaData) +
+                ", metaData=" + '\'' + metaData + '\'' +
                 ", arrayData=" + Arrays.toString(arrayData) +
                 ", optionalData=" + optionalData +
                 ", u16ArrayData=" + Arrays.toString(u16ArrayData) +

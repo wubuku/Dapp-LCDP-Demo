@@ -53,13 +53,13 @@ public class DaySummaryCommands {
         /**
          * Meta Data
          */
-        private int[] metaData;
+        private String metaData;
 
-        public int[] getMetaData() {
+        public String getMetaData() {
             return this.metaData;
         }
 
-        public void setMetaData(int[] metaData) {
+        public void setMetaData(String metaData) {
             this.metaData = metaData;
         }
 

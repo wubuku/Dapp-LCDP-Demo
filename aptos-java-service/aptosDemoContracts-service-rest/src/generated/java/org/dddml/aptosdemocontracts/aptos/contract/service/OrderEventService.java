@@ -24,6 +24,7 @@ import org.dddml.aptosdemocontracts.aptos.contract.order.OrderShipGroupRemoved;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.OrderEventRepository;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.AptosAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,9 @@ import java.util.*;
 
 @Service
 public class OrderEventService {
+
+    @Value("${aptos.contract.address}")
+    private String aptosContractAddress;
 
     @Autowired
     private AptosAccountRepository aptosAccountRepository;
@@ -52,8 +56,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderCreatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -65,8 +69,8 @@ public class OrderEventService {
             List<Event<OrderCreated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_CREATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_CREATED_HANDLE_FIELD,
                         OrderCreated.class,
                         cursor.longValue(),
@@ -102,8 +106,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderItemRemovedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -115,8 +119,8 @@ public class OrderEventService {
             List<Event<OrderItemRemoved>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED_HANDLE_FIELD,
                         OrderItemRemoved.class,
                         cursor.longValue(),
@@ -152,8 +156,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderItemQuantityUpdatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -165,8 +169,8 @@ public class OrderEventService {
             List<Event<OrderItemQuantityUpdated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED_HANDLE_FIELD,
                         OrderItemQuantityUpdated.class,
                         cursor.longValue(),
@@ -202,8 +206,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderEstimatedShipDateUpdatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -215,8 +219,8 @@ public class OrderEventService {
             List<Event<OrderEstimatedShipDateUpdated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ESTIMATED_SHIP_DATE_UPDATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_ESTIMATED_SHIP_DATE_UPDATED_HANDLE_FIELD,
                         OrderEstimatedShipDateUpdated.class,
                         cursor.longValue(),
@@ -252,8 +256,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderShipGroupAddedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -265,8 +269,8 @@ public class OrderEventService {
             List<Event<OrderShipGroupAdded>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ADDED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ADDED_HANDLE_FIELD,
                         OrderShipGroupAdded.class,
                         cursor.longValue(),
@@ -302,8 +306,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderShipGroupQuantityCanceledEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -315,8 +319,8 @@ public class OrderEventService {
             List<Event<OrderShipGroupQuantityCanceled>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED_HANDLE_FIELD,
                         OrderShipGroupQuantityCanceled.class,
                         cursor.longValue(),
@@ -352,8 +356,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderShipGroupItemRemovedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -365,8 +369,8 @@ public class OrderEventService {
             List<Event<OrderShipGroupItemRemoved>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED_HANDLE_FIELD,
                         OrderShipGroupItemRemoved.class,
                         cursor.longValue(),
@@ -402,8 +406,8 @@ public class OrderEventService {
 
     @Transactional
     public void pullOrderShipGroupRemovedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -415,8 +419,8 @@ public class OrderEventService {
             List<Event<OrderShipGroupRemoved>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_EVENTS,
                         ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED_HANDLE_FIELD,
                         OrderShipGroupRemoved.class,
                         cursor.longValue(),

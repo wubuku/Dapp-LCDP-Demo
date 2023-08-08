@@ -76,8 +76,7 @@ public class M {
         clsMap.put("u64", java.math.BigInteger.class);
         clsMap.put("u128", java.math.BigInteger.class);
         clsMap.put("u256", java.math.BigInteger.class);
-        clsMap.put("vector<u8>", int[].class);
-        clsMap.put("int[]", int[].class);
+        clsMap.put("vector<u8>", String.class);
         clsMap.put("blob", java.sql.Blob.class);
         clsMap.put("java.sql.Blob", java.sql.Blob.class);
         clsMap.put("byte-array", byte[].class);
@@ -837,7 +836,7 @@ public class M {
 
     public static final String[] propertyTypes = new String[] {
             "String",
-            "int[]",
+            "String",
             "String",
             "BigInteger",
             "Long",

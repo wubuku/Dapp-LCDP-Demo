@@ -19,6 +19,7 @@ import org.dddml.aptosdemocontracts.aptos.contract.product.ProductDeleted;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.ProductEventRepository;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.AptosAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,9 @@ public class ProductEventService {
     public static boolean isDeletionCommand(String eventType) {
         return DELETION_COMMAND_EVENTS.contains(eventType);
     }
+
+    @Value("${aptos.contract.address}")
+    private String aptosContractAddress;
 
     @Autowired
     private AptosAccountRepository aptosAccountRepository;
@@ -53,8 +57,8 @@ public class ProductEventService {
 
     @Transactional
     public void pullProductCreatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -66,8 +70,8 @@ public class ProductEventService {
             List<Event<ProductCreated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.PRODUCT_MODULE_EVENTS,
                         ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED_HANDLE_FIELD,
                         ProductCreated.class,
                         cursor.longValue(),
@@ -103,8 +107,8 @@ public class ProductEventService {
 
     @Transactional
     public void pullProductUpdatedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -116,8 +120,8 @@ public class ProductEventService {
             List<Event<ProductUpdated>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_UPDATED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.PRODUCT_MODULE_EVENTS,
                         ContractConstants.PRODUCT_MODULE_PRODUCT_UPDATED_HANDLE_FIELD,
                         ProductUpdated.class,
                         cursor.longValue(),
@@ -153,8 +157,8 @@ public class ProductEventService {
 
     @Transactional
     public void pullProductDeletedEvents() {
-        String accountAddress = getResourceAccountAddress();
-        if (accountAddress == null) {
+        String resourceAccountAddress = getResourceAccountAddress();
+        if (resourceAccountAddress == null) {
             return;
         }
         int limit = 1;
@@ -166,8 +170,8 @@ public class ProductEventService {
             List<Event<ProductDeleted>> eventPage;
             try {
                 eventPage = aptosNodeApiClient.getEventsByEventHandle(
-                        accountAddress,
-                        accountAddress + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_DELETED,
+                        resourceAccountAddress,
+                        this.aptosContractAddress + "::" + ContractConstants.PRODUCT_MODULE_EVENTS,
                         ContractConstants.PRODUCT_MODULE_PRODUCT_DELETED_HANDLE_FIELD,
                         ProductDeleted.class,
                         cursor.longValue(),

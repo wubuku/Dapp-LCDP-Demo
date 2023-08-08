@@ -22,7 +22,7 @@ public interface DaySummaryState extends VersionedAptosMoveObject
 
     String getDescription();
 
-    int[] getMetadata();
+    String getMetadata();
 
     String getOptionalData();
 
@@ -57,7 +57,7 @@ public interface DaySummaryState extends VersionedAptosMoveObject
 
         void setDescription(String description);
 
-        void setMetadata(int[] metadata);
+        void setMetadata(String metadata);
 
         void setOptionalData(String optionalData);
 
