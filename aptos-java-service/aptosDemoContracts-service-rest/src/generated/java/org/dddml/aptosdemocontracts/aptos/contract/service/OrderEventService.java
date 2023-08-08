@@ -7,31 +7,33 @@ package org.dddml.aptosdemocontracts.aptos.contract.service;
 
 import com.github.wubuku.aptos.bean.Event;
 import com.github.wubuku.aptos.utils.NodeApiClient;
-import org.dddml.aptosdemocontracts.aptos.contract.AptosAccount;
-import org.dddml.aptosdemocontracts.aptos.contract.repository.AptosAccountRepository;
+
+import org.dddml.aptosdemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.aptosdemocontracts.aptos.contract.ContractConstants;
 import org.dddml.aptosdemocontracts.aptos.contract.DomainBeanUtils;
+import org.dddml.aptosdemocontracts.aptos.contract.AptosAccount;
 
 import org.dddml.aptosdemocontracts.aptos.contract.order.OrderCreated;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderItemRemoved;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderItemQuantityUpdated;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderEstimatedShipDateUpdated;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderShipGroupAdded;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderShipGroupQuantityCanceled;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderShipGroupItemRemoved;
+import org.dddml.aptosdemocontracts.aptos.contract.order.OrderShipGroupRemoved;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.OrderEventRepository;
-import org.dddml.aptosdemocontracts.domain.order.AbstractOrderEvent;
-
+import org.dddml.aptosdemocontracts.aptos.contract.repository.AptosAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.util.List;
+import java.math.*;
+import java.util.*;
+
 
 @Service
 public class OrderEventService {
-
-    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("OrderDeleted"));
-
-    public static boolean isDeletionCommand(String eventType) {
-        return DELETION_COMMAND_EVENTS.contains(eventType);
-    }
 
     @Autowired
     private AptosAccountRepository aptosAccountRepository;
@@ -96,6 +98,356 @@ public class OrderEventService {
             return;
         }
         orderEventRepository.save(orderCreated);
+    }
+
+    @Transactional
+    public void pullOrderItemRemovedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderItemRemovedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderItemRemoved>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED,
+                        ContractConstants.ORDER_MODULE_ORDER_ITEM_REMOVED_HANDLE_FIELD,
+                        OrderItemRemoved.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderItemRemoved> eventEnvelope : eventPage) {
+                    saveOrderItemRemoved(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderItemRemovedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderItemRemovedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderItemRemoved(Event<OrderItemRemoved> eventEnvelope) {
+        AbstractOrderEvent.OrderItemRemoved orderItemRemoved = DomainBeanUtils.toOrderItemRemoved(eventEnvelope);
+        if (orderEventRepository.findById(orderItemRemoved.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderItemRemoved);
+    }
+
+    @Transactional
+    public void pullOrderItemQuantityUpdatedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderItemQuantityUpdatedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderItemQuantityUpdated>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED,
+                        ContractConstants.ORDER_MODULE_ORDER_ITEM_QUANTITY_UPDATED_HANDLE_FIELD,
+                        OrderItemQuantityUpdated.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderItemQuantityUpdated> eventEnvelope : eventPage) {
+                    saveOrderItemQuantityUpdated(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderItemQuantityUpdatedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderItemQuantityUpdatedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderItemQuantityUpdated(Event<OrderItemQuantityUpdated> eventEnvelope) {
+        AbstractOrderEvent.OrderItemQuantityUpdated orderItemQuantityUpdated = DomainBeanUtils.toOrderItemQuantityUpdated(eventEnvelope);
+        if (orderEventRepository.findById(orderItemQuantityUpdated.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderItemQuantityUpdated);
+    }
+
+    @Transactional
+    public void pullOrderEstimatedShipDateUpdatedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderEstimatedShipDateUpdatedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderEstimatedShipDateUpdated>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_ESTIMATED_SHIP_DATE_UPDATED,
+                        ContractConstants.ORDER_MODULE_ORDER_ESTIMATED_SHIP_DATE_UPDATED_HANDLE_FIELD,
+                        OrderEstimatedShipDateUpdated.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderEstimatedShipDateUpdated> eventEnvelope : eventPage) {
+                    saveOrderEstimatedShipDateUpdated(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderEstimatedShipDateUpdatedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderEstimatedShipDateUpdatedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderEstimatedShipDateUpdated(Event<OrderEstimatedShipDateUpdated> eventEnvelope) {
+        AbstractOrderEvent.OrderEstimatedShipDateUpdated orderEstimatedShipDateUpdated = DomainBeanUtils.toOrderEstimatedShipDateUpdated(eventEnvelope);
+        if (orderEventRepository.findById(orderEstimatedShipDateUpdated.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderEstimatedShipDateUpdated);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupAddedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderShipGroupAddedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderShipGroupAdded>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ADDED,
+                        ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ADDED_HANDLE_FIELD,
+                        OrderShipGroupAdded.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderShipGroupAdded> eventEnvelope : eventPage) {
+                    saveOrderShipGroupAdded(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderShipGroupAddedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderShipGroupAddedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderShipGroupAdded(Event<OrderShipGroupAdded> eventEnvelope) {
+        AbstractOrderEvent.OrderShipGroupAdded orderShipGroupAdded = DomainBeanUtils.toOrderShipGroupAdded(eventEnvelope);
+        if (orderEventRepository.findById(orderShipGroupAdded.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderShipGroupAdded);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupQuantityCanceledEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderShipGroupQuantityCanceledEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderShipGroupQuantityCanceled>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED,
+                        ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_QUANTITY_CANCELED_HANDLE_FIELD,
+                        OrderShipGroupQuantityCanceled.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderShipGroupQuantityCanceled> eventEnvelope : eventPage) {
+                    saveOrderShipGroupQuantityCanceled(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderShipGroupQuantityCanceledEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderShipGroupQuantityCanceledByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderShipGroupQuantityCanceled(Event<OrderShipGroupQuantityCanceled> eventEnvelope) {
+        AbstractOrderEvent.OrderShipGroupQuantityCanceled orderShipGroupQuantityCanceled = DomainBeanUtils.toOrderShipGroupQuantityCanceled(eventEnvelope);
+        if (orderEventRepository.findById(orderShipGroupQuantityCanceled.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderShipGroupQuantityCanceled);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupItemRemovedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderShipGroupItemRemovedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderShipGroupItemRemoved>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED,
+                        ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_ITEM_REMOVED_HANDLE_FIELD,
+                        OrderShipGroupItemRemoved.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderShipGroupItemRemoved> eventEnvelope : eventPage) {
+                    saveOrderShipGroupItemRemoved(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderShipGroupItemRemovedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderShipGroupItemRemovedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderShipGroupItemRemoved(Event<OrderShipGroupItemRemoved> eventEnvelope) {
+        AbstractOrderEvent.OrderShipGroupItemRemoved orderShipGroupItemRemoved = DomainBeanUtils.toOrderShipGroupItemRemoved(eventEnvelope);
+        if (orderEventRepository.findById(orderShipGroupItemRemoved.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderShipGroupItemRemoved);
+    }
+
+    @Transactional
+    public void pullOrderShipGroupRemovedEvents() {
+        String accountAddress = getResourceAccountAddress();
+        if (accountAddress == null) {
+            return;
+        }
+        int limit = 1;
+        BigInteger cursor = getOrderShipGroupRemovedEventNextCursor();
+        if (cursor == null) {
+            cursor = BigInteger.ZERO;
+        }
+        while (true) {
+            List<Event<OrderShipGroupRemoved>> eventPage;
+            try {
+                eventPage = aptosNodeApiClient.getEventsByEventHandle(
+                        accountAddress,
+                        accountAddress + "::" + ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED,
+                        ContractConstants.ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED_HANDLE_FIELD,
+                        OrderShipGroupRemoved.class,
+                        cursor.longValue(),
+                        limit
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (eventPage != null && eventPage.size() > 0) {
+                cursor = cursor.add(BigInteger.ONE);
+                for (Event<OrderShipGroupRemoved> eventEnvelope : eventPage) {
+                    saveOrderShipGroupRemoved(eventEnvelope);
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private BigInteger getOrderShipGroupRemovedEventNextCursor() {
+        AbstractOrderEvent lastEvent = orderEventRepository.findFirstOrderShipGroupRemovedByOrderByAptosEventSequenceNumber();
+        return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
+    }
+
+    private void saveOrderShipGroupRemoved(Event<OrderShipGroupRemoved> eventEnvelope) {
+        AbstractOrderEvent.OrderShipGroupRemoved orderShipGroupRemoved = DomainBeanUtils.toOrderShipGroupRemoved(eventEnvelope);
+        if (orderEventRepository.findById(orderShipGroupRemoved.getOrderEventId()).isPresent()) {
+            return;
+        }
+        orderEventRepository.save(orderShipGroupRemoved);
     }
 
 
