@@ -17,7 +17,7 @@ public class M {
 
     public static final String NAME_REQUESTER_ID                = "requesterId";
     public static final String DISCRIMINATOR_COMMAND_TYPE       = "commandType";
-    public static final String DISCRIMINATOR_EVENT_TYPE         = "eventType";
+    public static final String DISCRIMINATOR_EVENT_TYPE         = "eventClass";
     public static final String DISCRIMINATOR_COMMAND_ID         = "commandId";
 
     public static final String HTTP_SERVICE_ORDERS_QUERY_NAME           = "sort";

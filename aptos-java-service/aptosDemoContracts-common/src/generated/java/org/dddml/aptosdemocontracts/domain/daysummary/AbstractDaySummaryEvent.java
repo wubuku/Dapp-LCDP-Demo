@@ -144,7 +144,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
     }
 
 
-    public abstract String getEventType();
+    public abstract String getEventClass();
 
     public static class DaySummaryClobEvent extends  AbstractDaySummaryEvent {
 
@@ -176,7 +176,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
         }
 
         @Override
-        public String getEventType() {
+        public String getEventClass() {
             return "DaySummaryClobEvent";
         }
 
@@ -185,7 +185,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
     public static class DaySummaryCreated extends DaySummaryClobEvent {
 
         @Override
-        public String getEventType() {
+        public String getEventClass() {
             return "DaySummaryCreated";
         }
 

@@ -13,7 +13,7 @@
         <column name="version" sql-type="DECIMAL(20,0)" />
       </key-property>
     </composite-id>
-    <discriminator column="event_type" type="string" />
+    <discriminator column="event_class" type="string" />
     <property name="createdBy" column="created_by" />
     <property name="createdAt" column="created_at" />
     <property name="commandId" column="command_id" />

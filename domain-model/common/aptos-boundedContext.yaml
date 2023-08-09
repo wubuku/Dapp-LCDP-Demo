@@ -19,6 +19,9 @@ configuration:
   mandatoryAggregateEventImplements: [ "AptosEvent", "HasStatus" ]
   ignoreEntityImmutable: true
 
+  metadata:
+    EventTypeDiscriminatorName: "EventClass"
+
   aptos:
     boundedContextPackage: "AptosDemo"
     boundedContextNamedAddress: "aptos_demo"

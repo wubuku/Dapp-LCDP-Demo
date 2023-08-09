@@ -16,14 +16,14 @@ public abstract class AbstractEvent {
 
     public static final String STATE_EVENT_TYPE_REMOVED = StateEventType.REMOVED;
 
-    private String eventType;
+    private String eventClass;
 
-    public String getEventType() {
-        return this.eventType;
+    public String getEventClass() {
+        return this.eventClass;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setEventClass(String eventClass) {
+        this.eventClass = eventClass;
     }
 
     private String commandId;

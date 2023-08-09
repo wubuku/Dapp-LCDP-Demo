@@ -106,7 +106,7 @@ public abstract class AbstractOrderShipGroupEvent extends AbstractEvent implemen
     }
 
 
-    public abstract String getEventType();
+    public abstract String getEventClass();
 
 
 }

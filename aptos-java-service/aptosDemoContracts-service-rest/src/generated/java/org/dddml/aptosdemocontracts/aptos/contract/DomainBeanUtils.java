@@ -9,6 +9,7 @@ import java.math.*;
 
 import com.github.wubuku.aptos.bean.Event;
 import com.github.wubuku.aptos.bean.Option;
+import org.dddml.aptosdemocontracts.aptos.contract.product.ProductEvent;
 import org.dddml.aptosdemocontracts.domain.AptosEvent;
 import org.dddml.aptosdemocontracts.domain.AptosEventGuid;
 import org.dddml.aptosdemocontracts.domain.order.AbstractOrderEvent;
@@ -181,45 +182,49 @@ public class DomainBeanUtils {
 
         return orderShipGroupRemoved;
     }
+//
+//    public static AbstractProductEvent.ProductCreated toProductCreated(Event<ProductCreated> eventEnvelope) {
+//        ProductCreated contractEvent = eventEnvelope.getData();
+//
+//        AbstractProductEvent.ProductCreated productCreated = new AbstractProductEvent.ProductCreated();
+//        productCreated.setProductId(contractEvent.getProductId());
+//        productCreated.setName(contractEvent.getName());
+//        productCreated.setUnitPrice(contractEvent.getUnitPrice());
+//        productCreated.setVersion(BigInteger.valueOf(-1));
+//
+//        setAptosEventProperties(productCreated, eventEnvelope);
+//
+//        return productCreated;
+//    }
+//
+//    public static AbstractProductEvent.ProductUpdated toProductUpdated(Event<ProductUpdated> eventEnvelope) {
+//        ProductUpdated contractEvent = eventEnvelope.getData();
+//
+//        AbstractProductEvent.ProductUpdated productUpdated = new AbstractProductEvent.ProductUpdated();
+//        productUpdated.setProductId(contractEvent.getProductId());
+//        productUpdated.setName(contractEvent.getName());
+//        productUpdated.setUnitPrice(contractEvent.getUnitPrice());
+//        productUpdated.setVersion(contractEvent.getVersion());
+//
+//        setAptosEventProperties(productUpdated, eventEnvelope);
+//
+//        return productUpdated;
+//    }
+//
+//    public static AbstractProductEvent.ProductDeleted toProductDeleted(Event<ProductDeleted> eventEnvelope) {
+//        ProductDeleted contractEvent = eventEnvelope.getData();
+//
+//        AbstractProductEvent.ProductDeleted productDeleted = new AbstractProductEvent.ProductDeleted();
+//        productDeleted.setProductId(contractEvent.getProductId());
+//        productDeleted.setVersion(contractEvent.getVersion());
+//
+//        setAptosEventProperties(productDeleted, eventEnvelope);
+//
+//        return productDeleted;
+//    }
 
-    public static AbstractProductEvent.ProductCreated toProductCreated(Event<ProductCreated> eventEnvelope) {
-        ProductCreated contractEvent = eventEnvelope.getData();
-
-        AbstractProductEvent.ProductCreated productCreated = new AbstractProductEvent.ProductCreated();
-        productCreated.setProductId(contractEvent.getProductId());
-        productCreated.setName(contractEvent.getName());
-        productCreated.setUnitPrice(contractEvent.getUnitPrice());
-        productCreated.setVersion(BigInteger.valueOf(-1));
-
-        setAptosEventProperties(productCreated, eventEnvelope);
-
-        return productCreated;
-    }
-
-    public static AbstractProductEvent.ProductUpdated toProductUpdated(Event<ProductUpdated> eventEnvelope) {
-        ProductUpdated contractEvent = eventEnvelope.getData();
-
-        AbstractProductEvent.ProductUpdated productUpdated = new AbstractProductEvent.ProductUpdated();
-        productUpdated.setProductId(contractEvent.getProductId());
-        productUpdated.setName(contractEvent.getName());
-        productUpdated.setUnitPrice(contractEvent.getUnitPrice());
-        productUpdated.setVersion(contractEvent.getVersion());
-
-        setAptosEventProperties(productUpdated, eventEnvelope);
-
-        return productUpdated;
-    }
-
-    public static AbstractProductEvent.ProductDeleted toProductDeleted(Event<ProductDeleted> eventEnvelope) {
-        ProductDeleted contractEvent = eventEnvelope.getData();
-
-        AbstractProductEvent.ProductDeleted productDeleted = new AbstractProductEvent.ProductDeleted();
-        productDeleted.setProductId(contractEvent.getProductId());
-        productDeleted.setVersion(contractEvent.getVersion());
-
-        setAptosEventProperties(productDeleted, eventEnvelope);
-
-        return productDeleted;
+    public static AbstractProductEvent.ProductEvent toProductEvent(Event<ProductEvent> eventEnvelope) {
+        return null;//todo
     }
 
     public static AbstractDaySummaryEvent.DaySummaryCreated toDaySummaryCreated(Event<DaySummaryCreated> eventEnvelope) {

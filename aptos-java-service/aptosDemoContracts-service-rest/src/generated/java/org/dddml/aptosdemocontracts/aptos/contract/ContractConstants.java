@@ -34,14 +34,8 @@ public class ContractConstants {
     public static final String ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED = "order::OrderShipGroupRemoved";
     public static final String ORDER_MODULE_ORDER_SHIP_GROUP_REMOVED_HANDLE_FIELD = "order_ship_group_removed_handle";
 
-    public static final String PRODUCT_MODULE_PRODUCT_CREATED = "product::ProductCreated";
-    public static final String PRODUCT_MODULE_PRODUCT_CREATED_HANDLE_FIELD = "product_created_handle";
-
-    public static final String PRODUCT_MODULE_PRODUCT_UPDATED = "product::ProductUpdated";
-    public static final String PRODUCT_MODULE_PRODUCT_UPDATED_HANDLE_FIELD = "product_updated_handle";
-
-    public static final String PRODUCT_MODULE_PRODUCT_DELETED = "product::ProductDeleted";
-    public static final String PRODUCT_MODULE_PRODUCT_DELETED_HANDLE_FIELD = "product_deleted_handle";
+    public static final String PRODUCT_MODULE_PRODUCT_EVENT = "product::ProductEvent";
+    public static final String PRODUCT_MODULE_PRODUCT_EVENT_HANDLE_FIELD = "product_event_handle";
 
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED = "day_summary::DaySummaryCreated";
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_CREATED_HANDLE_FIELD = "day_summary_created_handle";

@@ -75,7 +75,7 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends Abstra
     }
 
 
-    public abstract String getEventType();
+    public abstract String getEventClass();
 
 
 }

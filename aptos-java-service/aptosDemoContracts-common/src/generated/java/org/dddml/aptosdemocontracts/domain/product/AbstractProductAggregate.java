@@ -48,38 +48,38 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-            try {
-                verifyCreate(name, unitPrice, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
-            apply(e);
+//            try {
+//                verifyCreate(name, unitPrice, c);
+//            } catch (Exception ex) {
+//                throw new DomainError("VerificationFailed", ex);
+//            }
+//
+//            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
+//            apply(e);
         }
 
         @Override
         public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
-            try {
-                verifyUpdate(name, unitPrice, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
-            apply(e);
+//            try {
+//                verifyUpdate(name, unitPrice, c);
+//            } catch (Exception ex) {
+//                throw new DomainError("VerificationFailed", ex);
+//            }
+//
+//            Event e = newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
+//            apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
-            try {
-                verifyDelete(c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductDeleted(offChainVersion, commandId, requesterId);
-            apply(e);
+//            try {
+//                verifyDelete(c);
+//            } catch (Exception ex) {
+//                throw new DomainError("VerificationFailed", ex);
+//            }
+//
+//            Event e = newProductDeleted(offChainVersion, commandId, requesterId);
+//            apply(e);
         }
 
         protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
@@ -142,64 +142,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         }
            
-
-        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
-
-            e.setName(name);
-            e.setUnitPrice(unitPrice);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
-
-        protected AbstractProductEvent.ProductUpdated newProductUpdated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductUpdated e = new AbstractProductEvent.ProductUpdated();
-
-            e.setName(name);
-            e.setUnitPrice(unitPrice);
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
-
-        protected AbstractProductEvent.ProductDeleted newProductDeleted(Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductDeleted e = new AbstractProductEvent.ProductDeleted();
-
-            e.setAptosEventVersion(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventSequenceNumber(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventType(null); // todo Need to update 'verify' method to return event properties.
-            e.setAptosEventGuid(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
 
     }
 

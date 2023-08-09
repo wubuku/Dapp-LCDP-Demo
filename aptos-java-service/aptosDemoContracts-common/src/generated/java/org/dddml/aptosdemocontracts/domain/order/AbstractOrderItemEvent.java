@@ -76,7 +76,7 @@ public abstract class AbstractOrderItemEvent extends AbstractEvent implements Or
     }
 
 
-    public abstract String getEventType();
+    public abstract String getEventClass();
 
 
 }
