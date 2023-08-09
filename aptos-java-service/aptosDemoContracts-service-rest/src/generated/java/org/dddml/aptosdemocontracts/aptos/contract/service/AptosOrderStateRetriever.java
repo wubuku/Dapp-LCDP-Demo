@@ -85,7 +85,7 @@ public class AptosOrderStateRetriever {
         AccountResource<Order.Tables> accountResource;
         try {
             accountResource = aptosNodeApiClient.getAccountResource(resourceAccountAddress,
-                    ContractConstants.ORDER_MODULE_TABLES,
+                    this.aptosContractAddress + "::" + ContractConstants.ORDER_MODULE_TABLES,
                     Order.Tables.class,
                     null);
         } catch (IOException e) {

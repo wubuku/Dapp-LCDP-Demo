@@ -49,7 +49,7 @@ public class AptosDaySummaryStateRetriever {
         AccountResource<DaySummary.Tables> accountResource;
         try {
             accountResource = aptosNodeApiClient.getAccountResource(resourceAccountAddress,
-                    ContractConstants.DAY_SUMMARY_MODULE_TABLES,
+                    this.aptosContractAddress + "::" + ContractConstants.DAY_SUMMARY_MODULE_TABLES,
                     DaySummary.Tables.class,
                     null);
         } catch (IOException e) {

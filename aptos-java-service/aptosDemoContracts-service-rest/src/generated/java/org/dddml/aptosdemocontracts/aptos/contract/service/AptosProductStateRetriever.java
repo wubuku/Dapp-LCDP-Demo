@@ -49,7 +49,7 @@ public class AptosProductStateRetriever {
         AccountResource<Product.Tables> accountResource;
         try {
             accountResource = aptosNodeApiClient.getAccountResource(resourceAccountAddress,
-                    ContractConstants.PRODUCT_MODULE_TABLES,
+                    this.aptosContractAddress + "::" + ContractConstants.PRODUCT_MODULE_TABLES,
                     Product.Tables.class,
                     null);
         } catch (IOException e) {
