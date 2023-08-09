@@ -56,11 +56,17 @@ public class ContractConstants {
 
     public static final String ORDER_ITEM_TABLE_ITEM_ADDED = "order::OrderItemTableItemAdded";
 
+    public static final String ORDER_ITEM_TABLE_ITEM_ADDED_HANDLE_FIELD = "order_item_table_item_added_handle";
+
     public static final String ORDER_SHIP_GROUP_MODULE_ORDER_SHIP_GROUP = "order_ship_group::OrderShipGroup";
 
     public static final String ORDER_SHIP_GROUP_ID_TYPE = "u8";
 
     public static final String ORDER_SHIP_GROUP_TABLE_ITEM_ADDED = "order::OrderShipGroupTableItemAdded";
+
+    public static final String ORDER_SHIP_GROUP_TABLE_ITEM_ADDED_HANDLE_FIELD = "order_ship_group_table_item_added_handle";
+
+    public static final String ORDER_SHIP_GROUP_MODULE_EVENTS = "order_ship_group::Events";
 
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOCIATION_MODULE_ORDER_ITEM_SHIP_GROUP_ASSOCIATION = "order_item_ship_group_association::OrderItemShipGroupAssociation";
 
@@ -68,11 +74,17 @@ public class ContractConstants {
 
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOCIATION_TABLE_ITEM_ADDED = "order_ship_group::OrderItemShipGroupAssociationTableItemAdded";
 
+    public static final String ORDER_ITEM_SHIP_GROUP_ASSOCIATION_TABLE_ITEM_ADDED_HANDLE_FIELD = "order_item_ship_group_association_table_item_added_handle";
+
+    public static final String ORDER_ITEM_SHIP_GROUP_ASSOCIATION_MODULE_EVENTS = "order_item_ship_group_association::Events";
+
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_MODULE_ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM = "order_item_ship_group_assoc_subitem::OrderItemShipGroupAssocSubitem";
 
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_ID_TYPE = "aptos_demo::day::Day";
 
     public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED = "order_item_ship_group_association::OrderItemShipGroupAssocSubitemTableItemAdded";
+
+    public static final String ORDER_ITEM_SHIP_GROUP_ASSOC_SUBITEM_TABLE_ITEM_ADDED_HANDLE_FIELD = "order_item_ship_group_assoc_subitem_table_item_added_handle";
 
     public static final String PRODUCT_MODULE_PRODUCT = "product::Product";
 

@@ -93,7 +93,7 @@ public class ProductEventService {
     }
 
     private BigInteger getProductCreatedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductCreatedByOrderByAptosEventSequenceNumber();
+        AbstractProductEvent.ProductCreated lastEvent = productEventRepository.findFirstProductCreatedByOrderByAptosEventSequenceNumber();
         return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
     }
 
@@ -143,7 +143,7 @@ public class ProductEventService {
     }
 
     private BigInteger getProductUpdatedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductUpdatedByOrderByAptosEventSequenceNumber();
+        AbstractProductEvent.ProductUpdated lastEvent = productEventRepository.findFirstProductUpdatedByOrderByAptosEventSequenceNumber();
         return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
     }
 
@@ -193,7 +193,7 @@ public class ProductEventService {
     }
 
     private BigInteger getProductDeletedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductDeletedByOrderByAptosEventSequenceNumber();
+        AbstractProductEvent.ProductDeleted lastEvent = productEventRepository.findFirstProductDeletedByOrderByAptosEventSequenceNumber();
         return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
     }
 
@@ -204,7 +204,6 @@ public class ProductEventService {
         }
         productEventRepository.save(productDeleted);
     }
-
 
     private String getResourceAccountAddress() {
         return aptosAccountRepository.findById(ContractConstants.RESOURCE_ACCOUNT_ADDRESS)

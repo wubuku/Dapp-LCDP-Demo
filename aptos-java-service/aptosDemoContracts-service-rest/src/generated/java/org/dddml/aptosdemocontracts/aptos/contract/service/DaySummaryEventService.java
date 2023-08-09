@@ -85,7 +85,7 @@ public class DaySummaryEventService {
     }
 
     private BigInteger getDaySummaryCreatedEventNextCursor() {
-        AbstractDaySummaryEvent lastEvent = daySummaryEventRepository.findFirstDaySummaryCreatedByOrderByAptosEventSequenceNumber();
+        AbstractDaySummaryEvent.DaySummaryCreated lastEvent = daySummaryEventRepository.findFirstDaySummaryCreatedByOrderByAptosEventSequenceNumber();
         return lastEvent != null ? lastEvent.getAptosEventSequenceNumber() : null;
     }
 
@@ -96,7 +96,6 @@ public class DaySummaryEventService {
         }
         daySummaryEventRepository.save(daySummaryCreated);
     }
-
 
     private String getResourceAccountAddress() {
         return aptosAccountRepository.findById(ContractConstants.RESOURCE_ACCOUNT_ADDRESS)
