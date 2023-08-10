@@ -29,10 +29,11 @@ import java.util.*;
 @Service
 public class ProductEventService {
 
-    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("ProductDeleted"));
-
-    public static boolean isDeletionCommand(String eventType) {
-        return DELETION_COMMAND_EVENTS.contains(eventType);
+    public static boolean isDeletionCommand(AbstractProductEvent e) {
+        if (e instanceof AbstractProductEvent.ProductEvent && "2".equals(((AbstractProductEvent.ProductEvent) e).getEventType())) {
+            return true;
+        }
+        return false;
     }
 
     @Value("${aptos.contract.address}")

@@ -28,7 +28,7 @@ public class UpdateProductStateTaskService {
     @Transactional
     public void updateProductStates() {
         productEventRepository.findByStatusIsNull().forEach(e -> {
-            if (ProductEventService.isDeletionCommand(e.getEventClass())) {
+            if (ProductEventService.isDeletionCommand(e)) {
                 aptosProductService.deleteProduct(e.getProductId());
             } else {
                 aptosProductService.updateProductState(e.getProductId());
