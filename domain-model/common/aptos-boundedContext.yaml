@@ -35,3 +35,7 @@ configuration:
 
     typeMappings:
       "vector<u8>": "String" # Mapped to Hex String, not byte[]
+
+    aggregateIdWhenSingletonObjectAsAggregate:
+      name: AccountAddress
+      type: address

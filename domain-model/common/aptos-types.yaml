@@ -33,6 +33,11 @@ typeDefinitions:
     destroyLogic:
       Move:
         'aptos_framework::coin::destroy_zero({0})'
+    #javaType: "java.math.BigInteger"
+    dataStruct:
+      properties:
+        Value:
+          type: u64
 
   APT:
     moveType: "aptos_framework::aptos_coin::AptosCoin"
