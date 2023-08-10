@@ -1,4 +1,4 @@
-package org.dddml.aptosdemocontracts.apots.contract.config;
+package org.dddml.aptosdemocontracts.aptos.contract.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

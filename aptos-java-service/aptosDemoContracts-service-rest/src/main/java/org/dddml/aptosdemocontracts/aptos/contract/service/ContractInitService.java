@@ -1,4 +1,4 @@
-package org.dddml.aptosdemocontracts.apots.contract.service;
+package org.dddml.aptosdemocontracts.aptos.contract.service;
 
 import com.github.wubuku.aptos.bean.AccountResource;
 import com.github.wubuku.aptos.bean.SignerCapability;

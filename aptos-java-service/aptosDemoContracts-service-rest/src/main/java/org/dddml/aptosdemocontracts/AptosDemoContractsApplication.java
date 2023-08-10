@@ -1,6 +1,6 @@
 package org.dddml.aptosdemocontracts;
 
-import org.dddml.aptosdemocontracts.apots.contract.service.ContractInitService;
+import org.dddml.aptosdemocontracts.aptos.contract.service.ContractInitService;
 import org.dddml.aptosdemocontracts.specialization.ApplicationContext;
 import org.dddml.aptosdemocontracts.specialization.spring.SpringApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         SecurityAutoConfiguration.class
 })
 @EntityScan(basePackages = {
-        "org.dddml.aptosdemocontracts.apots.contract"
+        "org.dddml.aptosdemocontracts.aptos.contract"
 })
 @EnableScheduling
 //@EnableAutoConfiguration
