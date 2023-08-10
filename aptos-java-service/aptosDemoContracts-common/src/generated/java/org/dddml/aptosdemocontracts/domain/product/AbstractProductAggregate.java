@@ -48,38 +48,17 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-//            try {
-//                verifyCreate(name, unitPrice, c);
-//            } catch (Exception ex) {
-//                throw new DomainError("VerificationFailed", ex);
-//            }
-//
-//            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
-//            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
-//            try {
-//                verifyUpdate(name, unitPrice, c);
-//            } catch (Exception ex) {
-//                throw new DomainError("VerificationFailed", ex);
-//            }
-//
-//            Event e = newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
-//            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
-//            try {
-//                verifyDelete(c);
-//            } catch (Exception ex) {
-//                throw new DomainError("VerificationFailed", ex);
-//            }
-//
-//            Event e = newProductDeleted(offChainVersion, commandId, requesterId);
-//            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
