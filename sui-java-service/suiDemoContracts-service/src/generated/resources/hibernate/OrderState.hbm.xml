@@ -2,7 +2,8 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"[]>
 <hibernate-mapping package="org.dddml.suidemocontracts.domain.order">
   <class name="org.dddml.suidemocontracts.domain.order.AbstractOrderState$SimpleOrderState" table="order_t">
-    <id name="id" length="66" column="id">
+    <id name="id" length="66">
+      <column name="id" sql-type="VARCHAR(66)" />
       <generator class="assigned" />
     </id>
     <version name="offChainVersion" column="off_chain_version" type="long" />
