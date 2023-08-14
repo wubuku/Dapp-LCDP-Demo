@@ -390,11 +390,11 @@ module rooch_demo::day_summary {
     }
 
     public(friend) fun emit_day_summary_created(storage_ctx: &mut StorageContext, day_summary_created: DaySummaryCreated) {
-        event::emit_event(storage_ctx, day_summary_created);
+        event::emit(storage_ctx, day_summary_created);
     }
 
     public(friend) fun emit_day_summary_deleted(storage_ctx: &mut StorageContext, day_summary_deleted: DaySummaryDeleted) {
-        event::emit_event(storage_ctx, day_summary_deleted);
+        event::emit(storage_ctx, day_summary_deleted);
     }
 
 }

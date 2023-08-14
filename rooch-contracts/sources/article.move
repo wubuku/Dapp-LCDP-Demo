@@ -94,7 +94,7 @@ module rooch_demo::article {
         let reference_number = reference::reference_number(&reference);
         assert!(!table::contains(&object::borrow_mut(article_obj).references, reference_number), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(article_obj).references, reference_number, reference);
-        event::emit_event(storage_ctx, ReferenceTableItemAdded {
+        event::emit(storage_ctx, ReferenceTableItemAdded {
             article_id: id(article_obj),
             reference_number,
         });
@@ -374,19 +374,19 @@ module rooch_demo::article {
     }
 
     public(friend) fun emit_article_created(storage_ctx: &mut StorageContext, article_created: ArticleCreated) {
-        event::emit_event(storage_ctx, article_created);
+        event::emit(storage_ctx, article_created);
     }
 
     public(friend) fun emit_reference_added(storage_ctx: &mut StorageContext, reference_added: ReferenceAdded) {
-        event::emit_event(storage_ctx, reference_added);
+        event::emit(storage_ctx, reference_added);
     }
 
     public(friend) fun emit_reference_updated(storage_ctx: &mut StorageContext, reference_updated: ReferenceUpdated) {
-        event::emit_event(storage_ctx, reference_updated);
+        event::emit(storage_ctx, reference_updated);
     }
 
     public(friend) fun emit_reference_removed(storage_ctx: &mut StorageContext, reference_removed: ReferenceRemoved) {
-        event::emit_event(storage_ctx, reference_removed);
+        event::emit(storage_ctx, reference_removed);
     }
 
 }

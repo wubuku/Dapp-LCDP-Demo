@@ -177,7 +177,7 @@ module rooch_demo::tag {
     }
 
     public(friend) fun emit_tag_created(storage_ctx: &mut StorageContext, tag_created: TagCreated) {
-        event::emit_event(storage_ctx, tag_created);
+        event::emit(storage_ctx, tag_created);
     }
 
 }

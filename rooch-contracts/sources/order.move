@@ -127,7 +127,7 @@ module rooch_demo::order {
         let product_object_id = order_item::product_object_id(&item);
         assert!(!table::contains(&object::borrow_mut(order_obj).items, product_object_id), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(order_obj).items, product_object_id, item);
-        event::emit_event(storage_ctx, OrderItemTableItemAdded {
+        event::emit(storage_ctx, OrderItemTableItemAdded {
             order_id: order_id(order_obj),
             product_object_id,
         });
@@ -155,7 +155,7 @@ module rooch_demo::order {
         let ship_group_seq_id = order_ship_group::ship_group_seq_id(&order_ship_group);
         assert!(!table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EID_ALREADY_EXISTS);
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id, order_ship_group);
-        event::emit_event(storage_ctx, OrderShipGroupTableItemAdded {
+        event::emit(storage_ctx, OrderShipGroupTableItemAdded {
             order_id: order_id(order_obj),
             ship_group_seq_id,
         });
@@ -641,35 +641,35 @@ module rooch_demo::order {
     }
 
     public(friend) fun emit_order_created(storage_ctx: &mut StorageContext, order_created: OrderCreated) {
-        event::emit_event(storage_ctx, order_created);
+        event::emit(storage_ctx, order_created);
     }
 
     public(friend) fun emit_order_item_removed(storage_ctx: &mut StorageContext, order_item_removed: OrderItemRemoved) {
-        event::emit_event(storage_ctx, order_item_removed);
+        event::emit(storage_ctx, order_item_removed);
     }
 
     public(friend) fun emit_order_item_quantity_updated(storage_ctx: &mut StorageContext, order_item_quantity_updated: OrderItemQuantityUpdated) {
-        event::emit_event(storage_ctx, order_item_quantity_updated);
+        event::emit(storage_ctx, order_item_quantity_updated);
     }
 
     public(friend) fun emit_order_estimated_ship_date_updated(storage_ctx: &mut StorageContext, order_estimated_ship_date_updated: OrderEstimatedShipDateUpdated) {
-        event::emit_event(storage_ctx, order_estimated_ship_date_updated);
+        event::emit(storage_ctx, order_estimated_ship_date_updated);
     }
 
     public(friend) fun emit_order_ship_group_added(storage_ctx: &mut StorageContext, order_ship_group_added: OrderShipGroupAdded) {
-        event::emit_event(storage_ctx, order_ship_group_added);
+        event::emit(storage_ctx, order_ship_group_added);
     }
 
     public(friend) fun emit_order_item_ship_group_assoc_subitem_added(storage_ctx: &mut StorageContext, order_item_ship_group_assoc_subitem_added: OrderItemShipGroupAssocSubitemAdded) {
-        event::emit_event(storage_ctx, order_item_ship_group_assoc_subitem_added);
+        event::emit(storage_ctx, order_item_ship_group_assoc_subitem_added);
     }
 
     public(friend) fun emit_order_ship_group_quantity_canceled(storage_ctx: &mut StorageContext, order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) {
-        event::emit_event(storage_ctx, order_ship_group_quantity_canceled);
+        event::emit(storage_ctx, order_ship_group_quantity_canceled);
     }
 
     public(friend) fun emit_order_ship_group_item_removed(storage_ctx: &mut StorageContext, order_ship_group_item_removed: OrderShipGroupItemRemoved) {
-        event::emit_event(storage_ctx, order_ship_group_item_removed);
+        event::emit(storage_ctx, order_ship_group_item_removed);
     }
 
 }

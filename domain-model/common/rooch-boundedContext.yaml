@@ -38,3 +38,7 @@ configuration:
       #
       #    typeModules:
       #      "ObjetID": "moveos_std::object"
+
+    aggregateIdWhenSingletonObjectAsAggregate:
+      name: AccountAddress
+      type: address

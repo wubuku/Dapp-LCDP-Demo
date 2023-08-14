@@ -64,7 +64,7 @@ module rooch_demo::order_item_ship_group_association {
         let order_item_ship_group_assoc_subitem_day = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
         assert!(!table::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_ALREADY_EXISTS);
         table::add(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day, subitem);
-        event::emit_event(storage_ctx, OrderItemShipGroupAssocSubitemTableItemAdded {
+        event::emit(storage_ctx, OrderItemShipGroupAssocSubitemTableItemAdded {
             order_id,
             order_ship_group_ship_group_seq_id,
             order_item_ship_group_association_product_obj_id: product_obj_id(order_item_ship_group_association),

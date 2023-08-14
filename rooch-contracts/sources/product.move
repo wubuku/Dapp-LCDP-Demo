@@ -228,7 +228,7 @@ module rooch_demo::product {
     }
 
     public(friend) fun emit_product_created(storage_ctx: &mut StorageContext, product_created: ProductCreated) {
-        event::emit_event(storage_ctx, product_created);
+        event::emit(storage_ctx, product_created);
     }
 
 }
