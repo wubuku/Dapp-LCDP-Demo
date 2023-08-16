@@ -9,6 +9,7 @@ import com.github.wubuku.rooch.bean.GetAnnotatedStatesResponseMoveStructItem;
 import com.github.wubuku.rooch.utils.RoochJsonRpcClient;
 import org.dddml.roochdemocontracts.domain.order.*;
 import org.dddml.roochdemocontracts.domain.*;
+import org.dddml.roochdemocontracts.rooch.contract.ContractConstants;
 import org.dddml.roochdemocontracts.rooch.contract.DomainBeanUtils;
 import org.dddml.roochdemocontracts.rooch.bcs.BcsDomainBeanUtils;
 import org.dddml.roochdemocontracts.rooch.contract.Order;
