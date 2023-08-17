@@ -2,7 +2,7 @@ module sui_contracts::product_create_logic {
     use std::string::String;
     use sui::tx_context::TxContext;
     use sui_contracts::product;
-    use sui_contracts::product_created;
+    use sui_contracts::product_crud_event;
 
     friend sui_contracts::product_aggregate;
 
@@ -12,7 +12,7 @@ module sui_contracts::product_create_logic {
         owner: address,
         product_id_generator: &mut product::ProductIdGenerator,
         ctx: &mut TxContext,
-    ): product::ProductCreated {
+    ): product::ProductCrudEvent {
         let _ = ctx;
         product::new_product_created(
             name,
@@ -23,13 +23,13 @@ module sui_contracts::product_create_logic {
     }
 
     public(friend) fun mutate(
-        product_created: &product::ProductCreated,
+        product_created: &product::ProductCrudEvent,
         product_id_generator: &product::ProductIdGenerator,
         ctx: &mut TxContext,
     ): product::Product {
-        let name = product_created::name(product_created);
-        let unit_price = product_created::unit_price(product_created);
-        let owner = product_created::owner(product_created);
+        let name = product_crud_event::name(product_created);
+        let unit_price = product_crud_event::unit_price(product_created);
+        let owner = product_crud_event::owner(product_created);
         product::create_product(
             name,
             unit_price,

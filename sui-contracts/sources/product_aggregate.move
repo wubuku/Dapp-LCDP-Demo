@@ -30,7 +30,7 @@ module sui_contracts::product_aggregate {
             product_id_generator,
             ctx,
         );
-        product::set_product_created_id(&mut product_created, product::id(&product));
+        product::set_product_crud_event_id(&mut product_created, product::id(&product));
         product::share_object(product);
         product::emit_product_created(product_created);
     }

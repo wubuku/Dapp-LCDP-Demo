@@ -2,7 +2,7 @@ module sui_contracts::product_update_logic {
     use std::string::String;
     use sui::tx_context::TxContext;
     use sui_contracts::product;
-    use sui_contracts::product_updated;
+    use sui_contracts::product_crud_event;
 
     friend sui_contracts::product_aggregate;
 
@@ -12,7 +12,7 @@ module sui_contracts::product_update_logic {
         owner: address,
         product: &product::Product,
         ctx: &TxContext,
-    ): product::ProductUpdated {
+    ): product::ProductCrudEvent {
         let _ = ctx;
         assert!(sui::tx_context::sender(ctx) == product::owner(product), 111);
         product::new_product_updated(
@@ -24,13 +24,13 @@ module sui_contracts::product_update_logic {
     }
 
     public(friend) fun mutate(
-        product_updated: &product::ProductUpdated,
+        product_updated: &product::ProductCrudEvent,
         product: product::Product,
         ctx: &TxContext, // modify the reference to mutable if needed
     ): product::Product {
-        let name = product_updated::name(product_updated);
-        let unit_price = product_updated::unit_price(product_updated);
-        let owner = product_updated::owner(product_updated);
+        let name = product_crud_event::name(product_updated);
+        let unit_price = product_crud_event::unit_price(product_updated);
+        let owner = product_crud_event::owner(product_updated);
         let product_id = product::product_id(&product);
         let _ = ctx;
         let _ = product_id;

@@ -7,7 +7,7 @@ module sui_contracts::product_delete_logic {
     public(friend) fun verify(
         product: &product::Product,
         ctx: &TxContext,
-    ): product::ProductDeleted {
+    ): product::ProductCrudEvent {
         let _ = ctx;
         product::new_product_deleted(
             product,
@@ -15,7 +15,7 @@ module sui_contracts::product_delete_logic {
     }
 
     public(friend) fun mutate(
-        product_deleted: &product::ProductDeleted,
+        product_deleted: &product::ProductCrudEvent,
         product: product::Product,
         ctx: &TxContext, // modify the reference to mutable if needed
     ): product::Product {
