@@ -107,9 +107,9 @@ module sui_contracts::product {
 
     struct ProductCrudEvent has copy, drop {
         crud_type: u8,
+        id: Option<ID>,
         product_id: String,
         version: u64,
-        id: Option<ID>,
         name: String,
         unit_price: u128,
         owner: address,
@@ -119,16 +119,16 @@ module sui_contracts::product {
         product_crud_event.crud_type
     }
 
-    public fun product_crud_event_product_id(product_crud_event: &ProductCrudEvent): String {
-        product_crud_event.product_id
-    }
-
     public fun product_crud_event_id(product_crud_event: &ProductCrudEvent): Option<ID> {
         product_crud_event.id
     }
 
     public(friend) fun set_product_crud_event_id(product_crud_event: &mut ProductCrudEvent, id: ID) {
         product_crud_event.id = option::some(id);
+    }
+
+    public fun product_crud_event_product_id(product_crud_event: &ProductCrudEvent): String {
+        product_crud_event.product_id
     }
 
     public fun product_crud_event_name(product_crud_event: &ProductCrudEvent): String {
@@ -152,9 +152,9 @@ module sui_contracts::product {
         let product_id = next_product_id(product_id_generator);
         ProductCrudEvent {
             crud_type: 0,
+            id: option::none(),
             product_id,
             version: 18446744073709551615, // max u64 for null
-            id: option::none(),
             name,
             unit_price,
             owner,
@@ -169,9 +169,9 @@ module sui_contracts::product {
     ): ProductCrudEvent {
         ProductCrudEvent {
             crud_type: 1,
+            id: std::option::some(id(product)),
             product_id: product_id(product),
             version: version(product),
-            id: std::option::some(id(product)),
             name,
             unit_price,
             owner,
@@ -183,9 +183,9 @@ module sui_contracts::product {
     ): ProductCrudEvent {
         ProductCrudEvent {
             crud_type: 2,
+            id: std::option::some(id(product)),
             product_id: product_id(product),
             version: version(product),
-            id: std::option::some(id(product)),
             name: name(product),
             unit_price: unit_price(product),
             owner: owner(product),

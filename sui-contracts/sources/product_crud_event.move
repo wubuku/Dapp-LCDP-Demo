@@ -14,12 +14,12 @@ module sui_contracts::product_crud_event {
         product::product_crud_event_crud_type(product_crud_event)
     }
 
-    public fun product_id(product_crud_event: &ProductCrudEvent): String {
-        product::product_crud_event_product_id(product_crud_event)
-    }
-
     public fun id(product_crud_event: &ProductCrudEvent): Option<ID> {
         product::product_crud_event_id(product_crud_event)
+    }
+
+    public fun product_id(product_crud_event: &ProductCrudEvent): String {
+        product::product_crud_event_product_id(product_crud_event)
     }
 
     public fun name(product_crud_event: &ProductCrudEvent): String {
