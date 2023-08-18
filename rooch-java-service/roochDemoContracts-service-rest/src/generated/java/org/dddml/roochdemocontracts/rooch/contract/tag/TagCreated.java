@@ -38,7 +38,7 @@ public class TagCreated {
     @Override
     public String toString() {
         return "TagCreated{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", name=" + '\'' + name + '\'' +
                 '}';
     }

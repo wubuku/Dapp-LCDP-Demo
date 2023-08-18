@@ -48,7 +48,7 @@ public class DaySummaryDeleted {
     @Override
     public String toString() {
         return "DaySummaryDeleted{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", day=" + day +
                 ", version=" + version +
                 '}';

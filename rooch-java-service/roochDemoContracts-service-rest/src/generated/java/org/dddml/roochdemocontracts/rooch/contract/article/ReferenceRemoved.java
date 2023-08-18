@@ -48,7 +48,7 @@ public class ReferenceRemoved {
     @Override
     public String toString() {
         return "ReferenceRemoved{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 ", referenceNumber=" + referenceNumber +
                 '}';

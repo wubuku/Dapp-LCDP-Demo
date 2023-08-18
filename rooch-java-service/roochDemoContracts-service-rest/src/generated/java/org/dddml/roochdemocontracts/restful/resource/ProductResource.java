@@ -188,6 +188,36 @@ public class ProductResource {
         } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
     }
 
+
+    @PutMapping("{productId}/_commands/Update")
+    public void update(@PathVariable("productId") String productId, @RequestBody ProductCommands.Update content) {
+        try {
+
+            ProductCommands.Update cmd = content;//.toUpdate();
+            String idObj = productId;
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            productApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
+
+    @PutMapping("{productId}/_commands/Delete")
+    public void delete(@PathVariable("productId") String productId, @RequestBody ProductCommands.Delete content) {
+        try {
+
+            ProductCommands.Delete cmd = content;//.toDelete();
+            String idObj = productId;
+            // todo Here cannot put the value of the domain ID in the path directly into the Aggregate(Surrogate)Id in the command.
+            // If this is an off-chain service, then this interface is probably not used.
+            cmd.setRequesterId(SecurityContextUtil.getRequesterId());
+            productApplicationService.when(cmd);
+
+        } catch (Exception ex) { logger.info(ex.getMessage(), ex); throw DomainErrorUtils.convertException(ex); }
+    }
+
     @GetMapping("_metadata/filteringFields")
     public List<PropertyMetadataDto> getMetadataFilteringFields() {
         try {

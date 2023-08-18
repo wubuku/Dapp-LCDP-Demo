@@ -199,8 +199,6 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         setStateReadOnly(false);
         if (false) { 
             ;
-        } else if (e instanceof AbstractProductEvent.ProductCreated) {
-            when((AbstractProductEvent.ProductCreated)e);
         } else {
             throw new UnsupportedOperationException(String.format("Unsupported event type: %1$s", e.getClass().getName()));
         }
@@ -214,57 +212,6 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         this.setUnitPrice(s.getUnitPrice());
         this.setVersion(s.getVersion());
         this.setActive(s.getActive());
-    }
-
-    public void when(AbstractProductEvent.ProductCreated e) {
-        throwOnWrongEvent(e);
-
-        String name = e.getName();
-        String Name = name;
-        BigInteger unitPrice = e.getUnitPrice();
-        BigInteger UnitPrice = unitPrice;
-        RoochEventId roochEventId = e.getRoochEventId();
-        RoochEventId RoochEventId = roochEventId;
-        String roochSender = e.getRoochSender();
-        String RoochSender = roochSender;
-        String roochTxHash = e.getRoochTxHash();
-        String RoochTxHash = roochTxHash;
-        String roochTypeTag = e.getRoochTypeTag();
-        String RoochTypeTag = roochTypeTag;
-        Long roochTimestampMs = e.getRoochTimestampMs();
-        Long RoochTimestampMs = roochTimestampMs;
-        BigInteger roochBlockHeight = e.getRoochBlockHeight();
-        BigInteger RoochBlockHeight = roochBlockHeight;
-        Long roochEventIndex = e.getRoochEventIndex();
-        Long RoochEventIndex = roochEventIndex;
-        String status = e.getStatus();
-        String Status = status;
-
-        if (this.getCreatedBy() == null){
-            this.setCreatedBy(e.getCreatedBy());
-        }
-        if (this.getCreatedAt() == null){
-            this.setCreatedAt(e.getCreatedAt());
-        }
-        this.setUpdatedBy(e.getCreatedBy());
-        this.setUpdatedAt(e.getCreatedAt());
-
-        ProductState updatedProductState = (ProductState) ReflectUtils.invokeStaticMethod(
-                    "org.dddml.roochdemocontracts.domain.product.CreateLogic",
-                    "mutate",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
-                    new Object[]{this, name, unitPrice, roochEventId, roochSender, roochTxHash, roochTypeTag, roochTimestampMs, roochBlockHeight, roochEventIndex, status, MutationContext.forEvent(e, s -> {if (s == this) {return this;} else {throw new UnsupportedOperationException();}})}
-            );
-
-//package org.dddml.roochdemocontracts.domain.product;
-//
-//public class CreateLogic {
-//    public static ProductState mutate(ProductState productState, String name, BigInteger unitPrice, RoochEventId roochEventId, String roochSender, String roochTxHash, String roochTypeTag, Long roochTimestampMs, BigInteger roochBlockHeight, Long roochEventIndex, String status, MutationContext<ProductState, ProductState.MutableProductState> mutationContext) {
-//    }
-//}
-
-        if (this != updatedProductState) { merge(updatedProductState); } //else do nothing
-
     }
 
     public void save() {

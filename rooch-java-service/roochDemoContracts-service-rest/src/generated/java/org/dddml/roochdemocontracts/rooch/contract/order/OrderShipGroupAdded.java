@@ -88,7 +88,7 @@ public class OrderShipGroupAdded {
     @Override
     public String toString() {
         return "OrderShipGroupAdded{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", shipGroupSeqId=" + shipGroupSeqId +

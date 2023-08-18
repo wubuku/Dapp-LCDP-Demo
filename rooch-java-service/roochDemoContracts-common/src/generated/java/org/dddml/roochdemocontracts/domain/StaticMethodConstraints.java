@@ -70,6 +70,22 @@ public class StaticMethodConstraints {
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.product.UpdateLogic",
+                    "verify",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "name", "unitPrice"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.product.DeleteLogic",
+                    "verify",
+                    new Class[]{ProductState.class, VerificationContext.class},
+                    new String[]{"_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CreateLogic",
                     "verify",
                     new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
@@ -194,6 +210,22 @@ public class StaticMethodConstraints {
                     "mutate",
                     new Class[]{ProductState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
                     new String[]{"_", "name", "unitPrice", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.product.UpdateLogic",
+                    "mutate",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "name", "unitPrice", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.roochdemocontracts.domain.product.DeleteLogic",
+                    "mutate",
+                    new Class[]{ProductState.class, RoochEventId.class, String.class, String.class, String.class, Long.class, BigInteger.class, Long.class, String.class, MutationContext.class},
+                    new String[]{"_", "roochEventId", "roochSender", "roochTxHash", "roochTypeTag", "roochTimestampMs", "roochBlockHeight", "roochEventIndex", "status"}
             );
 
 

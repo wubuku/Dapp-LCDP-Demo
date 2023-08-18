@@ -47,5 +47,14 @@ public class RoochProductService {
         productStateRepository.merge(productState);
     }
 
+    @Transactional
+    public void deleteProduct(String productId) {
+        ProductState.MutableProductState s = (ProductState.MutableProductState) productStateRepository.get(productId, true);
+        if (s != null) {
+            s.setDeleted(true);
+            productStateRepository.merge(s);
+        }
+    }
+
 }
 

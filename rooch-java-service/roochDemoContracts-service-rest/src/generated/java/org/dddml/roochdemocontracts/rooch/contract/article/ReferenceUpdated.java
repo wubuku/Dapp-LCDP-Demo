@@ -78,7 +78,7 @@ public class ReferenceUpdated {
     @Override
     public String toString() {
         return "ReferenceUpdated{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 ", referenceNumber=" + referenceNumber +
                 ", title=" + '\'' + title + '\'' +

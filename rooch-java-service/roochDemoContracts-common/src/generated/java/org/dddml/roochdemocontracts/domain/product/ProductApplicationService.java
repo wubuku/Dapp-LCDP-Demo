@@ -17,6 +17,10 @@ import org.dddml.roochdemocontracts.domain.Command;
 public interface ProductApplicationService {
     void when(ProductCommands.Create c);
 
+    void when(ProductCommands.Update c);
+
+    void when(ProductCommands.Delete c);
+
     ProductState get(String id);
 
     Iterable<ProductState> getAll(Integer firstResult, Integer maxResults);

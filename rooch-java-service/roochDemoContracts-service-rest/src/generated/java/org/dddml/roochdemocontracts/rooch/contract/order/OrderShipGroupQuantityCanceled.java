@@ -78,7 +78,7 @@ public class OrderShipGroupQuantityCanceled {
     @Override
     public String toString() {
         return "OrderShipGroupQuantityCanceled{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", shipGroupSeqId=" + shipGroupSeqId +

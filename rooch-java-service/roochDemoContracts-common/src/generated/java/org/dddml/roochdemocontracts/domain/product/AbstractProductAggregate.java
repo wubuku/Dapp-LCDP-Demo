@@ -48,14 +48,17 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-            try {
-                verifyCreate(name, unitPrice, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
+            throw new UnsupportedOperationException();
+        }
 
-            Event e = newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
-            apply(e);
+        @Override
+        public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
+            throw new UnsupportedOperationException();
         }
 
         protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
@@ -79,28 +82,45 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
         }
            
 
-        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
+        protected void verifyUpdate(String name, BigInteger unitPrice, ProductCommands.Update c) {
+            String Name = name;
+            BigInteger UnitPrice = unitPrice;
 
-            e.setName(name);
-            e.setUnitPrice(unitPrice);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.product.UpdateLogic",
+                    "verify",
+                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+            );
 
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+//package org.dddml.roochdemocontracts.domain.product;
+//
+//public class UpdateLogic {
+//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    }
+//}
 
-            e.setProductEventId(eventId);
-            return e;
         }
+           
+
+        protected void verifyDelete(ProductCommands.Delete c) {
+
+            ReflectUtils.invokeStaticMethod(
+                    "org.dddml.roochdemocontracts.domain.product.DeleteLogic",
+                    "verify",
+                    new Class[]{ProductState.class, VerificationContext.class},
+                    new Object[]{getState(), VerificationContext.forCommand(c)}
+            );
+
+//package org.dddml.roochdemocontracts.domain.product;
+//
+//public class DeleteLogic {
+//    public static void verify(ProductState productState, VerificationContext verificationContext) {
+//    }
+//}
+
+        }
+           
 
     }
 

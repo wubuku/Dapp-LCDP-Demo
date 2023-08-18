@@ -68,7 +68,7 @@ public class ReferenceAdded {
     @Override
     public String toString() {
         return "ReferenceAdded{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 ", referenceNumber=" + referenceNumber +
                 ", title=" + '\'' + title + '\'' +

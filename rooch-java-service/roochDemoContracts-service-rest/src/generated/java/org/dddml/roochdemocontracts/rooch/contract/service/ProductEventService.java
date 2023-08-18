@@ -13,7 +13,7 @@ import com.github.wubuku.rooch.bean.PageView;
 import org.dddml.roochdemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.roochdemocontracts.rooch.contract.ContractConstants;
 import org.dddml.roochdemocontracts.rooch.contract.DomainBeanUtils;
-import org.dddml.roochdemocontracts.rooch.contract.product.ProductCreated;
+import org.dddml.roochdemocontracts.rooch.contract.product.ProductCrudEvent;
 import org.dddml.roochdemocontracts.rooch.contract.repository.ProductEventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,13 @@ import java.util.*;
 
 @Service
 public class ProductEventService {
+    public static boolean isDeletionCommand(AbstractProductEvent e) {
+        if (e instanceof AbstractProductEvent.ProductCrudEvent && "2".equals(((AbstractProductEvent.ProductCrudEvent) e).getCrudType())) {
+            return true;
+        }
+        return false;
+    }
+
     @Value("${rooch.contract.address}")
     private String contractAddress;
 
@@ -43,21 +50,21 @@ public class ProductEventService {
     }
 
     @Transactional
-    public void pullProductCreatedEvents() {
+    public void pullProductCrudEvents() {
         if (contractAddress == null) {
             return;
         }
         long limit = 1L;
-        String eventType = contractAddress + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED;
-        BigInteger cursor = getProductCreatedEventNextCursor();
+        String eventType = contractAddress + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CRUD_EVENT;
+        BigInteger cursor = getProductCrudEventNextCursor();
         while (true) {
-            EventPageView<ProductCreated> eventPage = roochJsonRpcClient.getEventsByEventHandle(
-                    eventType, cursor, limit, ProductCreated.class
+            EventPageView<ProductCrudEvent> eventPage = roochJsonRpcClient.getEventsByEventHandle(
+                    eventType, cursor, limit, ProductCrudEvent.class
             );
             if (eventPage != null && eventPage.getData() != null && eventPage.getData().size() > 0) {
                 cursor = eventPage.getNextCursor();
-                for (AnnotatedEventView<ProductCreated> eventEnvelope : eventPage.getData()) {
-                    saveProductCreated(eventEnvelope);
+                for (AnnotatedEventView<ProductCrudEvent> eventEnvelope : eventPage.getData()) {
+                    saveProductCrudEvent(eventEnvelope);
                 }
             } else {
                 break;
@@ -68,17 +75,17 @@ public class ProductEventService {
         }
     }
 
-    private BigInteger getProductCreatedEventNextCursor() {
-        AbstractProductEvent.ProductCreated lastEvent = productEventRepository.findFirstProductCreatedByOrderByRoochEventId_EventSeqDesc();
+    private BigInteger getProductCrudEventNextCursor() {
+        AbstractProductEvent.ProductCrudEvent lastEvent = productEventRepository.findFirstProductCrudEventByOrderByRoochEventId_EventSeqDesc();
         return lastEvent != null ? lastEvent.getRoochEventId().getEventSeq() : null;
     }
 
-    private void saveProductCreated(AnnotatedEventView<ProductCreated> eventEnvelope) {
-        AbstractProductEvent.ProductCreated productCreated = DomainBeanUtils.toProductCreated(eventEnvelope);
-        if (productEventRepository.findById(productCreated.getProductEventId()).isPresent()) {
+    private void saveProductCrudEvent(AnnotatedEventView<ProductCrudEvent> eventEnvelope) {
+        AbstractProductEvent.ProductCrudEvent productCrudEvent = DomainBeanUtils.toProductCrudEvent(eventEnvelope);
+        if (productEventRepository.findById(productCrudEvent.getProductEventId()).isPresent()) {
             return;
         }
-        productEventRepository.save(productCreated);
+        productEventRepository.save(productCrudEvent);
     }
 
 }

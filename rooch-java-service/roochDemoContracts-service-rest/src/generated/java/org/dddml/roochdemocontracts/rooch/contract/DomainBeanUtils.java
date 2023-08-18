@@ -20,7 +20,7 @@ import org.dddml.roochdemocontracts.rooch.contract.article.ReferenceRemoved;
 import org.dddml.roochdemocontracts.domain.tag.AbstractTagEvent;
 import org.dddml.roochdemocontracts.rooch.contract.tag.TagCreated;
 import org.dddml.roochdemocontracts.domain.product.AbstractProductEvent;
-import org.dddml.roochdemocontracts.rooch.contract.product.ProductCreated;
+import org.dddml.roochdemocontracts.rooch.contract.product.ProductCrudEvent;
 import org.dddml.roochdemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderCreated;
 import org.dddml.roochdemocontracts.rooch.contract.order.OrderItemRemoved;
@@ -151,8 +151,8 @@ public class DomainBeanUtils {
         TagCreated contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractTagEvent.TagCreated tagCreated = new AbstractTagEvent.TagCreated();
+        tagCreated.setId_(extractOptionalValue(contractEvent.getId()));
         tagCreated.setName(contractEvent.getName());
-        tagCreated.setId_(contractEvent.getId().getValue().getVec()[0]);
         tagCreated.setVersion(BigInteger.valueOf(-1));
 
         setRoochEventProperties(tagCreated, eventEnvelope);
@@ -160,27 +160,28 @@ public class DomainBeanUtils {
         return tagCreated;
     }
 
-    public static AbstractProductEvent.ProductCreated toProductCreated(AnnotatedEventView<ProductCreated> eventEnvelope) {
-        ProductCreated contractEvent = eventEnvelope.getParsedEventData().getValue();
+    public static AbstractProductEvent.ProductCrudEvent toProductCrudEvent(AnnotatedEventView<ProductCrudEvent> eventEnvelope) {
+        ProductCrudEvent contractEvent = eventEnvelope.getParsedEventData().getValue();
 
-        AbstractProductEvent.ProductCreated productCreated = new AbstractProductEvent.ProductCreated();
-        productCreated.setProductId(contractEvent.getProductId());
-        productCreated.setId_(contractEvent.getId().getValue().getVec()[0]);
-        productCreated.setName(contractEvent.getName());
-        productCreated.setUnitPrice(contractEvent.getUnitPrice());
-        productCreated.setVersion(BigInteger.valueOf(-1));
+        AbstractProductEvent.ProductCrudEvent productCrudEvent = new AbstractProductEvent.ProductCrudEvent();
+        productCrudEvent.setCrudType(contractEvent.getCrudType());
+        productCrudEvent.setId_(extractOptionalValue(contractEvent.getId()));
+        productCrudEvent.setProductId(contractEvent.getProductId());
+        productCrudEvent.setName(contractEvent.getName());
+        productCrudEvent.setUnitPrice(contractEvent.getUnitPrice());
+        productCrudEvent.setVersion(contractEvent.getVersion());
 
-        setRoochEventProperties(productCreated, eventEnvelope);
+        setRoochEventProperties(productCrudEvent, eventEnvelope);
 
-        return productCreated;
+        return productCrudEvent;
     }
 
     public static AbstractOrderEvent.OrderCreated toOrderCreated(AnnotatedEventView<OrderCreated> eventEnvelope) {
         OrderCreated contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderCreated orderCreated = new AbstractOrderEvent.OrderCreated();
+        orderCreated.setId_(extractOptionalValue(contractEvent.getId()));
         orderCreated.setOrderId(contractEvent.getOrderId());
-        orderCreated.setId_(contractEvent.getId().getValue().getVec()[0]);
         orderCreated.setProductObjId(contractEvent.getProductObjId());
         orderCreated.setQuantity(contractEvent.getQuantity());
         orderCreated.setUnitPrice(contractEvent.getUnitPrice());
@@ -197,8 +198,8 @@ public class DomainBeanUtils {
         OrderItemRemoved contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderItemRemoved orderItemRemoved = new AbstractOrderEvent.OrderItemRemoved();
-        orderItemRemoved.setOrderId(contractEvent.getOrderId());
         orderItemRemoved.setId_(contractEvent.getId());
+        orderItemRemoved.setOrderId(contractEvent.getOrderId());
         orderItemRemoved.setProductObjId(contractEvent.getProductObjId());
         orderItemRemoved.setVersion(contractEvent.getVersion());
 
@@ -211,8 +212,8 @@ public class DomainBeanUtils {
         OrderItemQuantityUpdated contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderItemQuantityUpdated orderItemQuantityUpdated = new AbstractOrderEvent.OrderItemQuantityUpdated();
-        orderItemQuantityUpdated.setOrderId(contractEvent.getOrderId());
         orderItemQuantityUpdated.setId_(contractEvent.getId());
+        orderItemQuantityUpdated.setOrderId(contractEvent.getOrderId());
         orderItemQuantityUpdated.setProductObjId(contractEvent.getProductObjId());
         orderItemQuantityUpdated.setQuantity(contractEvent.getQuantity());
         orderItemQuantityUpdated.setVersion(contractEvent.getVersion());
@@ -226,8 +227,8 @@ public class DomainBeanUtils {
         OrderEstimatedShipDateUpdated contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderEstimatedShipDateUpdated orderEstimatedShipDateUpdated = new AbstractOrderEvent.OrderEstimatedShipDateUpdated();
-        orderEstimatedShipDateUpdated.setOrderId(contractEvent.getOrderId());
         orderEstimatedShipDateUpdated.setId_(contractEvent.getId());
+        orderEstimatedShipDateUpdated.setOrderId(contractEvent.getOrderId());
         orderEstimatedShipDateUpdated.setEstimatedShipDate(DomainBeanUtils.toDay(contractEvent.getEstimatedShipDate()));
         orderEstimatedShipDateUpdated.setVersion(contractEvent.getVersion());
 
@@ -240,8 +241,8 @@ public class DomainBeanUtils {
         OrderShipGroupAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderShipGroupAdded orderShipGroupAdded = new AbstractOrderEvent.OrderShipGroupAdded();
-        orderShipGroupAdded.setOrderId(contractEvent.getOrderId());
         orderShipGroupAdded.setId_(contractEvent.getId());
+        orderShipGroupAdded.setOrderId(contractEvent.getOrderId());
         orderShipGroupAdded.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupAdded.setShipmentMethod(contractEvent.getShipmentMethod());
         orderShipGroupAdded.setProductObjId(contractEvent.getProductObjId());
@@ -257,8 +258,8 @@ public class DomainBeanUtils {
         OrderItemShipGroupAssocSubitemAdded contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded orderItemShipGroupAssocSubitemAdded = new AbstractOrderEvent.OrderItemShipGroupAssocSubitemAdded();
-        orderItemShipGroupAssocSubitemAdded.setOrderId(contractEvent.getOrderId());
         orderItemShipGroupAssocSubitemAdded.setId_(contractEvent.getId());
+        orderItemShipGroupAssocSubitemAdded.setOrderId(contractEvent.getOrderId());
         orderItemShipGroupAssocSubitemAdded.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderItemShipGroupAssocSubitemAdded.setProductObjId(contractEvent.getProductObjId());
         orderItemShipGroupAssocSubitemAdded.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
@@ -274,8 +275,8 @@ public class DomainBeanUtils {
         OrderShipGroupQuantityCanceled contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderShipGroupQuantityCanceled orderShipGroupQuantityCanceled = new AbstractOrderEvent.OrderShipGroupQuantityCanceled();
-        orderShipGroupQuantityCanceled.setOrderId(contractEvent.getOrderId());
         orderShipGroupQuantityCanceled.setId_(contractEvent.getId());
+        orderShipGroupQuantityCanceled.setOrderId(contractEvent.getOrderId());
         orderShipGroupQuantityCanceled.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupQuantityCanceled.setProductObjId(contractEvent.getProductObjId());
         orderShipGroupQuantityCanceled.setCancelQuantity(contractEvent.getCancelQuantity());
@@ -290,8 +291,8 @@ public class DomainBeanUtils {
         OrderShipGroupItemRemoved contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractOrderEvent.OrderShipGroupItemRemoved orderShipGroupItemRemoved = new AbstractOrderEvent.OrderShipGroupItemRemoved();
-        orderShipGroupItemRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupItemRemoved.setId_(contractEvent.getId());
+        orderShipGroupItemRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupItemRemoved.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupItemRemoved.setProductObjId(contractEvent.getProductObjId());
         orderShipGroupItemRemoved.setVersion(contractEvent.getVersion());
@@ -305,8 +306,8 @@ public class DomainBeanUtils {
         DaySummaryCreated contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = new AbstractDaySummaryEvent.DaySummaryCreated();
+        daySummaryCreated.setId_(extractOptionalValue(contractEvent.getId()));
         daySummaryCreated.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
-        daySummaryCreated.setId_(contractEvent.getId().getValue().getVec()[0]);
         daySummaryCreated.setDescription(contractEvent.getDescription());
         daySummaryCreated.setMetaData(contractEvent.getMetaData());
         daySummaryCreated.setArrayData(contractEvent.getArrayData());
@@ -327,8 +328,8 @@ public class DomainBeanUtils {
         DaySummaryDeleted contractEvent = eventEnvelope.getParsedEventData().getValue();
 
         AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = new AbstractDaySummaryEvent.DaySummaryDeleted();
-        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryDeleted.setId_(contractEvent.getId());
+        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryDeleted.setVersion(contractEvent.getVersion());
 
         setRoochEventProperties(daySummaryDeleted, eventEnvelope);

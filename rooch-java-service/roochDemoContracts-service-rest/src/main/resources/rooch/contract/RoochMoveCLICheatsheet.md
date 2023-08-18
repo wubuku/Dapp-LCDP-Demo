@@ -50,6 +50,20 @@ rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_:
 --args 'string:name' u128:unit_price
 ```
 
+### Update method
+
+```shell
+rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::product_aggregate::update' \
+--args 'object_id:id' 'string:name' u128:unit_price
+```
+
+### Delete method
+
+```shell
+rooch move run --sender-account _SENDER_ADDRESS_ --function '_CONTRACT_ADDRESS_::product_aggregate::delete' \
+--args 'object_id:id'
+```
+
 ## Order aggregate
 
 ### Create method

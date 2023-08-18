@@ -14,14 +14,26 @@ import java.math.*;
 import java.util.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ProductCreated {
+public class ProductCrudEvent {
+    private Integer crudType;
+
     private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> id;
 
     private String productId;
 
+    private BigInteger version;
+
     private String name;
 
     private BigInteger unitPrice;
+
+    public Integer getCrudType() {
+        return crudType;
+    }
+
+    public void setCrudType(Integer crudType) {
+        this.crudType = crudType;
+    }
 
     public com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> getId() {
         return id;
@@ -37,6 +49,14 @@ public class ProductCreated {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     public String getName() {
@@ -57,9 +77,11 @@ public class ProductCreated {
 
     @Override
     public String toString() {
-        return "ProductCreated{" +
-                "id='" + id + '\'' +
+        return "ProductCrudEvent{" +
+                "crudType=" + crudType +
+                ", id=" + id +
                 ", productId=" + '\'' + productId + '\'' +
+                ", version=" + version +
                 ", name=" + '\'' + name + '\'' +
                 ", unitPrice=" + unitPrice +
                 '}';

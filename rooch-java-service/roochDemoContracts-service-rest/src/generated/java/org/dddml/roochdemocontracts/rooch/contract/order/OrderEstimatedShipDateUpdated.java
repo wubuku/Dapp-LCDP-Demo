@@ -58,7 +58,7 @@ public class OrderEstimatedShipDateUpdated {
     @Override
     public String toString() {
         return "OrderEstimatedShipDateUpdated{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", estimatedShipDate=" + estimatedShipDate +

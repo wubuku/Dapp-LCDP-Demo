@@ -16,9 +16,9 @@ public class PullProductEventsTaskService {
     @Autowired
     private ProductEventService productEventService;
 
-    @Scheduled(fixedDelayString = "${rooch.contract.pull-product-events.product-created.fixed-delay:5000}")
-    public void pullProductCreatedEvents() {
-        productEventService.pullProductCreatedEvents();
+    @Scheduled(fixedDelayString = "${rooch.contract.pull-product-events.product-crud-event.fixed-delay:5000}")
+    public void pullProductCrudEvents() {
+        productEventService.pullProductCrudEvents();
     }
 
 }

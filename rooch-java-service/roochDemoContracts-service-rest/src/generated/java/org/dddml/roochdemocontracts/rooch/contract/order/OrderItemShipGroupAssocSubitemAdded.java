@@ -88,7 +88,7 @@ public class OrderItemShipGroupAssocSubitemAdded {
     @Override
     public String toString() {
         return "OrderItemShipGroupAssocSubitemAdded{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", shipGroupSeqId=" + shipGroupSeqId +

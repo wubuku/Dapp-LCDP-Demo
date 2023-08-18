@@ -19,6 +19,10 @@ public interface ProductAggregate {
 
     void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c);
 
+    void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c);
+
+    void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c);
+
     void throwOnInvalidStateTransition(Command c);
 }
 

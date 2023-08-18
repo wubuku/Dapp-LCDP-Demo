@@ -20,7 +20,7 @@ public class ContractConstants {
 
     public static final String TAG_MODULE_TAG_CREATED = "tag::TagCreated";
 
-    public static final String PRODUCT_MODULE_PRODUCT_CREATED = "product::ProductCreated";
+    public static final String PRODUCT_MODULE_PRODUCT_CRUD_EVENT = "product::ProductCrudEvent";
 
     public static final String ORDER_MODULE_ORDER_CREATED = "order::OrderCreated";
 

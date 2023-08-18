@@ -222,11 +222,35 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     }
 
-    public static class ProductCreated extends ProductClobEvent {
+    public static class ProductCrudEvent extends ProductClobEvent {
 
         @Override
         public String getEventType() {
-            return "ProductCreated";
+            return "ProductCrudEvent";
+        }
+
+        public Integer getCrudType() {
+            Object val = getDynamicProperties().get("crudType");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setCrudType(Integer value) {
+            getDynamicProperties().put("crudType", value);
+        }
+
+        public String getId() {
+            Object val = getDynamicProperties().get("id");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setId(String value) {
+            getDynamicProperties().put("id", value);
         }
 
         public String getName() {

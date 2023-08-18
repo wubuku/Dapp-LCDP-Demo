@@ -68,7 +68,7 @@ public class OrderItemQuantityUpdated {
     @Override
     public String toString() {
         return "OrderItemQuantityUpdated{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", productObjId=" + '\'' + productObjId + '\'' +

@@ -51,7 +51,7 @@
       <property name="DynamicPropertiesLob">
         <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
       </property>
-      <subclass name="AbstractProductEvent$ProductCreated" discriminator-value="ProductCreated" />
+      <subclass name="AbstractProductEvent$ProductCrudEvent" discriminator-value="ProductCrudEvent" />
     </subclass>
   </class>
 </hibernate-mapping>
