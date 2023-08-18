@@ -38,7 +38,7 @@ public class OrderDeleted {
     @Override
     public String toString() {
         return "OrderDeleted{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", version=" + version +
                 '}';
     }

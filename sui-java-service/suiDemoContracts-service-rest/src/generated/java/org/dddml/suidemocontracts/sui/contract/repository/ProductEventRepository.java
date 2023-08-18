@@ -13,10 +13,6 @@ public interface ProductEventRepository extends JpaRepository<AbstractProductEve
 
     List<AbstractProductEvent> findByStatusIsNull();
 
-    AbstractProductEvent.ProductCreated findFirstProductCreatedByOrderBySuiTimestampDesc();
-
-    AbstractProductEvent.ProductUpdated findFirstProductUpdatedByOrderBySuiTimestampDesc();
-
-    AbstractProductEvent.ProductDeleted findFirstProductDeletedByOrderBySuiTimestampDesc();
+    AbstractProductEvent.ProductCrudEvent findFirstProductCrudEventByOrderBySuiTimestampDesc();
 
 }

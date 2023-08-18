@@ -58,7 +58,7 @@ public class OrderV2ItemRemoved {
     @Override
     public String toString() {
         return "OrderV2ItemRemoved{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", productId=" + '\'' + productId + '\'' +

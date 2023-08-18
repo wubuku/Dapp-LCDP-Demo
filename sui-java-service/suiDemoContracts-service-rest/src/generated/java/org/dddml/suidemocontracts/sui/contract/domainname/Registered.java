@@ -58,7 +58,7 @@ public class Registered {
     @Override
     public String toString() {
         return "Registered{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", domainNameId=" + domainNameId +
                 ", registrationPeriod=" + registrationPeriod +
                 ", owner=" + '\'' + owner + '\'' +

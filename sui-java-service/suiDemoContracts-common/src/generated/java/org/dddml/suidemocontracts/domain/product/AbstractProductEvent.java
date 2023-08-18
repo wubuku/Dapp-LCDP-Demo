@@ -222,11 +222,35 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     }
 
-    public static class ProductCreated extends ProductClobEvent {
+    public static class ProductCrudEvent extends ProductClobEvent {
 
         @Override
         public String getEventType() {
-            return "ProductCreated";
+            return "ProductCrudEvent";
+        }
+
+        public Integer getCrudType() {
+            Object val = getDynamicProperties().get("crudType");
+            if (val instanceof Integer) {
+                return (Integer) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, Integer.class);
+        }
+
+        public void setCrudType(Integer value) {
+            getDynamicProperties().put("crudType", value);
+        }
+
+        public String getId() {
+            Object val = getDynamicProperties().get("id");
+            if (val instanceof String) {
+                return (String) val;
+            }
+            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
+        }
+
+        public void setId(String value) {
+            getDynamicProperties().put("id", value);
         }
 
         public String getName() {
@@ -263,60 +287,6 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
         public void setOwner(String value) {
             getDynamicProperties().put("owner", value);
-        }
-
-    }
-
-    public static class ProductUpdated extends ProductClobEvent {
-
-        @Override
-        public String getEventType() {
-            return "ProductUpdated";
-        }
-
-        public String getName() {
-            Object val = getDynamicProperties().get("name");
-            if (val instanceof String) {
-                return (String) val;
-            }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
-        }
-
-        public void setName(String value) {
-            getDynamicProperties().put("name", value);
-        }
-
-        public BigInteger getUnitPrice() {
-            Object val = getDynamicProperties().get("unitPrice");
-            if (val instanceof BigInteger) {
-                return (BigInteger) val;
-            }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, BigInteger.class);
-        }
-
-        public void setUnitPrice(BigInteger value) {
-            getDynamicProperties().put("unitPrice", value);
-        }
-
-        public String getOwner() {
-            Object val = getDynamicProperties().get("owner");
-            if (val instanceof String) {
-                return (String) val;
-            }
-            return ApplicationContext.current.getTypeConverter().convertValue(val, String.class);
-        }
-
-        public void setOwner(String value) {
-            getDynamicProperties().put("owner", value);
-        }
-
-    }
-
-    public static class ProductDeleted extends ProductClobEvent {
-
-        @Override
-        public String getEventType() {
-            return "ProductDeleted";
         }
 
     }

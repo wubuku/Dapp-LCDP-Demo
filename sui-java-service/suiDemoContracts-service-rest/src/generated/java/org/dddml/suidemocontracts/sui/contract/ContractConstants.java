@@ -28,11 +28,7 @@ public class ContractConstants {
 
     public static final String ORDER_MODULE_ORDER_DELETED = "order::OrderDeleted";
 
-    public static final String PRODUCT_MODULE_PRODUCT_CREATED = "product::ProductCreated";
-
-    public static final String PRODUCT_MODULE_PRODUCT_UPDATED = "product::ProductUpdated";
-
-    public static final String PRODUCT_MODULE_PRODUCT_DELETED = "product::ProductDeleted";
+    public static final String PRODUCT_MODULE_PRODUCT_CRUD_EVENT = "product::ProductCrudEvent";
 
     public static final String ORDER_V2_MODULE_ORDER_V2_CREATED = "order_v2::OrderV2Created";
 

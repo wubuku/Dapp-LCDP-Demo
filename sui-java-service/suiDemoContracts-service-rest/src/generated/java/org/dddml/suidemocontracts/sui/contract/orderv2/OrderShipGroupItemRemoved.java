@@ -68,7 +68,7 @@ public class OrderShipGroupItemRemoved {
     @Override
     public String toString() {
         return "OrderShipGroupItemRemoved{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", orderId=" + '\'' + orderId + '\'' +
                 ", version=" + version +
                 ", shipGroupSeqId=" + shipGroupSeqId +

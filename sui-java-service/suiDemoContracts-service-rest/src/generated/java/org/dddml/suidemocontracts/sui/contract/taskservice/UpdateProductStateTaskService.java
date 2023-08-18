@@ -29,7 +29,7 @@ public class UpdateProductStateTaskService {
     public void updateProductStates() {
         productEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
-            if (ProductEventService.isDeletionCommand(e.getEventType())) {
+            if (ProductEventService.isDeletionCommand(e)) {
                 suiProductService.deleteProduct(e.getProductId());
             } else {
                 suiProductService.updateProductState(objectId);

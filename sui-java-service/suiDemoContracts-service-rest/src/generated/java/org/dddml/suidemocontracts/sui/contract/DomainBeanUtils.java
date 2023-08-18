@@ -18,9 +18,7 @@ import org.dddml.suidemocontracts.sui.contract.order.OrderItemRemoved;
 import org.dddml.suidemocontracts.sui.contract.order.OrderItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.order.OrderDeleted;
 import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
-import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
-import org.dddml.suidemocontracts.sui.contract.product.ProductUpdated;
-import org.dddml.suidemocontracts.sui.contract.product.ProductDeleted;
+import org.dddml.suidemocontracts.sui.contract.product.ProductCrudEvent;
 import org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Event;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2Created;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
@@ -130,8 +128,8 @@ public class DomainBeanUtils {
         Registered contractEvent = eventEnvelope.getParsedJson();
 
         AbstractDomainNameEvent.Registered registered = new AbstractDomainNameEvent.Registered();
-        registered.setDomainNameId(DomainBeanUtils.toDomainNameId(contractEvent.getDomainNameId()));
         registered.setId_(contractEvent.getId());
+        registered.setDomainNameId(DomainBeanUtils.toDomainNameId(contractEvent.getDomainNameId()));
         registered.setRegistrationPeriod(contractEvent.getRegistrationPeriod());
         registered.setOwner(contractEvent.getOwner());
         registered.setVersion(BigInteger.valueOf(-1));
@@ -151,8 +149,8 @@ public class DomainBeanUtils {
         Renewed contractEvent = eventEnvelope.getParsedJson();
 
         AbstractDomainNameEvent.Renewed renewed = new AbstractDomainNameEvent.Renewed();
-        renewed.setDomainNameId(DomainBeanUtils.toDomainNameId(contractEvent.getDomainNameId()));
         renewed.setId_(contractEvent.getId());
+        renewed.setDomainNameId(DomainBeanUtils.toDomainNameId(contractEvent.getDomainNameId()));
         renewed.setRenewPeriod(contractEvent.getRenewPeriod());
         renewed.setAccount(contractEvent.getAccount());
         renewed.setVersion(contractEvent.getVersion());
@@ -248,75 +246,35 @@ public class DomainBeanUtils {
         return orderDeleted;
     }
 
-    public static AbstractProductEvent.ProductCreated toProductCreated(SuiMoveEventEnvelope<ProductCreated> eventEnvelope) {
-        ProductCreated contractEvent = eventEnvelope.getParsedJson();
+    public static AbstractProductEvent.ProductCrudEvent toProductCrudEvent(SuiMoveEventEnvelope<ProductCrudEvent> eventEnvelope) {
+        ProductCrudEvent contractEvent = eventEnvelope.getParsedJson();
 
-        AbstractProductEvent.ProductCreated productCreated = new AbstractProductEvent.ProductCreated();
-        productCreated.setProductId(contractEvent.getProductId());
-        productCreated.setId_(contractEvent.getId());
-        productCreated.setName(contractEvent.getName());
-        productCreated.setUnitPrice(contractEvent.getUnitPrice());
-        productCreated.setOwner(contractEvent.getOwner());
-        productCreated.setVersion(BigInteger.valueOf(-1));
+        AbstractProductEvent.ProductCrudEvent productCrudEvent = new AbstractProductEvent.ProductCrudEvent();
+        productCrudEvent.setCrudType(contractEvent.getCrudType());
+        productCrudEvent.setId_(contractEvent.getId());
+        productCrudEvent.setProductId(contractEvent.getProductId());
+        productCrudEvent.setName(contractEvent.getName());
+        productCrudEvent.setUnitPrice(contractEvent.getUnitPrice());
+        productCrudEvent.setOwner(contractEvent.getOwner());
+        productCrudEvent.setVersion(contractEvent.getVersion());
 
-        productCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
-        productCreated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        productCreated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+        productCrudEvent.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        productCrudEvent.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        productCrudEvent.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
 
-        productCreated.setSuiPackageId(eventEnvelope.getPackageId());
-        productCreated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
-        productCreated.setSuiSender(eventEnvelope.getSender());
+        productCrudEvent.setSuiPackageId(eventEnvelope.getPackageId());
+        productCrudEvent.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        productCrudEvent.setSuiSender(eventEnvelope.getSender());
 
-        return productCreated;
-    }
-
-    public static AbstractProductEvent.ProductUpdated toProductUpdated(SuiMoveEventEnvelope<ProductUpdated> eventEnvelope) {
-        ProductUpdated contractEvent = eventEnvelope.getParsedJson();
-
-        AbstractProductEvent.ProductUpdated productUpdated = new AbstractProductEvent.ProductUpdated();
-        productUpdated.setProductId(contractEvent.getProductId());
-        productUpdated.setId_(contractEvent.getId());
-        productUpdated.setName(contractEvent.getName());
-        productUpdated.setUnitPrice(contractEvent.getUnitPrice());
-        productUpdated.setOwner(contractEvent.getOwner());
-        productUpdated.setVersion(contractEvent.getVersion());
-
-        productUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
-        productUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        productUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
-
-        productUpdated.setSuiPackageId(eventEnvelope.getPackageId());
-        productUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
-        productUpdated.setSuiSender(eventEnvelope.getSender());
-
-        return productUpdated;
-    }
-
-    public static AbstractProductEvent.ProductDeleted toProductDeleted(SuiMoveEventEnvelope<ProductDeleted> eventEnvelope) {
-        ProductDeleted contractEvent = eventEnvelope.getParsedJson();
-
-        AbstractProductEvent.ProductDeleted productDeleted = new AbstractProductEvent.ProductDeleted();
-        productDeleted.setProductId(contractEvent.getProductId());
-        productDeleted.setId_(contractEvent.getId());
-        productDeleted.setVersion(contractEvent.getVersion());
-
-        productDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());
-        productDeleted.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
-        productDeleted.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
-
-        productDeleted.setSuiPackageId(eventEnvelope.getPackageId());
-        productDeleted.setSuiTransactionModule(eventEnvelope.getTransactionModule());
-        productDeleted.setSuiSender(eventEnvelope.getSender());
-
-        return productDeleted;
+        return productCrudEvent;
     }
 
     public static AbstractOrderV2Event.OrderV2Created toOrderV2Created(SuiMoveEventEnvelope<OrderV2Created> eventEnvelope) {
         OrderV2Created contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderV2Created orderV2Created = new AbstractOrderV2Event.OrderV2Created();
-        orderV2Created.setOrderId(contractEvent.getOrderId());
         orderV2Created.setId_(contractEvent.getId());
+        orderV2Created.setOrderId(contractEvent.getOrderId());
         orderV2Created.setProduct(contractEvent.getProduct());
         orderV2Created.setQuantity(contractEvent.getQuantity());
         orderV2Created.setUnitPrice(contractEvent.getUnitPrice());
@@ -339,8 +297,8 @@ public class DomainBeanUtils {
         OrderV2ItemRemoved contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderV2ItemRemoved orderV2ItemRemoved = new AbstractOrderV2Event.OrderV2ItemRemoved();
-        orderV2ItemRemoved.setOrderId(contractEvent.getOrderId());
         orderV2ItemRemoved.setId_(contractEvent.getId());
+        orderV2ItemRemoved.setOrderId(contractEvent.getOrderId());
         orderV2ItemRemoved.setProductId(contractEvent.getProductId());
         orderV2ItemRemoved.setVersion(contractEvent.getVersion());
 
@@ -359,8 +317,8 @@ public class DomainBeanUtils {
         OrderV2ItemQuantityUpdated contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderV2ItemQuantityUpdated orderV2ItemQuantityUpdated = new AbstractOrderV2Event.OrderV2ItemQuantityUpdated();
-        orderV2ItemQuantityUpdated.setOrderId(contractEvent.getOrderId());
         orderV2ItemQuantityUpdated.setId_(contractEvent.getId());
+        orderV2ItemQuantityUpdated.setOrderId(contractEvent.getOrderId());
         orderV2ItemQuantityUpdated.setProductId(contractEvent.getProductId());
         orderV2ItemQuantityUpdated.setQuantity(contractEvent.getQuantity());
         orderV2ItemQuantityUpdated.setVersion(contractEvent.getVersion());
@@ -380,8 +338,8 @@ public class DomainBeanUtils {
         OrderV2EstimatedShipDateUpdated contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated orderV2EstimatedShipDateUpdated = new AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated();
-        orderV2EstimatedShipDateUpdated.setOrderId(contractEvent.getOrderId());
         orderV2EstimatedShipDateUpdated.setId_(contractEvent.getId());
+        orderV2EstimatedShipDateUpdated.setOrderId(contractEvent.getOrderId());
         orderV2EstimatedShipDateUpdated.setEstimatedShipDate(DomainBeanUtils.toDay(contractEvent.getEstimatedShipDate()));
         orderV2EstimatedShipDateUpdated.setVersion(contractEvent.getVersion());
 
@@ -400,8 +358,8 @@ public class DomainBeanUtils {
         OrderShipGroupAdded contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderShipGroupAdded orderShipGroupAdded = new AbstractOrderV2Event.OrderShipGroupAdded();
-        orderShipGroupAdded.setOrderId(contractEvent.getOrderId());
         orderShipGroupAdded.setId_(contractEvent.getId());
+        orderShipGroupAdded.setOrderId(contractEvent.getOrderId());
         orderShipGroupAdded.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupAdded.setShipmentMethod(contractEvent.getShipmentMethod());
         orderShipGroupAdded.setProductId(contractEvent.getProductId());
@@ -423,8 +381,8 @@ public class DomainBeanUtils {
         OrderShipGroupQuantityCanceled contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderShipGroupQuantityCanceled orderShipGroupQuantityCanceled = new AbstractOrderV2Event.OrderShipGroupQuantityCanceled();
-        orderShipGroupQuantityCanceled.setOrderId(contractEvent.getOrderId());
         orderShipGroupQuantityCanceled.setId_(contractEvent.getId());
+        orderShipGroupQuantityCanceled.setOrderId(contractEvent.getOrderId());
         orderShipGroupQuantityCanceled.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupQuantityCanceled.setProductId(contractEvent.getProductId());
         orderShipGroupQuantityCanceled.setCancelQuantity(contractEvent.getCancelQuantity());
@@ -445,8 +403,8 @@ public class DomainBeanUtils {
         OrderShipGroupItemRemoved contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderShipGroupItemRemoved orderShipGroupItemRemoved = new AbstractOrderV2Event.OrderShipGroupItemRemoved();
-        orderShipGroupItemRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupItemRemoved.setId_(contractEvent.getId());
+        orderShipGroupItemRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupItemRemoved.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupItemRemoved.setProductId(contractEvent.getProductId());
         orderShipGroupItemRemoved.setVersion(contractEvent.getVersion());
@@ -466,8 +424,8 @@ public class DomainBeanUtils {
         OrderShipGroupRemoved contractEvent = eventEnvelope.getParsedJson();
 
         AbstractOrderV2Event.OrderShipGroupRemoved orderShipGroupRemoved = new AbstractOrderV2Event.OrderShipGroupRemoved();
-        orderShipGroupRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupRemoved.setId_(contractEvent.getId());
+        orderShipGroupRemoved.setOrderId(contractEvent.getOrderId());
         orderShipGroupRemoved.setShipGroupSeqId(contractEvent.getShipGroupSeqId());
         orderShipGroupRemoved.setVersion(contractEvent.getVersion());
 
@@ -486,8 +444,8 @@ public class DomainBeanUtils {
         DaySummaryCreated contractEvent = eventEnvelope.getParsedJson();
 
         AbstractDaySummaryEvent.DaySummaryCreated daySummaryCreated = new AbstractDaySummaryEvent.DaySummaryCreated();
-        daySummaryCreated.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryCreated.setId_(contractEvent.getId());
+        daySummaryCreated.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryCreated.setDescription(contractEvent.getDescription());
         daySummaryCreated.setMetaData(contractEvent.getMetaData());
         daySummaryCreated.setArrayData(contractEvent.getArrayData());
@@ -509,8 +467,8 @@ public class DomainBeanUtils {
         DaySummaryDeleted contractEvent = eventEnvelope.getParsedJson();
 
         AbstractDaySummaryEvent.DaySummaryDeleted daySummaryDeleted = new AbstractDaySummaryEvent.DaySummaryDeleted();
-        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryDeleted.setId_(contractEvent.getId());
+        daySummaryDeleted.setDay(DomainBeanUtils.toDay(contractEvent.getDay()));
         daySummaryDeleted.setVersion(contractEvent.getVersion());
 
         daySummaryDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());

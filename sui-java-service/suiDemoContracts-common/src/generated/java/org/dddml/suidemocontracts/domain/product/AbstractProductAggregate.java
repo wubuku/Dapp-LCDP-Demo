@@ -48,38 +48,17 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-            try {
-                verifyCreate(name, unitPrice, owner, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductCreated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
-            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void update(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
-            try {
-                verifyUpdate(name, unitPrice, owner, c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductUpdated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
-            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
-            try {
-                verifyDelete(c);
-            } catch (Exception ex) {
-                throw new DomainError("VerificationFailed", ex);
-            }
-
-            Event e = newProductDeleted(offChainVersion, commandId, requesterId);
-            apply(e);
+            throw new UnsupportedOperationException();
         }
 
         protected void verifyCreate(String name, BigInteger unitPrice, String owner, ProductCommands.Create c) {
@@ -144,75 +123,6 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         }
            
-
-        protected AbstractProductEvent.ProductCreated newProductCreated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductCreated e = new AbstractProductEvent.ProductCreated();
-
-            e.setName(name);
-            e.setUnitPrice(unitPrice);
-            e.setOwner(owner);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
-
-        protected AbstractProductEvent.ProductUpdated newProductUpdated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductUpdated e = new AbstractProductEvent.ProductUpdated();
-
-            e.setName(name);
-            e.setUnitPrice(unitPrice);
-            e.setOwner(owner);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
-
-        protected AbstractProductEvent.ProductDeleted newProductDeleted(Long offChainVersion, String commandId, String requesterId) {
-            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
-            AbstractProductEvent.ProductDeleted e = new AbstractProductEvent.ProductDeleted();
-
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
-
-            e.setCommandId(commandId);
-            e.setCreatedBy(requesterId);
-            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
-
-            e.setProductEventId(eventId);
-            return e;
-        }
 
     }
 

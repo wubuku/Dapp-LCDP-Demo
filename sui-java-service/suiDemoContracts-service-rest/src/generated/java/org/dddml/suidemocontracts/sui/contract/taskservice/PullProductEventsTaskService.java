@@ -16,19 +16,9 @@ public class PullProductEventsTaskService {
     @Autowired
     private ProductEventService productEventService;
 
-    @Scheduled(fixedDelayString = "${sui.contract.pull-product-events.product-created.fixed-delay:5000}")
-    public void pullProductCreatedEvents() {
-        productEventService.pullProductCreatedEvents();
-    }
-
-    @Scheduled(fixedDelayString = "${sui.contract.pull-product-events.product-updated.fixed-delay:5000}")
-    public void pullProductUpdatedEvents() {
-        productEventService.pullProductUpdatedEvents();
-    }
-
-    @Scheduled(fixedDelayString = "${sui.contract.pull-product-events.product-deleted.fixed-delay:5000}")
-    public void pullProductDeletedEvents() {
-        productEventService.pullProductDeletedEvents();
+    @Scheduled(fixedDelayString = "${sui.contract.pull-product-events.product-crud-event.fixed-delay:5000}")
+    public void pullProductCrudEvents() {
+        productEventService.pullProductCrudEvents();
     }
 
 }

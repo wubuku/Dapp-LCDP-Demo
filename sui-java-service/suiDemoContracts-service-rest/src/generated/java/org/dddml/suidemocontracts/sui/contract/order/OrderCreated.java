@@ -78,7 +78,7 @@ public class OrderCreated {
     @Override
     public String toString() {
         return "OrderCreated{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", product=" + '\'' + product + '\'' +
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +

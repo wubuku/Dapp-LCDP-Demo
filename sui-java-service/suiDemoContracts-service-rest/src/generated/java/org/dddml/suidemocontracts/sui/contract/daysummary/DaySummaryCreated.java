@@ -78,7 +78,7 @@ public class DaySummaryCreated {
     @Override
     public String toString() {
         return "DaySummaryCreated{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", day=" + day +
                 ", description=" + '\'' + description + '\'' +
                 ", metaData=" + Arrays.toString(metaData) +

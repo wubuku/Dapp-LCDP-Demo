@@ -14,7 +14,9 @@ import java.math.*;
 import java.util.*;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ProductUpdated {
+public class ProductCrudEvent {
+    private Integer crudType;
+
     private String id;
 
     private String productId;
@@ -26,6 +28,14 @@ public class ProductUpdated {
     private BigInteger unitPrice;
 
     private String owner;
+
+    public Integer getCrudType() {
+        return crudType;
+    }
+
+    public void setCrudType(Integer crudType) {
+        this.crudType = crudType;
+    }
 
     public String getId() {
         return id;
@@ -77,8 +87,9 @@ public class ProductUpdated {
 
     @Override
     public String toString() {
-        return "ProductUpdated{" +
-                "id='" + id + '\'' +
+        return "ProductCrudEvent{" +
+                "crudType=" + crudType +
+                ", id=" + '\'' + id + '\'' +
                 ", productId=" + '\'' + productId + '\'' +
                 ", version=" + version +
                 ", name=" + '\'' + name + '\'' +

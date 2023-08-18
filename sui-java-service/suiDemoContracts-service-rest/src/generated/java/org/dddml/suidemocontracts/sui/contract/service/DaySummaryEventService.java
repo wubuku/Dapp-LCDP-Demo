@@ -31,6 +31,13 @@ public class DaySummaryEventService {
         return DELETION_COMMAND_EVENTS.contains(eventType);
     }
 
+    public static boolean isDeletionCommand(AbstractDaySummaryEvent e) {
+        if (isDeletionCommand(e.getEventType())) {
+            return true;
+        }
+        return false;
+    }
+
     @Autowired
     private SuiPackageRepository suiPackageRepository;
 

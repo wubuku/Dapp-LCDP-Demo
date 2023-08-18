@@ -68,7 +68,7 @@ public class Renewed {
     @Override
     public String toString() {
         return "Renewed{" +
-                "id='" + id + '\'' +
+                "id=" + '\'' + id + '\'' +
                 ", domainNameId=" + domainNameId +
                 ", version=" + version +
                 ", renewPeriod=" + renewPeriod +

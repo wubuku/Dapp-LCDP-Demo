@@ -14,9 +14,7 @@ import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.DomainBeanUtils;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
-import org.dddml.suidemocontracts.sui.contract.product.ProductCreated;
-import org.dddml.suidemocontracts.sui.contract.product.ProductUpdated;
-import org.dddml.suidemocontracts.sui.contract.product.ProductDeleted;
+import org.dddml.suidemocontracts.sui.contract.product.ProductCrudEvent;
 import org.dddml.suidemocontracts.sui.contract.repository.ProductEventRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductEventService {
 
-    public static final java.util.Set<String> DELETION_COMMAND_EVENTS = new java.util.HashSet<>(java.util.Arrays.asList("ProductDeleted"));
-
-    public static boolean isDeletionCommand(String eventType) {
-        return DELETION_COMMAND_EVENTS.contains(eventType);
+    public static boolean isDeletionCommand(AbstractProductEvent e) {
+        if (e instanceof AbstractProductEvent.ProductCrudEvent && "2".equals(((AbstractProductEvent.ProductCrudEvent) e).getCrudType())) {
+            return true;
+        }
+        return false;
     }
 
     @Autowired
@@ -48,22 +47,22 @@ public class ProductEventService {
     }
 
     @Transactional
-    public void pullProductCreatedEvents() {
+    public void pullProductCrudEvents() {
         String packageId = getDefaultSuiPackageId();
         if (packageId == null) {
             return;
         }
         int limit = 1;
-        EventId cursor = getProductCreatedEventNextCursor();
+        EventId cursor = getProductCrudEventNextCursor();
         while (true) {
-            PaginatedMoveEvents<ProductCreated> eventPage = suiJsonRpcClient.queryMoveEvents(
-                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CREATED,
-                    cursor, limit, false, ProductCreated.class);
+            PaginatedMoveEvents<ProductCrudEvent> eventPage = suiJsonRpcClient.queryMoveEvents(
+                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_CRUD_EVENT,
+                    cursor, limit, false, ProductCrudEvent.class);
 
             if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
                 cursor = eventPage.getNextCursor();
-                for (SuiMoveEventEnvelope<ProductCreated> eventEnvelope : eventPage.getData()) {
-                    saveProductCreated(eventEnvelope);
+                for (SuiMoveEventEnvelope<ProductCrudEvent> eventEnvelope : eventPage.getData()) {
+                    saveProductCrudEvent(eventEnvelope);
                 }
             } else {
                 break;
@@ -74,97 +73,17 @@ public class ProductEventService {
         }
     }
 
-    private EventId getProductCreatedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductCreatedByOrderBySuiTimestampDesc();
+    private EventId getProductCrudEventNextCursor() {
+        AbstractProductEvent lastEvent = productEventRepository.findFirstProductCrudEventByOrderBySuiTimestampDesc();
         return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
     }
 
-    private void saveProductCreated(SuiMoveEventEnvelope<ProductCreated> eventEnvelope) {
-        AbstractProductEvent.ProductCreated productCreated = DomainBeanUtils.toProductCreated(eventEnvelope);
-        if (productEventRepository.findById(productCreated.getProductEventId()).isPresent()) {
+    private void saveProductCrudEvent(SuiMoveEventEnvelope<ProductCrudEvent> eventEnvelope) {
+        AbstractProductEvent.ProductCrudEvent productCrudEvent = DomainBeanUtils.toProductCrudEvent(eventEnvelope);
+        if (productEventRepository.findById(productCrudEvent.getProductEventId()).isPresent()) {
             return;
         }
-        productEventRepository.save(productCreated);
-    }
-
-    @Transactional
-    public void pullProductUpdatedEvents() {
-        String packageId = getDefaultSuiPackageId();
-        if (packageId == null) {
-            return;
-        }
-        int limit = 1;
-        EventId cursor = getProductUpdatedEventNextCursor();
-        while (true) {
-            PaginatedMoveEvents<ProductUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
-                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_UPDATED,
-                    cursor, limit, false, ProductUpdated.class);
-
-            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
-                cursor = eventPage.getNextCursor();
-                for (SuiMoveEventEnvelope<ProductUpdated> eventEnvelope : eventPage.getData()) {
-                    saveProductUpdated(eventEnvelope);
-                }
-            } else {
-                break;
-            }
-            if (!Page.hasNextPage(eventPage)) {
-                break;
-            }
-        }
-    }
-
-    private EventId getProductUpdatedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductUpdatedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
-    }
-
-    private void saveProductUpdated(SuiMoveEventEnvelope<ProductUpdated> eventEnvelope) {
-        AbstractProductEvent.ProductUpdated productUpdated = DomainBeanUtils.toProductUpdated(eventEnvelope);
-        if (productEventRepository.findById(productUpdated.getProductEventId()).isPresent()) {
-            return;
-        }
-        productEventRepository.save(productUpdated);
-    }
-
-    @Transactional
-    public void pullProductDeletedEvents() {
-        String packageId = getDefaultSuiPackageId();
-        if (packageId == null) {
-            return;
-        }
-        int limit = 1;
-        EventId cursor = getProductDeletedEventNextCursor();
-        while (true) {
-            PaginatedMoveEvents<ProductDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(
-                    packageId + "::" + ContractConstants.PRODUCT_MODULE_PRODUCT_DELETED,
-                    cursor, limit, false, ProductDeleted.class);
-
-            if (eventPage.getData() != null && !eventPage.getData().isEmpty()) {
-                cursor = eventPage.getNextCursor();
-                for (SuiMoveEventEnvelope<ProductDeleted> eventEnvelope : eventPage.getData()) {
-                    saveProductDeleted(eventEnvelope);
-                }
-            } else {
-                break;
-            }
-            if (!Page.hasNextPage(eventPage)) {
-                break;
-            }
-        }
-    }
-
-    private EventId getProductDeletedEventNextCursor() {
-        AbstractProductEvent lastEvent = productEventRepository.findFirstProductDeletedByOrderBySuiTimestampDesc();
-        return lastEvent != null ? new EventId(lastEvent.getSuiTxDigest(), lastEvent.getSuiEventSeq() + "") : null;
-    }
-
-    private void saveProductDeleted(SuiMoveEventEnvelope<ProductDeleted> eventEnvelope) {
-        AbstractProductEvent.ProductDeleted productDeleted = DomainBeanUtils.toProductDeleted(eventEnvelope);
-        if (productEventRepository.findById(productDeleted.getProductEventId()).isPresent()) {
-            return;
-        }
-        productEventRepository.save(productDeleted);
+        productEventRepository.save(productCrudEvent);
     }
 
 

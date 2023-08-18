@@ -29,7 +29,7 @@ public class UpdateDaySummaryStateTaskService {
     public void updateDaySummaryStates() {
         daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
             String objectId = e.getId_();
-            if (DaySummaryEventService.isDeletionCommand(e.getEventType())) {
+            if (DaySummaryEventService.isDeletionCommand(e)) {
                 suiDaySummaryService.deleteDaySummary(e.getDay());
             } else {
                 suiDaySummaryService.updateDaySummaryState(objectId);
