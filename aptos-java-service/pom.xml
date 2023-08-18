@@ -47,7 +47,7 @@
             <dependency>
                 <groupId>com.github.wubuku</groupId>
                 <artifactId>aptos-java-sdk</artifactId>
-                <version>a08d5f9b97</version>
+                <version>633c0438bb</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
