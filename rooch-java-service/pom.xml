@@ -47,7 +47,7 @@
             <dependency>
                 <groupId>com.github.wubuku</groupId>
                 <artifactId>rooch-java-sdk</artifactId>
-                <version>505e8e8b98</version>
+                <version>e8635f82b0</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>

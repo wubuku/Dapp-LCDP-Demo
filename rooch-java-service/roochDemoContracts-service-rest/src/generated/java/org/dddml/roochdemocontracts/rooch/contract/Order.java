@@ -23,6 +23,7 @@ public class Order {
 
     private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<Day> estimatedShipDate;
 
+    @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.github.wubuku.rooch.bean.HexToIntArrayDeserializer.class)
     private Integer[] deliveryWeekdays;
 
     private com.github.wubuku.rooch.bean.AnnotatedMoveOptionView<String> favoriteDeliveryWeekday;
