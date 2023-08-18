@@ -12,11 +12,13 @@ module rooch_demo::product {
     use moveos_std::storage_context::{Self, StorageContext};
     use moveos_std::tx_context;
     use std::error;
-    use std::option;
+    use std::option::{Self, Option};
     use std::signer;
     use std::string::{Self, String};
     use std::vector;
     friend rooch_demo::product_create_logic;
+    friend rooch_demo::product_update_logic;
+    friend rooch_demo::product_delete_logic;
     friend rooch_demo::product_aggregate;
 
     const EDATA_TOO_LONG: u64 = 102;
@@ -94,45 +96,81 @@ module rooch_demo::product {
         }
     }
 
-    struct ProductCreated has key {
-        id: option::Option<ObjectID>,
+    struct ProductCrudEvent has key {
+        crud_type: u8,
+        id: Option<ObjectID>,
         product_id: String,
+        version: u64,
         name: String,
         unit_price: u128,
     }
 
-    public fun product_created_id(product_created: &ProductCreated): option::Option<ObjectID> {
-        product_created.id
+    public fun product_crud_event_crud_type(product_crud_event: &ProductCrudEvent): u8 {
+        product_crud_event.crud_type
     }
 
-    public(friend) fun set_product_created_id(product_created: &mut ProductCreated, id: ObjectID) {
-        product_created.id = option::some(id);
+    public fun product_crud_event_id(product_crud_event: &ProductCrudEvent): Option<ObjectID> {
+        product_crud_event.id
     }
 
-    public fun product_created_product_id(product_created: &ProductCreated): String {
-        product_created.product_id
+    public(friend) fun set_product_crud_event_id(product_crud_event: &mut ProductCrudEvent, id: ObjectID) {
+        product_crud_event.id = option::some(id);
     }
 
-    public fun product_created_name(product_created: &ProductCreated): String {
-        product_created.name
+    public fun product_crud_event_product_id(product_crud_event: &ProductCrudEvent): String {
+        product_crud_event.product_id
     }
 
-    public fun product_created_unit_price(product_created: &ProductCreated): u128 {
-        product_created.unit_price
+    public fun product_crud_event_name(product_crud_event: &ProductCrudEvent): String {
+        product_crud_event.name
+    }
+
+    public fun product_crud_event_unit_price(product_crud_event: &ProductCrudEvent): u128 {
+        product_crud_event.unit_price
     }
 
     public(friend) fun new_product_created(
         storage_ctx: &mut StorageContext,
         name: String,
         unit_price: u128,
-    ): ProductCreated {
+    ): ProductCrudEvent {
         let product_id_generator =  account_storage::global_borrow_mut<ProductIdGenerator>(storage_ctx, @rooch_demo);
         let product_id = next_product_id(product_id_generator);
-        ProductCreated {
+        ProductCrudEvent {
+            crud_type: 0,
             id: option::none(),
             product_id,
+            version: 18446744073709551615, // max u64 for null
             name,
             unit_price,
+        }
+    }
+
+    public(friend) fun new_product_updated(
+        product_obj: &Object<Product>,
+        name: String,
+        unit_price: u128,
+    ): ProductCrudEvent {
+        ProductCrudEvent {
+            crud_type: 1,
+            id: std::option::some(id(product_obj)),
+            product_id: product_id(product_obj),
+            version: version(product_obj),
+            name,
+            unit_price,
+        }
+    }
+
+    public(friend) fun new_product_deleted(
+        product_obj: &Object<Product>,
+    ): ProductCrudEvent {
+        ProductCrudEvent {
+            crud_type: 2,
+            id: std::option::some(id(product_obj)),
+            product_id: product_id(product_obj),
+            version: version(product_obj),
+            name: name(product_obj),
+            unit_price: unit_price(product_obj),
         }
     }
 
@@ -227,8 +265,16 @@ module rooch_demo::product {
         } = product;
     }
 
-    public(friend) fun emit_product_created(storage_ctx: &mut StorageContext, product_created: ProductCreated) {
+    public(friend) fun emit_product_created(storage_ctx: &mut StorageContext, product_created: ProductCrudEvent) {
         event::emit(storage_ctx, product_created);
+    }
+
+    public(friend) fun emit_product_updated(storage_ctx: &mut StorageContext, product_updated: ProductCrudEvent) {
+        event::emit(storage_ctx, product_updated);
+    }
+
+    public(friend) fun emit_product_deleted(storage_ctx: &mut StorageContext, product_deleted: ProductCrudEvent) {
+        event::emit(storage_ctx, product_deleted);
     }
 
 }

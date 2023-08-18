@@ -1,6 +1,9 @@
 aggregates:
   Product:
-    immutable: true # need ignore this setting when generate off-chain service
+    metadata:
+      Preprocessors: [ "MOVE_CRUD_IT" ]
+      #CRUD_IT_NO_DELETE: true
+    #immutable: true # need ignore this setting when generate off-chain service
     id:
       name: ProductId
       type: String
@@ -24,5 +27,32 @@ aggregates:
             type: u128
         event:
           name: ProductCreated
-          isObjectFrozen: true # This is true because the Product is immutable.
+          #isObjectFrozen: true # This is true because the Product is immutable.
+          type: ProductCrudEvent
+          discriminatorValue: 0
 
+      Update:
+        event:
+          type: ProductCrudEvent
+          discriminatorValue: 1
+
+      Delete:
+        event:
+          type: ProductCrudEvent
+          discriminatorValue: 2
+
+    eventObjects:
+      ProductCrudEvent:
+        discriminator: CrudType
+        properties:
+          CrudType:
+            type: u8
+#          ProductId:
+#            type: String
+#            length: 20
+#          Version:
+#            type: u64
+#          Name:
+#            type: String
+#          UnitPrice:
+#            type: u128
