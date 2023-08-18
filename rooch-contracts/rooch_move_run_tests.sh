@@ -4,7 +4,7 @@
 # Before running this script, please install jq - Command-line JSON processor
 #
 
-contract_address=0xf8e38d63a5208d499725e7ac4851c4a0836e45e2230041b7e3cf43e4738c47b4
+contract_address=0x79bc05885dfdb3c9070e46cc24a1572d98107ffea8da60a742ab8da16b8b81a4
 
 rooch move publish --named-addresses rooch_demo=$contract_address
 
@@ -20,7 +20,7 @@ product_object_id=$(curl --location --request POST 'http://localhost:50051' \
  "id":101,
  "jsonrpc":"2.0",
  "method":"rooch_getEventsByEventHandle",
- "params":["'$contract_address'::product::ProductCreated"]
+ "params":["'$contract_address'::product::ProductCrudEvent"]
 }' | jq '.result.data[0].parsed_event_data.value.id.value.vec[0]')
 
 echo "$product_object_id"
