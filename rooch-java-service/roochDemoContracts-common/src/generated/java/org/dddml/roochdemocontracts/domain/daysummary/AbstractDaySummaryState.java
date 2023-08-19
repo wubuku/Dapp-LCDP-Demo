@@ -145,33 +145,33 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.deleted = deleted;
     }
 
-    private Set<String> arrayData;
+    private List<String> arrayData;
 
-    public Set<String> getArrayData() {
+    public List<String> getArrayData() {
         return this.arrayData;
     }
 
-    public void setArrayData(Set<String> arrayData) {
+    public void setArrayData(List<String> arrayData) {
         this.arrayData = arrayData;
     }
 
-    private Set<Integer> u16ArrayData;
+    private List<Integer> u16ArrayData;
 
-    public Set<Integer> getU16ArrayData() {
+    public List<Integer> getU16ArrayData() {
         return this.u16ArrayData;
     }
 
-    public void setU16ArrayData(Set<Integer> u16ArrayData) {
+    public void setU16ArrayData(List<Integer> u16ArrayData) {
         this.u16ArrayData = u16ArrayData;
     }
 
-    private Set<Long> u32ArrayData;
+    private List<Long> u32ArrayData;
 
-    public Set<Long> getU32ArrayData() {
+    public List<Long> getU32ArrayData() {
         return this.u32ArrayData;
     }
 
-    public void setU32ArrayData(Set<Long> u32ArrayData) {
+    public void setU32ArrayData(List<Long> u32ArrayData) {
         this.u32ArrayData = u32ArrayData;
     }
 
@@ -195,13 +195,13 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.u128ArrayData = u128ArrayData;
     }
 
-    private Set<BigInteger> u256ArrayData;
+    private List<BigInteger> u256ArrayData;
 
-    public Set<BigInteger> getU256ArrayData() {
+    public List<BigInteger> getU256ArrayData() {
         return this.u256ArrayData;
     }
 
-    public void setU256ArrayData(Set<BigInteger> u256ArrayData) {
+    public void setU256ArrayData(List<BigInteger> u256ArrayData) {
         this.u256ArrayData = u256ArrayData;
     }
 

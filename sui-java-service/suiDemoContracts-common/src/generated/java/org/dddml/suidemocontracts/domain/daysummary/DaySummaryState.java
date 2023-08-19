@@ -42,7 +42,7 @@ public interface DaySummaryState extends VersionedSuiMoveObject
 
     Boolean getDeleted();
 
-    Set<String> getArrayData();
+    List<String> getArrayData();
 
     interface MutableDaySummaryState extends DaySummaryState, VersionedSuiMoveObject.MutableVersionedSuiMoveObject {
         void setDay(Day day);
@@ -69,7 +69,7 @@ public interface DaySummaryState extends VersionedSuiMoveObject
 
         void setDeleted(Boolean deleted);
 
-        void setArrayData(Set<String> arrayData);
+        void setArrayData(List<String> arrayData);
 
 
         void mutate(Event e);

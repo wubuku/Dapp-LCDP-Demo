@@ -13,6 +13,7 @@ aggregates:
         type: vector<u8>
       ArrayData:
         itemType: String
+        isList: true
       OptionalData:
         type: vector<u8>
         optional: true

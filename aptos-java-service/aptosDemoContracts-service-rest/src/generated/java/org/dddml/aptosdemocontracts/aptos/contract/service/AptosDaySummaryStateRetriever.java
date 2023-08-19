@@ -77,7 +77,7 @@ public class AptosDaySummaryStateRetriever {
         daySummaryState.setVersion(daySummary.getVersion());
         daySummaryState.setDescription(daySummary.getDescription());
         daySummaryState.setMetadata(daySummary.getMetadata());
-        daySummaryState.setArrayData(new HashSet<>(Arrays.asList(daySummary.getArrayData())));
+        daySummaryState.setArrayData(Arrays.asList(daySummary.getArrayData()));
         daySummaryState.setOptionalData(daySummary.getOptionalData().getVec().size() == 0 ? null : daySummary.getOptionalData().getVec().get(0));
         daySummaryState.setU16ArrayData(new HashSet<>(Arrays.asList(daySummary.getU16ArrayData())));
         daySummaryState.setU32ArrayData(new HashSet<>(Arrays.asList(daySummary.getU32ArrayData())));

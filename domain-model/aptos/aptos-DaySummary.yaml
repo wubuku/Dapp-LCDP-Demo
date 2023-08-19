@@ -14,6 +14,7 @@ aggregates:
         #     "meta_data": "0x010203",
       ArrayData:
         itemType: String
+        isList: true
         #      "array_data": [
         #        "\u0004str1",
         #        "\u0004str2"

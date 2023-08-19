@@ -52,7 +52,7 @@
     </property>
     <property name="createdAt" column="created_at" />
     <property name="updatedAt" column="updated_at" />
-    <set name="arrayData" table="day_summary_array_data" lazy="false">
+    <list name="arrayData" table="day_summary_array_data" lazy="false">
       <key>
         <column name="day_month_year_number" />
         <column name="day_month_year_calendar" />
@@ -61,9 +61,10 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
+      <index column="array_data_index" />
       <element column="array_data_item" type="string" not-null="true" />
-    </set>
-    <set name="u16ArrayData" table="day_summary_u16_array_data" lazy="false">
+    </list>
+    <list name="u16ArrayData" table="day_summary_u16_array_data" lazy="false">
       <key>
         <column name="day_month_year_number" />
         <column name="day_month_year_calendar" />
@@ -72,9 +73,10 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
+      <index column="u16_array_data_index" />
       <element column="u16_array_data_item" type="java.lang.Integer" not-null="true" />
-    </set>
-    <set name="u32ArrayData" table="day_summary_u32_array_data" lazy="false">
+    </list>
+    <list name="u32ArrayData" table="day_summary_u32_array_data" lazy="false">
       <key>
         <column name="day_month_year_number" />
         <column name="day_month_year_calendar" />
@@ -83,8 +85,9 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
+      <index column="u32_array_data_index" />
       <element column="u32_array_data_item" type="java.lang.Long" not-null="true" />
-    </set>
+    </list>
     <set name="u64ArrayData" table="day_summary_u64_array_data" lazy="false">
       <key>
         <column name="day_month_year_number" />
@@ -107,7 +110,7 @@
       </key>
       <element column="u128_array_data_item" type="java.math.BigInteger" not-null="true" />
     </set>
-    <set name="u256ArrayData" table="day_summary_u256_array_data" lazy="false">
+    <list name="u256ArrayData" table="day_summary_u256_array_data" lazy="false">
       <key>
         <column name="day_month_year_number" />
         <column name="day_month_year_calendar" />
@@ -116,7 +119,8 @@
         <column name="day_number" />
         <column name="day_time_zone" />
       </key>
+      <index column="u256_array_data_index" />
       <element column="u256_array_data_item" type="java.math.BigInteger" not-null="true" />
-    </set>
+    </list>
   </class>
 </hibernate-mapping>

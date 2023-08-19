@@ -51,13 +51,13 @@ public class RoochDaySummaryStateRetriever {
         daySummaryState.setVersion(daySummary.getVersion());
         daySummaryState.setDescription(daySummary.getDescription());
         daySummaryState.setMetadata(daySummary.getMetadata());
-        daySummaryState.setArrayData(new HashSet<>(Arrays.asList(daySummary.getArrayData())));
+        daySummaryState.setArrayData(Arrays.asList(daySummary.getArrayData()));
         daySummaryState.setOptionalData(daySummary.getOptionalData().getValue().getVec().length == 0 ? null : daySummary.getOptionalData().getValue().getVec()[0]);
-        daySummaryState.setU16ArrayData(new HashSet<>(Arrays.asList(daySummary.getU16ArrayData())));
-        daySummaryState.setU32ArrayData(new HashSet<>(Arrays.asList(daySummary.getU32ArrayData())));
+        daySummaryState.setU16ArrayData(Arrays.asList(daySummary.getU16ArrayData()));
+        daySummaryState.setU32ArrayData(Arrays.asList(daySummary.getU32ArrayData()));
         daySummaryState.setU64ArrayData(new HashSet<>(Arrays.asList(daySummary.getU64ArrayData())));
         daySummaryState.setU128ArrayData(new HashSet<>(Arrays.asList(daySummary.getU128ArrayData())));
-        daySummaryState.setU256ArrayData(new HashSet<>(Arrays.asList(daySummary.getU256ArrayData())));
+        daySummaryState.setU256ArrayData(Arrays.asList(daySummary.getU256ArrayData()));
         return daySummaryState;
     }
 

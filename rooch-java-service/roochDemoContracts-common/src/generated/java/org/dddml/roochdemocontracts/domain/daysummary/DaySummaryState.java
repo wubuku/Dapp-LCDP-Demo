@@ -42,17 +42,17 @@ public interface DaySummaryState extends VersionedRoochMoveObject
 
     Boolean getDeleted();
 
-    Set<String> getArrayData();
+    List<String> getArrayData();
 
-    Set<Integer> getU16ArrayData();
+    List<Integer> getU16ArrayData();
 
-    Set<Long> getU32ArrayData();
+    List<Long> getU32ArrayData();
 
     Set<BigInteger> getU64ArrayData();
 
     Set<BigInteger> getU128ArrayData();
 
-    Set<BigInteger> getU256ArrayData();
+    List<BigInteger> getU256ArrayData();
 
     interface MutableDaySummaryState extends DaySummaryState, VersionedRoochMoveObject.MutableVersionedRoochMoveObject {
         void setDay(Day day);
@@ -79,17 +79,17 @@ public interface DaySummaryState extends VersionedRoochMoveObject
 
         void setDeleted(Boolean deleted);
 
-        void setArrayData(Set<String> arrayData);
+        void setArrayData(List<String> arrayData);
 
-        void setU16ArrayData(Set<Integer> u16ArrayData);
+        void setU16ArrayData(List<Integer> u16ArrayData);
 
-        void setU32ArrayData(Set<Long> u32ArrayData);
+        void setU32ArrayData(List<Long> u32ArrayData);
 
         void setU64ArrayData(Set<BigInteger> u64ArrayData);
 
         void setU128ArrayData(Set<BigInteger> u128ArrayData);
 
-        void setU256ArrayData(Set<BigInteger> u256ArrayData);
+        void setU256ArrayData(List<BigInteger> u256ArrayData);
 
 
         void mutate(Event e);

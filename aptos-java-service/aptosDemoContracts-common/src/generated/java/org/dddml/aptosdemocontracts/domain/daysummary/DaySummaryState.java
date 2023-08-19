@@ -40,7 +40,7 @@ public interface DaySummaryState extends VersionedAptosMoveObject
 
     Boolean getDeleted();
 
-    Set<String> getArrayData();
+    List<String> getArrayData();
 
     Set<Integer> getU16ArrayData();
 
@@ -75,7 +75,7 @@ public interface DaySummaryState extends VersionedAptosMoveObject
 
         void setDeleted(Boolean deleted);
 
-        void setArrayData(Set<String> arrayData);
+        void setArrayData(List<String> arrayData);
 
         void setU16ArrayData(Set<Integer> u16ArrayData);
 

@@ -145,13 +145,13 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         this.deleted = deleted;
     }
 
-    private Set<String> arrayData;
+    private List<String> arrayData;
 
-    public Set<String> getArrayData() {
+    public List<String> getArrayData() {
         return this.arrayData;
     }
 
-    public void setArrayData(Set<String> arrayData) {
+    public void setArrayData(List<String> arrayData) {
         this.arrayData = arrayData;
     }
 

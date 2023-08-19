@@ -46,7 +46,7 @@ public class SuiDaySummaryStateRetriever {
         daySummaryState.setVersion(daySummary.getVersion());
         daySummaryState.setDescription(daySummary.getDescription());
         daySummaryState.setMetadata(daySummary.getMetadata());
-        daySummaryState.setArrayData(new HashSet<>(Arrays.asList(daySummary.getArrayData())));
+        daySummaryState.setArrayData(Arrays.asList(daySummary.getArrayData()));
         daySummaryState.setOptionalData(daySummary.getOptionalData());
         return daySummaryState;
     }
