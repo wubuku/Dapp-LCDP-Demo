@@ -104,6 +104,10 @@ With the domain models described by this DSL as the core, we can make a toolchai
 
 ## Explaining DDDML Through Examples
 
+> *One has an intuitive feeling that data precede algorithms: you must have some objects before you can perform operations on them.*
+>
+> Niklaus Wirth, “Algorithms + Data Structures = Programs”, preface, p. xiii
+
 Although DDDML was originally created for driving low-code development of "traditional" enterprise and internet applications, theoretically, it can also be used for the development of decentralized applications based on "non-Move" platforms. However, for the purpose of this discussion, we will focus on the use of DDDML in the development of decentralized applications on Move.
 
 It should be noted that the Move language is still in the early stages of development, and blockchain platforms that use Move as their smart contract language, such as Sui, Aptos, Starcoin, and Rooch, may have differences in the programming features they support. The main differences between them are not in the Move language itself, but in the different "state storage" models they support.
