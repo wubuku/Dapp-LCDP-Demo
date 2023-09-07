@@ -151,7 +151,8 @@ configuration:
 #    moveObjectVersionPropertyType: "u64"
 #    offChainObjectNames: [ ]
 
-#  rooch:
+  internetComputer:
+    objectVersionPropertyName: "Version"
 
   java:
 #      boundedContextPackage: "org.dddml.suidemocontracts"
