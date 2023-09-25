@@ -1,0 +1,44 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 1
+
+  boundedContextName: "Dddml.SolanaDemoContracts"
+
+  defaultModule:
+    name: "Dddml.SolanaDemoContracts"
+
+  isSurrogateIdMandatory: false
+
+  #  defaultSurrogateId:
+  #    name: Id
+  #    type: UID
+
+  mandatoryAggregateImplements: [ "VersionedSolanaRustObject" ]
+  mandatoryAggregateEventImplements: [ "SolanaEvent", "HasStatus" ]
+  ignoreEntityImmutable: true
+
+  metadata:
+    EventTypeDiscriminatorName: "EventClass"
+
+  solana:
+    boundedContextMod: "solana_demo"
+    programObjectVersionPropertyName: "Version"
+#    programObjectVersionPropertyType: "u64"
+#    offChainObjectNames: [ "SolanaEventGuid" ]
+
+  rust:
+    typeMappings:
+      "address": "Pubkey"
+
+  java:
+    boundedContextPackage: "org.dddml.solanademocontracts"
+    specializationPackage: "org.dddml.solanademocontracts.specialization"
+
+    typeMappings:
+      "Vec<u8>": "String" # Mapped to Hex String, not byte[]
+
+    aggregateIdWhenSingletonObjectAsAggregate:
+      name: AccountAddress
+      type: Pubkey
