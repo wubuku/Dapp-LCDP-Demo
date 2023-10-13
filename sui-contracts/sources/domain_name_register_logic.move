@@ -1,9 +1,9 @@
-module sui_contracts::domain_name_register_logic {
+module sui_demo_contracts::domain_name_register_logic {
     use sui::tx_context::{Self, TxContext};
-    use sui_contracts::domain_name::{Self, DomainNameId};
-    use sui_contracts::registered;
+    use sui_demo_contracts::domain_name::{Self, DomainNameId};
+    use sui_demo_contracts::registered;
 
-    friend sui_contracts::domain_name_aggregate;
+    friend sui_demo_contracts::domain_name_aggregate;
 
     public(friend) fun verify(
         domain_name_id: DomainNameId,

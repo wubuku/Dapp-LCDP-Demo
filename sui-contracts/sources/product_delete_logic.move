@@ -1,8 +1,8 @@
-module sui_contracts::product_delete_logic {
+module sui_demo_contracts::product_delete_logic {
     use sui::tx_context::TxContext;
-    use sui_contracts::product;
+    use sui_demo_contracts::product;
 
-    friend sui_contracts::product_aggregate;
+    friend sui_demo_contracts::product_aggregate;
 
     public(friend) fun verify(
         product: &product::Product,

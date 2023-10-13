@@ -1,8 +1,8 @@
-module sui_contracts::order_v2_remove_order_ship_group_logic {
+module sui_demo_contracts::order_v2_remove_order_ship_group_logic {
     use sui::tx_context::TxContext;
-    use sui_contracts::order_v2;
+    use sui_demo_contracts::order_v2;
 
-    friend sui_contracts::order_v2_aggregate;
+    friend sui_demo_contracts::order_v2_aggregate;
 
     public(friend) fun verify(
         ship_group_seq_id: u8,

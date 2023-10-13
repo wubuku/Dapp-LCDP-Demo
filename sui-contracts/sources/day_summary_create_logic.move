@@ -1,13 +1,13 @@
-module sui_contracts::day_summary_create_logic {
+module sui_demo_contracts::day_summary_create_logic {
     use std::option::Option;
     use std::string::String;
 
     use sui::tx_context::TxContext;
-    use sui_contracts::day::Day;
-    use sui_contracts::day_summary;
-    use sui_contracts::day_summary_created;
+    use sui_demo_contracts::day::Day;
+    use sui_demo_contracts::day_summary;
+    use sui_demo_contracts::day_summary_created;
 
-    friend sui_contracts::day_summary_aggregate;
+    friend sui_demo_contracts::day_summary_aggregate;
 
     public(friend) fun verify(
         day: Day,

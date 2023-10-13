@@ -22,16 +22,18 @@ configuration:
   ignoreEntityImmutable: true
 
   sui:
-    boundedContextPackage: "sui_contracts"
+    boundedContextPackage: "sui_demo_contracts"
     moveObjectVersionPropertyName: "Version"
     moveObjectVersionPropertyType: "u64"
     offChainObjectNames: [ "SuiEventId" ]
 
     typeMappings:
       "ID": "ID"
+      "Clock": "Clock"
 
     typeModules:
       "ID": "sui::object"
+      "Clock": "sui::clock"
 
   java:
     boundedContextPackage: "org.dddml.suidemocontracts"

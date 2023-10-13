@@ -1,10 +1,10 @@
-module sui_contracts::product_update_logic {
+module sui_demo_contracts::product_update_logic {
     use std::string::String;
     use sui::tx_context::TxContext;
-    use sui_contracts::product;
-    use sui_contracts::product_crud_event;
+    use sui_demo_contracts::product;
+    use sui_demo_contracts::product_crud_event;
 
-    friend sui_contracts::product_aggregate;
+    friend sui_demo_contracts::product_aggregate;
 
     public(friend) fun verify(
         name: String,

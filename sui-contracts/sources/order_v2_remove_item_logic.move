@@ -1,11 +1,11 @@
-module sui_contracts::order_v2_remove_item_logic {
+module sui_demo_contracts::order_v2_remove_item_logic {
     use std::string::String;
     use sui::tx_context::{TxContext};
-    use sui_contracts::order_v2;
-    use sui_contracts::order_v2_item::{Self};
-    use sui_contracts::order_v2_item_removed;
+    use sui_demo_contracts::order_v2;
+    use sui_demo_contracts::order_v2_item::{Self};
+    use sui_demo_contracts::order_v2_item_removed;
 
-    friend sui_contracts::order_v2_aggregate;
+    friend sui_demo_contracts::order_v2_aggregate;
 
     public(friend) fun verify(
         product_id: String,

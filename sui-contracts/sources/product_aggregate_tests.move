@@ -1,14 +1,14 @@
 #[test_only]
-module sui_contracts::product_aggregate_tests {
+module sui_demo_contracts::product_aggregate_tests {
     use std::string;
 
     use sui::test_scenario as ts;
-    use sui_contracts::product::{Self, ProductIdGenerator, Product};
-    use sui_contracts::product_aggregate;
+    use sui_demo_contracts::product::{Self, ProductIdGenerator, Product};
+    use sui_demo_contracts::product_aggregate;
     use std::debug;
 
     #[test]
-    //#[expected_failure(abort_code = sui_contracts::domain_name::EID_ALREADY_EXISTS)]
+    //#[expected_failure(abort_code = sui_demo_contracts::domain_name::EID_ALREADY_EXISTS)]
     fun test_create_new_product() {
         let addr1 = @0xA;
         //let addr2 = @0xB;

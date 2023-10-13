@@ -1,13 +1,13 @@
-module sui_contracts::order_v2_cancel_order_ship_group_quantity_logic {
+module sui_demo_contracts::order_v2_cancel_order_ship_group_quantity_logic {
     use std::string::String;
 
     use sui::tx_context::TxContext;
-    use sui_contracts::order_item_ship_group_association;
-    use sui_contracts::order_ship_group;
-    use sui_contracts::order_v2;
-    use sui_contracts::order_ship_group_quantity_canceled;
+    use sui_demo_contracts::order_item_ship_group_association;
+    use sui_demo_contracts::order_ship_group;
+    use sui_demo_contracts::order_v2;
+    use sui_demo_contracts::order_ship_group_quantity_canceled;
 
-    friend sui_contracts::order_v2_aggregate;
+    friend sui_demo_contracts::order_v2_aggregate;
 
     public(friend) fun verify(
         ship_group_seq_id: u8,

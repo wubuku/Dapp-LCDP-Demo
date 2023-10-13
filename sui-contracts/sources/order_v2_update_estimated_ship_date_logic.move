@@ -1,12 +1,12 @@
-module sui_contracts::order_v2_update_estimated_ship_date_logic {
+module sui_demo_contracts::order_v2_update_estimated_ship_date_logic {
     use sui::tx_context::{TxContext};
-    use sui_contracts::day::Day;
-    use sui_contracts::order_v2;
-    //use sui_contracts::order_v2_item::{Self, OrderV2Item};
+    use sui_demo_contracts::day::Day;
+    use sui_demo_contracts::order_v2;
+    //use sui_demo_contracts::order_v2_item::{Self, OrderV2Item};
     use std::option;
-    use sui_contracts::order_v2_estimated_ship_date_updated;
+    use sui_demo_contracts::order_v2_estimated_ship_date_updated;
 
-    friend sui_contracts::order_v2_aggregate;
+    friend sui_demo_contracts::order_v2_aggregate;
 
     public(friend) fun verify(
         estimated_ship_date: Day,

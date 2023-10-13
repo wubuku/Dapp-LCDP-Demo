@@ -1,8 +1,8 @@
-module sui_contracts::domain_name_renew_logic {
+module sui_demo_contracts::domain_name_renew_logic {
     use sui::tx_context::{Self, TxContext};
-    use sui_contracts::domain_name;
+    use sui_demo_contracts::domain_name;
 
-    friend sui_contracts::domain_name_aggregate;
+    friend sui_demo_contracts::domain_name_aggregate;
 
     public(friend) fun verify(
         renew_period: u64,

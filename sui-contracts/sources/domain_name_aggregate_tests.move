@@ -1,13 +1,13 @@
 #[test_only]
-module sui_contracts::domain_name_aggregate_tests {
+module sui_demo_contracts::domain_name_aggregate_tests {
     use sui::test_scenario as ts;
-    use sui_contracts::domain_name::{Self, DomainNameIdTable, DomainName};
-    use sui_contracts::domain_name_aggregate;
+    use sui_demo_contracts::domain_name::{Self, DomainNameIdTable, DomainName};
+    use sui_demo_contracts::domain_name_aggregate;
     use std::string;
 
 
     #[test]
-    //#[expected_failure(abort_code = sui_contracts::domain_name::EID_ALREADY_EXISTS)]
+    //#[expected_failure(abort_code = sui_demo_contracts::domain_name::EID_ALREADY_EXISTS)]
     fun test_register_and_renew() {
         let addr1 = @0xA;
         //let addr2 = @0xB;

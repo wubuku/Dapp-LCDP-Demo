@@ -1,8 +1,8 @@
-module sui_contracts::day_summary_delete_logic {
+module sui_demo_contracts::day_summary_delete_logic {
     use sui::tx_context::TxContext;
-    use sui_contracts::day_summary;
+    use sui_demo_contracts::day_summary;
 
-    friend sui_contracts::day_summary_aggregate;
+    friend sui_demo_contracts::day_summary_aggregate;
 
     public(friend) fun verify(
         day_summary: &day_summary::DaySummary,

@@ -1,12 +1,12 @@
-module sui_contracts::order_update_item_quantity_logic {
+module sui_demo_contracts::order_update_item_quantity_logic {
     use std::string::String;
 
     use sui::tx_context::TxContext;
-    use sui_contracts::order;
-    use sui_contracts::order_item;
-    use sui_contracts::order_item_quantity_updated;
+    use sui_demo_contracts::order;
+    use sui_demo_contracts::order_item;
+    use sui_demo_contracts::order_item_quantity_updated;
 
-    friend sui_contracts::order_aggregate;
+    friend sui_demo_contracts::order_aggregate;
 
     public(friend) fun verify(
         product_id: String,

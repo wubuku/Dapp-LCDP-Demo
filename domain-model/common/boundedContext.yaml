@@ -138,7 +138,7 @@ configuration:
       "String": "std::string"
 
 #  sui:
-#    boundedContextPackage: "sui_contracts"
+#    boundedContextPackage: "sui_demo_contracts"
 #    moveObjectVersionPropertyName: "Version"
 #    moveObjectVersionPropertyType: "u64"
 #    offChainObjectNames: [ "SuiEventId" ]

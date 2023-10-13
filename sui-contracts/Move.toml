@@ -1,5 +1,5 @@
 [package]
-name = "sui_contracts"
+name = "sui_demo_contracts"
 version = "0.0.1"
 
 [dependencies]
@@ -7,5 +7,5 @@ Sui = { git = "https://github.com/MystenLabs/sui.git", subdir="crates/sui-framew
 #Sui = { local = "../../../MystenLabs/sui/crates/sui-framework/packages/sui-framework" }
 
 [addresses]
-sui_contracts =  "0x0"
+sui_demo_contracts =  "0x0"
 #sui = "0000000000000000000000000000000000000000000000000000000000000002"

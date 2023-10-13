@@ -1,15 +1,15 @@
-module sui_contracts::order_create_logic {
+module sui_demo_contracts::order_create_logic {
     use std::option;
     use std::vector;
 
     use sui::tx_context::{Self, TxContext};
 
-    use sui_contracts::order;
-    use sui_contracts::order_created;
-    use sui_contracts::order_item;
-    use sui_contracts::product::{Self, Product};
+    use sui_demo_contracts::order;
+    use sui_demo_contracts::order_created;
+    use sui_demo_contracts::order_item;
+    use sui_demo_contracts::product::{Self, Product};
 
-    friend sui_contracts::order_aggregate;
+    friend sui_demo_contracts::order_aggregate;
 
     public(friend) fun verify(
         product: &Product,
