@@ -6,7 +6,7 @@
 module sui_demo_contracts::day {
     use std::string::String;
     use sui_demo_contracts::month::Month;
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct Day has store, drop, copy {
         month: Month,
@@ -29,7 +29,7 @@ module sui_demo_contracts::day {
     }
 
     fun validate(day: &Day) {
-        assert!(std::string::length(&day.time_zone) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&day.time_zone) <= 50, EDataTooLong);
     }
 
     public fun month(day: &Day): Month {

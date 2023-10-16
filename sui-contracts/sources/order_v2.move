@@ -24,10 +24,10 @@ module sui_demo_contracts::order_v2 {
     friend sui_demo_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_demo_contracts::order_v2_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const EID_NOT_FOUND: u64 = 106;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const EIdNotFound: u64 = 106;
 
     struct OrderIdTable has key {
         id: UID,
@@ -90,12 +90,12 @@ module sui_demo_contracts::order_v2 {
 
     public(friend) fun add_item(order_v2: &mut OrderV2, item: OrderV2Item) {
         let key = order_v2_item::product_id(&item);
-        assert!(!table::contains(&order_v2.items, key), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&order_v2.items, key), EIdAlreadyExists);
         table::add(&mut order_v2.items, key, item);
     }
 
     public(friend) fun remove_item(order_v2: &mut OrderV2, product_id: String) {
-        assert!(table::contains(&order_v2.items, product_id), EID_NOT_FOUND);
+        assert!(table::contains(&order_v2.items, product_id), EIdNotFound);
         let item = table::remove(&mut order_v2.items, product_id);
         order_v2_item::drop_order_v2_item(item);
     }
@@ -118,13 +118,13 @@ module sui_demo_contracts::order_v2 {
 
     public(friend) fun add_order_ship_group(order_v2: &mut OrderV2, order_ship_group: OrderShipGroup) {
         let key = order_ship_group::ship_group_seq_id(&order_ship_group);
-        assert!(!table::contains(&order_v2.order_ship_groups, key), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&order_v2.order_ship_groups, key), EIdAlreadyExists);
         table::add(&mut order_v2.order_ship_groups, key, order_ship_group);
     }
 
     /*
     public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
-        assert!(table::contains(&order_v2.order_ship_groups, ship_group_seq_id), EID_NOT_FOUND);
+        assert!(table::contains(&order_v2.order_ship_groups, ship_group_seq_id), EIdNotFound);
         let order_ship_group = table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }
@@ -152,7 +152,7 @@ module sui_demo_contracts::order_v2 {
         estimated_ship_date: Option<Day>,
         ctx: &mut TxContext,
     ): OrderV2 {
-        assert!(std::string::length(&order_id) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&order_id) <= 50, EDataTooLong);
         OrderV2 {
             id: object::new(ctx),
             order_id,
@@ -513,7 +513,7 @@ module sui_demo_contracts::order_v2 {
         order_id: String,
         order_id_table: &OrderIdTable,
     ) {
-        assert!(!table::contains(&order_id_table.table, order_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&order_id_table.table, order_id), EIdAlreadyExists);
     }
 
     fun asset_order_id_not_exists_then_add(
@@ -526,7 +526,7 @@ module sui_demo_contracts::order_v2 {
     }
 
     public(friend) fun transfer_object(order_v2: OrderV2, recipient: address) {
-        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order_v2.version == 0, EInappropriateVersion);
         transfer::transfer(order_v2, recipient);
     }
 
@@ -536,7 +536,7 @@ module sui_demo_contracts::order_v2 {
     }
 
     public(friend) fun share_object(order_v2: OrderV2) {
-        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order_v2.version == 0, EInappropriateVersion);
         transfer::share_object(order_v2);
     }
 
@@ -546,7 +546,7 @@ module sui_demo_contracts::order_v2 {
     }
 
     public(friend) fun freeze_object(order_v2: OrderV2) {
-        assert!(order_v2.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order_v2.version == 0, EInappropriateVersion);
         transfer::freeze_object(order_v2);
     }
 
@@ -557,7 +557,7 @@ module sui_demo_contracts::order_v2 {
 
     fun update_object_version(order_v2: &mut OrderV2) {
         order_v2.version = order_v2.version + 1;
-        //assert!(order_v2.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(order_v2.version != 0, EInappropriateVersion);
     }
 
     public(friend) fun emit_order_v2_created(order_v2_created: OrderV2Created) {

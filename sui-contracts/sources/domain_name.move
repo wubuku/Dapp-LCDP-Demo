@@ -15,9 +15,9 @@ module sui_demo_contracts::domain_name {
     friend sui_demo_contracts::domain_name_renew_logic;
     friend sui_demo_contracts::domain_name_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
 
     struct DomainNameId has store, drop, copy {
         top_level_domain: String,
@@ -201,7 +201,7 @@ module sui_demo_contracts::domain_name {
         domain_name_id: DomainNameId,
         domain_name_id_table: &DomainNameIdTable,
     ) {
-        assert!(!table::contains(&domain_name_id_table.table, domain_name_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&domain_name_id_table.table, domain_name_id), EIdAlreadyExists);
     }
 
     fun asset_domain_name_id_not_exists_then_add(
@@ -214,7 +214,7 @@ module sui_demo_contracts::domain_name {
     }
 
     public(friend) fun transfer_object(domain_name: DomainName, recipient: address) {
-        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(domain_name.version == 0, EInappropriateVersion);
         transfer::transfer(domain_name, recipient);
     }
 
@@ -224,7 +224,7 @@ module sui_demo_contracts::domain_name {
     }
 
     public(friend) fun share_object(domain_name: DomainName) {
-        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(domain_name.version == 0, EInappropriateVersion);
         transfer::share_object(domain_name);
     }
 
@@ -234,7 +234,7 @@ module sui_demo_contracts::domain_name {
     }
 
     public(friend) fun freeze_object(domain_name: DomainName) {
-        assert!(domain_name.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(domain_name.version == 0, EInappropriateVersion);
         transfer::freeze_object(domain_name);
     }
 
@@ -245,7 +245,7 @@ module sui_demo_contracts::domain_name {
 
     fun update_object_version(domain_name: &mut DomainName) {
         domain_name.version = domain_name.version + 1;
-        //assert!(domain_name.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(domain_name.version != 0, EInappropriateVersion);
     }
 
     public(friend) fun drop_domain_name(domain_name: DomainName) {

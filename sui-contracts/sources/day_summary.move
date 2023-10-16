@@ -16,9 +16,9 @@ module sui_demo_contracts::day_summary {
     friend sui_demo_contracts::day_summary_delete_logic;
     friend sui_demo_contracts::day_summary_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
 
     struct DaySummaryIdTable has key {
         id: UID,
@@ -218,7 +218,7 @@ module sui_demo_contracts::day_summary {
         day: Day,
         day_summary_id_table: &DaySummaryIdTable,
     ) {
-        assert!(!table::contains(&day_summary_id_table.table, day), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&day_summary_id_table.table, day), EIdAlreadyExists);
     }
 
     fun asset_day_not_exists_then_add(
@@ -231,7 +231,7 @@ module sui_demo_contracts::day_summary {
     }
 
     public(friend) fun transfer_object(day_summary: DaySummary, recipient: address) {
-        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(day_summary.version == 0, EInappropriateVersion);
         transfer::transfer(day_summary, recipient);
     }
 
@@ -241,7 +241,7 @@ module sui_demo_contracts::day_summary {
     }
 
     public(friend) fun share_object(day_summary: DaySummary) {
-        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(day_summary.version == 0, EInappropriateVersion);
         transfer::share_object(day_summary);
     }
 
@@ -251,7 +251,7 @@ module sui_demo_contracts::day_summary {
     }
 
     public(friend) fun freeze_object(day_summary: DaySummary) {
-        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(day_summary.version == 0, EInappropriateVersion);
         transfer::freeze_object(day_summary);
     }
 
@@ -262,7 +262,7 @@ module sui_demo_contracts::day_summary {
 
     fun update_object_version(day_summary: &mut DaySummary) {
         day_summary.version = day_summary.version + 1;
-        //assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(day_summary.version != 0, EInappropriateVersion);
     }
 
     public(friend) fun drop_day_summary(day_summary: DaySummary) {

@@ -16,8 +16,8 @@ module sui_demo_contracts::product {
     friend sui_demo_contracts::product_delete_logic;
     friend sui_demo_contracts::product_aggregate;
 
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
     const PRODUCT_ID_LENGTH: u64 = 20;
 
 
@@ -94,7 +94,7 @@ module sui_demo_contracts::product {
         owner: address,
         ctx: &mut TxContext,
     ): Product {
-        assert!(std::string::length(&product_id) <= 20, EDATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 20, EDataTooLong);
         Product {
             id: object::new(ctx),
             product_id,
@@ -240,7 +240,7 @@ module sui_demo_contracts::product {
     }
 
     public(friend) fun transfer_object(product: Product, recipient: address) {
-        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(product.version == 0, EInappropriateVersion);
         transfer::transfer(product, recipient);
     }
 
@@ -250,7 +250,7 @@ module sui_demo_contracts::product {
     }
 
     public(friend) fun share_object(product: Product) {
-        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(product.version == 0, EInappropriateVersion);
         transfer::share_object(product);
     }
 
@@ -260,7 +260,7 @@ module sui_demo_contracts::product {
     }
 
     public(friend) fun freeze_object(product: Product) {
-        assert!(product.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(product.version == 0, EInappropriateVersion);
         transfer::freeze_object(product);
     }
 
@@ -271,7 +271,7 @@ module sui_demo_contracts::product {
 
     public(friend) fun update_object_version(product: &mut Product) {
         product.version = product.version + 1;
-        //assert!(product.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(product.version != 0, EInappropriateVersion);
     }
 
     public(friend) fun drop_product(product: Product) {

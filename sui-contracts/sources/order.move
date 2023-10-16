@@ -18,11 +18,11 @@ module sui_demo_contracts::order {
     friend sui_demo_contracts::order_delete_logic;
     friend sui_demo_contracts::order_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const EID_NOT_FOUND: u64 = 106;
-    const EINVALID_ENUM_VALUE: u64 = 106;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const EIdNotFound: u64 = 106;
+    const EInvalidEnumValue: u64 = 106;
 
     struct Order has key {
         id: UID,
@@ -54,7 +54,7 @@ module sui_demo_contracts::order {
     }
 
     public(friend) fun set_delivery_weekdays(order: &mut Order, delivery_weekdays: vector<u8>) {
-        assert!(sui_demo_contracts::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        assert!(sui_demo_contracts::weekday::are_all_valid(&delivery_weekdays), EInvalidEnumValue);
         order.delivery_weekdays = delivery_weekdays;
     }
 
@@ -64,19 +64,19 @@ module sui_demo_contracts::order {
 
     public(friend) fun set_favorite_delivery_weekday(order: &mut Order, favorite_delivery_weekday: Option<String>) {
         if (option::is_some(&favorite_delivery_weekday)) {
-            assert!(sui_demo_contracts::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+            assert!(sui_demo_contracts::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EInvalidEnumValue);
         };
         order.favorite_delivery_weekday = favorite_delivery_weekday;
     }
 
     public(friend) fun add_item(order: &mut Order, item: OrderItem) {
         let key = order_item::product_id(&item);
-        assert!(!table::contains(&order.items, key), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&order.items, key), EIdAlreadyExists);
         table::add(&mut order.items, key, item);
     }
 
     public(friend) fun remove_item(order: &mut Order, product_id: String) {
-        assert!(table::contains(&order.items, product_id), EID_NOT_FOUND);
+        assert!(table::contains(&order.items, product_id), EIdNotFound);
         let item = table::remove(&mut order.items, product_id);
         order_item::drop_order_item(item);
     }
@@ -103,9 +103,9 @@ module sui_demo_contracts::order {
         favorite_delivery_weekday: Option<String>,
         ctx: &mut TxContext,
     ): Order {
-        assert!(sui_demo_contracts::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        assert!(sui_demo_contracts::weekday::are_all_valid(&delivery_weekdays), EInvalidEnumValue);
         if (option::is_some(&favorite_delivery_weekday)) {
-            assert!(sui_demo_contracts::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+            assert!(sui_demo_contracts::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EInvalidEnumValue);
         };
         Order {
             id: object::new(ctx),
@@ -248,7 +248,7 @@ module sui_demo_contracts::order {
 
 
     public(friend) fun transfer_object(order: Order, recipient: address) {
-        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order.version == 0, EInappropriateVersion);
         transfer::transfer(order, recipient);
     }
 
@@ -258,7 +258,7 @@ module sui_demo_contracts::order {
     }
 
     public(friend) fun share_object(order: Order) {
-        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order.version == 0, EInappropriateVersion);
         transfer::share_object(order);
     }
 
@@ -268,7 +268,7 @@ module sui_demo_contracts::order {
     }
 
     public(friend) fun freeze_object(order: Order) {
-        assert!(order.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(order.version == 0, EInappropriateVersion);
         transfer::freeze_object(order);
     }
 
@@ -279,7 +279,7 @@ module sui_demo_contracts::order {
 
     fun update_object_version(order: &mut Order) {
         order.version = order.version + 1;
-        //assert!(order.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(order.version != 0, EInappropriateVersion);
     }
 
     public(friend) fun drop_order(order: Order) {

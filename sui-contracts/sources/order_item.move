@@ -11,7 +11,7 @@ module sui_demo_contracts::order_item {
     friend sui_demo_contracts::order_delete_logic;
     friend sui_demo_contracts::order;
 
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct OrderItem has store {
         product_id: String,
@@ -44,7 +44,7 @@ module sui_demo_contracts::order_item {
         quantity: u64,
         item_amount: u128,
     ): OrderItem {
-        assert!(std::string::length(&product_id) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 50, EDataTooLong);
         OrderItem {
             product_id,
             quantity,
