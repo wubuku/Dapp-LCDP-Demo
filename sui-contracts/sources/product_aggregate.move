@@ -36,7 +36,7 @@ module sui_demo_contracts::product_aggregate {
     }
 
     public entry fun update(
-        product: product::Product,
+        product: &mut product::Product,
         name: String,
         unit_price: u128,
         owner: address,
@@ -46,32 +46,32 @@ module sui_demo_contracts::product_aggregate {
             name,
             unit_price,
             owner,
-            &product,
+            product,
             ctx,
         );
-        let updated_product = product_update_logic::mutate(
+        product_update_logic::mutate(
             &product_updated,
             product,
             ctx,
         );
-        product::update_version_and_transfer_object(updated_product, tx_context::sender(ctx));
+        product::update_object_version(product);
         product::emit_product_updated(product_updated);
     }
 
     public entry fun delete(
-        product: product::Product,
+        product: &mut product::Product,
         ctx: &mut tx_context::TxContext,
     ) {
         let product_deleted = product_delete_logic::verify(
-            &product,
+            product,
             ctx,
         );
-        let updated_product = product_delete_logic::mutate(
+        product_delete_logic::mutate(
             &product_deleted,
             product,
             ctx,
         );
-        product::drop_product(updated_product);
+        product::update_object_version(product);
         product::emit_product_deleted(product_deleted);
     }
 

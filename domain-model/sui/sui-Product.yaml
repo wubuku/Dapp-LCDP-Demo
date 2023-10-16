@@ -40,11 +40,13 @@ aggregates:
         event:
           type: ProductCrudEvent
           discriminatorValue: 1
+        #shouldCallByReference: true
 
       Delete:
         event:
           type: ProductCrudEvent
           discriminatorValue: 2
+        #shouldCallByReference: true
 
     eventObjects:
       ProductCrudEvent:

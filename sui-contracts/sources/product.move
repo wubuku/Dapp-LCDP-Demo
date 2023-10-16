@@ -269,7 +269,7 @@ module sui_demo_contracts::product {
         transfer::freeze_object(product);
     }
 
-    fun update_object_version(product: &mut Product) {
+    public(friend) fun update_object_version(product: &mut Product) {
         product.version = product.version + 1;
         //assert!(product.version != 0, EINAPPROPRIATE_VERSION);
     }

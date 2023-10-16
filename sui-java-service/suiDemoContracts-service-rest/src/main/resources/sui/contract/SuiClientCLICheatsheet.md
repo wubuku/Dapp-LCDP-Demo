@@ -68,7 +68,7 @@ sui client call --package _PACKAGE_ID_ --module product_aggregate --function cre
 
 ```shell
 sui client call --package _PACKAGE_ID_ --module product_aggregate --function update \
---args product_Object_ID '"string_name"' \"u128_unit_price\" address_owner \
+--args \"_PRODUCT_PRODUCT_OBJECT_ID_\" '"string_name"' \"u128_unit_price\" address_owner \
 --gas-budget 100000
 ```
 
@@ -76,7 +76,7 @@ sui client call --package _PACKAGE_ID_ --module product_aggregate --function upd
 
 ```shell
 sui client call --package _PACKAGE_ID_ --module product_aggregate --function delete \
---args product_Object_ID \
+--args \"_PRODUCT_PRODUCT_OBJECT_ID_\" \
 --gas-budget 100000
 ```
 

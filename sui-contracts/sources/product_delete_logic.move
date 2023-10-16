@@ -16,14 +16,13 @@ module sui_demo_contracts::product_delete_logic {
 
     public(friend) fun mutate(
         product_deleted: &product::ProductCrudEvent,
-        product: product::Product,
+        product: &mut product::Product,
         ctx: &TxContext, // modify the reference to mutable if needed
-    ): product::Product {
-        let product_id = product::product_id(&product);
+    ) {
+        let product_id = product::product_id(product);
         let _ = ctx;
         let _ = product_id;
         let _ = product_deleted;
-        product
     }
 
 }

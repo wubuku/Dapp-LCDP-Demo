@@ -25,19 +25,18 @@ module sui_demo_contracts::product_update_logic {
 
     public(friend) fun mutate(
         product_updated: &product::ProductCrudEvent,
-        product: product::Product,
+        product: &mut product::Product,
         ctx: &TxContext, // modify the reference to mutable if needed
-    ): product::Product {
+    ) {
         let name = product_crud_event::name(product_updated);
         let unit_price = product_crud_event::unit_price(product_updated);
         let owner = product_crud_event::owner(product_updated);
-        let product_id = product::product_id(&product);
+        let product_id = product::product_id(product);
         let _ = ctx;
         let _ = product_id;
-        product::set_name(&mut product, name);
-        product::set_unit_price(&mut product, unit_price);
-        product::set_owner(&mut product, owner);
-        product
+        product::set_name(product, name);
+        product::set_unit_price(product, unit_price);
+        product::set_owner(product, owner);
     }
 
 }
