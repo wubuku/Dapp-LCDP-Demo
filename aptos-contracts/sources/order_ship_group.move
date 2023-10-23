@@ -20,10 +20,10 @@ module aptos_demo::order_ship_group {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EID_NOT_FOUND: u64 = 106;
-    const ENOT_INITIALIZED: u64 = 110;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EIdNotFound: u64 = 106;
+    const ENotInitialized: u64 = 110;
 
     struct Events has key {
         order_item_ship_group_association_table_item_added_handle: event::EventHandle<OrderItemShipGroupAssociationTableItemAdded>,
@@ -36,7 +36,7 @@ module aptos_demo::order_ship_group {
     }
 
     fun emit_order_item_ship_group_association_table_item_added(table_item_added: OrderItemShipGroupAssociationTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.order_item_ship_group_association_table_item_added_handle, table_item_added);
     }
@@ -72,7 +72,7 @@ module aptos_demo::order_ship_group {
 
     public(friend) fun add_order_item_ship_group_association(order_id: String, order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) acquires Events {
         let product_id = order_item_ship_group_association::product_id(&order_item_ship_group_association);
-        assert!(!table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EID_ALREADY_EXISTS);
+        assert!(!table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EIdAlreadyExists);
         table_with_length::add(&mut order_ship_group.order_item_ship_group_associations, product_id, order_item_ship_group_association);
         emit_order_item_ship_group_association_table_item_added(OrderItemShipGroupAssociationTableItemAdded {
             order_id,
@@ -82,7 +82,7 @@ module aptos_demo::order_ship_group {
     }
 
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
-        assert!(table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EID_NOT_FOUND);
+        assert!(table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EIdNotFound);
         let order_item_ship_group_association = table_with_length::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }

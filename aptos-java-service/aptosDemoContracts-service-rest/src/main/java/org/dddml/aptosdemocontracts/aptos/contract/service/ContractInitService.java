@@ -26,7 +26,7 @@ public class ContractInitService {
 
     @Transactional
     public void initAccountAddresses() {
-        String resourceType = aptosContractAddress + "::resource_account::ResourceAccount";
+        String resourceType = aptosContractAddress + "::" + ContractConstants.RESOURCE_ACCOUNT_MODULE_RESOURCE_ACCOUNT;
         try {
             AccountResource<ResourceAccount> resource = aptosNodeApiClient.getAccountResource(aptosContractAddress,
                     resourceType, ResourceAccount.class, null);

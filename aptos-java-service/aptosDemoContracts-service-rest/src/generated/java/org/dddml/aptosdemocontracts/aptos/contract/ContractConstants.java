@@ -7,6 +7,7 @@ package org.dddml.aptosdemocontracts.aptos.contract;
 
 public class ContractConstants {
     public static final String RESOURCE_ACCOUNT_ADDRESS = "RESOURCE_ACCOUNT_ADDRESS";
+    public static final String RESOURCE_ACCOUNT_MODULE_RESOURCE_ACCOUNT = "resource_account::ResourceAccount";
 
     public static final String CONTRACT_NAMED_ADDRESS = "aptos_demo";
 

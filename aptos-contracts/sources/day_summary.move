@@ -15,10 +15,10 @@ module aptos_demo::day_summary {
     friend aptos_demo::day_summary_create_logic;
     friend aptos_demo::day_summary_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const ENOT_INITIALIZED: u64 = 110;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const ENotInitialized: u64 = 110;
 
     struct Events has key {
         day_summary_created_handle: event::EventHandle<DaySummaryCreated>,
@@ -277,30 +277,30 @@ module aptos_demo::day_summary {
     public(friend) fun asset_day_summary_not_exists(
         day: Day,
     ) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        assert!(!table::contains(&tables.day_summary_table, day), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&tables.day_summary_table, day), EIdAlreadyExists);
     }
 
     public(friend) fun update_version_and_add(day_summary: DaySummary) acquires Tables {
         day_summary.version = day_summary.version + 1;
-        //assert!(day_summary.version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(day_summary.version != 0, EInappropriateVersion);
         private_add_day_summary(day_summary);
     }
 
     public(friend) fun add_day_summary(day_summary: DaySummary) acquires Tables {
-        assert!(day_summary.version == 0, EINAPPROPRIATE_VERSION);
+        assert!(day_summary.version == 0, EInappropriateVersion);
         private_add_day_summary(day_summary);
     }
 
     public(friend) fun remove_day_summary(day: Day): DaySummary acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::remove(&mut tables.day_summary_table, day)
     }
 
     fun private_add_day_summary(day_summary: DaySummary) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
         let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
         table::add(&mut tables.day_summary_table, day(&day_summary), day_summary);
     }
@@ -332,7 +332,7 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.day_summary_created_handle, day_summary_created);
     }

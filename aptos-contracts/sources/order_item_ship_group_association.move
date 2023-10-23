@@ -21,10 +21,10 @@ module aptos_demo::order_item_ship_group_association {
     friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_ship_group;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EID_NOT_FOUND: u64 = 106;
-    const ENOT_INITIALIZED: u64 = 110;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EIdNotFound: u64 = 106;
+    const ENotInitialized: u64 = 110;
 
     struct Events has key {
         order_item_ship_group_assoc_subitem_table_item_added_handle: event::EventHandle<OrderItemShipGroupAssocSubitemTableItemAdded>,
@@ -38,7 +38,7 @@ module aptos_demo::order_item_ship_group_association {
     }
 
     fun emit_order_item_ship_group_assoc_subitem_table_item_added(table_item_added: OrderItemShipGroupAssocSubitemTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENOT_INITIALIZED);
+        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
         let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
         event::emit_event(&mut events.order_item_ship_group_assoc_subitem_table_item_added_handle, table_item_added);
     }
@@ -82,7 +82,7 @@ module aptos_demo::order_item_ship_group_association {
 
     public(friend) fun add_subitem(order_id: String, order_ship_group_ship_group_seq_id: u8, order_item_ship_group_association: &mut OrderItemShipGroupAssociation, subitem: OrderItemShipGroupAssocSubitem) acquires Events {
         let order_item_ship_group_assoc_subitem_day = order_item_ship_group_assoc_subitem::order_item_ship_group_assoc_subitem_day(&subitem);
-        assert!(!table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_ALREADY_EXISTS);
+        assert!(!table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EIdAlreadyExists);
         table_with_length::add(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day, subitem);
         emit_order_item_ship_group_assoc_subitem_table_item_added(OrderItemShipGroupAssocSubitemTableItemAdded {
             order_id,
@@ -93,7 +93,7 @@ module aptos_demo::order_item_ship_group_association {
     }
 
     public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {
-        assert!(table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EID_NOT_FOUND);
+        assert!(table_with_length::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EIdNotFound);
         let subitem = table_with_length::remove(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day);
         order_item_ship_group_assoc_subitem::drop_order_item_ship_group_assoc_subitem(subitem);
     }
@@ -119,7 +119,7 @@ module aptos_demo::order_item_ship_group_association {
         quantity: u64,
         cancel_quantity: u64,
     ): OrderItemShipGroupAssociation {
-        assert!(std::string::length(&product_id) <= 100, EDATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 100, EDataTooLong);
         OrderItemShipGroupAssociation {
             product_id,
             quantity,
