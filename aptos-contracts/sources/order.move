@@ -50,8 +50,8 @@ module aptos_demo::order {
     }
 
     fun emit_order_item_table_item_added(table_item_added: OrderItemTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_item_table_item_added_handle, table_item_added);
     }
 
@@ -61,8 +61,8 @@ module aptos_demo::order {
     }
 
     fun emit_order_ship_group_table_item_added(table_item_added: OrderShipGroupTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_ship_group_table_item_added_handle, table_item_added);
     }
 
@@ -505,8 +505,8 @@ module aptos_demo::order {
     public(friend) fun asset_order_not_exists(
         order_id: String,
     ) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         assert!(!table::contains(&tables.order_table, order_id), EIdAlreadyExists);
     }
 
@@ -522,15 +522,15 @@ module aptos_demo::order {
     }
 
     public(friend) fun remove_order(order_id: String): Order acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         table::remove(&mut tables.order_table, order_id)
     }
 
     fun private_add_order(order: Order) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.order_table, order_id(&order), order);
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
+        table::add(&mut tables.order_table, order.order_id, order);
     }
 
     public fun get_order(order_id: String): pass_object::PassObject<Order> acquires Tables {
@@ -543,51 +543,56 @@ module aptos_demo::order {
         private_add_order(order);
     }
 
+    public fun contains_order(order_id: String): bool acquires Tables {
+        let tables = borrow_global<Tables>(genesis_account::resource_account_address());
+        table::contains(&tables.order_table, order_id)
+    }
+
     public(friend) fun emit_order_created(order_created: OrderCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_created_handle, order_created);
     }
 
     public(friend) fun emit_order_item_removed(order_item_removed: OrderItemRemoved) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_item_removed_handle, order_item_removed);
     }
 
     public(friend) fun emit_order_item_quantity_updated(order_item_quantity_updated: OrderItemQuantityUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_item_quantity_updated_handle, order_item_quantity_updated);
     }
 
     public(friend) fun emit_order_estimated_ship_date_updated(order_estimated_ship_date_updated: OrderEstimatedShipDateUpdated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_estimated_ship_date_updated_handle, order_estimated_ship_date_updated);
     }
 
     public(friend) fun emit_order_ship_group_added(order_ship_group_added: OrderShipGroupAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_ship_group_added_handle, order_ship_group_added);
     }
 
     public(friend) fun emit_order_ship_group_quantity_canceled(order_ship_group_quantity_canceled: OrderShipGroupQuantityCanceled) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_ship_group_quantity_canceled_handle, order_ship_group_quantity_canceled);
     }
 
     public(friend) fun emit_order_ship_group_item_removed(order_ship_group_item_removed: OrderShipGroupItemRemoved) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_ship_group_item_removed_handle, order_ship_group_item_removed);
     }
 
     public(friend) fun emit_order_ship_group_removed(order_ship_group_removed: OrderShipGroupRemoved) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_ship_group_removed_handle, order_ship_group_removed);
     }
 

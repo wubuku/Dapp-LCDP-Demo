@@ -38,8 +38,8 @@ module aptos_demo::order_item_ship_group_association {
     }
 
     fun emit_order_item_ship_group_assoc_subitem_table_item_added(table_item_added: OrderItemShipGroupAssocSubitemTableItemAdded) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.order_item_ship_group_assoc_subitem_table_item_added_handle, table_item_added);
     }
 

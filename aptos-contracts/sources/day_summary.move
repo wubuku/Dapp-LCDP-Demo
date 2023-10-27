@@ -277,8 +277,8 @@ module aptos_demo::day_summary {
     public(friend) fun asset_day_summary_not_exists(
         day: Day,
     ) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         assert!(!table::contains(&tables.day_summary_table, day), EIdAlreadyExists);
     }
 
@@ -294,15 +294,15 @@ module aptos_demo::day_summary {
     }
 
     public(friend) fun remove_day_summary(day: Day): DaySummary acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         table::remove(&mut tables.day_summary_table, day)
     }
 
     fun private_add_day_summary(day_summary: DaySummary) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.day_summary_table, day(&day_summary), day_summary);
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
+        table::add(&mut tables.day_summary_table, day_summary.day, day_summary);
     }
 
     public fun get_day_summary(day: Day): pass_object::PassObject<DaySummary> acquires Tables {
@@ -331,9 +331,14 @@ module aptos_demo::day_summary {
         } = day_summary;
     }
 
+    public fun contains_day_summary(day: Day): bool acquires Tables {
+        let tables = borrow_global<Tables>(genesis_account::resource_account_address());
+        table::contains(&tables.day_summary_table, day)
+    }
+
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.day_summary_created_handle, day_summary_created);
     }
 

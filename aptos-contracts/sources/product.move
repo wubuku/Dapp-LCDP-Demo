@@ -49,7 +49,7 @@ module aptos_demo::product {
             sequence: 0,
         };
         move_to(&res_account, product_id_generator);
-        // let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        // let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         // event::emit_event(&mut events.product_id_generator_created_handle, ProductIdGeneratorCreated {
         // });
 
@@ -135,8 +135,8 @@ module aptos_demo::product {
         name: String,
         unit_price: u128,
     ): ProductEvent acquires ProductIdGenerator {
-        assert!(exists<ProductIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
-        let product_id_generator = borrow_global_mut<ProductIdGenerator>(genesis_account::resouce_account_address());
+        assert!(exists<ProductIdGenerator>(genesis_account::resource_account_address()), ENotInitialized);
+        let product_id_generator = borrow_global_mut<ProductIdGenerator>(genesis_account::resource_account_address());
         let product_id = next_product_id(product_id_generator);
         ProductEvent {
             event_type: 0,
@@ -178,8 +178,8 @@ module aptos_demo::product {
         name: String,
         unit_price: u128,
     ): Product acquires ProductIdGenerator {
-        assert!(exists<ProductIdGenerator>(genesis_account::resouce_account_address()), ENotInitialized);
-        let product_id_generator = borrow_global<ProductIdGenerator>(genesis_account::resouce_account_address());
+        assert!(exists<ProductIdGenerator>(genesis_account::resource_account_address()), ENotInitialized);
+        let product_id_generator = borrow_global<ProductIdGenerator>(genesis_account::resource_account_address());
         let product_id = current_product_id(product_id_generator);
         let product = new_product(
             product_id,
@@ -229,15 +229,15 @@ module aptos_demo::product {
     }
 
     public(friend) fun remove_product(product_id: String): Product acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
         table::remove(&mut tables.product_table, product_id)
     }
 
     fun private_add_product(product: Product) acquires Tables {
-        assert!(exists<Tables>(genesis_account::resouce_account_address()), ENotInitialized);
-        let tables = borrow_global_mut<Tables>(genesis_account::resouce_account_address());
-        table::add(&mut tables.product_table, product_id(&product), product);
+        assert!(exists<Tables>(genesis_account::resource_account_address()), ENotInitialized);
+        let tables = borrow_global_mut<Tables>(genesis_account::resource_account_address());
+        table::add(&mut tables.product_table, product.product_id, product);
     }
 
     public fun get_product(product_id: String): pass_object::PassObject<Product> acquires Tables {
@@ -259,21 +259,26 @@ module aptos_demo::product {
         } = product;
     }
 
+    public fun contains_product(product_id: String): bool acquires Tables {
+        let tables = borrow_global<Tables>(genesis_account::resource_account_address());
+        table::contains(&tables.product_table, product_id)
+    }
+
     public(friend) fun emit_product_created(product_created: ProductEvent) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.product_event_handle, product_created);
     }
 
     public(friend) fun emit_product_updated(product_updated: ProductEvent) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.product_event_handle, product_updated);
     }
 
     public(friend) fun emit_product_deleted(product_deleted: ProductEvent) acquires Events {
-        assert!(exists<Events>(genesis_account::resouce_account_address()), ENotInitialized);
-        let events = borrow_global_mut<Events>(genesis_account::resouce_account_address());
+        assert!(exists<Events>(genesis_account::resource_account_address()), ENotInitialized);
+        let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
         event::emit_event(&mut events.product_event_handle, product_deleted);
     }
 
