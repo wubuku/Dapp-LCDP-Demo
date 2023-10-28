@@ -49,9 +49,6 @@ module aptos_demo::product {
             sequence: 0,
         };
         move_to(&res_account, product_id_generator);
-        // let events = borrow_global_mut<Events>(genesis_account::resource_account_address());
-        // event::emit_event(&mut events.product_id_generator_created_handle, ProductIdGeneratorCreated {
-        // });
 
         move_to(
             &res_account,
