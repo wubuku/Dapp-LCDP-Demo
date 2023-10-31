@@ -49,6 +49,11 @@ module aptos_demo::genesis_account {
         resource_account::resource_account_signer(@aptos_demo)
     }
 
+    public fun resource_account_signer_for_genesis_account(account: &signer): signer {
+        assert_genesis_account(account);
+        resource_account_signer()
+    }
+
     public fun resource_account_address(): address {
         let res_account = resource_account::resource_account_signer(@aptos_demo);
         signer::address_of(&res_account)
