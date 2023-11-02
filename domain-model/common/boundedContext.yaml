@@ -8,7 +8,11 @@ configuration:
 
   #  defaultModule:
   #    name: "Dddml.SuiDemoContracts"
-  
+
+  #defaultTimestampType: "DateTime"
+  #defaultEntityVersionPropertyType: "long"
+  #defaultBooleanType: "bool"
+
   #  isSurrogateIdMandatory: true
   #  defaultSurrogateId:
   #    name: Id
@@ -33,16 +37,20 @@ configuration:
   valueObjectBaseTypes:
     "Email": "string"
 
-  #defaultTimestampType: "Timestamp"
-
   defaultReservedProperties:
-    active: Active
-    createdBy: CreatedBy
-    createdAt: CreatedAt
-    updatedBy: UpdatedBy
-    updatedAt: UpdatedAt
-    deleted: Deleted
     version: OffChainVersion
+    #or
+    #version:
+    #  name: OffChainVersion
+#    active: Active
+#    createdBy: CreatedBy
+#    createdAt: CreatedAt
+#    updatedBy: UpdatedBy
+#    #or
+#    #updatedBy:
+#    #  name: UpdatedBy
+#    updatedAt: UpdatedAt
+#    deleted: Deleted
 
   sqlTypes:
     DateTime: DATETIME
