@@ -77,9 +77,9 @@ configuration:
   metadata:
     
     HttpServicesAuthorizationEnabled: false
+    AlwaysGeneratingClobEventProperties: true
     #AutoAggregateMethodJavaDefautLogicEnabled: true
-    #AlwaysGeneratingClobEventProperties: true
-    
+
     HttpPostCreationWithIdEnabled: true
     HttpPutToMergePatchEnabled: true
     
