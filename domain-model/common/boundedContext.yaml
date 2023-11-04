@@ -168,9 +168,10 @@ configuration:
     isUsingSeparatedDomainAggregatePackage: true
     defaultUserIdType: "string"
     #JavaSerializationAnnotationTypes: {}
+    stateLobPropertiesName: "DynamicProperties"
     eventLobPropertiesName: "DynamicProperties"
-    eventLobPropertiesPersistenceName: "DynamicPropertiesLob"
-    eventLobPropertiesSqlType: VARCHAR(2000)
+    eventClobPropertiesPersistenceName: "DynamicPropertiesLob"
+    eventClobPropertiesSqlType: VARCHAR(2000)
     
     typeMappings:
       "bool": "Boolean"
