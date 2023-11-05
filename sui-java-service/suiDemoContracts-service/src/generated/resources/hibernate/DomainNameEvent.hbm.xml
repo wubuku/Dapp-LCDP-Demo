@@ -46,7 +46,7 @@
     </property>
     <property name="commandType" column="command_type" length="50" />
     <subclass name="AbstractDomainNameEvent$DomainNameClobEvent" discriminator-value="DomainNameClobEvent">
-      <property name="DynamicPropertiesLob">
+      <property name="dynamicPropertiesLob">
         <column name="dynamic_properties_lob" sql-type="VARCHAR(2000)" />
       </property>
       <subclass name="AbstractDomainNameEvent$Registered" discriminator-value="Registered" />
