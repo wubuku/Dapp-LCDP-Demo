@@ -85,6 +85,8 @@ public class SchemaTool {
         Properties props = new Properties();
         props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         props.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
+//        props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
+//        props.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         props.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.EhCacheProvider");
         props.setProperty("hibernate.cache.use_second_level_cache", "false");
         return props;
@@ -276,6 +278,13 @@ public class SchemaTool {
 
     private org.hibernate.cfg.Configuration getHibernateConfiguration() {
         String connString = getConnectionUrl();
+        //
+        // For MySQL (jdbc:mysql). If using PostgreSQL, comment out the following lines
+        //String connAllowMQOpt = "allowMultiQueries=true";
+        //if (!connString.toLowerCase().contains((connAllowMQOpt).toLowerCase())) {
+        //    connString = connString + (connString.endsWith("&") ? "" : "&") + connAllowMQOpt;
+        //}
+        //
         String connAllowMQOpt = "allowMultiQueries=true";
         if (!connString.toLowerCase().contains((connAllowMQOpt).toLowerCase())) {
             connString = connString + (connString.endsWith("&") ? "" : "&") + connAllowMQOpt;
