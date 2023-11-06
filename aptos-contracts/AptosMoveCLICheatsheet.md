@@ -100,7 +100,7 @@ aptos move run --function-id 'default::product_aggregate::delete' \
 
 ```shell
 aptos move run --function-id 'default::day_summary_aggregate::create' \
---args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'vector<u8>:meta_data_item_1,meta_data_item_2' 'vector<string>:array_data_item_1,array_data_item_2' 'vector<string>:optional_data' 'vector<u16>:u16_array_data_item_1,u16_array_data_item_2' 'vector<u32>:u32_array_data_item_1,u32_array_data_item_2' 'vector<u64>:u64_array_data_item_1,u64_array_data_item_2' 'vector<u128>:u128_array_data_item_1,u128_array_data_item_2' 'vector<u256>:u256_array_data_item_1,u256_array_data_item_2' \
+--args u16:day_month_year_number 'string:day_month_year_calendar' u8:day_month_number bool:day_month_is_leap u8:day_number 'string:day_time_zone' 'string:description' 'u8:[meta_data_item_1,meta_data_item_2]' 'string:[array_data_item_1,array_data_item_2]' 'string:[optional_data]' 'u16:[u16_array_data_item_1,u16_array_data_item_2]' 'u32:[u32_array_data_item_1,u32_array_data_item_2]' 'u64:[u64_array_data_item_1,u64_array_data_item_2]' 'u128:[u128_array_data_item_1,u128_array_data_item_2]' 'u256:[u256_array_data_item_1,u256_array_data_item_2]' \
 --assume-yes
 ```
 
