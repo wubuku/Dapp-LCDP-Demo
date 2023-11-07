@@ -5,6 +5,7 @@
 
 module sui_demo_contracts::year {
     use std::string::String;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct Year has store, drop, copy {

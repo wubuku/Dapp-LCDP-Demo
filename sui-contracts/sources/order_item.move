@@ -11,6 +11,7 @@ module sui_demo_contracts::order_item {
     friend sui_demo_contracts::order_delete_logic;
     friend sui_demo_contracts::order;
 
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct OrderItem has store {

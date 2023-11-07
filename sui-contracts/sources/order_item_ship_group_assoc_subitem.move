@@ -16,6 +16,7 @@ module sui_demo_contracts::order_item_ship_group_assoc_subitem {
     friend sui_demo_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_demo_contracts::order_item_ship_group_association;
 
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct OrderItemShipGroupAssocSubitem has store, drop {

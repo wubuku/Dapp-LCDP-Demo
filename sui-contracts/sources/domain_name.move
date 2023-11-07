@@ -16,6 +16,7 @@ module sui_demo_contracts::domain_name {
     friend sui_demo_contracts::domain_name_aggregate;
 
     const EIdAlreadyExists: u64 = 101;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
 

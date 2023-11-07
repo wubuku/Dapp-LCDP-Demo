@@ -25,6 +25,7 @@ module sui_demo_contracts::order_v2 {
     friend sui_demo_contracts::order_v2_aggregate;
 
     const EIdAlreadyExists: u64 = 101;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
     const EIdNotFound: u64 = 106;

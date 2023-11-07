@@ -5,6 +5,7 @@
 
 module sui_demo_contracts::month {
     use sui_demo_contracts::year::Year;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct Month has store, drop, copy {

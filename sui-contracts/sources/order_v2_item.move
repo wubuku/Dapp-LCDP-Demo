@@ -15,6 +15,7 @@ module sui_demo_contracts::order_v2_item {
     friend sui_demo_contracts::order_v2_remove_order_ship_group_logic;
     friend sui_demo_contracts::order_v2;
 
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct OrderV2Item has store {

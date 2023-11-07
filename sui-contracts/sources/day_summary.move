@@ -17,6 +17,7 @@ module sui_demo_contracts::day_summary {
     friend sui_demo_contracts::day_summary_aggregate;
 
     const EIdAlreadyExists: u64 = 101;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
 

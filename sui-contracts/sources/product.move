@@ -16,6 +16,7 @@ module sui_demo_contracts::product {
     friend sui_demo_contracts::product_delete_logic;
     friend sui_demo_contracts::product_aggregate;
 
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
     const PRODUCT_ID_LENGTH: u64 = 20;

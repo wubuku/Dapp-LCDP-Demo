@@ -6,6 +6,7 @@
 module sui_demo_contracts::day {
     use std::string::String;
     use sui_demo_contracts::month::Month;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
 
     struct Day has store, drop, copy {

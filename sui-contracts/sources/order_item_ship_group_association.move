@@ -20,6 +20,7 @@ module sui_demo_contracts::order_item_ship_group_association {
     friend sui_demo_contracts::order_ship_group;
 
     const EIdAlreadyExists: u64 = 101;
+    #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EIdNotFound: u64 = 106;
 
