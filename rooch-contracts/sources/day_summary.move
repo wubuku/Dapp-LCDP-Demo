@@ -21,17 +21,17 @@ module rooch_demo::day_summary {
     friend rooch_demo::day_summary_delete_logic;
     friend rooch_demo::day_summary_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const ENotGenesisAccount: u64 = 105;
 
     struct Tables has key {
         day_summary_id_table: Table<Day, ObjectID>,
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
-        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENotGenesisAccount));
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -324,7 +324,7 @@ module rooch_demo::day_summary {
         day: Day,
     ) {
         let tables = account_storage::global_borrow<Tables>(storage_ctx, @rooch_demo);
-        assert!(!table::contains(&tables.day_summary_id_table, day), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&tables.day_summary_id_table, day), EIdAlreadyExists);
     }
 
     fun asset_day_not_exists_then_add(
@@ -339,7 +339,7 @@ module rooch_demo::day_summary {
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, day_summary_obj: Object<DaySummary>) {
         object::borrow_mut(&mut day_summary_obj).version = object::borrow( &mut day_summary_obj).version + 1;
-        //assert!(object::borrow(&day_summary_obj).version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(object::borrow(&day_summary_obj).version != 0, EInappropriateVersion);
         private_add_day_summary(storage_ctx, day_summary_obj);
     }
 
@@ -349,7 +349,7 @@ module rooch_demo::day_summary {
     }
 
     public(friend) fun add_day_summary(storage_ctx: &mut StorageContext, day_summary_obj: Object<DaySummary>) {
-        assert!(object::borrow(&day_summary_obj).version == 0, EINAPPROPRIATE_VERSION);
+        assert!(object::borrow(&day_summary_obj).version == 0, EInappropriateVersion);
         private_add_day_summary(storage_ctx, day_summary_obj);
     }
 

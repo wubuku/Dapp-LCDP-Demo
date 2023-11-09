@@ -21,9 +21,9 @@ module rooch_demo::order_ship_group {
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EID_NOT_FOUND: u64 = 106;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EIdNotFound: u64 = 106;
 
     struct OrderItemShipGroupAssociationTableItemAdded has key {
         order_id: String,
@@ -51,7 +51,7 @@ module rooch_demo::order_ship_group {
 
     public(friend) fun add_order_item_ship_group_association(storage_ctx: &mut StorageContext, order_id: String, order_ship_group: &mut OrderShipGroup, order_item_ship_group_association: OrderItemShipGroupAssociation) {
         let product_obj_id = order_item_ship_group_association::product_obj_id(&order_item_ship_group_association);
-        assert!(!table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EIdAlreadyExists);
         table::add(&mut order_ship_group.order_item_ship_group_associations, product_obj_id, order_item_ship_group_association);
         event::emit(storage_ctx, OrderItemShipGroupAssociationTableItemAdded {
             order_id,
@@ -62,7 +62,7 @@ module rooch_demo::order_ship_group {
 
     /*
     public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_obj_id: ObjectID) {
-        assert!(table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EID_NOT_FOUND);
+        assert!(table::contains(&order_ship_group.order_item_ship_group_associations, product_obj_id), EIdNotFound);
         let order_item_ship_group_association = table::remove(&mut order_ship_group.order_item_ship_group_associations, product_obj_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }

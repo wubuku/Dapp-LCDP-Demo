@@ -6,7 +6,7 @@
 module rooch_demo::reference_vo {
     use std::option::Option;
     use std::string::String;
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct ReferenceVO has store, drop, copy {
         reference_number: u64,

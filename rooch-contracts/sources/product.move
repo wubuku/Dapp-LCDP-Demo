@@ -21,9 +21,9 @@ module rooch_demo::product {
     friend rooch_demo::product_delete_logic;
     friend rooch_demo::product_aggregate;
 
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const ENotGenesisAccount: u64 = 105;
     const PRODUCT_ID_LENGTH: u64 = 20;
 
 
@@ -35,7 +35,7 @@ module rooch_demo::product {
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
-        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENotGenesisAccount));
         let product_id_generator = ProductIdGenerator {
             sequence: 0,
         };
@@ -87,7 +87,7 @@ module rooch_demo::product {
         name: String,
         unit_price: u128,
     ): Product {
-        assert!(std::string::length(&product_id) <= 20, EDATA_TOO_LONG);
+        assert!(std::string::length(&product_id) <= 20, EDataTooLong);
         Product {
             product_id,
             version: 0,
@@ -227,7 +227,7 @@ module rooch_demo::product {
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
         object::borrow_mut(&mut product_obj).version = object::borrow( &mut product_obj).version + 1;
-        //assert!(object::borrow(&product_obj).version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(object::borrow(&product_obj).version != 0, EInappropriateVersion);
         private_add_product(storage_ctx, product_obj);
     }
 
@@ -237,12 +237,12 @@ module rooch_demo::product {
     }
 
     public(friend) fun add_product(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
-        assert!(object::borrow(&product_obj).version == 0, EINAPPROPRIATE_VERSION);
+        assert!(object::borrow(&product_obj).version == 0, EInappropriateVersion);
         private_add_product(storage_ctx, product_obj);
     }
 
     fun private_add_product(storage_ctx: &mut StorageContext, product_obj: Object<Product>) {
-        assert!(std::string::length(&object::borrow(&product_obj).product_id) <= 20, EDATA_TOO_LONG);
+        assert!(std::string::length(&object::borrow(&product_obj).product_id) <= 20, EDataTooLong);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, product_obj);
     }

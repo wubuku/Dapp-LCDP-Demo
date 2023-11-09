@@ -69,7 +69,11 @@
                 <artifactId>guava</artifactId>
                 <version>21.0</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.hypersistence</groupId>
+                <artifactId>hypersistence-utils-hibernate-55</artifactId>
+                <version>3.6.0</version>
+            </dependency>
             <!-- Maven -->
             <dependency>
                 <groupId>org.apache.maven</groupId>

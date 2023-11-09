@@ -5,7 +5,7 @@
 
 module rooch_demo::month {
     use rooch_demo::year::Year;
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct Month has store, drop, copy {
         year: Year,

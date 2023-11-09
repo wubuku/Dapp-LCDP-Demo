@@ -30,6 +30,7 @@ configuration:
   java:
     boundedContextPackage: "org.dddml.roochdemocontracts"
     specializationPackage: "org.dddml.roochdemocontracts.specialization"
+    isSurrogateIdPreferred: true
 
     typeMappings:
       "vector<u8>": "String" # Mapped to Hex String, not byte[]

@@ -19,17 +19,17 @@ module rooch_demo::tag {
     friend rooch_demo::tag_create_logic;
     friend rooch_demo::tag_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const ENOT_GENESIS_ACCOUNT: u64 = 105;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const ENotGenesisAccount: u64 = 105;
 
     struct Tables has key {
         tag_name_table: Table<String, ObjectID>,
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
-        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENotGenesisAccount));
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -62,7 +62,7 @@ module rooch_demo::tag {
     fun new_tag(
         name: String,
     ): Tag {
-        assert!(std::string::length(&name) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&name) <= 50, EDataTooLong);
         Tag {
             name,
             version: 0,
@@ -119,7 +119,7 @@ module rooch_demo::tag {
         name: String,
     ) {
         let tables = account_storage::global_borrow<Tables>(storage_ctx, @rooch_demo);
-        assert!(!table::contains(&tables.tag_name_table, name), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&tables.tag_name_table, name), EIdAlreadyExists);
     }
 
     fun asset_name_not_exists_then_add(
@@ -134,7 +134,7 @@ module rooch_demo::tag {
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
         object::borrow_mut(&mut tag_obj).version = object::borrow( &mut tag_obj).version + 1;
-        //assert!(object::borrow(&tag_obj).version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(object::borrow(&tag_obj).version != 0, EInappropriateVersion);
         private_add_tag(storage_ctx, tag_obj);
     }
 
@@ -144,12 +144,12 @@ module rooch_demo::tag {
     }
 
     public(friend) fun add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
-        assert!(object::borrow(&tag_obj).version == 0, EINAPPROPRIATE_VERSION);
+        assert!(object::borrow(&tag_obj).version == 0, EInappropriateVersion);
         private_add_tag(storage_ctx, tag_obj);
     }
 
     fun private_add_tag(storage_ctx: &mut StorageContext, tag_obj: Object<Tag>) {
-        assert!(std::string::length(&object::borrow(&tag_obj).name) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&object::borrow(&tag_obj).name) <= 50, EDataTooLong);
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, tag_obj);
     }

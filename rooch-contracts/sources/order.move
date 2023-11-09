@@ -29,12 +29,12 @@ module rooch_demo::order {
     friend rooch_demo::order_remove_order_ship_group_item_logic;
     friend rooch_demo::order_aggregate;
 
-    const EID_ALREADY_EXISTS: u64 = 101;
-    const EDATA_TOO_LONG: u64 = 102;
-    const EINAPPROPRIATE_VERSION: u64 = 103;
-    const ENOT_GENESIS_ACCOUNT: u64 = 105;
-    const EID_NOT_FOUND: u64 = 106;
-    const EINVALID_ENUM_VALUE: u64 = 106;
+    const EIdAlreadyExists: u64 = 101;
+    const EDataTooLong: u64 = 102;
+    const EInappropriateVersion: u64 = 103;
+    const ENotGenesisAccount: u64 = 105;
+    const EIdNotFound: u64 = 106;
+    const EInvalidEnumValue: u64 = 106;
 
     struct Tables has key {
         order_id_table: Table<String, ObjectID>,
@@ -51,7 +51,7 @@ module rooch_demo::order {
     }
 
     public fun initialize(storage_ctx: &mut StorageContext, account: &signer) {
-        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENOT_GENESIS_ACCOUNT));
+        assert!(signer::address_of(account) == @rooch_demo, error::invalid_argument(ENotGenesisAccount));
         let tx_ctx = storage_context::tx_context_mut(storage_ctx);
 
         account_storage::global_move_to(
@@ -108,7 +108,7 @@ module rooch_demo::order {
     }
 
     public(friend) fun set_delivery_weekdays(order_obj: &mut Object<Order>, delivery_weekdays: vector<u8>) {
-        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EInvalidEnumValue);
         object::borrow_mut(order_obj).delivery_weekdays = delivery_weekdays;
     }
 
@@ -118,14 +118,14 @@ module rooch_demo::order {
 
     public(friend) fun set_favorite_delivery_weekday(order_obj: &mut Object<Order>, favorite_delivery_weekday: Option<String>) {
         if (option::is_some(&favorite_delivery_weekday)) {
-            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EInvalidEnumValue);
         };
         object::borrow_mut(order_obj).favorite_delivery_weekday = favorite_delivery_weekday;
     }
 
     public(friend) fun add_item(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, item: OrderItem) {
         let product_object_id = order_item::product_object_id(&item);
-        assert!(!table::contains(&object::borrow_mut(order_obj).items, product_object_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&object::borrow_mut(order_obj).items, product_object_id), EIdAlreadyExists);
         table::add(&mut object::borrow_mut(order_obj).items, product_object_id, item);
         event::emit(storage_ctx, OrderItemTableItemAdded {
             order_id: order_id(order_obj),
@@ -134,7 +134,7 @@ module rooch_demo::order {
     }
 
     public(friend) fun remove_item(order_obj: &mut Object<Order>, product_object_id: ObjectID) {
-        assert!(table::contains(&object::borrow_mut(order_obj).items, product_object_id), EID_NOT_FOUND);
+        assert!(table::contains(&object::borrow_mut(order_obj).items, product_object_id), EIdNotFound);
         let item = table::remove(&mut object::borrow_mut(order_obj).items, product_object_id);
         order_item::drop_order_item(item);
     }
@@ -153,7 +153,7 @@ module rooch_demo::order {
 
     public(friend) fun add_order_ship_group(storage_ctx: &mut StorageContext, order_obj: &mut Object<Order>, order_ship_group: OrderShipGroup) {
         let ship_group_seq_id = order_ship_group::ship_group_seq_id(&order_ship_group);
-        assert!(!table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EIdAlreadyExists);
         table::add(&mut object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id, order_ship_group);
         event::emit(storage_ctx, OrderShipGroupTableItemAdded {
             order_id: order_id(order_obj),
@@ -163,7 +163,7 @@ module rooch_demo::order {
 
     /*
     public(friend) fun remove_order_ship_group(order_obj: &mut Object<Order>, ship_group_seq_id: u8) {
-        assert!(table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EID_NOT_FOUND);
+        assert!(table::contains(&object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id), EIdNotFound);
         let order_ship_group = table::remove(&mut object::borrow_mut(order_obj).order_ship_groups, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }
@@ -189,10 +189,10 @@ module rooch_demo::order {
         delivery_weekdays: vector<u8>,
         favorite_delivery_weekday: Option<String>,
     ): Order {
-        assert!(std::string::length(&order_id) <= 50, EDATA_TOO_LONG);
-        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EINVALID_ENUM_VALUE);
+        assert!(std::string::length(&order_id) <= 50, EDataTooLong);
+        assert!(rooch_demo::weekday::are_all_valid(&delivery_weekdays), EInvalidEnumValue);
         if (option::is_some(&favorite_delivery_weekday)) {
-            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&favorite_delivery_weekday)), EInvalidEnumValue);
         };
         Order {
             order_id,
@@ -587,7 +587,7 @@ module rooch_demo::order {
         order_id: String,
     ) {
         let tables = account_storage::global_borrow<Tables>(storage_ctx, @rooch_demo);
-        assert!(!table::contains(&tables.order_id_table, order_id), EID_ALREADY_EXISTS);
+        assert!(!table::contains(&tables.order_id_table, order_id), EIdAlreadyExists);
     }
 
     fun asset_order_id_not_exists_then_add(
@@ -602,7 +602,7 @@ module rooch_demo::order {
 
     public(friend) fun update_version_and_add(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
         object::borrow_mut(&mut order_obj).version = object::borrow( &mut order_obj).version + 1;
-        //assert!(object::borrow(&order_obj).version != 0, EINAPPROPRIATE_VERSION);
+        //assert!(object::borrow(&order_obj).version != 0, EInappropriateVersion);
         private_add_order(storage_ctx, order_obj);
     }
 
@@ -612,15 +612,15 @@ module rooch_demo::order {
     }
 
     public(friend) fun add_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
-        assert!(object::borrow(&order_obj).version == 0, EINAPPROPRIATE_VERSION);
+        assert!(object::borrow(&order_obj).version == 0, EInappropriateVersion);
         private_add_order(storage_ctx, order_obj);
     }
 
     fun private_add_order(storage_ctx: &mut StorageContext, order_obj: Object<Order>) {
-        assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EDATA_TOO_LONG);
-        assert!(rooch_demo::weekday::are_all_valid(&object::borrow(&order_obj).delivery_weekdays), EINVALID_ENUM_VALUE);
+        assert!(std::string::length(&object::borrow(&order_obj).order_id) <= 50, EDataTooLong);
+        assert!(rooch_demo::weekday::are_all_valid(&object::borrow(&order_obj).delivery_weekdays), EInvalidEnumValue);
         if (option::is_some(&object::borrow(&order_obj).favorite_delivery_weekday)) {
-            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&object::borrow(&order_obj).favorite_delivery_weekday)), EINVALID_ENUM_VALUE);
+            assert!(rooch_demo::weekday2::is_valid(*option::borrow(&object::borrow(&order_obj).favorite_delivery_weekday)), EInvalidEnumValue);
         };
         let obj_store = storage_context::object_storage_mut(storage_ctx);
         object_storage::add(obj_store, order_obj);

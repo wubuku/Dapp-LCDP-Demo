@@ -6,7 +6,7 @@
 module rooch_demo::day {
     use rooch_demo::month::Month;
     use std::string::String;
-    const EDATA_TOO_LONG: u64 = 102;
+    const EDataTooLong: u64 = 102;
 
     struct Day has store, drop, copy {
         month: Month,
@@ -29,7 +29,7 @@ module rooch_demo::day {
     }
 
     fun validate(day: &Day) {
-        assert!(std::string::length(&day.time_zone) <= 50, EDATA_TOO_LONG);
+        assert!(std::string::length(&day.time_zone) <= 50, EDataTooLong);
     }
 
     public fun month(day: &Day): Month {
