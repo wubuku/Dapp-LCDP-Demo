@@ -260,7 +260,7 @@ public class DomainBeanUtils {
     }
 
     public static AptosEventGuid toAptosEventGuid(com.github.wubuku.aptos.bean.Event.Guid eventGuid) {
-        return new AptosEventGuid(new BigInteger(eventGuid.getCreationNumber()),eventGuid.getAccountAddress());
+        return new AptosEventGuid(new BigInteger(eventGuid.getCreationNumber()), eventGuid.getAccountAddress());
     }
 
     private static <T> T extractOptionalValue(Option<T> optionView) {
