@@ -32,4 +32,5 @@ public class UpdateOrderStateTaskService {
             orderEventService.updateStatusToProcessed(e);
         });
     }
+
 }

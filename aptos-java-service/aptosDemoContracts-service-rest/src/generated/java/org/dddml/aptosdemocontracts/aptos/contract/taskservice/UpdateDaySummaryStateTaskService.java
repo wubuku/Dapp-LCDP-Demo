@@ -32,4 +32,5 @@ public class UpdateDaySummaryStateTaskService {
             daySummaryEventService.updateStatusToProcessed(e);
         });
     }
+
 }
