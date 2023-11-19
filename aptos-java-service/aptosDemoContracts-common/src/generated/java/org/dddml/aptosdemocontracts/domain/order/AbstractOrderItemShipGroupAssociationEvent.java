@@ -11,7 +11,7 @@ import org.dddml.aptosdemocontracts.domain.*;
 import org.dddml.aptosdemocontracts.specialization.*;
 import org.dddml.aptosdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent, AptosEvent.MutableAptosEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent {
     private OrderItemShipGroupAssociationEventId orderItemShipGroupAssociationEventId = new OrderItemShipGroupAssociationEventId();
 
     public OrderItemShipGroupAssociationEventId getOrderItemShipGroupAssociationEventId() {

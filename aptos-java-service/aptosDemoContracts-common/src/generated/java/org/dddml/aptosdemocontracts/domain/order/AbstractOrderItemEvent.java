@@ -12,7 +12,7 @@ import org.dddml.aptosdemocontracts.domain.*;
 import org.dddml.aptosdemocontracts.specialization.*;
 import org.dddml.aptosdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent, AptosEvent.MutableAptosEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent {
     private OrderItemEventId orderItemEventId = new OrderItemEventId();
 
     public OrderItemEventId getOrderItemEventId() {

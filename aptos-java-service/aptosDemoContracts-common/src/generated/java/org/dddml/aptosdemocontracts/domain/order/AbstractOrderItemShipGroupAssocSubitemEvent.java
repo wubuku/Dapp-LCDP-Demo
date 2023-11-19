@@ -11,7 +11,7 @@ import java.util.Date;
 import org.dddml.aptosdemocontracts.specialization.*;
 import org.dddml.aptosdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent, AptosEvent.MutableAptosEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent {
     private OrderItemShipGroupAssocSubitemEventId orderItemShipGroupAssocSubitemEventId = new OrderItemShipGroupAssocSubitemEventId();
 
     public OrderItemShipGroupAssocSubitemEventId getOrderItemShipGroupAssocSubitemEventId() {
