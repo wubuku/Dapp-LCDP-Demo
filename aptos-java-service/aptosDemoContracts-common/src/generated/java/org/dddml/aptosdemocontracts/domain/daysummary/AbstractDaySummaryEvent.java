@@ -146,7 +146,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     public abstract String getEventClass();
 
-    public static class DaySummaryClobEvent extends  AbstractDaySummaryEvent {
+    public static class DaySummaryClobEvent extends AbstractDaySummaryEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -182,7 +182,7 @@ public abstract class AbstractDaySummaryEvent extends AbstractEvent implements D
 
     }
 
-    public static class DaySummaryCreated extends DaySummaryClobEvent {
+    public static class DaySummaryCreated extends DaySummaryClobEvent implements DaySummaryEvent.DaySummaryCreated {
 
         @Override
         public String getEventClass() {

@@ -146,7 +146,7 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     public abstract String getEventClass();
 
-    public static class ProductClobEvent extends  AbstractProductEvent {
+    public static class ProductClobEvent extends AbstractProductEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
