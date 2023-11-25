@@ -48,17 +48,18 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
 
         @Override
         public void create(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
+            java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory = () -> newDaySummaryCreated(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, offChainVersion, commandId, requesterId);
+            DaySummaryEvent.DaySummaryCreated e;
             try {
-                verifyCreate(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, c);
+                e = verifyCreate(eventFactory, description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
+        protected DaySummaryEvent.DaySummaryCreated verifyCreate(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
             String Description = description;
             String MetaData = metaData;
             String[] ArrayData = arrayData;
@@ -69,20 +70,21 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             BigInteger[] U128ArrayData = u128ArrayData;
             BigInteger[] U256ArrayData = u256ArrayData;
 
-            ReflectUtils.invokeStaticMethod(
+            DaySummaryEvent.DaySummaryCreated e = (DaySummaryEvent.DaySummaryCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.aptosdemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
-                    new Object[]{getState(), description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.aptosdemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static void verify(DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
+//    public static DaySummaryEvent.DaySummaryCreated verify(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 

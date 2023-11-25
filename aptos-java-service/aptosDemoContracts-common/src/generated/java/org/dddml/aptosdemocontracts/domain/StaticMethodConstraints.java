@@ -22,96 +22,96 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.CreateLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "productId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "productId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.RemoveItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, VerificationContext.class},
-                    new String[]{"_", "productId"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "productId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.UpdateItemQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "productId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "productId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.UpdateEstimatedShipDateLogic",
                     "verify",
-                    new Class[]{OrderState.class, Day.class, VerificationContext.class},
-                    new String[]{"_", "estimatedShipDate"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Day.class, VerificationContext.class},
+                    new String[]{"_", "_", "estimatedShipDate"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.AddOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "shipmentMethod", "productId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productId", "cancelQuantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "productId", "cancelQuantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.RemoveOrderShipGroupItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productId"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "productId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.order.RemoveOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "unitPrice"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "unitPrice"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.product.DeleteLogic",
                     "verify",
-                    new Class[]{ProductState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.aptosdemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
-                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData"}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
+                    new String[]{"_", "_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData"}
             );
 
 

@@ -48,79 +48,164 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent> eventFactory = () -> newProductCreated(name, unitPrice, offChainVersion, commandId, requesterId);
+            ProductEvent e;
+            try {
+                e = verifyCreate(eventFactory, name, unitPrice, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
         @Override
         public void update(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent> eventFactory = () -> newProductUpdated(name, unitPrice, offChainVersion, commandId, requesterId);
+            ProductEvent e;
+            try {
+                e = verifyUpdate(eventFactory, name, unitPrice, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent> eventFactory = () -> newProductDeleted(offChainVersion, commandId, requesterId);
+            ProductEvent e;
+            try {
+                e = verifyDelete(eventFactory, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
-        protected void verifyCreate(String name, BigInteger unitPrice, ProductCommands.Create c) {
+        protected ProductEvent verifyCreate(java.util.function.Supplier<ProductEvent> eventFactory, String name, BigInteger unitPrice, ProductCommands.Create c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent e = (ProductEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.aptosdemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, unitPrice, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.aptosdemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    public static ProductEvent verify(java.util.function.Supplier<ProductEvent> eventFactory, ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdate(String name, BigInteger unitPrice, ProductCommands.Update c) {
+        protected ProductEvent verifyUpdate(java.util.function.Supplier<ProductEvent> eventFactory, String name, BigInteger unitPrice, ProductCommands.Update c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent e = (ProductEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.aptosdemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, unitPrice, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.aptosdemocontracts.domain.product;
 //
 //public class UpdateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
+//    public static ProductEvent verify(java.util.function.Supplier<ProductEvent> eventFactory, ProductState productState, String name, BigInteger unitPrice, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(ProductCommands.Delete c) {
+        protected ProductEvent verifyDelete(java.util.function.Supplier<ProductEvent> eventFactory, ProductCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent e = (ProductEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.aptosdemocontracts.domain.product.DeleteLogic",
                     "verify",
-                    new Class[]{ProductState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.aptosdemocontracts.domain.product;
 //
 //public class DeleteLogic {
-//    public static void verify(ProductState productState, VerificationContext verificationContext) {
+//    public static ProductEvent verify(java.util.function.Supplier<ProductEvent> eventFactory, ProductState productState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
+
+        protected AbstractProductEvent.ProductEvent newProductCreated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductEvent e = new AbstractProductEvent.ProductEvent();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductEvent newProductUpdated(String name, BigInteger unitPrice, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductEvent e = new AbstractProductEvent.ProductEvent();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductEvent newProductDeleted(Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductEvent e = new AbstractProductEvent.ProductEvent();
+
+            e.setAptosEventVersion(null);
+            e.setAptosEventSequenceNumber(null);
+            e.setAptosEventType(null);
+            e.setAptosEventGuid(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
 
     }
 
