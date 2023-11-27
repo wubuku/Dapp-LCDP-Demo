@@ -15,14 +15,9 @@ public class AptosNodeApiConfig {
     private String nodeApiBaseUrl;
 
     @Bean
-    public ObjectMapper aptosNodeApiObjectMapper() {
+    public NodeApiClient aptosNodeApiClient() throws MalformedURLException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-        return objectMapper;
-    }
-
-    @Bean
-    public NodeApiClient aptosNodeApiClient() throws MalformedURLException {
-        return new NodeApiClient(nodeApiBaseUrl, aptosNodeApiObjectMapper());
+        return new NodeApiClient(nodeApiBaseUrl, objectMapper);
     }
 }
