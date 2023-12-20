@@ -48,265 +48,281 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.Create c) {
+            java.util.function.Supplier<OrderV2Event.OrderV2Created> eventFactory = () -> newOrderV2Created(product, quantity, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderV2Created e;
             try {
-                verifyCreate(product, quantity, c);
+                e = verifyCreate(eventFactory, product, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2Created(product, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeItem(String productId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveItem c) {
+            java.util.function.Supplier<OrderV2Event.OrderV2ItemRemoved> eventFactory = () -> newOrderV2ItemRemoved(productId, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderV2ItemRemoved e;
             try {
-                verifyRemoveItem(productId, c);
+                e = verifyRemoveItem(eventFactory, productId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2ItemRemoved(productId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateItemQuantity c) {
+            java.util.function.Supplier<OrderV2Event.OrderV2ItemQuantityUpdated> eventFactory = () -> newOrderV2ItemQuantityUpdated(productId, quantity, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderV2ItemQuantityUpdated e;
             try {
-                verifyUpdateItemQuantity(productId, quantity, c);
+                e = verifyUpdateItemQuantity(eventFactory, productId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2ItemQuantityUpdated(productId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateEstimatedShipDate(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.UpdateEstimatedShipDate c) {
+            java.util.function.Supplier<OrderV2Event.OrderV2EstimatedShipDateUpdated> eventFactory = () -> newOrderV2EstimatedShipDateUpdated(estimatedShipDate, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderV2EstimatedShipDateUpdated e;
             try {
-                verifyUpdateEstimatedShipDate(estimatedShipDate, c);
+                e = verifyUpdateEstimatedShipDate(eventFactory, estimatedShipDate, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderV2EstimatedShipDateUpdated(estimatedShipDate, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.AddOrderShipGroup c) {
+            java.util.function.Supplier<OrderV2Event.OrderShipGroupAdded> eventFactory = () -> newOrderShipGroupAdded(shipGroupSeqId, shipmentMethod, productId, quantity, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderShipGroupAdded e;
             try {
-                verifyAddOrderShipGroup(shipGroupSeqId, shipmentMethod, productId, quantity, c);
+                e = verifyAddOrderShipGroup(eventFactory, shipGroupSeqId, shipmentMethod, productId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupAdded(shipGroupSeqId, shipmentMethod, productId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void cancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.CancelOrderShipGroupQuantity c) {
+            java.util.function.Supplier<OrderV2Event.OrderShipGroupQuantityCanceled> eventFactory = () -> newOrderShipGroupQuantityCanceled(shipGroupSeqId, productId, cancelQuantity, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderShipGroupQuantityCanceled e;
             try {
-                verifyCancelOrderShipGroupQuantity(shipGroupSeqId, productId, cancelQuantity, c);
+                e = verifyCancelOrderShipGroupQuantity(eventFactory, shipGroupSeqId, productId, cancelQuantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupQuantityCanceled(shipGroupSeqId, productId, cancelQuantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeOrderShipGroupItem(Integer shipGroupSeqId, String productId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveOrderShipGroupItem c) {
+            java.util.function.Supplier<OrderV2Event.OrderShipGroupItemRemoved> eventFactory = () -> newOrderShipGroupItemRemoved(shipGroupSeqId, productId, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderShipGroupItemRemoved e;
             try {
-                verifyRemoveOrderShipGroupItem(shipGroupSeqId, productId, c);
+                e = verifyRemoveOrderShipGroupItem(eventFactory, shipGroupSeqId, productId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupItemRemoved(shipGroupSeqId, productId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeOrderShipGroup(Integer shipGroupSeqId, Long offChainVersion, String commandId, String requesterId, OrderV2Commands.RemoveOrderShipGroup c) {
+            java.util.function.Supplier<OrderV2Event.OrderShipGroupRemoved> eventFactory = () -> newOrderShipGroupRemoved(shipGroupSeqId, offChainVersion, commandId, requesterId);
+            OrderV2Event.OrderShipGroupRemoved e;
             try {
-                verifyRemoveOrderShipGroup(shipGroupSeqId, c);
+                e = verifyRemoveOrderShipGroup(eventFactory, shipGroupSeqId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupRemoved(shipGroupSeqId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String product, BigInteger quantity, OrderV2Commands.Create c) {
+        protected OrderV2Event.OrderV2Created verifyCreate(java.util.function.Supplier<OrderV2Event.OrderV2Created> eventFactory, String product, BigInteger quantity, OrderV2Commands.Create c) {
             String Product = product;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderV2Created e = (OrderV2Event.OrderV2Created) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.CreateLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), product, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), product, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class CreateLogic {
-//    public static void verify(OrderV2State orderV2State, String product, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderV2Created verify(java.util.function.Supplier<OrderV2Event.OrderV2Created> eventFactory, OrderV2State orderV2State, String product, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveItem(String productId, OrderV2Commands.RemoveItem c) {
+        protected OrderV2Event.OrderV2ItemRemoved verifyRemoveItem(java.util.function.Supplier<OrderV2Event.OrderV2ItemRemoved> eventFactory, String productId, OrderV2Commands.RemoveItem c) {
             String ProductId = productId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderV2ItemRemoved e = (OrderV2Event.OrderV2ItemRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.RemoveItemLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), productId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class RemoveItemLogic {
-//    public static void verify(OrderV2State orderV2State, String productId, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderV2ItemRemoved verify(java.util.function.Supplier<OrderV2Event.OrderV2ItemRemoved> eventFactory, OrderV2State orderV2State, String productId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateItemQuantity(String productId, BigInteger quantity, OrderV2Commands.UpdateItemQuantity c) {
+        protected OrderV2Event.OrderV2ItemQuantityUpdated verifyUpdateItemQuantity(java.util.function.Supplier<OrderV2Event.OrderV2ItemQuantityUpdated> eventFactory, String productId, BigInteger quantity, OrderV2Commands.UpdateItemQuantity c) {
             String ProductId = productId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderV2ItemQuantityUpdated e = (OrderV2Event.OrderV2ItemQuantityUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateItemQuantityLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), productId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class UpdateItemQuantityLogic {
-//    public static void verify(OrderV2State orderV2State, String productId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderV2ItemQuantityUpdated verify(java.util.function.Supplier<OrderV2Event.OrderV2ItemQuantityUpdated> eventFactory, OrderV2State orderV2State, String productId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateEstimatedShipDate(Day estimatedShipDate, OrderV2Commands.UpdateEstimatedShipDate c) {
+        protected OrderV2Event.OrderV2EstimatedShipDateUpdated verifyUpdateEstimatedShipDate(java.util.function.Supplier<OrderV2Event.OrderV2EstimatedShipDateUpdated> eventFactory, Day estimatedShipDate, OrderV2Commands.UpdateEstimatedShipDate c) {
             Day EstimatedShipDate = estimatedShipDate;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderV2EstimatedShipDateUpdated e = (OrderV2Event.OrderV2EstimatedShipDateUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.UpdateEstimatedShipDateLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, Day.class, VerificationContext.class},
-                    new Object[]{getState(), estimatedShipDate, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, Day.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), estimatedShipDate, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class UpdateEstimatedShipDateLogic {
-//    public static void verify(OrderV2State orderV2State, Day estimatedShipDate, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderV2EstimatedShipDateUpdated verify(java.util.function.Supplier<OrderV2Event.OrderV2EstimatedShipDateUpdated> eventFactory, OrderV2State orderV2State, Day estimatedShipDate, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, OrderV2Commands.AddOrderShipGroup c) {
+        protected OrderV2Event.OrderShipGroupAdded verifyAddOrderShipGroup(java.util.function.Supplier<OrderV2Event.OrderShipGroupAdded> eventFactory, Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, OrderV2Commands.AddOrderShipGroup c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ShipmentMethod = shipmentMethod;
             String ProductId = productId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderShipGroupAdded e = (OrderV2Event.OrderShipGroupAdded) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.AddOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, shipmentMethod, productId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, shipmentMethod, productId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class AddOrderShipGroupLogic {
-//    public static void verify(OrderV2State orderV2State, Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderShipGroupAdded verify(java.util.function.Supplier<OrderV2Event.OrderShipGroupAdded> eventFactory, OrderV2State orderV2State, Integer shipGroupSeqId, String shipmentMethod, String productId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyCancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, OrderV2Commands.CancelOrderShipGroupQuantity c) {
+        protected OrderV2Event.OrderShipGroupQuantityCanceled verifyCancelOrderShipGroupQuantity(java.util.function.Supplier<OrderV2Event.OrderShipGroupQuantityCanceled> eventFactory, Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, OrderV2Commands.CancelOrderShipGroupQuantity c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ProductId = productId;
             BigInteger CancelQuantity = cancelQuantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderShipGroupQuantityCanceled e = (OrderV2Event.OrderShipGroupQuantityCanceled) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.CancelOrderShipGroupQuantityLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, productId, cancelQuantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, productId, cancelQuantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class CancelOrderShipGroupQuantityLogic {
-//    public static void verify(OrderV2State orderV2State, Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderShipGroupQuantityCanceled verify(java.util.function.Supplier<OrderV2Event.OrderShipGroupQuantityCanceled> eventFactory, OrderV2State orderV2State, Integer shipGroupSeqId, String productId, BigInteger cancelQuantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveOrderShipGroupItem(Integer shipGroupSeqId, String productId, OrderV2Commands.RemoveOrderShipGroupItem c) {
+        protected OrderV2Event.OrderShipGroupItemRemoved verifyRemoveOrderShipGroupItem(java.util.function.Supplier<OrderV2Event.OrderShipGroupItemRemoved> eventFactory, Integer shipGroupSeqId, String productId, OrderV2Commands.RemoveOrderShipGroupItem c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ProductId = productId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderShipGroupItemRemoved e = (OrderV2Event.OrderShipGroupItemRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupItemLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, Integer.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, productId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, Integer.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, productId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class RemoveOrderShipGroupItemLogic {
-//    public static void verify(OrderV2State orderV2State, Integer shipGroupSeqId, String productId, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderShipGroupItemRemoved verify(java.util.function.Supplier<OrderV2Event.OrderShipGroupItemRemoved> eventFactory, OrderV2State orderV2State, Integer shipGroupSeqId, String productId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveOrderShipGroup(Integer shipGroupSeqId, OrderV2Commands.RemoveOrderShipGroup c) {
+        protected OrderV2Event.OrderShipGroupRemoved verifyRemoveOrderShipGroup(java.util.function.Supplier<OrderV2Event.OrderShipGroupRemoved> eventFactory, Integer shipGroupSeqId, OrderV2Commands.RemoveOrderShipGroup c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderV2Event.OrderShipGroupRemoved e = (OrderV2Event.OrderShipGroupRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.orderv2.RemoveOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderV2State.class, Integer.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderV2State.class, Integer.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.orderv2;
 //
 //public class RemoveOrderShipGroupLogic {
-//    public static void verify(OrderV2State orderV2State, Integer shipGroupSeqId, VerificationContext verificationContext) {
+//    public static OrderV2Event.OrderShipGroupRemoved verify(java.util.function.Supplier<OrderV2Event.OrderShipGroupRemoved> eventFactory, OrderV2State orderV2State, Integer shipGroupSeqId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -316,17 +332,17 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
 
             e.setProduct(product);
             e.setQuantity(quantity);
-            e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
-            e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
-            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setUnitPrice(null);
+            e.setTotalAmount(null);
+            e.setOwner(null);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -341,14 +357,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             AbstractOrderV2Event.OrderV2ItemRemoved e = new AbstractOrderV2Event.OrderV2ItemRemoved();
 
             e.setProductId(productId);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -364,14 +380,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
 
             e.setProductId(productId);
             e.setQuantity(quantity);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -386,14 +402,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated e = new AbstractOrderV2Event.OrderV2EstimatedShipDateUpdated();
 
             e.setEstimatedShipDate(estimatedShipDate);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -411,14 +427,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             e.setShipmentMethod(shipmentMethod);
             e.setProductId(productId);
             e.setQuantity(quantity);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -435,14 +451,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductId(productId);
             e.setCancelQuantity(cancelQuantity);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -458,14 +474,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
 
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductId(productId);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -480,14 +496,14 @@ public abstract class AbstractOrderV2Aggregate extends AbstractAggregate impleme
             AbstractOrderV2Event.OrderShipGroupRemoved e = new AbstractOrderV2Event.OrderShipGroupRemoved();
 
             e.setShipGroupSeqId(shipGroupSeqId);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

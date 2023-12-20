@@ -11,7 +11,7 @@ import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent {
     private OrderItemShipGroupAssociationEventId orderItemShipGroupAssociationEventId = new OrderItemShipGroupAssociationEventId();
 
     public OrderItemShipGroupAssociationEventId getOrderItemShipGroupAssociationEventId() {

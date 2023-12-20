@@ -48,65 +48,69 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
 
         @Override
         public void register(BigInteger registrationPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Register c) {
+            java.util.function.Supplier<DomainNameEvent.Registered> eventFactory = () -> newRegistered(registrationPeriod, offChainVersion, commandId, requesterId);
+            DomainNameEvent.Registered e;
             try {
-                verifyRegister(registrationPeriod, c);
+                e = verifyRegister(eventFactory, registrationPeriod, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newRegistered(registrationPeriod, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void renew(BigInteger renewPeriod, Long offChainVersion, String commandId, String requesterId, DomainNameCommands.Renew c) {
+            java.util.function.Supplier<DomainNameEvent.Renewed> eventFactory = () -> newRenewed(renewPeriod, offChainVersion, commandId, requesterId);
+            DomainNameEvent.Renewed e;
             try {
-                verifyRenew(renewPeriod, c);
+                e = verifyRenew(eventFactory, renewPeriod, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newRenewed(renewPeriod, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyRegister(BigInteger registrationPeriod, DomainNameCommands.Register c) {
+        protected DomainNameEvent.Registered verifyRegister(java.util.function.Supplier<DomainNameEvent.Registered> eventFactory, BigInteger registrationPeriod, DomainNameCommands.Register c) {
             BigInteger RegistrationPeriod = registrationPeriod;
 
-            ReflectUtils.invokeStaticMethod(
+            DomainNameEvent.Registered e = (DomainNameEvent.Registered) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RegisterLogic",
                     "verify",
-                    new Class[]{DomainNameState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), registrationPeriod, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DomainNameState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), registrationPeriod, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RegisterLogic {
-//    public static void verify(DomainNameState domainNameState, BigInteger registrationPeriod, VerificationContext verificationContext) {
+//    public static DomainNameEvent.Registered verify(java.util.function.Supplier<DomainNameEvent.Registered> eventFactory, DomainNameState domainNameState, BigInteger registrationPeriod, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRenew(BigInteger renewPeriod, DomainNameCommands.Renew c) {
+        protected DomainNameEvent.Renewed verifyRenew(java.util.function.Supplier<DomainNameEvent.Renewed> eventFactory, BigInteger renewPeriod, DomainNameCommands.Renew c) {
             BigInteger RenewPeriod = renewPeriod;
 
-            ReflectUtils.invokeStaticMethod(
+            DomainNameEvent.Renewed e = (DomainNameEvent.Renewed) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.domainname.RenewLogic",
                     "verify",
-                    new Class[]{DomainNameState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), renewPeriod, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DomainNameState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), renewPeriod, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.domainname;
 //
 //public class RenewLogic {
-//    public static void verify(DomainNameState domainNameState, BigInteger renewPeriod, VerificationContext verificationContext) {
+//    public static DomainNameEvent.Renewed verify(java.util.function.Supplier<DomainNameEvent.Renewed> eventFactory, DomainNameState domainNameState, BigInteger renewPeriod, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -115,15 +119,15 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
             AbstractDomainNameEvent.Registered e = new AbstractDomainNameEvent.Registered();
 
             e.setRegistrationPeriod(registrationPeriod);
-            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setOwner(null);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -138,15 +142,15 @@ public abstract class AbstractDomainNameAggregate extends AbstractAggregate impl
             AbstractDomainNameEvent.Renewed e = new AbstractDomainNameEvent.Renewed();
 
             e.setRenewPeriod(renewPeriod);
-            e.setAccount(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setAccount(null);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

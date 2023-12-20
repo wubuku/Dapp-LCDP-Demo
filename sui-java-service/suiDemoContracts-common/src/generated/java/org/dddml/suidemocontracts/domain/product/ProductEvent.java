@@ -21,6 +21,29 @@ public interface ProductEvent extends Event, SuiEventEnvelope, SuiMoveEvent, Has
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ProductCrudEvent extends ProductEvent {
+        Integer getCrudType();
+
+        void setCrudType(Integer value);
+
+        String getId();
+
+        void setId(String value);
+
+        String getName();
+
+        void setName(String value);
+
+        BigInteger getUnitPrice();
+
+        void setUnitPrice(BigInteger value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
     String getProductId();
 
     //void setProductId(String productId);

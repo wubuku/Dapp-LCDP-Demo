@@ -238,7 +238,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     public abstract String getEventType();
 
-    public static class OrderV2ClobEvent extends  AbstractOrderV2Event {
+    public static class OrderV2ClobEvent extends AbstractOrderV2Event {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -274,7 +274,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderV2Created extends OrderV2ClobEvent {
+    public static class OrderV2Created extends OrderV2ClobEvent implements OrderV2Event.OrderV2Created {
 
         @Override
         public String getEventType() {
@@ -343,7 +343,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderV2ItemRemoved extends OrderV2ClobEvent {
+    public static class OrderV2ItemRemoved extends OrderV2ClobEvent implements OrderV2Event.OrderV2ItemRemoved {
 
         @Override
         public String getEventType() {
@@ -364,7 +364,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderV2ItemQuantityUpdated extends OrderV2ClobEvent {
+    public static class OrderV2ItemQuantityUpdated extends OrderV2ClobEvent implements OrderV2Event.OrderV2ItemQuantityUpdated {
 
         @Override
         public String getEventType() {
@@ -397,7 +397,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderV2EstimatedShipDateUpdated extends OrderV2ClobEvent {
+    public static class OrderV2EstimatedShipDateUpdated extends OrderV2ClobEvent implements OrderV2Event.OrderV2EstimatedShipDateUpdated {
 
         @Override
         public String getEventType() {
@@ -418,7 +418,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderShipGroupAdded extends OrderV2ClobEvent {
+    public static class OrderShipGroupAdded extends OrderV2ClobEvent implements OrderV2Event.OrderShipGroupAdded {
 
         @Override
         public String getEventType() {
@@ -475,7 +475,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderShipGroupQuantityCanceled extends OrderV2ClobEvent {
+    public static class OrderShipGroupQuantityCanceled extends OrderV2ClobEvent implements OrderV2Event.OrderShipGroupQuantityCanceled {
 
         @Override
         public String getEventType() {
@@ -520,7 +520,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderShipGroupItemRemoved extends OrderV2ClobEvent {
+    public static class OrderShipGroupItemRemoved extends OrderV2ClobEvent implements OrderV2Event.OrderShipGroupItemRemoved {
 
         @Override
         public String getEventType() {
@@ -553,7 +553,7 @@ public abstract class AbstractOrderV2Event extends AbstractEvent implements Orde
 
     }
 
-    public static class OrderShipGroupRemoved extends OrderV2ClobEvent {
+    public static class OrderShipGroupRemoved extends OrderV2ClobEvent implements OrderV2Event.OrderShipGroupRemoved {
 
         @Override
         public String getEventType() {

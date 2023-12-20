@@ -536,13 +536,9 @@ module sui_demo_contracts::order_v2 {
         transfer::transfer(order_v2, recipient);
     }
 
+    #[lint_allow(share_owned)]
     public(friend) fun share_object(order_v2: OrderV2) {
         assert!(order_v2.version == 0, EInappropriateVersion);
-        transfer::share_object(order_v2);
-    }
-
-    public(friend) fun update_version_and_share_object(order_v2: OrderV2) {
-        update_object_version(&mut order_v2);
         transfer::share_object(order_v2);
     }
 

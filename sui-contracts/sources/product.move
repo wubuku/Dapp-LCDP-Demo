@@ -250,13 +250,9 @@ module sui_demo_contracts::product {
         transfer::transfer(product, recipient);
     }
 
+    #[lint_allow(share_owned)]
     public(friend) fun share_object(product: Product) {
         assert!(product.version == 0, EInappropriateVersion);
-        transfer::share_object(product);
-    }
-
-    public(friend) fun update_version_and_share_object(product: Product) {
-        update_object_version(&mut product);
         transfer::share_object(product);
     }
 
@@ -278,8 +274,8 @@ module sui_demo_contracts::product {
     public(friend) fun drop_product(product: Product) {
         let Product {
             id,
-            version: _version,
             product_id: _product_id,
+            version: _version,
             name: _name,
             unit_price: _unit_price,
             owner: _owner,

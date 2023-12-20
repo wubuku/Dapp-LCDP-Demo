@@ -21,6 +21,106 @@ public interface OrderV2Event extends Event, SuiEventEnvelope, SuiMoveEvent, Has
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface OrderV2Created extends OrderV2Event {
+        String getProduct();
+
+        void setProduct(String value);
+
+        BigInteger getQuantity();
+
+        void setQuantity(BigInteger value);
+
+        BigInteger getUnitPrice();
+
+        void setUnitPrice(BigInteger value);
+
+        BigInteger getTotalAmount();
+
+        void setTotalAmount(BigInteger value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface OrderV2ItemRemoved extends OrderV2Event {
+        String getProductId();
+
+        void setProductId(String value);
+
+    }
+
+    interface OrderV2ItemQuantityUpdated extends OrderV2Event {
+        String getProductId();
+
+        void setProductId(String value);
+
+        BigInteger getQuantity();
+
+        void setQuantity(BigInteger value);
+
+    }
+
+    interface OrderV2EstimatedShipDateUpdated extends OrderV2Event {
+        Day getEstimatedShipDate();
+
+        void setEstimatedShipDate(Day value);
+
+    }
+
+    interface OrderShipGroupAdded extends OrderV2Event {
+        Integer getShipGroupSeqId();
+
+        void setShipGroupSeqId(Integer value);
+
+        String getShipmentMethod();
+
+        void setShipmentMethod(String value);
+
+        String getProductId();
+
+        void setProductId(String value);
+
+        BigInteger getQuantity();
+
+        void setQuantity(BigInteger value);
+
+    }
+
+    interface OrderShipGroupQuantityCanceled extends OrderV2Event {
+        Integer getShipGroupSeqId();
+
+        void setShipGroupSeqId(Integer value);
+
+        String getProductId();
+
+        void setProductId(String value);
+
+        BigInteger getCancelQuantity();
+
+        void setCancelQuantity(BigInteger value);
+
+    }
+
+    interface OrderShipGroupItemRemoved extends OrderV2Event {
+        Integer getShipGroupSeqId();
+
+        void setShipGroupSeqId(Integer value);
+
+        String getProductId();
+
+        void setProductId(String value);
+
+    }
+
+    interface OrderShipGroupRemoved extends OrderV2Event {
+        Integer getShipGroupSeqId();
+
+        void setShipGroupSeqId(Integer value);
+
+    }
+
     String getOrderId();
 
     //void setOrderId(String orderId);

@@ -11,7 +11,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.specialization.*;
 import org.dddml.suidemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent, SuiEventEnvelope.MutableSuiEventEnvelope, SuiMoveEvent.MutableSuiMoveEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent {
     private OrderItemShipGroupAssocSubitemEventId orderItemShipGroupAssocSubitemEventId = new OrderItemShipGroupAssocSubitemEventId();
 
     public OrderItemShipGroupAssocSubitemEventId getOrderItemShipGroupAssocSubitemEventId() {

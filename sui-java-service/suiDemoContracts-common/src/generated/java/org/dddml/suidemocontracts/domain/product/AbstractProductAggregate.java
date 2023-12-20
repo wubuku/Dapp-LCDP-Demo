@@ -48,81 +48,177 @@ public abstract class AbstractProductAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Create c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory = () -> newProductCreated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
+            ProductEvent.ProductCrudEvent e;
+            try {
+                e = verifyCreate(eventFactory, name, unitPrice, owner, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
         @Override
         public void update(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId, ProductCommands.Update c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory = () -> newProductUpdated(name, unitPrice, owner, offChainVersion, commandId, requesterId);
+            ProductEvent.ProductCrudEvent e;
+            try {
+                e = verifyUpdate(eventFactory, name, unitPrice, owner, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, ProductCommands.Delete c) {
-            throw new UnsupportedOperationException();
+            java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory = () -> newProductDeleted(offChainVersion, commandId, requesterId);
+            ProductEvent.ProductCrudEvent e;
+            try {
+                e = verifyDelete(eventFactory, c);
+            } catch (Exception ex) {
+                throw new DomainError("VerificationFailed", ex);
+            }
+
+            apply(e);
         }
 
-        protected void verifyCreate(String name, BigInteger unitPrice, String owner, ProductCommands.Create c) {
+        protected ProductEvent.ProductCrudEvent verifyCreate(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, String name, BigInteger unitPrice, String owner, ProductCommands.Create c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent.ProductCrudEvent e = (ProductEvent.ProductCrudEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class CreateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
+//    public static ProductEvent.ProductCrudEvent verify(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdate(String name, BigInteger unitPrice, String owner, ProductCommands.Update c) {
+        protected ProductEvent.ProductCrudEvent verifyUpdate(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, String name, BigInteger unitPrice, String owner, ProductCommands.Update c) {
             String Name = name;
             BigInteger UnitPrice = unitPrice;
             String Owner = owner;
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent.ProductCrudEvent e = (ProductEvent.ProductCrudEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), name, unitPrice, owner, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class UpdateLogic {
-//    public static void verify(ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
+//    public static ProductEvent.ProductCrudEvent verify(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, ProductState productState, String name, BigInteger unitPrice, String owner, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(ProductCommands.Delete c) {
+        protected ProductEvent.ProductCrudEvent verifyDelete(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, ProductCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            ProductEvent.ProductCrudEvent e = (ProductEvent.ProductCrudEvent) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.product.DeleteLogic",
                     "verify",
-                    new Class[]{ProductState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.product;
 //
 //public class DeleteLogic {
-//    public static void verify(ProductState productState, VerificationContext verificationContext) {
+//    public static ProductEvent.ProductCrudEvent verify(java.util.function.Supplier<ProductEvent.ProductCrudEvent> eventFactory, ProductState productState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
+
+        protected AbstractProductEvent.ProductCrudEvent newProductCreated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductCrudEvent e = new AbstractProductEvent.ProductCrudEvent();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+            e.setOwner(owner);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductCrudEvent newProductUpdated(String name, BigInteger unitPrice, String owner, Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductCrudEvent e = new AbstractProductEvent.ProductCrudEvent();
+
+            e.setName(name);
+            e.setUnitPrice(unitPrice);
+            e.setOwner(owner);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
+
+        protected AbstractProductEvent.ProductCrudEvent newProductDeleted(Long offChainVersion, String commandId, String requesterId) {
+            ProductEventId eventId = new ProductEventId(getState().getProductId(), null);
+            AbstractProductEvent.ProductCrudEvent e = new AbstractProductEvent.ProductCrudEvent();
+
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
+
+            e.setCommandId(commandId);
+            e.setCreatedBy(requesterId);
+            e.setCreatedAt((java.util.Date)ApplicationContext.current.getTimestampService().now(java.util.Date.class));
+
+            e.setProductEventId(eventId);
+            return e;
+        }
 
     }
 

@@ -21,6 +21,28 @@ public interface DaySummaryEvent extends Event, SuiEventEnvelope, SuiMoveEvent, 
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface DaySummaryCreated extends DaySummaryEvent {
+        String getDescription();
+
+        void setDescription(String value);
+
+        int[] getMetaData();
+
+        void setMetaData(int[] value);
+
+        String[] getArrayData();
+
+        void setArrayData(String[] value);
+
+        int[] getOptionalData();
+
+        void setOptionalData(int[] value);
+
+    }
+
+    interface DaySummaryDeleted extends DaySummaryEvent {
+    }
+
     Day getDay();
 
     //void setDay(Day day);

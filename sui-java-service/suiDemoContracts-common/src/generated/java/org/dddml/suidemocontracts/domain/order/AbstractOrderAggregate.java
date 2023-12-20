@@ -48,130 +48,138 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
         @Override
         public void create(String product, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.Create c) {
+            java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory = () -> newOrderCreated(product, quantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderCreated e;
             try {
-                verifyCreate(product, quantity, c);
+                e = verifyCreate(eventFactory, product, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderCreated(product, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeItem(String productId, Long offChainVersion, String commandId, String requesterId, OrderCommands.RemoveItem c) {
+            java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory = () -> newOrderItemRemoved(productId, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderItemRemoved e;
             try {
-                verifyRemoveItem(productId, c);
+                e = verifyRemoveItem(eventFactory, productId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderItemRemoved(productId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateItemQuantity(String productId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c) {
+            java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory = () -> newOrderItemQuantityUpdated(productId, quantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderItemQuantityUpdated e;
             try {
-                verifyUpdateItemQuantity(productId, quantity, c);
+                e = verifyUpdateItemQuantity(eventFactory, productId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderItemQuantityUpdated(productId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, OrderCommands.Delete c) {
+            java.util.function.Supplier<OrderEvent.OrderDeleted> eventFactory = () -> newOrderDeleted(offChainVersion, commandId, requesterId);
+            OrderEvent.OrderDeleted e;
             try {
-                verifyDelete(c);
+                e = verifyDelete(eventFactory, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String product, BigInteger quantity, OrderCommands.Create c) {
+        protected OrderEvent.OrderCreated verifyCreate(java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory, String product, BigInteger quantity, OrderCommands.Create c) {
             String Product = product;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderCreated e = (OrderEvent.OrderCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.CreateLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), product, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), product, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class CreateLogic {
-//    public static void verify(OrderState orderState, String product, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderCreated verify(java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory, OrderState orderState, String product, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveItem(String productId, OrderCommands.RemoveItem c) {
+        protected OrderEvent.OrderItemRemoved verifyRemoveItem(java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory, String productId, OrderCommands.RemoveItem c) {
             String ProductId = productId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderItemRemoved e = (OrderEvent.OrderItemRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.RemoveItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), productId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class RemoveItemLogic {
-//    public static void verify(OrderState orderState, String productId, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderItemRemoved verify(java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory, OrderState orderState, String productId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateItemQuantity(String productId, BigInteger quantity, OrderCommands.UpdateItemQuantity c) {
+        protected OrderEvent.OrderItemQuantityUpdated verifyUpdateItemQuantity(java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory, String productId, BigInteger quantity, OrderCommands.UpdateItemQuantity c) {
             String ProductId = productId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderItemQuantityUpdated e = (OrderEvent.OrderItemQuantityUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.UpdateItemQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), productId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class UpdateItemQuantityLogic {
-//    public static void verify(OrderState orderState, String productId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderItemQuantityUpdated verify(java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory, OrderState orderState, String productId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(OrderCommands.Delete c) {
+        protected OrderEvent.OrderDeleted verifyDelete(java.util.function.Supplier<OrderEvent.OrderDeleted> eventFactory, OrderCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderDeleted e = (OrderEvent.OrderDeleted) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.order.DeleteLogic",
                     "verify",
-                    new Class[]{OrderState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.order;
 //
 //public class DeleteLogic {
-//    public static void verify(OrderState orderState, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderDeleted verify(java.util.function.Supplier<OrderEvent.OrderDeleted> eventFactory, OrderState orderState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -181,17 +189,17 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProduct(product);
             e.setQuantity(quantity);
-            e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
-            e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
-            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setUnitPrice(null);
+            e.setTotalAmount(null);
+            e.setOwner(null);
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -206,14 +214,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             AbstractOrderEvent.OrderItemRemoved e = new AbstractOrderEvent.OrderItemRemoved();
 
             e.setProductId(productId);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -229,14 +237,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProductId(productId);
             e.setQuantity(quantity);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -250,14 +258,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             OrderEventId eventId = new OrderEventId(getState().getId(), null);
             AbstractOrderEvent.OrderDeleted e = new AbstractOrderEvent.OrderDeleted();
 
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

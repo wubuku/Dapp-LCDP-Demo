@@ -48,67 +48,71 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
 
         @Override
         public void create(String description, int[] metaData, String[] arrayData, int[] optionalData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
+            java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory = () -> newDaySummaryCreated(description, metaData, arrayData, optionalData, offChainVersion, commandId, requesterId);
+            DaySummaryEvent.DaySummaryCreated e;
             try {
-                verifyCreate(description, metaData, arrayData, optionalData, c);
+                e = verifyCreate(eventFactory, description, metaData, arrayData, optionalData, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Delete c) {
+            java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory = () -> newDaySummaryDeleted(offChainVersion, commandId, requesterId);
+            DaySummaryEvent.DaySummaryDeleted e;
             try {
-                verifyDelete(c);
+                e = verifyDelete(eventFactory, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String description, int[] metaData, String[] arrayData, int[] optionalData, DaySummaryCommands.Create c) {
+        protected DaySummaryEvent.DaySummaryCreated verifyCreate(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, String description, int[] metaData, String[] arrayData, int[] optionalData, DaySummaryCommands.Create c) {
             String Description = description;
             int[] MetaData = metaData;
             String[] ArrayData = arrayData;
             int[] OptionalData = optionalData;
 
-            ReflectUtils.invokeStaticMethod(
+            DaySummaryEvent.DaySummaryCreated e = (DaySummaryEvent.DaySummaryCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, int[].class, String[].class, int[].class, VerificationContext.class},
-                    new Object[]{getState(), description, metaData, arrayData, optionalData, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, String.class, int[].class, String[].class, int[].class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), description, metaData, arrayData, optionalData, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static void verify(DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, VerificationContext verificationContext) {
+//    public static DaySummaryEvent.DaySummaryCreated verify(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, DaySummaryState daySummaryState, String description, int[] metaData, String[] arrayData, int[] optionalData, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(DaySummaryCommands.Delete c) {
+        protected DaySummaryEvent.DaySummaryDeleted verifyDelete(java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory, DaySummaryCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            DaySummaryEvent.DaySummaryDeleted e = (DaySummaryEvent.DaySummaryDeleted) ReflectUtils.invokeStaticMethod(
                     "org.dddml.suidemocontracts.domain.daysummary.DeleteLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.suidemocontracts.domain.daysummary;
 //
 //public class DeleteLogic {
-//    public static void verify(DaySummaryState daySummaryState, VerificationContext verificationContext) {
+//    public static DaySummaryEvent.DaySummaryDeleted verify(java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory, DaySummaryState daySummaryState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -120,14 +124,14 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             e.setMetaData(metaData);
             e.setArrayData(arrayData);
             e.setOptionalData(optionalData);
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -141,14 +145,14 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryDeleted e = new AbstractDaySummaryEvent.DaySummaryDeleted();
 
-            e.setSuiTimestamp(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTxDigest(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiEventSeq(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiPackageId(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiTransactionModule(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setSuiType(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setSuiTimestamp(null);
+            e.setSuiTxDigest(null);
+            e.setSuiEventSeq(null);
+            e.setSuiPackageId(null);
+            e.setSuiTransactionModule(null);
+            e.setSuiSender(null);
+            e.setSuiType(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

@@ -202,7 +202,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     public abstract String getEventType();
 
-    public static class OrderClobEvent extends  AbstractOrderEvent {
+    public static class OrderClobEvent extends AbstractOrderEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -238,7 +238,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderCreated extends OrderClobEvent {
+    public static class OrderCreated extends OrderClobEvent implements OrderEvent.OrderCreated {
 
         @Override
         public String getEventType() {
@@ -307,7 +307,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderItemRemoved extends OrderClobEvent {
+    public static class OrderItemRemoved extends OrderClobEvent implements OrderEvent.OrderItemRemoved {
 
         @Override
         public String getEventType() {
@@ -328,7 +328,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderItemQuantityUpdated extends OrderClobEvent {
+    public static class OrderItemQuantityUpdated extends OrderClobEvent implements OrderEvent.OrderItemQuantityUpdated {
 
         @Override
         public String getEventType() {
@@ -361,7 +361,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderDeleted extends OrderClobEvent {
+    public static class OrderDeleted extends OrderClobEvent implements OrderEvent.OrderDeleted {
 
         @Override
         public String getEventType() {

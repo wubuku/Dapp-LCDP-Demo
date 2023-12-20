@@ -21,6 +21,28 @@ public interface DomainNameEvent extends Event, SuiEventEnvelope, SuiMoveEvent, 
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface Registered extends DomainNameEvent {
+        BigInteger getRegistrationPeriod();
+
+        void setRegistrationPeriod(BigInteger value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface Renewed extends DomainNameEvent {
+        BigInteger getRenewPeriod();
+
+        void setRenewPeriod(BigInteger value);
+
+        String getAccount();
+
+        void setAccount(String value);
+
+    }
+
     DomainNameId getDomainNameId();
 
     //void setDomainNameId(DomainNameId domainNameId);

@@ -21,6 +21,50 @@ public interface OrderEvent extends Event, SuiEventEnvelope, SuiMoveEvent, HasSt
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface OrderCreated extends OrderEvent {
+        String getProduct();
+
+        void setProduct(String value);
+
+        BigInteger getQuantity();
+
+        void setQuantity(BigInteger value);
+
+        BigInteger getUnitPrice();
+
+        void setUnitPrice(BigInteger value);
+
+        BigInteger getTotalAmount();
+
+        void setTotalAmount(BigInteger value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface OrderItemRemoved extends OrderEvent {
+        String getProductId();
+
+        void setProductId(String value);
+
+    }
+
+    interface OrderItemQuantityUpdated extends OrderEvent {
+        String getProductId();
+
+        void setProductId(String value);
+
+        BigInteger getQuantity();
+
+        void setQuantity(BigInteger value);
+
+    }
+
+    interface OrderDeleted extends OrderEvent {
+    }
+
     String getId();
 
     //void setId(String id);

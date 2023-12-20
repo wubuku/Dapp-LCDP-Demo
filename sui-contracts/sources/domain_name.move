@@ -224,13 +224,9 @@ module sui_demo_contracts::domain_name {
         transfer::transfer(domain_name, recipient);
     }
 
+    #[lint_allow(share_owned)]
     public(friend) fun share_object(domain_name: DomainName) {
         assert!(domain_name.version == 0, EInappropriateVersion);
-        transfer::share_object(domain_name);
-    }
-
-    public(friend) fun update_version_and_share_object(domain_name: DomainName) {
-        update_object_version(&mut domain_name);
         transfer::share_object(domain_name);
     }
 
@@ -252,8 +248,8 @@ module sui_demo_contracts::domain_name {
     public(friend) fun drop_domain_name(domain_name: DomainName) {
         let DomainName {
             id,
-            version: _version,
             domain_name_id: _domain_name_id,
+            version: _version,
             expiration_date: _expiration_date,
         } = domain_name;
         object::delete(id);

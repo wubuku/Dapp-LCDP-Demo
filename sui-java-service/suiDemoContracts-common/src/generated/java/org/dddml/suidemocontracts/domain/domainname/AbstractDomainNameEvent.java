@@ -186,7 +186,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     public abstract String getEventType();
 
-    public static class DomainNameClobEvent extends  AbstractDomainNameEvent {
+    public static class DomainNameClobEvent extends AbstractDomainNameEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -222,7 +222,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     }
 
-    public static class Registered extends DomainNameClobEvent {
+    public static class Registered extends DomainNameClobEvent implements DomainNameEvent.Registered {
 
         @Override
         public String getEventType() {
@@ -255,7 +255,7 @@ public abstract class AbstractDomainNameEvent extends AbstractEvent implements D
 
     }
 
-    public static class Renewed extends DomainNameClobEvent {
+    public static class Renewed extends DomainNameClobEvent implements DomainNameEvent.Renewed {
 
         @Override
         public String getEventType() {
