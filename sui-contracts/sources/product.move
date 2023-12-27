@@ -110,8 +110,8 @@ module sui_demo_contracts::product {
         crud_type: u8,
         id: Option<ID>,
         product_id: String,
-        name: String,
         version: u64,
+        name: String,
         unit_price: u128,
         owner: address,
     }
@@ -155,8 +155,8 @@ module sui_demo_contracts::product {
             crud_type: 0,
             id: option::none(),
             product_id,
-            name,
             version: 18446744073709551615, // max u64 for null
+            name,
             unit_price,
             owner,
         }
@@ -172,8 +172,8 @@ module sui_demo_contracts::product {
             crud_type: 1,
             id: std::option::some(id(product)),
             product_id: product_id(product),
-            name,
             version: version(product),
+            name,
             unit_price,
             owner,
         }
@@ -186,8 +186,8 @@ module sui_demo_contracts::product {
             crud_type: 2,
             id: std::option::some(id(product)),
             product_id: product_id(product),
-            name: name(product),
             version: version(product),
+            name: name(product),
             unit_price: unit_price(product),
             owner: owner(product),
         }
