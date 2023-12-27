@@ -21,9 +21,9 @@ public class ProductCrudEvent {
 
     private String productId;
 
-    private BigInteger version;
-
     private String name;
+
+    private BigInteger version;
 
     private BigInteger unitPrice;
 
@@ -53,20 +53,20 @@ public class ProductCrudEvent {
         this.productId = productId;
     }
 
-    public BigInteger getVersion() {
-        return version;
-    }
-
-    public void setVersion(BigInteger version) {
-        this.version = version;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigInteger getVersion() {
+        return version;
+    }
+
+    public void setVersion(BigInteger version) {
+        this.version = version;
     }
 
     public BigInteger getUnitPrice() {
@@ -91,8 +91,8 @@ public class ProductCrudEvent {
                 "crudType=" + crudType +
                 ", id=" + '\'' + id + '\'' +
                 ", productId=" + '\'' + productId + '\'' +
-                ", version=" + version +
                 ", name=" + '\'' + name + '\'' +
+                ", version=" + version +
                 ", unitPrice=" + unitPrice +
                 ", owner=" + '\'' + owner + '\'' +
                 '}';
