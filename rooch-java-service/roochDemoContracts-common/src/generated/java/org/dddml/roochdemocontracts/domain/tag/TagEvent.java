@@ -21,6 +21,9 @@ public interface TagEvent extends Event, RoochEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface TagCreated extends TagEvent {
+    }
+
     String getName();
 
     //void setName(String name);

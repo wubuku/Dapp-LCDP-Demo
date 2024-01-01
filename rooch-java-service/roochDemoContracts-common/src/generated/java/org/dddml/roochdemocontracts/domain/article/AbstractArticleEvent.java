@@ -202,7 +202,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     public abstract String getEventType();
 
-    public static class ArticleClobEvent extends  AbstractArticleEvent {
+    public static class ArticleClobEvent extends AbstractArticleEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -238,7 +238,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ArticleCreated extends ArticleClobEvent {
+    public static class ArticleCreated extends ArticleClobEvent implements ArticleEvent.ArticleCreated {
 
         @Override
         public String getEventType() {
@@ -319,7 +319,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ReferenceAdded extends ArticleClobEvent {
+    public static class ReferenceAdded extends ArticleClobEvent implements ArticleEvent.ReferenceAdded {
 
         @Override
         public String getEventType() {
@@ -364,7 +364,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ReferenceUpdated extends ArticleClobEvent {
+    public static class ReferenceUpdated extends ArticleClobEvent implements ArticleEvent.ReferenceUpdated {
 
         @Override
         public String getEventType() {
@@ -421,7 +421,7 @@ public abstract class AbstractArticleEvent extends AbstractEvent implements Arti
 
     }
 
-    public static class ReferenceRemoved extends ArticleClobEvent {
+    public static class ReferenceRemoved extends ArticleClobEvent implements ArticleEvent.ReferenceRemoved {
 
         @Override
         public String getEventType() {

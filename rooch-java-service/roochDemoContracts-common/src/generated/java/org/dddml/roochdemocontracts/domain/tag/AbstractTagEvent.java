@@ -186,7 +186,7 @@ public abstract class AbstractTagEvent extends AbstractEvent implements TagEvent
 
     public abstract String getEventType();
 
-    public static class TagClobEvent extends  AbstractTagEvent {
+    public static class TagClobEvent extends AbstractTagEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -222,7 +222,7 @@ public abstract class AbstractTagEvent extends AbstractEvent implements TagEvent
 
     }
 
-    public static class TagCreated extends TagClobEvent {
+    public static class TagCreated extends TagClobEvent implements TagEvent.TagCreated {
 
         @Override
         public String getEventType() {

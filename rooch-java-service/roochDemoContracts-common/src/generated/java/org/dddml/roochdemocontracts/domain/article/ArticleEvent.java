@@ -21,6 +21,74 @@ public interface ArticleEvent extends Event, RoochEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ArticleCreated extends ArticleEvent {
+        String getTitle();
+
+        void setTitle(String value);
+
+        String getAuthor();
+
+        void setAuthor(String value);
+
+        String getContent();
+
+        void setContent(String value);
+
+        ReferenceVO[] getReferences();
+
+        void setReferences(ReferenceVO[] value);
+
+        String[] getTags();
+
+        void setTags(String[] value);
+
+        String getOwner();
+
+        void setOwner(String value);
+
+    }
+
+    interface ReferenceAdded extends ArticleEvent {
+        BigInteger getReferenceNumber();
+
+        void setReferenceNumber(BigInteger value);
+
+        String getTitle();
+
+        void setTitle(String value);
+
+        String getUrl();
+
+        void setUrl(String value);
+
+    }
+
+    interface ReferenceUpdated extends ArticleEvent {
+        BigInteger getReferenceNumber();
+
+        void setReferenceNumber(BigInteger value);
+
+        String getTitle();
+
+        void setTitle(String value);
+
+        String getUrl();
+
+        void setUrl(String value);
+
+        String getAuthor();
+
+        void setAuthor(String value);
+
+    }
+
+    interface ReferenceRemoved extends ArticleEvent {
+        BigInteger getReferenceNumber();
+
+        void setReferenceNumber(BigInteger value);
+
+    }
+
     String getId();
 
     //void setId(String id);

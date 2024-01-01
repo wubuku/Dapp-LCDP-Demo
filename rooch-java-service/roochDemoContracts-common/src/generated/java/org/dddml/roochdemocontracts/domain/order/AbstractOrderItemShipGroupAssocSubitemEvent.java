@@ -11,7 +11,7 @@ import java.util.Date;
 import org.dddml.roochdemocontracts.specialization.*;
 import org.dddml.roochdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent, RoochEvent.MutableRoochEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssocSubitemEvent extends AbstractEvent implements OrderItemShipGroupAssocSubitemEvent.SqlOrderItemShipGroupAssocSubitemEvent {
     private OrderItemShipGroupAssocSubitemEventId orderItemShipGroupAssocSubitemEventId = new OrderItemShipGroupAssocSubitemEventId();
 
     public OrderItemShipGroupAssocSubitemEventId getOrderItemShipGroupAssocSubitemEventId() {

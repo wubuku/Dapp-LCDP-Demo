@@ -48,268 +48,284 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
         @Override
         public void create(String productObjId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.Create c) {
+            java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory = () -> newOrderCreated(productObjId, quantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderCreated e;
             try {
-                verifyCreate(productObjId, quantity, c);
+                e = verifyCreate(eventFactory, productObjId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderCreated(productObjId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeItem(String productObjId, Long offChainVersion, String commandId, String requesterId, OrderCommands.RemoveItem c) {
+            java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory = () -> newOrderItemRemoved(productObjId, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderItemRemoved e;
             try {
-                verifyRemoveItem(productObjId, c);
+                e = verifyRemoveItem(eventFactory, productObjId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderItemRemoved(productObjId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateItemQuantity(String productObjId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.UpdateItemQuantity c) {
+            java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory = () -> newOrderItemQuantityUpdated(productObjId, quantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderItemQuantityUpdated e;
             try {
-                verifyUpdateItemQuantity(productObjId, quantity, c);
+                e = verifyUpdateItemQuantity(eventFactory, productObjId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderItemQuantityUpdated(productObjId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateEstimatedShipDate(Day estimatedShipDate, Long offChainVersion, String commandId, String requesterId, OrderCommands.UpdateEstimatedShipDate c) {
+            java.util.function.Supplier<OrderEvent.OrderEstimatedShipDateUpdated> eventFactory = () -> newOrderEstimatedShipDateUpdated(estimatedShipDate, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderEstimatedShipDateUpdated e;
             try {
-                verifyUpdateEstimatedShipDate(estimatedShipDate, c);
+                e = verifyUpdateEstimatedShipDate(eventFactory, estimatedShipDate, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderEstimatedShipDateUpdated(estimatedShipDate, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.AddOrderShipGroup c) {
+            java.util.function.Supplier<OrderEvent.OrderShipGroupAdded> eventFactory = () -> newOrderShipGroupAdded(shipGroupSeqId, shipmentMethod, productObjId, quantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderShipGroupAdded e;
             try {
-                verifyAddOrderShipGroup(shipGroupSeqId, shipmentMethod, productObjId, quantity, c);
+                e = verifyAddOrderShipGroup(eventFactory, shipGroupSeqId, shipmentMethod, productObjId, quantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupAdded(shipGroupSeqId, shipmentMethod, productObjId, quantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addOrderItemShipGroupAssocSubitem(Integer shipGroupSeqId, String productObjId, Day day, String description, Long offChainVersion, String commandId, String requesterId, OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
+            java.util.function.Supplier<OrderEvent.OrderItemShipGroupAssocSubitemAdded> eventFactory = () -> newOrderItemShipGroupAssocSubitemAdded(shipGroupSeqId, productObjId, day, description, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderItemShipGroupAssocSubitemAdded e;
             try {
-                verifyAddOrderItemShipGroupAssocSubitem(shipGroupSeqId, productObjId, day, description, c);
+                e = verifyAddOrderItemShipGroupAssocSubitem(eventFactory, shipGroupSeqId, productObjId, day, description, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderItemShipGroupAssocSubitemAdded(shipGroupSeqId, productObjId, day, description, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void cancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, Long offChainVersion, String commandId, String requesterId, OrderCommands.CancelOrderShipGroupQuantity c) {
+            java.util.function.Supplier<OrderEvent.OrderShipGroupQuantityCanceled> eventFactory = () -> newOrderShipGroupQuantityCanceled(shipGroupSeqId, productObjId, cancelQuantity, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderShipGroupQuantityCanceled e;
             try {
-                verifyCancelOrderShipGroupQuantity(shipGroupSeqId, productObjId, cancelQuantity, c);
+                e = verifyCancelOrderShipGroupQuantity(eventFactory, shipGroupSeqId, productObjId, cancelQuantity, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupQuantityCanceled(shipGroupSeqId, productObjId, cancelQuantity, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeOrderShipGroupItem(Integer shipGroupSeqId, String productObjId, Long offChainVersion, String commandId, String requesterId, OrderCommands.RemoveOrderShipGroupItem c) {
+            java.util.function.Supplier<OrderEvent.OrderShipGroupItemRemoved> eventFactory = () -> newOrderShipGroupItemRemoved(shipGroupSeqId, productObjId, offChainVersion, commandId, requesterId);
+            OrderEvent.OrderShipGroupItemRemoved e;
             try {
-                verifyRemoveOrderShipGroupItem(shipGroupSeqId, productObjId, c);
+                e = verifyRemoveOrderShipGroupItem(eventFactory, shipGroupSeqId, productObjId, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newOrderShipGroupItemRemoved(shipGroupSeqId, productObjId, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String productObjId, BigInteger quantity, OrderCommands.Create c) {
+        protected OrderEvent.OrderCreated verifyCreate(java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory, String productObjId, BigInteger quantity, OrderCommands.Create c) {
             String ProductObjId = productObjId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderCreated e = (OrderEvent.OrderCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.CreateLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), productObjId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productObjId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class CreateLogic {
-//    public static void verify(OrderState orderState, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderCreated verify(java.util.function.Supplier<OrderEvent.OrderCreated> eventFactory, OrderState orderState, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveItem(String productObjId, OrderCommands.RemoveItem c) {
+        protected OrderEvent.OrderItemRemoved verifyRemoveItem(java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory, String productObjId, OrderCommands.RemoveItem c) {
             String ProductObjId = productObjId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderItemRemoved e = (OrderEvent.OrderItemRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.RemoveItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), productObjId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productObjId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class RemoveItemLogic {
-//    public static void verify(OrderState orderState, String productObjId, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderItemRemoved verify(java.util.function.Supplier<OrderEvent.OrderItemRemoved> eventFactory, OrderState orderState, String productObjId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateItemQuantity(String productObjId, BigInteger quantity, OrderCommands.UpdateItemQuantity c) {
+        protected OrderEvent.OrderItemQuantityUpdated verifyUpdateItemQuantity(java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory, String productObjId, BigInteger quantity, OrderCommands.UpdateItemQuantity c) {
             String ProductObjId = productObjId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderItemQuantityUpdated e = (OrderEvent.OrderItemQuantityUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.UpdateItemQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), productObjId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), productObjId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class UpdateItemQuantityLogic {
-//    public static void verify(OrderState orderState, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderItemQuantityUpdated verify(java.util.function.Supplier<OrderEvent.OrderItemQuantityUpdated> eventFactory, OrderState orderState, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateEstimatedShipDate(Day estimatedShipDate, OrderCommands.UpdateEstimatedShipDate c) {
+        protected OrderEvent.OrderEstimatedShipDateUpdated verifyUpdateEstimatedShipDate(java.util.function.Supplier<OrderEvent.OrderEstimatedShipDateUpdated> eventFactory, Day estimatedShipDate, OrderCommands.UpdateEstimatedShipDate c) {
             Day EstimatedShipDate = estimatedShipDate;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderEstimatedShipDateUpdated e = (OrderEvent.OrderEstimatedShipDateUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.UpdateEstimatedShipDateLogic",
                     "verify",
-                    new Class[]{OrderState.class, Day.class, VerificationContext.class},
-                    new Object[]{getState(), estimatedShipDate, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Day.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), estimatedShipDate, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class UpdateEstimatedShipDateLogic {
-//    public static void verify(OrderState orderState, Day estimatedShipDate, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderEstimatedShipDateUpdated verify(java.util.function.Supplier<OrderEvent.OrderEstimatedShipDateUpdated> eventFactory, OrderState orderState, Day estimatedShipDate, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddOrderShipGroup(Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, OrderCommands.AddOrderShipGroup c) {
+        protected OrderEvent.OrderShipGroupAdded verifyAddOrderShipGroup(java.util.function.Supplier<OrderEvent.OrderShipGroupAdded> eventFactory, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, OrderCommands.AddOrderShipGroup c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ShipmentMethod = shipmentMethod;
             String ProductObjId = productObjId;
             BigInteger Quantity = quantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderShipGroupAdded e = (OrderEvent.OrderShipGroupAdded) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, shipmentMethod, productObjId, quantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, shipmentMethod, productObjId, quantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class AddOrderShipGroupLogic {
-//    public static void verify(OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderShipGroupAdded verify(java.util.function.Supplier<OrderEvent.OrderShipGroupAdded> eventFactory, OrderState orderState, Integer shipGroupSeqId, String shipmentMethod, String productObjId, BigInteger quantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddOrderItemShipGroupAssocSubitem(Integer shipGroupSeqId, String productObjId, Day day, String description, OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
+        protected OrderEvent.OrderItemShipGroupAssocSubitemAdded verifyAddOrderItemShipGroupAssocSubitem(java.util.function.Supplier<OrderEvent.OrderItemShipGroupAssocSubitemAdded> eventFactory, Integer shipGroupSeqId, String productObjId, Day day, String description, OrderCommands.AddOrderItemShipGroupAssocSubitem c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ProductObjId = productObjId;
             Day Day = day;
             String Description = description;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderItemShipGroupAssocSubitemAdded e = (OrderEvent.OrderItemShipGroupAssocSubitemAdded) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, productObjId, day, description, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, productObjId, day, description, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class AddOrderItemShipGroupAssocSubitemLogic {
-//    public static void verify(OrderState orderState, Integer shipGroupSeqId, String productObjId, Day day, String description, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderItemShipGroupAssocSubitemAdded verify(java.util.function.Supplier<OrderEvent.OrderItemShipGroupAssocSubitemAdded> eventFactory, OrderState orderState, Integer shipGroupSeqId, String productObjId, Day day, String description, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyCancelOrderShipGroupQuantity(Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, OrderCommands.CancelOrderShipGroupQuantity c) {
+        protected OrderEvent.OrderShipGroupQuantityCanceled verifyCancelOrderShipGroupQuantity(java.util.function.Supplier<OrderEvent.OrderShipGroupQuantityCanceled> eventFactory, Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, OrderCommands.CancelOrderShipGroupQuantity c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ProductObjId = productObjId;
             BigInteger CancelQuantity = cancelQuantity;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderShipGroupQuantityCanceled e = (OrderEvent.OrderShipGroupQuantityCanceled) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, productObjId, cancelQuantity, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, productObjId, cancelQuantity, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class CancelOrderShipGroupQuantityLogic {
-//    public static void verify(OrderState orderState, Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderShipGroupQuantityCanceled verify(java.util.function.Supplier<OrderEvent.OrderShipGroupQuantityCanceled> eventFactory, OrderState orderState, Integer shipGroupSeqId, String productObjId, BigInteger cancelQuantity, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveOrderShipGroupItem(Integer shipGroupSeqId, String productObjId, OrderCommands.RemoveOrderShipGroupItem c) {
+        protected OrderEvent.OrderShipGroupItemRemoved verifyRemoveOrderShipGroupItem(java.util.function.Supplier<OrderEvent.OrderShipGroupItemRemoved> eventFactory, Integer shipGroupSeqId, String productObjId, OrderCommands.RemoveOrderShipGroupItem c) {
             Integer ShipGroupSeqId = shipGroupSeqId;
             String ProductObjId = productObjId;
 
-            ReflectUtils.invokeStaticMethod(
+            OrderEvent.OrderShipGroupItemRemoved e = (OrderEvent.OrderShipGroupItemRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.order.RemoveOrderShipGroupItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), shipGroupSeqId, productObjId, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), shipGroupSeqId, productObjId, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.order;
 //
 //public class RemoveOrderShipGroupItemLogic {
-//    public static void verify(OrderState orderState, Integer shipGroupSeqId, String productObjId, VerificationContext verificationContext) {
+//    public static OrderEvent.OrderShipGroupItemRemoved verify(java.util.function.Supplier<OrderEvent.OrderShipGroupItemRemoved> eventFactory, OrderState orderState, Integer shipGroupSeqId, String productObjId, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -319,17 +335,17 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
-            e.setUnitPrice(null); // todo Need to update 'verify' method to return event properties.
-            e.setTotalAmount(null); // todo Need to update 'verify' method to return event properties.
-            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setUnitPrice(null);
+            e.setTotalAmount(null);
+            e.setOwner(null);
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -344,14 +360,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             AbstractOrderEvent.OrderItemRemoved e = new AbstractOrderEvent.OrderItemRemoved();
 
             e.setProductObjId(productObjId);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -367,14 +383,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -389,14 +405,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             AbstractOrderEvent.OrderEstimatedShipDateUpdated e = new AbstractOrderEvent.OrderEstimatedShipDateUpdated();
 
             e.setEstimatedShipDate(estimatedShipDate);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -414,14 +430,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setShipmentMethod(shipmentMethod);
             e.setProductObjId(productObjId);
             e.setQuantity(quantity);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -439,14 +455,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setProductObjId(productObjId);
             e.setDay(day);
             e.setDescription(description);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -463,14 +479,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductObjId(productObjId);
             e.setCancelQuantity(cancelQuantity);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -486,14 +502,14 @@ public abstract class AbstractOrderAggregate extends AbstractAggregate implement
 
             e.setShipGroupSeqId(shipGroupSeqId);
             e.setProductObjId(productObjId);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

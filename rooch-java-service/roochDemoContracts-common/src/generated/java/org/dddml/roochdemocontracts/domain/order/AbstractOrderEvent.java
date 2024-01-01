@@ -238,7 +238,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     public abstract String getEventType();
 
-    public static class OrderClobEvent extends  AbstractOrderEvent {
+    public static class OrderClobEvent extends AbstractOrderEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -274,7 +274,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderCreated extends OrderClobEvent {
+    public static class OrderCreated extends OrderClobEvent implements OrderEvent.OrderCreated {
 
         @Override
         public String getEventType() {
@@ -343,7 +343,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderItemRemoved extends OrderClobEvent {
+    public static class OrderItemRemoved extends OrderClobEvent implements OrderEvent.OrderItemRemoved {
 
         @Override
         public String getEventType() {
@@ -364,7 +364,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderItemQuantityUpdated extends OrderClobEvent {
+    public static class OrderItemQuantityUpdated extends OrderClobEvent implements OrderEvent.OrderItemQuantityUpdated {
 
         @Override
         public String getEventType() {
@@ -397,7 +397,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderEstimatedShipDateUpdated extends OrderClobEvent {
+    public static class OrderEstimatedShipDateUpdated extends OrderClobEvent implements OrderEvent.OrderEstimatedShipDateUpdated {
 
         @Override
         public String getEventType() {
@@ -418,7 +418,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderShipGroupAdded extends OrderClobEvent {
+    public static class OrderShipGroupAdded extends OrderClobEvent implements OrderEvent.OrderShipGroupAdded {
 
         @Override
         public String getEventType() {
@@ -475,7 +475,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderItemShipGroupAssocSubitemAdded extends OrderClobEvent {
+    public static class OrderItemShipGroupAssocSubitemAdded extends OrderClobEvent implements OrderEvent.OrderItemShipGroupAssocSubitemAdded {
 
         @Override
         public String getEventType() {
@@ -532,7 +532,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderShipGroupQuantityCanceled extends OrderClobEvent {
+    public static class OrderShipGroupQuantityCanceled extends OrderClobEvent implements OrderEvent.OrderShipGroupQuantityCanceled {
 
         @Override
         public String getEventType() {
@@ -577,7 +577,7 @@ public abstract class AbstractOrderEvent extends AbstractEvent implements OrderE
 
     }
 
-    public static class OrderShipGroupItemRemoved extends OrderClobEvent {
+    public static class OrderShipGroupItemRemoved extends OrderClobEvent implements OrderEvent.OrderShipGroupItemRemoved {
 
         @Override
         public String getEventType() {

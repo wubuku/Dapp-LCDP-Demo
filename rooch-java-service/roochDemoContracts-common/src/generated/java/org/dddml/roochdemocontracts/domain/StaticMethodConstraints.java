@@ -24,144 +24,144 @@ public class StaticMethodConstraints {
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.CreateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, VerificationContext.class},
-                    new String[]{"_", "title", "author", "content", "references", "tags"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, VerificationContext.class},
+                    new String[]{"_", "_", "title", "author", "content", "references", "tags"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.AddReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "referenceNumber", "title", "url"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "referenceNumber", "title", "url"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.UpdateReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
-                    new String[]{"_", "referenceNumber", "title", "url", "author"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "referenceNumber", "title", "url", "author"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.article.RemoveReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "referenceNumber"}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "referenceNumber"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.tag.CreateLogic",
                     "verify",
-                    new Class[]{TagState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, TagState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.product.CreateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "unitPrice"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.product.UpdateLogic",
                     "verify",
-                    new Class[]{ProductState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "name", "unitPrice"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "name", "unitPrice"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.product.DeleteLogic",
                     "verify",
-                    new Class[]{ProductState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, ProductState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CreateLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "productObjId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "productObjId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.RemoveItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, VerificationContext.class},
-                    new String[]{"_", "productObjId"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "productObjId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.UpdateItemQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "productObjId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "productObjId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.UpdateEstimatedShipDateLogic",
                     "verify",
-                    new Class[]{OrderState.class, Day.class, VerificationContext.class},
-                    new String[]{"_", "estimatedShipDate"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Day.class, VerificationContext.class},
+                    new String[]{"_", "_", "estimatedShipDate"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderShipGroupLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "shipmentMethod", "productObjId", "quantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "shipmentMethod", "productObjId", "quantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.AddOrderItemShipGroupAssocSubitemLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productObjId", "day", "description"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, Day.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "productObjId", "day", "description"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.CancelOrderShipGroupQuantityLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productObjId", "cancelQuantity"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, BigInteger.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "productObjId", "cancelQuantity"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.order.RemoveOrderShipGroupItemLogic",
                     "verify",
-                    new Class[]{OrderState.class, Integer.class, String.class, VerificationContext.class},
-                    new String[]{"_", "shipGroupSeqId", "productObjId"}
+                    new Class[]{java.util.function.Supplier.class, OrderState.class, Integer.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "shipGroupSeqId", "productObjId"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
-                    new String[]{"_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData"}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
+                    new String[]{"_", "_", "description", "metaData", "arrayData", "optionalData", "u16ArrayData", "u32ArrayData", "u64ArrayData", "u128ArrayData", "u256ArrayData"}
             );
 
 
         ReflectUtils.assertStaticMethodIfClassExists(
                     "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, VerificationContext.class},
-                    new String[]{"_"}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
             );
 
 

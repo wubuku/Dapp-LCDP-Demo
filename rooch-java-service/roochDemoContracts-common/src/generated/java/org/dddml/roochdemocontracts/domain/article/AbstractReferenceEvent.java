@@ -12,7 +12,7 @@ import org.dddml.roochdemocontracts.domain.*;
 import org.dddml.roochdemocontracts.specialization.*;
 import org.dddml.roochdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractReferenceEvent extends AbstractEvent implements ReferenceEvent.SqlReferenceEvent, RoochEvent.MutableRoochEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractReferenceEvent extends AbstractEvent implements ReferenceEvent.SqlReferenceEvent {
     private ReferenceEventId referenceEventId = new ReferenceEventId();
 
     public ReferenceEventId getReferenceEventId() {

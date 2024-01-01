@@ -21,6 +21,48 @@ public interface DaySummaryEvent extends Event, RoochEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface DaySummaryCreated extends DaySummaryEvent {
+        String getDescription();
+
+        void setDescription(String value);
+
+        String getMetaData();
+
+        void setMetaData(String value);
+
+        String[] getArrayData();
+
+        void setArrayData(String[] value);
+
+        String getOptionalData();
+
+        void setOptionalData(String value);
+
+        Integer[] getU16ArrayData();
+
+        void setU16ArrayData(Integer[] value);
+
+        Long[] getU32ArrayData();
+
+        void setU32ArrayData(Long[] value);
+
+        BigInteger[] getU64ArrayData();
+
+        void setU64ArrayData(BigInteger[] value);
+
+        BigInteger[] getU128ArrayData();
+
+        void setU128ArrayData(BigInteger[] value);
+
+        BigInteger[] getU256ArrayData();
+
+        void setU256ArrayData(BigInteger[] value);
+
+    }
+
+    interface DaySummaryDeleted extends DaySummaryEvent {
+    }
+
     Day getDay();
 
     //void setDay(Day day);

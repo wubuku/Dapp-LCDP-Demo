@@ -12,7 +12,7 @@ import org.dddml.roochdemocontracts.domain.*;
 import org.dddml.roochdemocontracts.specialization.*;
 import org.dddml.roochdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent, RoochEvent.MutableRoochEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemEvent extends AbstractEvent implements OrderItemEvent.SqlOrderItemEvent {
     private OrderItemEventId orderItemEventId = new OrderItemEventId();
 
     public OrderItemEventId getOrderItemEventId() {

@@ -48,138 +48,146 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
 
         @Override
         public void create(String title, String author, String content, ReferenceVO[] references, String[] tags, Long offChainVersion, String commandId, String requesterId, ArticleCommands.Create c) {
+            java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory = () -> newArticleCreated(title, author, content, references, tags, offChainVersion, commandId, requesterId);
+            ArticleEvent.ArticleCreated e;
             try {
-                verifyCreate(title, author, content, references, tags, c);
+                e = verifyCreate(eventFactory, title, author, content, references, tags, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newArticleCreated(title, author, content, references, tags, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void addReference(BigInteger referenceNumber, String title, String url, Long offChainVersion, String commandId, String requesterId, ArticleCommands.AddReference c) {
+            java.util.function.Supplier<ArticleEvent.ReferenceAdded> eventFactory = () -> newReferenceAdded(referenceNumber, title, url, offChainVersion, commandId, requesterId);
+            ArticleEvent.ReferenceAdded e;
             try {
-                verifyAddReference(referenceNumber, title, url, c);
+                e = verifyAddReference(eventFactory, referenceNumber, title, url, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newReferenceAdded(referenceNumber, title, url, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void updateReference(BigInteger referenceNumber, String title, String url, String author, Long offChainVersion, String commandId, String requesterId, ArticleCommands.UpdateReference c) {
+            java.util.function.Supplier<ArticleEvent.ReferenceUpdated> eventFactory = () -> newReferenceUpdated(referenceNumber, title, url, author, offChainVersion, commandId, requesterId);
+            ArticleEvent.ReferenceUpdated e;
             try {
-                verifyUpdateReference(referenceNumber, title, url, author, c);
+                e = verifyUpdateReference(eventFactory, referenceNumber, title, url, author, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newReferenceUpdated(referenceNumber, title, url, author, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void removeReference(BigInteger referenceNumber, Long offChainVersion, String commandId, String requesterId, ArticleCommands.RemoveReference c) {
+            java.util.function.Supplier<ArticleEvent.ReferenceRemoved> eventFactory = () -> newReferenceRemoved(referenceNumber, offChainVersion, commandId, requesterId);
+            ArticleEvent.ReferenceRemoved e;
             try {
-                verifyRemoveReference(referenceNumber, c);
+                e = verifyRemoveReference(eventFactory, referenceNumber, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newReferenceRemoved(referenceNumber, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String title, String author, String content, ReferenceVO[] references, String[] tags, ArticleCommands.Create c) {
+        protected ArticleEvent.ArticleCreated verifyCreate(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, String title, String author, String content, ReferenceVO[] references, String[] tags, ArticleCommands.Create c) {
             String Title = title;
             String Author = author;
             String Content = content;
             ReferenceVO[] References = references;
             String[] Tags = tags;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ArticleCreated e = (ArticleEvent.ArticleCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.CreateLogic",
                     "verify",
-                    new Class[]{ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, VerificationContext.class},
-                    new Object[]{getState(), title, author, content, references, tags, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, String.class, String.class, String.class, ReferenceVO[].class, String[].class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), title, author, content, references, tags, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class CreateLogic {
-//    public static void verify(ArticleState articleState, String title, String author, String content, ReferenceVO[] references, String[] tags, VerificationContext verificationContext) {
+//    public static ArticleEvent.ArticleCreated verify(java.util.function.Supplier<ArticleEvent.ArticleCreated> eventFactory, ArticleState articleState, String title, String author, String content, ReferenceVO[] references, String[] tags, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyAddReference(BigInteger referenceNumber, String title, String url, ArticleCommands.AddReference c) {
+        protected ArticleEvent.ReferenceAdded verifyAddReference(java.util.function.Supplier<ArticleEvent.ReferenceAdded> eventFactory, BigInteger referenceNumber, String title, String url, ArticleCommands.AddReference c) {
             BigInteger ReferenceNumber = referenceNumber;
             String Title = title;
             String Url = url;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ReferenceAdded e = (ArticleEvent.ReferenceAdded) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.AddReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), referenceNumber, title, url, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), referenceNumber, title, url, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class AddReferenceLogic {
-//    public static void verify(ArticleState articleState, BigInteger referenceNumber, String title, String url, VerificationContext verificationContext) {
+//    public static ArticleEvent.ReferenceAdded verify(java.util.function.Supplier<ArticleEvent.ReferenceAdded> eventFactory, ArticleState articleState, BigInteger referenceNumber, String title, String url, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyUpdateReference(BigInteger referenceNumber, String title, String url, String author, ArticleCommands.UpdateReference c) {
+        protected ArticleEvent.ReferenceUpdated verifyUpdateReference(java.util.function.Supplier<ArticleEvent.ReferenceUpdated> eventFactory, BigInteger referenceNumber, String title, String url, String author, ArticleCommands.UpdateReference c) {
             BigInteger ReferenceNumber = referenceNumber;
             String Title = title;
             String Url = url;
             String Author = author;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ReferenceUpdated e = (ArticleEvent.ReferenceUpdated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.UpdateReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
-                    new Object[]{getState(), referenceNumber, title, url, author, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, String.class, String.class, String.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), referenceNumber, title, url, author, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class UpdateReferenceLogic {
-//    public static void verify(ArticleState articleState, BigInteger referenceNumber, String title, String url, String author, VerificationContext verificationContext) {
+//    public static ArticleEvent.ReferenceUpdated verify(java.util.function.Supplier<ArticleEvent.ReferenceUpdated> eventFactory, ArticleState articleState, BigInteger referenceNumber, String title, String url, String author, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyRemoveReference(BigInteger referenceNumber, ArticleCommands.RemoveReference c) {
+        protected ArticleEvent.ReferenceRemoved verifyRemoveReference(java.util.function.Supplier<ArticleEvent.ReferenceRemoved> eventFactory, BigInteger referenceNumber, ArticleCommands.RemoveReference c) {
             BigInteger ReferenceNumber = referenceNumber;
 
-            ReflectUtils.invokeStaticMethod(
+            ArticleEvent.ReferenceRemoved e = (ArticleEvent.ReferenceRemoved) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.article.RemoveReferenceLogic",
                     "verify",
-                    new Class[]{ArticleState.class, BigInteger.class, VerificationContext.class},
-                    new Object[]{getState(), referenceNumber, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, ArticleState.class, BigInteger.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), referenceNumber, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.article;
 //
 //public class RemoveReferenceLogic {
-//    public static void verify(ArticleState articleState, BigInteger referenceNumber, VerificationContext verificationContext) {
+//    public static ArticleEvent.ReferenceRemoved verify(java.util.function.Supplier<ArticleEvent.ReferenceRemoved> eventFactory, ArticleState articleState, BigInteger referenceNumber, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -192,15 +200,15 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setContent(content);
             e.setReferences(references);
             e.setTags(tags);
-            e.setOwner(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setOwner(null);
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -217,14 +225,14 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setReferenceNumber(referenceNumber);
             e.setTitle(title);
             e.setUrl(url);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -242,14 +250,14 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             e.setTitle(title);
             e.setUrl(url);
             e.setAuthor(author);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -264,14 +272,14 @@ public abstract class AbstractArticleAggregate extends AbstractAggregate impleme
             AbstractArticleEvent.ReferenceRemoved e = new AbstractArticleEvent.ReferenceRemoved();
 
             e.setReferenceNumber(referenceNumber);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

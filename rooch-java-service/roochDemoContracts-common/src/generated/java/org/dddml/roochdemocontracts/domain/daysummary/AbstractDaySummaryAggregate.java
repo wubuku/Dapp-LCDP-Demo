@@ -48,29 +48,31 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
 
         @Override
         public void create(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Create c) {
+            java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory = () -> newDaySummaryCreated(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, offChainVersion, commandId, requesterId);
+            DaySummaryEvent.DaySummaryCreated e;
             try {
-                verifyCreate(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, c);
+                e = verifyCreate(eventFactory, description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryCreated(description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, offChainVersion, commandId, requesterId);
             apply(e);
         }
 
         @Override
         public void delete(Long offChainVersion, String commandId, String requesterId, DaySummaryCommands.Delete c) {
+            java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory = () -> newDaySummaryDeleted(offChainVersion, commandId, requesterId);
+            DaySummaryEvent.DaySummaryDeleted e;
             try {
-                verifyDelete(c);
+                e = verifyDelete(eventFactory, c);
             } catch (Exception ex) {
                 throw new DomainError("VerificationFailed", ex);
             }
 
-            Event e = newDaySummaryDeleted(offChainVersion, commandId, requesterId);
             apply(e);
         }
 
-        protected void verifyCreate(String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
+        protected DaySummaryEvent.DaySummaryCreated verifyCreate(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, DaySummaryCommands.Create c) {
             String Description = description;
             String MetaData = metaData;
             String[] ArrayData = arrayData;
@@ -81,39 +83,41 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             BigInteger[] U128ArrayData = u128ArrayData;
             BigInteger[] U256ArrayData = u256ArrayData;
 
-            ReflectUtils.invokeStaticMethod(
+            DaySummaryEvent.DaySummaryCreated e = (DaySummaryEvent.DaySummaryCreated) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.daysummary.CreateLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
-                    new Object[]{getState(), description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, String.class, String.class, String[].class, String.class, Integer[].class, Long[].class, BigInteger[].class, BigInteger[].class, BigInteger[].class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), description, metaData, arrayData, optionalData, u16ArrayData, u32ArrayData, u64ArrayData, u128ArrayData, u256ArrayData, VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.daysummary;
 //
 //public class CreateLogic {
-//    public static void verify(DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
+//    public static DaySummaryEvent.DaySummaryCreated verify(java.util.function.Supplier<DaySummaryEvent.DaySummaryCreated> eventFactory, DaySummaryState daySummaryState, String description, String metaData, String[] arrayData, String optionalData, Integer[] u16ArrayData, Long[] u32ArrayData, BigInteger[] u64ArrayData, BigInteger[] u128ArrayData, BigInteger[] u256ArrayData, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
-        protected void verifyDelete(DaySummaryCommands.Delete c) {
+        protected DaySummaryEvent.DaySummaryDeleted verifyDelete(java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory, DaySummaryCommands.Delete c) {
 
-            ReflectUtils.invokeStaticMethod(
+            DaySummaryEvent.DaySummaryDeleted e = (DaySummaryEvent.DaySummaryDeleted) ReflectUtils.invokeStaticMethod(
                     "org.dddml.roochdemocontracts.domain.daysummary.DeleteLogic",
                     "verify",
-                    new Class[]{DaySummaryState.class, VerificationContext.class},
-                    new Object[]{getState(), VerificationContext.forCommand(c)}
+                    new Class[]{java.util.function.Supplier.class, DaySummaryState.class, VerificationContext.class},
+                    new Object[]{eventFactory, getState(), VerificationContext.forCommand(c)}
             );
 
 //package org.dddml.roochdemocontracts.domain.daysummary;
 //
 //public class DeleteLogic {
-//    public static void verify(DaySummaryState daySummaryState, VerificationContext verificationContext) {
+//    public static DaySummaryEvent.DaySummaryDeleted verify(java.util.function.Supplier<DaySummaryEvent.DaySummaryDeleted> eventFactory, DaySummaryState daySummaryState, VerificationContext verificationContext) {
 //    }
 //}
 
+            return e;
         }
            
 
@@ -130,14 +134,14 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             e.setU64ArrayData(u64ArrayData);
             e.setU128ArrayData(u128ArrayData);
             e.setU256ArrayData(u256ArrayData);
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);
@@ -151,14 +155,14 @@ public abstract class AbstractDaySummaryAggregate extends AbstractAggregate impl
             DaySummaryEventId eventId = new DaySummaryEventId(getState().getDay(), null);
             AbstractDaySummaryEvent.DaySummaryDeleted e = new AbstractDaySummaryEvent.DaySummaryDeleted();
 
-            e.setRoochEventId(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochSender(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTxHash(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTypeTag(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochTimestampMs(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochBlockHeight(null); // todo Need to update 'verify' method to return event properties.
-            e.setRoochEventIndex(null); // todo Need to update 'verify' method to return event properties.
-            e.setStatus(null); // todo Need to update 'verify' method to return event properties.
+            e.setRoochEventId(null);
+            e.setRoochSender(null);
+            e.setRoochTxHash(null);
+            e.setRoochTypeTag(null);
+            e.setRoochTimestampMs(null);
+            e.setRoochBlockHeight(null);
+            e.setRoochEventIndex(null);
+            e.setStatus(null);
 
             e.setCommandId(commandId);
             e.setCreatedBy(requesterId);

@@ -186,7 +186,7 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     public abstract String getEventType();
 
-    public static class ProductClobEvent extends  AbstractProductEvent {
+    public static class ProductClobEvent extends AbstractProductEvent {
 
         protected Map<String, Object> getDynamicProperties() {
             return dynamicProperties;
@@ -222,7 +222,7 @@ public abstract class AbstractProductEvent extends AbstractEvent implements Prod
 
     }
 
-    public static class ProductCrudEvent extends ProductClobEvent {
+    public static class ProductCrudEvent extends ProductClobEvent implements ProductEvent.ProductCrudEvent {
 
         @Override
         public String getEventType() {

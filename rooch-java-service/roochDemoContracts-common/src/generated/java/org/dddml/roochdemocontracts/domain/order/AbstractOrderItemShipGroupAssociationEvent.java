@@ -11,7 +11,7 @@ import org.dddml.roochdemocontracts.domain.*;
 import org.dddml.roochdemocontracts.specialization.*;
 import org.dddml.roochdemocontracts.domain.AbstractEvent;
 
-public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent, RoochEvent.MutableRoochEvent, HasStatus.MutableHasStatus {
+public abstract class AbstractOrderItemShipGroupAssociationEvent extends AbstractEvent implements OrderItemShipGroupAssociationEvent.SqlOrderItemShipGroupAssociationEvent {
     private OrderItemShipGroupAssociationEventId orderItemShipGroupAssociationEventId = new OrderItemShipGroupAssociationEventId();
 
     public OrderItemShipGroupAssociationEventId getOrderItemShipGroupAssociationEventId() {

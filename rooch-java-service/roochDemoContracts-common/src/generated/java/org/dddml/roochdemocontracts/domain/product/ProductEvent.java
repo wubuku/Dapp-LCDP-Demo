@@ -21,6 +21,25 @@ public interface ProductEvent extends Event, RoochEvent, HasStatus {
         void setEventReadOnly(boolean readOnly);
     }
 
+    interface ProductCrudEvent extends ProductEvent {
+        Integer getCrudType();
+
+        void setCrudType(Integer value);
+
+        String getId();
+
+        void setId(String value);
+
+        String getName();
+
+        void setName(String value);
+
+        BigInteger getUnitPrice();
+
+        void setUnitPrice(BigInteger value);
+
+    }
+
     String getProductId();
 
     //void setProductId(String productId);
