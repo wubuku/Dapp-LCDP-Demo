@@ -22,6 +22,11 @@ module aptos_demo::product {
     const PRODUCT_ID_LENGTH: u64 = 20;
 
 
+    struct ProductIdGenerator has key {
+        sequence: u128,
+    }
+
+
     struct Events has key {
         // product_id_generator_created_handle: event::EventHandle<ProductIdGeneratorCreated>,
         product_event_handle: event::EventHandle<ProductEvent>,
@@ -30,11 +35,6 @@ module aptos_demo::product {
     struct Tables has key {
         product_table: Table<String, Product>,
     }
-
-    struct ProductIdGenerator has key {
-        sequence: u128,
-    }
-
 
     public fun initialize(account: &signer) {
         genesis_account::assert_genesis_account(account);
