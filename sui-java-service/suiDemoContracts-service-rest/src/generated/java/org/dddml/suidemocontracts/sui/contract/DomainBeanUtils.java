@@ -6,6 +6,7 @@
 package org.dddml.suidemocontracts.sui.contract;
 
 import java.math.*;
+import java.util.*;
 
 import com.github.wubuku.sui.bean.MoveEvent;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
@@ -482,4 +483,16 @@ public class DomainBeanUtils {
         return daySummaryDeleted;
     }
 
+
+    public static List<String> extractTypeArguments(String type) {
+        int i = type.indexOf("<");
+        int j = type.lastIndexOf(">");
+        if (i > 0 && j > i && j == type.length() - 1) {
+            String typeArguments = type.substring(i + 1, j);
+            String[] typeArgumentArray = typeArguments.split(",");
+            return Arrays.stream(typeArgumentArray).map(String::trim).collect(java.util.stream.Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
 }
