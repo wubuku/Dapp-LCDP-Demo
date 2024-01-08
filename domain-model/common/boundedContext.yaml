@@ -141,6 +141,7 @@ configuration:
       "String": "String"
       "Boolean": "bool"
       "Bool": "bool"
+      "AsciiString": "std::ascii::String"
 
     typeModules:
       "string": "std::string"
@@ -201,6 +202,7 @@ configuration:
       "u128": "BigInteger"
       "u256": "BigInteger"
       #"UID": "String"
+      "AsciiString": "String"
 
     typePackages:
       "BigDecimal": "java.math"

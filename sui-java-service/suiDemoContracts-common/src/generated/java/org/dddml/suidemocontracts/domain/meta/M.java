@@ -79,6 +79,7 @@ public class M {
         clsMap.put("u64", java.math.BigInteger.class);
         clsMap.put("u128", java.math.BigInteger.class);
         clsMap.put("u256", java.math.BigInteger.class);
+        clsMap.put("AsciiString", String.class);
         clsMap.put("vector<u8>", int[].class);
         clsMap.put("int[]", int[].class);
         clsMap.put("blob", java.sql.Blob.class);
