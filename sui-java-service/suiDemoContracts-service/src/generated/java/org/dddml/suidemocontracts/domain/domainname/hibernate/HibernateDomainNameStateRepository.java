@@ -79,7 +79,7 @@ public class HibernateDomainNameStateRepository implements DomainNameStateReposi
         DomainNameState persistent = getCurrentSession().get(AbstractDomainNameState.SimpleDomainNameState.class, detached.getDomainNameId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,7 +87,7 @@ public class HibernateDomainNameStateRepository implements DomainNameStateReposi
     }
 
     private void merge(DomainNameState persistent, DomainNameState detached) {
-        ((DomainNameState.MutableDomainNameState) detached).setOffChainVersion(persistent.getOffChainVersion());
+        ((AbstractDomainNameState) persistent).merge(detached);
     }
 
 }

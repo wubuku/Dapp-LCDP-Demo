@@ -79,7 +79,7 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository {
         OrderV2State persistent = getCurrentSession().get(AbstractOrderV2State.SimpleOrderV2State.class, detached.getOrderId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,103 +87,7 @@ public class HibernateOrderV2StateRepository implements OrderV2StateRepository {
     }
 
     private void merge(OrderV2State persistent, OrderV2State detached) {
-        ((OrderV2State.MutableOrderV2State) detached).setOffChainVersion(persistent.getOffChainVersion());
-        if (detached.getItems() != null) {
-            removeNonExistentItems(persistent.getItems(), detached.getItems());
-            for (OrderV2ItemState d : detached.getItems()) {
-                OrderV2ItemState p = persistent.getItems().get(d.getProductId());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-        if (detached.getOrderShipGroups() != null) {
-            removeNonExistentOrderShipGroups(persistent.getOrderShipGroups(), detached.getOrderShipGroups());
-            for (OrderShipGroupState d : detached.getOrderShipGroups()) {
-                OrderShipGroupState p = persistent.getOrderShipGroups().get(d.getShipGroupSeqId());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-    }
-
-    private void merge(OrderV2ItemState persistent, OrderV2ItemState detached) {
-        ((OrderV2ItemState.MutableOrderV2ItemState) detached).setOffChainVersion(persistent.getOffChainVersion());
-    }
-
-    private void merge(OrderShipGroupState persistent, OrderShipGroupState detached) {
-        ((OrderShipGroupState.MutableOrderShipGroupState) detached).setOffChainVersion(persistent.getOffChainVersion());
-        if (detached.getOrderItemShipGroupAssociations() != null) {
-            removeNonExistentOrderItemShipGroupAssociations(persistent.getOrderItemShipGroupAssociations(), detached.getOrderItemShipGroupAssociations());
-            for (OrderItemShipGroupAssociationState d : detached.getOrderItemShipGroupAssociations()) {
-                OrderItemShipGroupAssociationState p = persistent.getOrderItemShipGroupAssociations().get(d.getProductId());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-    }
-
-    private void merge(OrderItemShipGroupAssociationState persistent, OrderItemShipGroupAssociationState detached) {
-        ((OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState) detached).setOffChainVersion(persistent.getOffChainVersion());
-        if (detached.getSubitems() != null) {
-            removeNonExistentSubitems(persistent.getSubitems(), detached.getSubitems());
-            for (OrderItemShipGroupAssocSubitemState d : detached.getSubitems()) {
-                OrderItemShipGroupAssocSubitemState p = persistent.getSubitems().get(d.getOrderItemShipGroupAssocSubitemDay());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-    }
-
-    private void merge(OrderItemShipGroupAssocSubitemState persistent, OrderItemShipGroupAssocSubitemState detached) {
-        ((OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState) detached).setOffChainVersion(persistent.getOffChainVersion());
-    }
-
-    private void removeNonExistentItems(EntityStateCollection<String, OrderV2ItemState> persistentCollection, EntityStateCollection<String, OrderV2ItemState> detachedCollection) {
-        Set<String> removedIds = persistentCollection.stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getProductId()));
-        for (String i : removedIds) {
-            OrderV2ItemState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
-    }
-
-    private void removeNonExistentOrderShipGroups(EntityStateCollection<Integer, OrderShipGroupState> persistentCollection, EntityStateCollection<Integer, OrderShipGroupState> detachedCollection) {
-        Set<Integer> removedIds = persistentCollection.stream().map(i -> i.getShipGroupSeqId()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getShipGroupSeqId()));
-        for (Integer i : removedIds) {
-            OrderShipGroupState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
-    }
-
-    private void removeNonExistentOrderItemShipGroupAssociations(EntityStateCollection<String, OrderItemShipGroupAssociationState> persistentCollection, EntityStateCollection<String, OrderItemShipGroupAssociationState> detachedCollection) {
-        Set<String> removedIds = persistentCollection.stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getProductId()));
-        for (String i : removedIds) {
-            OrderItemShipGroupAssociationState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
-    }
-
-    private void removeNonExistentSubitems(EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> persistentCollection, EntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> detachedCollection) {
-        Set<Day> removedIds = persistentCollection.stream().map(i -> i.getOrderItemShipGroupAssocSubitemDay()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getOrderItemShipGroupAssocSubitemDay()));
-        for (Day i : removedIds) {
-            OrderItemShipGroupAssocSubitemState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
+        ((AbstractOrderV2State) persistent).merge(detached);
     }
 
 }

@@ -117,7 +117,7 @@ public class AptosOrderStateRetriever {
             String orderItemTableHandle = order.getItems().getInner().getHandle();
             List<OrderItem> items = getOrderItems(orderItemTableHandle, orderItemProductIdsGetter.getOrderItemProductIds(orderState.getOrderId()));
             for (OrderItem i : items) {
-                orderState.getItems().add(toOrderItemState(orderState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)orderState.getItems()).add(toOrderItemState(orderState, i));
             }
         }
 
@@ -125,7 +125,7 @@ public class AptosOrderStateRetriever {
             String orderShipGroupTableHandle = order.getOrderShipGroups().getInner().getHandle();
             List<OrderShipGroup> orderShipGroups = getOrderShipGroups(orderShipGroupTableHandle, orderShipGroupShipGroupSeqIdsGetter.getOrderShipGroupShipGroupSeqIds(orderState.getOrderId()));
             for (OrderShipGroup i : orderShipGroups) {
-                orderState.getOrderShipGroups().add(toOrderShipGroupState(orderState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)orderState.getOrderShipGroups()).add(toOrderShipGroupState(orderState, i));
             }
         }
 
@@ -146,7 +146,7 @@ public class AptosOrderStateRetriever {
             String orderItemShipGroupAssociationTableHandle = orderShipGroup.getOrderItemShipGroupAssociations().getInner().getHandle();
             List<OrderItemShipGroupAssociation> orderItemShipGroupAssociations = getOrderItemShipGroupAssociations(orderItemShipGroupAssociationTableHandle, orderItemShipGroupAssociationProductIdsGetter.getOrderItemShipGroupAssociationProductIds(orderShipGroupState.getOrderId(), orderShipGroupState.getShipGroupSeqId()));
             for (OrderItemShipGroupAssociation i : orderItemShipGroupAssociations) {
-                orderShipGroupState.getOrderItemShipGroupAssociations().add(toOrderItemShipGroupAssociationState(orderShipGroupState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)orderShipGroupState.getOrderItemShipGroupAssociations()).add(toOrderItemShipGroupAssociationState(orderShipGroupState, i));
             }
         }
 
@@ -161,7 +161,7 @@ public class AptosOrderStateRetriever {
             String orderItemShipGroupAssocSubitemTableHandle = orderItemShipGroupAssociation.getSubitems().getInner().getHandle();
             List<OrderItemShipGroupAssocSubitem> subitems = getOrderItemShipGroupAssocSubitems(orderItemShipGroupAssocSubitemTableHandle, orderItemShipGroupAssocSubitemOrderItemShipGroupAssocSubitemDaysGetter.getOrderItemShipGroupAssocSubitemOrderItemShipGroupAssocSubitemDays(orderItemShipGroupAssociationState.getOrderId(), orderItemShipGroupAssociationState.getOrderShipGroupShipGroupSeqId(), orderItemShipGroupAssociationState.getProductId()));
             for (OrderItemShipGroupAssocSubitem i : subitems) {
-                orderItemShipGroupAssociationState.getSubitems().add(toOrderItemShipGroupAssocSubitemState(orderItemShipGroupAssociationState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)orderItemShipGroupAssociationState.getSubitems()).add(toOrderItemShipGroupAssocSubitemState(orderItemShipGroupAssociationState, i));
             }
         }
 

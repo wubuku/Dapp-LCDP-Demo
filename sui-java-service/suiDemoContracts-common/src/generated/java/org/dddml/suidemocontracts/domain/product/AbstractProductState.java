@@ -214,7 +214,7 @@ public abstract class AbstractProductState implements ProductState.SqlProductSta
         }
     }
 
-    protected void merge(ProductState s) {
+    public void merge(ProductState s) {
         if (s == this) {
             return;
         }

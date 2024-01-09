@@ -33,7 +33,7 @@ public class SuiOrderService {
                     return s;
                 },
                 (orderState, productId) -> (OrderItemState.MutableOrderItemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAddDefault(productId)
         );
     }
 

@@ -237,7 +237,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         }
     }
 
-    protected void merge(OrderItemShipGroupAssociationState s) {
+    public void merge(OrderItemShipGroupAssociationState s) {
         if (s == this) {
             return;
         }
@@ -254,17 +254,17 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
             }
             if (iterable != null) {
                 for (OrderItemShipGroupAssocSubitemState ss : iterable) {
-                    OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemDay());
+                    OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAddDefault(ss.getOrderItemShipGroupAssocSubitemDay());
                     ((AbstractOrderItemShipGroupAssocSubitemState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getSubitems() != null) {
-            if (s.getSubitems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getSubitems()).getRemovedStates() != null) {
-                    for (OrderItemShipGroupAssocSubitemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)s.getSubitems()).getRemovedStates()) {
-                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(ss.getOrderItemShipGroupAssocSubitemDay());
-                        this.getSubitems().remove(thisInnerState);
+            if (s.getSubitems() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getSubitems()).getRemovedStates() != null) {
+                    for (OrderItemShipGroupAssocSubitemState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)s.getSubitems()).getRemovedStates()) {
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAddDefault(ss.getOrderItemShipGroupAssocSubitemDay());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getSubitems()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -272,9 +272,11 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
                     Set<Day> removedStateIds = new HashSet<>(this.getSubitems().stream().map(i -> i.getOrderItemShipGroupAssocSubitemDay()).collect(java.util.stream.Collectors.toList()));
                     s.getSubitems().forEach(i -> removedStateIds.remove(i.getOrderItemShipGroupAssocSubitemDay()));
                     for (Day i : removedStateIds) {
-                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAdd(i);
-                        this.getSubitems().remove(thisInnerState);
+                        OrderItemShipGroupAssocSubitemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>)this.getSubitems()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getSubitems()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -325,7 +327,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
     }
 
 
-    class SimpleOrderItemShipGroupAssocSubitemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState> {
+    class SimpleOrderItemShipGroupAssocSubitemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>, Collection<OrderItemShipGroupAssocSubitemState> {
 
         @Override
         public OrderItemShipGroupAssocSubitemState get(Day orderItemShipGroupAssocSubitemDay) {
@@ -350,12 +352,7 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         }
 
         @Override
-        public Collection<OrderItemShipGroupAssocSubitemState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public OrderItemShipGroupAssocSubitemState getOrAdd(Day orderItemShipGroupAssocSubitemDay) {
+        public OrderItemShipGroupAssocSubitemState getOrAddDefault(Day orderItemShipGroupAssocSubitemDay) {
             OrderItemShipGroupAssocSubitemState s = get(orderItemShipGroupAssocSubitemDay);
             if (s == null) {
                 OrderItemShipGroupAssocSubitemId globalId = new OrderItemShipGroupAssocSubitemId(getOrderItemShipGroupAssociationId().getOrderId(), getOrderItemShipGroupAssociationId().getOrderShipGroupShipGroupSeqId(), getOrderItemShipGroupAssociationId().getProductId(), orderItemShipGroupAssocSubitemDay);
@@ -388,6 +385,11 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
         }
 
         @Override
+        public java.util.stream.Stream<OrderItemShipGroupAssocSubitemState> stream() {
+            return protectedSubitems.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedSubitems.toArray();
         }
@@ -413,6 +415,11 @@ public abstract class AbstractOrderItemShipGroupAssociationState implements Orde
                 s.setProtectedOrderItemShipGroupAssociationState(null);
             }
             return protectedSubitems.remove(o);
+        }
+
+        @Override
+        public boolean removeState(OrderItemShipGroupAssocSubitemState s) {
+            return remove(s);
         }
 
         @Override

@@ -55,28 +55,28 @@ public class AptosOrderService {
                     return s;
                 },
                 (orderState, productId) -> (OrderItemState.MutableOrderItemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>) orderState.getItems()).getOrAddDefault(productId),
                 orderId -> {
                     orderEventService.pullOrderItemTableItemAddedEvents();
                     return orderItemTableItemAddedRepository.findByOrderItemId_OrderId(orderId).stream()
                             .map(i -> i.getOrderItemId().getProductId()).collect(Collectors.toList());
                 },
                 (orderState, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderState.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderState.getOrderShipGroups()).getOrAddDefault(shipGroupSeqId),
                 orderId -> {
                     orderEventService.pullOrderShipGroupTableItemAddedEvents();
                     return orderShipGroupTableItemAddedRepository.findByOrderShipGroupId_OrderId(orderId).stream()
                             .map(i -> i.getOrderShipGroupId().getShipGroupSeqId()).collect(Collectors.toList());
                 },
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAddDefault(productId),
                 (orderId, orderShipGroupShipGroupSeqId) -> {
                     orderEventService.pullOrderItemShipGroupAssociationTableItemAddedEvents();
                     return orderItemShipGroupAssociationTableItemAddedRepository.findByOrderItemShipGroupAssociationId_OrderIdAndOrderItemShipGroupAssociationId_OrderShipGroupShipGroupSeqId(orderId, orderShipGroupShipGroupSeqId).stream()
                             .map(i -> i.getOrderItemShipGroupAssociationId().getProductId()).collect(Collectors.toList());
                 },
                 (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAddDefault(orderItemShipGroupAssocSubitemDay),
                 (orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId) -> {
                     orderEventService.pullOrderItemShipGroupAssocSubitemTableItemAddedEvents();
                     return orderItemShipGroupAssocSubitemTableItemAddedRepository.findByOrderItemShipGroupAssocSubitemId_OrderIdAndOrderItemShipGroupAssocSubitemId_OrderShipGroupShipGroupSeqIdAndOrderItemShipGroupAssocSubitemId_OrderItemShipGroupAssociationProductId(orderId, orderShipGroupShipGroupSeqId, orderItemShipGroupAssociationProductId).stream()

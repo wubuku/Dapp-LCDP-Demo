@@ -55,7 +55,7 @@ public class SuiOrderStateRetriever {
             String orderItemTableId = order.getItems().getFields().getId().getId();
             List<OrderItem> items = getOrderItems(orderItemTableId);
             for (OrderItem i : items) {
-                orderState.getItems().add(toOrderItemState(orderState, i));
+                ((EntityStateCollection.ModifiableEntityStateCollection)orderState.getItems()).add(toOrderItemState(orderState, i));
             }
         }
 

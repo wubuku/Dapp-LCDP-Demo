@@ -209,7 +209,7 @@ public abstract class AbstractOrderItemState implements OrderItemState.SqlOrderI
         }
     }
 
-    protected void merge(OrderItemState s) {
+    public void merge(OrderItemState s) {
         if (s == this) {
             return;
         }

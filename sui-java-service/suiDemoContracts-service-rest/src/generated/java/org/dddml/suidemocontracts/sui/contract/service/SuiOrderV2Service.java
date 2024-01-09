@@ -33,13 +33,13 @@ public class SuiOrderV2Service {
                     return s;
                 },
                 (orderV2State, productId) -> (OrderV2ItemState.MutableOrderV2ItemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) orderV2State.getItems()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>) orderV2State.getItems()).getOrAddDefault(productId),
                 (orderV2State, shipGroupSeqId) -> (OrderShipGroupState.MutableOrderShipGroupState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderV2State.getOrderShipGroups()).getOrAdd(shipGroupSeqId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>) orderV2State.getOrderShipGroups()).getOrAddDefault(shipGroupSeqId),
                 (orderShipGroupState, productId) -> (OrderItemShipGroupAssociationState.MutableOrderItemShipGroupAssociationState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAdd(productId),
+                        ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>) orderShipGroupState.getOrderItemShipGroupAssociations()).getOrAddDefault(productId),
                 (orderItemShipGroupAssociationState, orderItemShipGroupAssocSubitemDay) -> (OrderItemShipGroupAssocSubitemState.MutableOrderItemShipGroupAssocSubitemState)
-                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAdd(orderItemShipGroupAssocSubitemDay)
+                        ((EntityStateCollection.ModifiableEntityStateCollection<Day, OrderItemShipGroupAssocSubitemState>) orderItemShipGroupAssociationState.getSubitems()).getOrAddDefault(orderItemShipGroupAssocSubitemDay)
         );
     }
 

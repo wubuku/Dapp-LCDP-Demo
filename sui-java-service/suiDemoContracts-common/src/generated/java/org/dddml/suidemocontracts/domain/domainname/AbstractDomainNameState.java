@@ -198,7 +198,7 @@ public abstract class AbstractDomainNameState implements DomainNameState.SqlDoma
         }
     }
 
-    protected void merge(DomainNameState s) {
+    public void merge(DomainNameState s) {
         if (s == this) {
             return;
         }

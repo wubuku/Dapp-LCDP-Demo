@@ -6,8 +6,9 @@
 package org.dddml.aptosdemocontracts.domain;
 
 import java.util.Collection;
+import java.util.stream.Stream;
 
-public interface EntityStateCollection<TId, TState> extends Collection<TState> {
+public interface EntityStateCollection<TId, TState> extends Iterable<TState> {
 
     /**
      * Get entity state.
@@ -22,17 +23,25 @@ public interface EntityStateCollection<TId, TState> extends Collection<TState> {
 
     Collection<TState> getLoadedStates();
 
+    Stream<TState> stream();
+
     interface ModifiableEntityStateCollection<TId, TState> extends EntityStateCollection<TId, TState> {
-        Collection<TState> getRemovedStates();
 
         /**
-         * Get existed entity state or add new entity state.
+         * Get existed entity state or add new default entity state.
          * @param entityId entity Id.
-         * @return entity state which is not null.
+         * @return The entity state that must not be null.
          */
-        TState getOrAdd(TId entityId);
+        TState getOrAddDefault(TId entityId);
+
+        boolean add(TState e);
+
+        boolean removeState(TState state);
     }
 
+    interface RemovalLoggedEntityStateCollection<TId, TState> extends ModifiableEntityStateCollection<TId, TState> {
+        Collection<TState> getRemovedStates();
+    }
 }
 
 

@@ -5,6 +5,9 @@
 
 package org.dddml.suidemocontracts.sui.contract;
 
+import java.util.*;
+import java.math.*;
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.sui.bean.*;

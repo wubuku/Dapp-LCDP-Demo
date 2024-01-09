@@ -79,7 +79,7 @@ public class HibernateProductStateRepository implements ProductStateRepository {
         ProductState persistent = getCurrentSession().get(AbstractProductState.SimpleProductState.class, detached.getProductId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,7 +87,7 @@ public class HibernateProductStateRepository implements ProductStateRepository {
     }
 
     private void merge(ProductState persistent, ProductState detached) {
-        ((ProductState.MutableProductState) detached).setOffChainVersion(persistent.getOffChainVersion());
+        ((AbstractProductState) persistent).merge(detached);
     }
 
 }

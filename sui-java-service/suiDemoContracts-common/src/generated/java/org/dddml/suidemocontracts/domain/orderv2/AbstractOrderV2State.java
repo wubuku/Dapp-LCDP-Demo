@@ -262,7 +262,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
     }
 
-    protected void merge(OrderV2State s) {
+    public void merge(OrderV2State s) {
         if (s == this) {
             return;
         }
@@ -280,17 +280,17 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
             }
             if (iterable != null) {
                 for (OrderV2ItemState ss : iterable) {
-                    OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(ss.getProductId());
+                    OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAddDefault(ss.getProductId());
                     ((AbstractOrderV2ItemState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getItems() != null) {
-            if (s.getItems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getItems()).getRemovedStates() != null) {
-                    for (OrderV2ItemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)s.getItems()).getRemovedStates()) {
-                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(ss.getProductId());
-                        this.getItems().remove(thisInnerState);
+            if (s.getItems() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getItems()).getRemovedStates() != null) {
+                    for (OrderV2ItemState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderV2ItemState>)s.getItems()).getRemovedStates()) {
+                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAddDefault(ss.getProductId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getItems()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -298,9 +298,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                     Set<String> removedStateIds = new HashSet<>(this.getItems().stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toList()));
                     s.getItems().forEach(i -> removedStateIds.remove(i.getProductId()));
                     for (String i : removedStateIds) {
-                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAdd(i);
-                        this.getItems().remove(thisInnerState);
+                        OrderV2ItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>)this.getItems()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getItems()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -314,17 +316,17 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
             }
             if (iterable != null) {
                 for (OrderShipGroupState ss : iterable) {
-                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
+                    OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
                     ((AbstractOrderShipGroupState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getOrderShipGroups() != null) {
-            if (s.getOrderShipGroups() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getOrderShipGroups()).getRemovedStates() != null) {
-                    for (OrderShipGroupState ss : ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)s.getOrderShipGroups()).getRemovedStates()) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(ss.getShipGroupSeqId());
-                        this.getOrderShipGroups().remove(thisInnerState);
+            if (s.getOrderShipGroups() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderShipGroups()).getRemovedStates() != null) {
+                    for (OrderShipGroupState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<Integer, OrderShipGroupState>)s.getOrderShipGroups()).getRemovedStates()) {
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(ss.getShipGroupSeqId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -332,9 +334,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                     Set<Integer> removedStateIds = new HashSet<>(this.getOrderShipGroups().stream().map(i -> i.getShipGroupSeqId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderShipGroups().forEach(i -> removedStateIds.remove(i.getShipGroupSeqId()));
                     for (Integer i : removedStateIds) {
-                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAdd(i);
-                        this.getOrderShipGroups().remove(thisInnerState);
+                        OrderShipGroupState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>)this.getOrderShipGroups()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderShipGroups()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -794,7 +798,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
     }
 
 
-    class SimpleOrderV2ItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState> {
+    class SimpleOrderV2ItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderV2ItemState>, Collection<OrderV2ItemState> {
 
         @Override
         public OrderV2ItemState get(String productId) {
@@ -819,12 +823,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
 
         @Override
-        public Collection<OrderV2ItemState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public OrderV2ItemState getOrAdd(String productId) {
+        public OrderV2ItemState getOrAddDefault(String productId) {
             OrderV2ItemState s = get(productId);
             if (s == null) {
                 OrderV2ItemId globalId = new OrderV2ItemId(getOrderId(), productId);
@@ -857,6 +856,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
 
         @Override
+        public java.util.stream.Stream<OrderV2ItemState> stream() {
+            return protectedItems.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedItems.toArray();
         }
@@ -885,6 +889,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
 
         @Override
+        public boolean removeState(OrderV2ItemState s) {
+            return remove(s);
+        }
+
+        @Override
         public boolean containsAll(Collection<?> c) {
             return protectedItems.contains(c);
         }
@@ -910,7 +919,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
     }
 
-    class SimpleOrderShipGroupStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState> {
+    class SimpleOrderShipGroupStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<Integer, OrderShipGroupState>, Collection<OrderShipGroupState> {
 
         @Override
         public OrderShipGroupState get(Integer shipGroupSeqId) {
@@ -935,12 +944,7 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
 
         @Override
-        public Collection<OrderShipGroupState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public OrderShipGroupState getOrAdd(Integer shipGroupSeqId) {
+        public OrderShipGroupState getOrAddDefault(Integer shipGroupSeqId) {
             OrderShipGroupState s = get(shipGroupSeqId);
             if (s == null) {
                 OrderV2OrderShipGroupId globalId = new OrderV2OrderShipGroupId(getOrderId(), shipGroupSeqId);
@@ -973,6 +977,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
         }
 
         @Override
+        public java.util.stream.Stream<OrderShipGroupState> stream() {
+            return protectedOrderShipGroups.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedOrderShipGroups.toArray();
         }
@@ -998,6 +1007,11 @@ public abstract class AbstractOrderV2State implements OrderV2State.SqlOrderV2Sta
                 s.setProtectedOrderV2State(null);
             }
             return protectedOrderShipGroups.remove(o);
+        }
+
+        @Override
+        public boolean removeState(OrderShipGroupState s) {
+            return remove(s);
         }
 
         @Override

@@ -79,7 +79,7 @@ public class HibernateOrderStateRepository implements OrderStateRepository {
         OrderState persistent = getCurrentSession().get(AbstractOrderState.SimpleOrderState.class, detached.getId());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,31 +87,7 @@ public class HibernateOrderStateRepository implements OrderStateRepository {
     }
 
     private void merge(OrderState persistent, OrderState detached) {
-        ((OrderState.MutableOrderState) detached).setOffChainVersion(persistent.getOffChainVersion());
-        if (detached.getItems() != null) {
-            removeNonExistentItems(persistent.getItems(), detached.getItems());
-            for (OrderItemState d : detached.getItems()) {
-                OrderItemState p = persistent.getItems().get(d.getProductId());
-                if (p == null)
-                    getCurrentSession().save(d);
-                else
-                    merge(p, d);
-            }
-        }
-    }
-
-    private void merge(OrderItemState persistent, OrderItemState detached) {
-        ((OrderItemState.MutableOrderItemState) detached).setOffChainVersion(persistent.getOffChainVersion());
-    }
-
-    private void removeNonExistentItems(EntityStateCollection<String, OrderItemState> persistentCollection, EntityStateCollection<String, OrderItemState> detachedCollection) {
-        Set<String> removedIds = persistentCollection.stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toSet());
-        detachedCollection.forEach(i -> removedIds.remove(i.getProductId()));
-        for (String i : removedIds) {
-            OrderItemState s = persistentCollection.get(i);
-            persistentCollection.remove(s);
-            getCurrentSession().delete(s);
-        }
+        ((AbstractOrderState) persistent).merge(detached);
     }
 
 }

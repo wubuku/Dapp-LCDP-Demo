@@ -219,7 +219,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         }
     }
 
-    protected void merge(OrderShipGroupState s) {
+    public void merge(OrderShipGroupState s) {
         if (s == this) {
             return;
         }
@@ -235,17 +235,17 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
             }
             if (iterable != null) {
                 for (OrderItemShipGroupAssociationState ss : iterable) {
-                    OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAdd(ss.getProductId());
+                    OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAddDefault(ss.getProductId());
                     ((AbstractOrderItemShipGroupAssociationState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getOrderItemShipGroupAssociations() != null) {
-            if (s.getOrderItemShipGroupAssociations() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getOrderItemShipGroupAssociations()).getRemovedStates() != null) {
-                    for (OrderItemShipGroupAssociationState ss : ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)s.getOrderItemShipGroupAssociations()).getRemovedStates()) {
-                        OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAdd(ss.getProductId());
-                        this.getOrderItemShipGroupAssociations().remove(thisInnerState);
+            if (s.getOrderItemShipGroupAssociations() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getOrderItemShipGroupAssociations()).getRemovedStates() != null) {
+                    for (OrderItemShipGroupAssociationState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderItemShipGroupAssociationState>)s.getOrderItemShipGroupAssociations()).getRemovedStates()) {
+                        OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAddDefault(ss.getProductId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItemShipGroupAssociations()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -253,9 +253,11 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
                     Set<String> removedStateIds = new HashSet<>(this.getOrderItemShipGroupAssociations().stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toList()));
                     s.getOrderItemShipGroupAssociations().forEach(i -> removedStateIds.remove(i.getProductId()));
                     for (String i : removedStateIds) {
-                        OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAdd(i);
-                        this.getOrderItemShipGroupAssociations().remove(thisInnerState);
+                        OrderItemShipGroupAssociationState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>)this.getOrderItemShipGroupAssociations()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getOrderItemShipGroupAssociations()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -300,7 +302,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
     }
 
 
-    class SimpleOrderItemShipGroupAssociationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState> {
+    class SimpleOrderItemShipGroupAssociationStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemShipGroupAssociationState>, Collection<OrderItemShipGroupAssociationState> {
 
         @Override
         public OrderItemShipGroupAssociationState get(String productId) {
@@ -325,12 +327,7 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         }
 
         @Override
-        public Collection<OrderItemShipGroupAssociationState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public OrderItemShipGroupAssociationState getOrAdd(String productId) {
+        public OrderItemShipGroupAssociationState getOrAddDefault(String productId) {
             OrderItemShipGroupAssociationState s = get(productId);
             if (s == null) {
                 OrderItemShipGroupAssociationId globalId = new OrderItemShipGroupAssociationId(getOrderShipGroupId().getOrderId(), getOrderShipGroupId().getShipGroupSeqId(), productId);
@@ -363,6 +360,11 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
         }
 
         @Override
+        public java.util.stream.Stream<OrderItemShipGroupAssociationState> stream() {
+            return protectedOrderItemShipGroupAssociations.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedOrderItemShipGroupAssociations.toArray();
         }
@@ -388,6 +390,11 @@ public abstract class AbstractOrderShipGroupState implements OrderShipGroupState
                 s.setProtectedOrderShipGroupState(null);
             }
             return protectedOrderItemShipGroupAssociations.remove(o);
+        }
+
+        @Override
+        public boolean removeState(OrderItemShipGroupAssociationState s) {
+            return remove(s);
         }
 
         @Override

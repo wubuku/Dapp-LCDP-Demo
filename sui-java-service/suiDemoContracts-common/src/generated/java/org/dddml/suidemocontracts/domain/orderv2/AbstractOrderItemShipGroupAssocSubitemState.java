@@ -214,7 +214,7 @@ public abstract class AbstractOrderItemShipGroupAssocSubitemState implements Ord
         }
     }
 
-    protected void merge(OrderItemShipGroupAssocSubitemState s) {
+    public void merge(OrderItemShipGroupAssocSubitemState s) {
         if (s == this) {
             return;
         }

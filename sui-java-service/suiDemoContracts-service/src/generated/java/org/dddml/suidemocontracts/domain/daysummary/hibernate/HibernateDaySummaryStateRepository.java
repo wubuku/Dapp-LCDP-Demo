@@ -79,7 +79,7 @@ public class HibernateDaySummaryStateRepository implements DaySummaryStateReposi
         DaySummaryState persistent = getCurrentSession().get(AbstractDaySummaryState.SimpleDaySummaryState.class, detached.getDay());
         if (persistent != null) {
             merge(persistent, detached);
-            getCurrentSession().merge(detached);
+            getCurrentSession().save(persistent);
         } else {
             getCurrentSession().save(detached);
         }
@@ -87,7 +87,7 @@ public class HibernateDaySummaryStateRepository implements DaySummaryStateReposi
     }
 
     private void merge(DaySummaryState persistent, DaySummaryState detached) {
-        ((DaySummaryState.MutableDaySummaryState) detached).setOffChainVersion(persistent.getOffChainVersion());
+        ((AbstractDaySummaryState) persistent).merge(detached);
     }
 
 }

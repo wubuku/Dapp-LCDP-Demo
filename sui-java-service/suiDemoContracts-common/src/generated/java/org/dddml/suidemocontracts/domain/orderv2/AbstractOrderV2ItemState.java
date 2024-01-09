@@ -209,7 +209,7 @@ public abstract class AbstractOrderV2ItemState implements OrderV2ItemState.SqlOr
         }
     }
 
-    protected void merge(OrderV2ItemState s) {
+    public void merge(OrderV2ItemState s) {
         if (s == this) {
             return;
         }

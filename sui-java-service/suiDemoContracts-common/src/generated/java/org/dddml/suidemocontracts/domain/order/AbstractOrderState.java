@@ -233,7 +233,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         }
     }
 
-    protected void merge(OrderState s) {
+    public void merge(OrderState s) {
         if (s == this) {
             return;
         }
@@ -252,17 +252,17 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
             }
             if (iterable != null) {
                 for (OrderItemState ss : iterable) {
-                    OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAdd(ss.getProductId());
+                    OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAddDefault(ss.getProductId());
                     ((AbstractOrderItemState) thisInnerState).merge(ss);
                 }
             }
         }
         if (s.getItems() != null) {
-            if (s.getItems() instanceof EntityStateCollection.ModifiableEntityStateCollection) {
-                if (((EntityStateCollection.ModifiableEntityStateCollection)s.getItems()).getRemovedStates() != null) {
-                    for (OrderItemState ss : ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)s.getItems()).getRemovedStates()) {
-                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAdd(ss.getProductId());
-                        this.getItems().remove(thisInnerState);
+            if (s.getItems() instanceof EntityStateCollection.RemovalLoggedEntityStateCollection) {
+                if (((EntityStateCollection.RemovalLoggedEntityStateCollection)s.getItems()).getRemovedStates() != null) {
+                    for (OrderItemState ss : ((EntityStateCollection.RemovalLoggedEntityStateCollection<String, OrderItemState>)s.getItems()).getRemovedStates()) {
+                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAddDefault(ss.getProductId());
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getItems()).removeState(thisInnerState);
                     }
                 }
             } else {
@@ -270,9 +270,11 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
                     Set<String> removedStateIds = new HashSet<>(this.getItems().stream().map(i -> i.getProductId()).collect(java.util.stream.Collectors.toList()));
                     s.getItems().forEach(i -> removedStateIds.remove(i.getProductId()));
                     for (String i : removedStateIds) {
-                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAdd(i);
-                        this.getItems().remove(thisInnerState);
+                        OrderItemState thisInnerState = ((EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>)this.getItems()).getOrAddDefault(i);
+                        ((EntityStateCollection.ModifiableEntityStateCollection)this.getItems()).removeState(thisInnerState);
                     }
+                } else {
+                    throw new UnsupportedOperationException();
                 }
             }
         }
@@ -519,7 +521,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
     }
 
 
-    class SimpleOrderItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState> {
+    class SimpleOrderItemStateCollection implements EntityStateCollection.ModifiableEntityStateCollection<String, OrderItemState>, Collection<OrderItemState> {
 
         @Override
         public OrderItemState get(String productId) {
@@ -544,12 +546,7 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         }
 
         @Override
-        public Collection<OrderItemState> getRemovedStates() {
-            return null;
-        }
-
-        @Override
-        public OrderItemState getOrAdd(String productId) {
+        public OrderItemState getOrAddDefault(String productId) {
             OrderItemState s = get(productId);
             if (s == null) {
                 OrderItemId globalId = new OrderItemId(getId(), productId);
@@ -582,6 +579,11 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
         }
 
         @Override
+        public java.util.stream.Stream<OrderItemState> stream() {
+            return protectedItems.stream();
+        }
+
+        @Override
         public Object[] toArray() {
             return protectedItems.toArray();
         }
@@ -607,6 +609,11 @@ public abstract class AbstractOrderState implements OrderState.SqlOrderState, Sa
                 s.setProtectedOrderState(null);
             }
             return protectedItems.remove(o);
+        }
+
+        @Override
+        public boolean removeState(OrderItemState s) {
+            return remove(s);
         }
 
         @Override

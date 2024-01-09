@@ -266,7 +266,7 @@ public abstract class AbstractDaySummaryState implements DaySummaryState.SqlDayS
         }
     }
 
-    protected void merge(DaySummaryState s) {
+    public void merge(DaySummaryState s) {
         if (s == this) {
             return;
         }
