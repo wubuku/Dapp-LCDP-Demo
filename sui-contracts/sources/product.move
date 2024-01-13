@@ -19,6 +19,7 @@ module sui_demo_contracts::product {
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
+    const EEmptyObjectID: u64 = 107;
     const PRODUCT_ID_LENGTH: u64 = 20;
 
 
@@ -284,6 +285,7 @@ module sui_demo_contracts::product {
     }
 
     public(friend) fun emit_product_created(product_created: ProductCrudEvent) {
+        assert!(std::option::is_some(&product_created.id), EEmptyObjectID);
         event::emit(product_created);
     }
 

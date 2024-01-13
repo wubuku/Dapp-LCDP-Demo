@@ -22,8 +22,9 @@ module sui_demo_contracts::order {
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
-    const EIdNotFound: u64 = 106;
     const EInvalidEnumValue: u64 = 106;
+    const EEmptyObjectID: u64 = 107;
+    const EIdNotFound: u64 = 111;
 
     struct Order has key {
         id: UID,
@@ -293,6 +294,7 @@ module sui_demo_contracts::order {
     }
 
     public(friend) fun emit_order_created(order_created: OrderCreated) {
+        assert!(std::option::is_some(&order_created.id), EEmptyObjectID);
         event::emit(order_created);
     }
 

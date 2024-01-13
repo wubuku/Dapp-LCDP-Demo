@@ -20,6 +20,7 @@ module sui_demo_contracts::day_summary {
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
+    const EEmptyObjectID: u64 = 107;
 
     struct DaySummaryIdTable has key {
         id: UID,
@@ -276,6 +277,7 @@ module sui_demo_contracts::day_summary {
     }
 
     public(friend) fun emit_day_summary_created(day_summary_created: DaySummaryCreated) {
+        assert!(std::option::is_some(&day_summary_created.id), EEmptyObjectID);
         event::emit(day_summary_created);
     }
 

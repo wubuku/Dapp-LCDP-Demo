@@ -19,6 +19,7 @@ module sui_demo_contracts::domain_name {
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
+    const EEmptyObjectID: u64 = 107;
 
     struct DomainNameId has store, drop, copy {
         top_level_domain: String,
@@ -256,6 +257,7 @@ module sui_demo_contracts::domain_name {
     }
 
     public(friend) fun emit_registered(registered: Registered) {
+        assert!(std::option::is_some(&registered.id), EEmptyObjectID);
         event::emit(registered);
     }
 
