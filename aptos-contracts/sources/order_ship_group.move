@@ -22,8 +22,8 @@ module aptos_demo::order_ship_group {
 
     const EIdAlreadyExists: u64 = 101;
     const EDataTooLong: u64 = 102;
-    const EIdNotFound: u64 = 106;
     const ENotInitialized: u64 = 110;
+    const EIdNotFound: u64 = 111;
 
     struct Events has key {
         order_item_ship_group_association_table_item_added_handle: event::EventHandle<OrderItemShipGroupAssociationTableItemAdded>,

@@ -28,8 +28,8 @@ module aptos_demo::order {
     const EIdAlreadyExists: u64 = 101;
     const EDataTooLong: u64 = 102;
     const EInappropriateVersion: u64 = 103;
-    const EIdNotFound: u64 = 106;
     const ENotInitialized: u64 = 110;
+    const EIdNotFound: u64 = 111;
 
     struct Events has key {
         order_created_handle: event::EventHandle<OrderCreated>,
