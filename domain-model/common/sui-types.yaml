@@ -33,6 +33,9 @@ typeDefinitions:
   Balance:
     moveType: "sui::balance::Balance"
     isResource: true
+    typeParameters:
+      T:
+        isPhantom: true
     defaultLogic:
       Move:
         'sui::balance::zero()'
@@ -45,6 +48,16 @@ typeDefinitions:
 #        Value:
 #          type: u64
 
+  Coin:
+    moveType: "sui::coin::Coin"
+    isResource: true
+    keyable: true
+    storable: true
+    typeParameters:
+      T:
+        isPhantom: true
+    javaType: Object # todo
+
   SUI:
     moveType: "sui::sui::SUI"
-
+    droppable: true

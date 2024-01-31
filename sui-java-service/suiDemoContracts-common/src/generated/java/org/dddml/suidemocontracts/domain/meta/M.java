@@ -122,6 +122,7 @@ public class M {
         clsMap.put("ID", String.class);
         clsMap.put("address", String.class);
         clsMap.put("Balance", java.math.BigInteger.class);
+        clsMap.put("Coin", Object.class);
         CLASS_MAP = clsMap;
     }
 
