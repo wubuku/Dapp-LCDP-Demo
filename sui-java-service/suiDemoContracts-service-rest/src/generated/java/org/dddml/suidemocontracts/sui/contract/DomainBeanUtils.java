@@ -10,6 +10,8 @@ import java.util.*;
 
 import com.github.wubuku.sui.bean.MoveEvent;
 import com.github.wubuku.sui.bean.SuiMoveEventEnvelope;
+import com.github.wubuku.sui.bean.Table;
+import com.github.wubuku.sui.bean.ObjectTable;
 import org.dddml.suidemocontracts.domain.domainname.AbstractDomainNameEvent;
 import org.dddml.suidemocontracts.sui.contract.domainname.Registered;
 import org.dddml.suidemocontracts.sui.contract.domainname.Renewed;

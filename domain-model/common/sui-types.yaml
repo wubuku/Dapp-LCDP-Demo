@@ -72,7 +72,7 @@ typeDefinitions:
         Id:
           type: UID
         Size:
-          type: u64
+          type: long #u64
 
   Table:
     moveType: "sui::table::Table"
@@ -82,4 +82,4 @@ typeDefinitions:
         Id:
           type: UID
         Size:
-          type: u64
+          type: long #u64
