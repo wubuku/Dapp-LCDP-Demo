@@ -56,8 +56,30 @@ typeDefinitions:
     typeParameters:
       T:
         isPhantom: true
-    javaType: Object # todo
+#    dataStruct:
+#      id: UID
+#      balance: u64 #Balance<T>
 
   SUI:
     moveType: "sui::sui::SUI"
     droppable: true
+
+  ObjectTable:
+    moveType: "sui::object_table::ObjectTable"
+    isResource: true
+    dataStruct:
+      properties:
+        Id:
+          type: UID
+        Size:
+          type: u64
+
+  Table:
+    moveType: "sui::table::Table"
+    isResource: true
+    dataStruct:
+      properties:
+        Id:
+          type: UID
+        Size:
+          type: u64
