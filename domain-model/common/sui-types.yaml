@@ -67,6 +67,9 @@ typeDefinitions:
   ObjectTable:
     moveType: "sui::object_table::ObjectTable"
     isResource: true
+    destroyLogic:
+      Move:
+        'sui::object_table::destroy_empty({0})'
     dataStruct:
       properties:
         Id:
@@ -77,6 +80,9 @@ typeDefinitions:
   Table:
     moveType: "sui::table::Table"
     isResource: true
+    destroyLogic:
+      Move:
+        'sui::table::destroy_empty({0})'
     dataStruct:
       properties:
         Id:
