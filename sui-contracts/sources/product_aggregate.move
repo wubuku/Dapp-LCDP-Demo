@@ -59,19 +59,19 @@ module sui_demo_contracts::product_aggregate {
     }
 
     public entry fun delete(
-        product: &mut product::Product,
+        product: product::Product,
         ctx: &mut tx_context::TxContext,
     ) {
         let product_deleted = product_delete_logic::verify(
-            product,
+            &product,
             ctx,
         );
-        product_delete_logic::mutate(
+        let updated_product = product_delete_logic::mutate(
             &product_deleted,
             product,
             ctx,
         );
-        product::update_object_version(product);
+        product::drop_product(updated_product);
         product::emit_product_deleted(product_deleted);
     }
 
