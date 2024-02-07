@@ -153,6 +153,10 @@ module sui_demo_contracts::day_summary {
         day_summary_created.optional_data
     }
 
+    public(friend) fun set_day_summary_created_optional_data(day_summary_created: &mut DaySummaryCreated, optional_data: vector<u8>) {
+        day_summary_created.optional_data = option::some(optional_data);
+    }
+
     public(friend) fun new_day_summary_created(
         day: Day,
         description: String,

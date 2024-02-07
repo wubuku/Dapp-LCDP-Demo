@@ -51,7 +51,7 @@ module sui_demo_contracts::day_summary_aggregate {
             ctx,
         );
         let day_summary = day_summary_create_logic::mutate(
-            &day_summary_created,
+            &mut day_summary_created,
             day_summary_id_table,
             ctx,
         );
