@@ -5,10 +5,10 @@
 
 package org.dddml.suidemocontracts.sui.contract;
 
-import com.github.wubuku.sui.bean.DynamicField;
+import com.github.wubuku.sui.bean.StructValueDynamicField;
 
 import java.math.*;
 
-public class OrderItemDynamicField extends DynamicField<String, OrderItem> {
+public class OrderItemDynamicField extends StructValueDynamicField<String, OrderItem> {
 
 }

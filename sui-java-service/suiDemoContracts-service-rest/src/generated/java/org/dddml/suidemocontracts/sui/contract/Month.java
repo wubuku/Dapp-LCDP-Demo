@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.sui.bean.*;
 
-public class Month extends MoveObject<Month.MonthFields> {
+public class Month extends MoveStruct<Month.MonthFields> {
 
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class MonthFields {

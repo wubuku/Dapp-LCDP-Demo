@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.github.wubuku.sui.bean.*;
 
-public class DomainNameId extends MoveObject<DomainNameId.DomainNameIdFields> {
+public class DomainNameId extends MoveStruct<DomainNameId.DomainNameIdFields> {
 
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class DomainNameIdFields {
