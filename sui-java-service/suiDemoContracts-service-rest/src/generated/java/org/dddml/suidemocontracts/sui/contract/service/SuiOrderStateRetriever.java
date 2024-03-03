@@ -73,7 +73,7 @@ public class SuiOrderStateRetriever {
         List<OrderItem> orderItems = new ArrayList<>();
         String cursor = null;
         while (true) {
-            DynamicFieldPage orderItemFieldPage = suiJsonRpcClient.getDynamicFields(orderItemTableId, cursor, null);
+            DynamicFieldPage<?> orderItemFieldPage = suiJsonRpcClient.getDynamicFields(orderItemTableId, cursor, null);
             for (DynamicFieldInfo orderItemFieldInfo : orderItemFieldPage.getData()) {
                 String fieldObjectId = orderItemFieldInfo.getObjectId();
                 SuiMoveObjectResponse<OrderItemDynamicField> getOrderItemFieldResponse
