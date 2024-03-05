@@ -10,6 +10,7 @@ project:
     - "sui/sui-DomainName.yaml"
     - "sui/sui-Order.yaml"
     - "sui/sui-Product.yaml"
+    - "sui/sui-Player.yaml"
     - "sui/sui-OrderV2.yaml"
     - "sui/sui-ValueObjects.yaml"
     - "sui/sui-DaySummary.yaml"

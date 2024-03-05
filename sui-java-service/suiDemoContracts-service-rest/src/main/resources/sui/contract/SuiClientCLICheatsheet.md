@@ -80,6 +80,32 @@ sui client call --package _PACKAGE_ID_ --module product_aggregate --function del
 --gas-budget 100000
 ```
 
+## Player aggregate
+
+### Create method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module player_aggregate --function create \
+--args std__module__ascii__module__string_nickname '"string_intro"' \"_PLAYER_PLAYER_ID_TABLE_OBJECT_ID_\" \
+--gas-budget 100000
+```
+
+### Update method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module player_aggregate --function update \
+--args player_Object_ID std__module__ascii__module__string_nickname '"string_intro"' \
+--gas-budget 100000
+```
+
+### Delete method
+
+```shell
+sui client call --package _PACKAGE_ID_ --module player_aggregate --function delete \
+--args player_Object_ID \
+--gas-budget 100000
+```
+
 ## OrderV2 aggregate
 
 ### Create method

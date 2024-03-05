@@ -1,0 +1,18 @@
+aggregates:
+  Player:
+    metadata:
+      Preprocessors: ["MOVE_CRUD_IT"]
+      NO_MOVE_EVENT_MODULE: true
+    id:
+      name: PlayerId
+      type: address
+      generator:
+        class: signer
+        tableName: PlayerIdTable
+    properties:
+      Nickname:
+        type: AsciiString
+        length: 50
+      Intro:
+        type: String
+        length: 350

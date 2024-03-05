@@ -12,6 +12,8 @@ public class ContractConstants {
 
     public static final String PRODUCT_MODULE_PRODUCT_ID_GENERATOR = "product::ProductIdGenerator";
 
+    public static final String PLAYER_MODULE_PLAYER_ID_TABLE = "player::PlayerIdTable";
+
     public static final String ORDER_V2_MODULE_ORDER_ID_TABLE = "order_v2::OrderIdTable";
 
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_ID_TABLE = "day_summary::DaySummaryIdTable";
@@ -29,6 +31,12 @@ public class ContractConstants {
     public static final String ORDER_MODULE_ORDER_DELETED = "order::OrderDeleted";
 
     public static final String PRODUCT_MODULE_PRODUCT_CRUD_EVENT = "product::ProductCrudEvent";
+
+    public static final String PLAYER_MODULE_PLAYER_CREATED = "player::PlayerCreated";
+
+    public static final String PLAYER_MODULE_PLAYER_UPDATED = "player::PlayerUpdated";
+
+    public static final String PLAYER_MODULE_PLAYER_DELETED = "player::PlayerDeleted";
 
     public static final String ORDER_V2_MODULE_ORDER_V2_CREATED = "order_v2::OrderV2Created";
 
@@ -55,6 +63,7 @@ public class ContractConstants {
         return new String[]{
                 packageId + "::" + DOMAIN_NAME_MODULE_DOMAIN_NAME_ID_TABLE,
                 packageId + "::" + PRODUCT_MODULE_PRODUCT_ID_GENERATOR,
+                packageId + "::" + PLAYER_MODULE_PLAYER_ID_TABLE,
                 packageId + "::" + ORDER_V2_MODULE_ORDER_ID_TABLE,
                 packageId + "::" + DAY_SUMMARY_MODULE_DAY_SUMMARY_ID_TABLE,
         };

@@ -14,6 +14,9 @@ import org.dddml.suidemocontracts.domain.order.hibernate.*;
 import org.dddml.suidemocontracts.domain.product.*;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.product.hibernate.*;
+import org.dddml.suidemocontracts.domain.player.*;
+import org.dddml.suidemocontracts.domain.*;
+import org.dddml.suidemocontracts.domain.player.hibernate.*;
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.orderv2.hibernate.*;
@@ -169,6 +172,51 @@ public class AggregatesHibernateConfig {
                 productEventStore,
                 productStateRepository,
                 productStateQueryRepository
+        );
+        return applicationService;
+    }
+
+
+
+    @Bean
+    public PlayerStateRepository playerStateRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernatePlayerStateRepository repository = new HibernatePlayerStateRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public PlayerStateQueryRepository playerStateQueryRepository(
+            SessionFactory hibernateSessionFactory,
+            ReadOnlyProxyGenerator stateReadOnlyProxyGenerator
+    ) {
+        HibernatePlayerStateQueryRepository repository = new HibernatePlayerStateQueryRepository();
+        repository.setSessionFactory(hibernateSessionFactory);
+        repository.setReadOnlyProxyGenerator(stateReadOnlyProxyGenerator);
+        return repository;
+    }
+
+    @Bean
+    public HibernatePlayerEventStore playerEventStore(SessionFactory hibernateSessionFactory) {
+        HibernatePlayerEventStore eventStore = new HibernatePlayerEventStore();
+        eventStore.setSessionFactory(hibernateSessionFactory);
+        return eventStore;
+    }
+
+    @Bean
+    public AbstractPlayerApplicationService.SimplePlayerApplicationService playerApplicationService(
+            @Qualifier("playerEventStore") EventStore playerEventStore,
+            PlayerStateRepository playerStateRepository,
+            PlayerStateQueryRepository playerStateQueryRepository
+    ) {
+        AbstractPlayerApplicationService.SimplePlayerApplicationService applicationService = new AbstractPlayerApplicationService.SimplePlayerApplicationService(
+                playerEventStore,
+                playerStateRepository,
+                playerStateQueryRepository
         );
         return applicationService;
     }

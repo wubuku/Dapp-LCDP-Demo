@@ -22,6 +22,10 @@ import org.dddml.suidemocontracts.sui.contract.order.OrderItemQuantityUpdated;
 import org.dddml.suidemocontracts.sui.contract.order.OrderDeleted;
 import org.dddml.suidemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.suidemocontracts.sui.contract.product.ProductCrudEvent;
+import org.dddml.suidemocontracts.domain.player.AbstractPlayerEvent;
+import org.dddml.suidemocontracts.sui.contract.player.PlayerCreated;
+import org.dddml.suidemocontracts.sui.contract.player.PlayerUpdated;
+import org.dddml.suidemocontracts.sui.contract.player.PlayerDeleted;
 import org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Event;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2Created;
 import org.dddml.suidemocontracts.sui.contract.orderv2.OrderV2ItemRemoved;
@@ -270,6 +274,67 @@ public class DomainBeanUtils {
         productCrudEvent.setSuiSender(eventEnvelope.getSender());
 
         return productCrudEvent;
+    }
+
+    public static AbstractPlayerEvent.PlayerCreated toPlayerCreated(SuiMoveEventEnvelope<PlayerCreated> eventEnvelope) {
+        PlayerCreated contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractPlayerEvent.PlayerCreated playerCreated = new AbstractPlayerEvent.PlayerCreated();
+        playerCreated.setId_(contractEvent.getId());
+        playerCreated.setPlayerId(contractEvent.getPlayerId());
+        playerCreated.setNickname(contractEvent.getNickname());
+        playerCreated.setIntro(contractEvent.getIntro());
+        playerCreated.setVersion(BigInteger.valueOf(-1));
+
+        playerCreated.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        playerCreated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        playerCreated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        playerCreated.setSuiPackageId(eventEnvelope.getPackageId());
+        playerCreated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        playerCreated.setSuiSender(eventEnvelope.getSender());
+
+        return playerCreated;
+    }
+
+    public static AbstractPlayerEvent.PlayerUpdated toPlayerUpdated(SuiMoveEventEnvelope<PlayerUpdated> eventEnvelope) {
+        PlayerUpdated contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractPlayerEvent.PlayerUpdated playerUpdated = new AbstractPlayerEvent.PlayerUpdated();
+        playerUpdated.setId_(contractEvent.getId());
+        playerUpdated.setPlayerId(contractEvent.getPlayerId());
+        playerUpdated.setNickname(contractEvent.getNickname());
+        playerUpdated.setIntro(contractEvent.getIntro());
+        playerUpdated.setVersion(contractEvent.getVersion());
+
+        playerUpdated.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        playerUpdated.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        playerUpdated.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        playerUpdated.setSuiPackageId(eventEnvelope.getPackageId());
+        playerUpdated.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        playerUpdated.setSuiSender(eventEnvelope.getSender());
+
+        return playerUpdated;
+    }
+
+    public static AbstractPlayerEvent.PlayerDeleted toPlayerDeleted(SuiMoveEventEnvelope<PlayerDeleted> eventEnvelope) {
+        PlayerDeleted contractEvent = eventEnvelope.getParsedJson();
+
+        AbstractPlayerEvent.PlayerDeleted playerDeleted = new AbstractPlayerEvent.PlayerDeleted();
+        playerDeleted.setId_(contractEvent.getId());
+        playerDeleted.setPlayerId(contractEvent.getPlayerId());
+        playerDeleted.setVersion(contractEvent.getVersion());
+
+        playerDeleted.setSuiTimestamp(eventEnvelope.getTimestampMs());
+        playerDeleted.setSuiTxDigest(eventEnvelope.getId().getTxDigest());
+        playerDeleted.setSuiEventSeq(new BigInteger(eventEnvelope.getId().getEventSeq()));
+
+        playerDeleted.setSuiPackageId(eventEnvelope.getPackageId());
+        playerDeleted.setSuiTransactionModule(eventEnvelope.getTransactionModule());
+        playerDeleted.setSuiSender(eventEnvelope.getSender());
+
+        return playerDeleted;
     }
 
     public static AbstractOrderV2Event.OrderV2Created toOrderV2Created(SuiMoveEventEnvelope<OrderV2Created> eventEnvelope) {

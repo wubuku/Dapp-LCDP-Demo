@@ -14,6 +14,7 @@ import java.util.Date;
 import org.dddml.suidemocontracts.domain.*;
 import org.dddml.suidemocontracts.domain.order.*;
 import org.dddml.suidemocontracts.domain.product.*;
+import org.dddml.suidemocontracts.domain.player.*;
 import org.dddml.suidemocontracts.domain.orderv2.*;
 import org.dddml.suidemocontracts.domain.daysummary.*;
 
@@ -89,6 +90,30 @@ public class StaticMethodConstraints {
                     "org.dddml.suidemocontracts.domain.product.DeleteLogic",
                     "verify",
                     new Class[]{java.util.function.Supplier.class, ProductState.class, VerificationContext.class},
+                    new String[]{"_", "_"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.CreateLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, PlayerState.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "nickname", "intro"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.UpdateLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, PlayerState.class, String.class, String.class, VerificationContext.class},
+                    new String[]{"_", "_", "nickname", "intro"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.DeleteLogic",
+                    "verify",
+                    new Class[]{java.util.function.Supplier.class, PlayerState.class, VerificationContext.class},
                     new String[]{"_", "_"}
             );
 
@@ -241,6 +266,30 @@ public class StaticMethodConstraints {
                     "org.dddml.suidemocontracts.domain.product.DeleteLogic",
                     "mutate",
                     new Class[]{ProductState.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.CreateLogic",
+                    "mutate",
+                    new Class[]{PlayerState.class, String.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "nickname", "intro", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.UpdateLogic",
+                    "mutate",
+                    new Class[]{PlayerState.class, String.class, String.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
+                    new String[]{"_", "nickname", "intro", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
+            );
+
+
+        ReflectUtils.assertStaticMethodIfClassExists(
+                    "org.dddml.suidemocontracts.domain.player.DeleteLogic",
+                    "mutate",
+                    new Class[]{PlayerState.class, Long.class, String.class, BigInteger.class, String.class, String.class, String.class, String.class, String.class, MutationContext.class},
                     new String[]{"_", "suiTimestamp", "suiTxDigest", "suiEventSeq", "suiPackageId", "suiTransactionModule", "suiSender", "suiType", "status"}
             );
 
