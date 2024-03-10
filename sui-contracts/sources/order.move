@@ -51,6 +51,14 @@ module sui_demo_contracts::order {
         order.total_amount = total_amount;
     }
 
+    public fun borrow_delivery_weekdays(order: &Order): &vector<u8> {
+        &order.delivery_weekdays
+    }
+
+    public(friend) fun borrow_mut_delivery_weekdays(order: &mut Order): &mut vector<u8> {
+        &mut order.delivery_weekdays
+    }
+
     public fun delivery_weekdays(order: &Order): vector<u8> {
         order.delivery_weekdays
     }

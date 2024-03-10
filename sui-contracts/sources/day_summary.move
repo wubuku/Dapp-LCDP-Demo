@@ -81,6 +81,14 @@ module sui_demo_contracts::day_summary {
         day_summary.metadata = metadata;
     }
 
+    public fun borrow_array_data(day_summary: &DaySummary): &vector<String> {
+        &day_summary.array_data
+    }
+
+    public(friend) fun borrow_mut_array_data(day_summary: &mut DaySummary): &mut vector<String> {
+        &mut day_summary.array_data
+    }
+
     public fun array_data(day_summary: &DaySummary): vector<String> {
         day_summary.array_data
     }
