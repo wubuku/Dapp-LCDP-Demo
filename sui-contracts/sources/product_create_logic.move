@@ -1,3 +1,4 @@
+#[allow(unused_mut_parameter)]
 module sui_demo_contracts::product_create_logic {
     use std::string::String;
     use sui::tx_context::TxContext;

@@ -543,11 +543,13 @@ module sui_demo_contracts::order_v2 {
         transfer::share_object(order_v2);
     }
 
+    #[lint_allow(freeze_wrapped)]
     public(friend) fun freeze_object(order_v2: OrderV2) {
         assert!(order_v2.version == 0, EInappropriateVersion);
         transfer::freeze_object(order_v2);
     }
 
+    #[lint_allow(freeze_wrapped)]
     public(friend) fun update_version_and_freeze_object(order_v2: OrderV2) {
         update_object_version(&mut order_v2);
         transfer::freeze_object(order_v2);

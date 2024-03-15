@@ -273,11 +273,13 @@ module sui_demo_contracts::order {
         transfer::share_object(order);
     }
 
+    #[lint_allow(freeze_wrapped)]
     public(friend) fun freeze_object(order: Order) {
         assert!(order.version == 0, EInappropriateVersion);
         transfer::freeze_object(order);
     }
 
+    #[lint_allow(freeze_wrapped)]
     public(friend) fun update_version_and_freeze_object(order: Order) {
         update_object_version(&mut order);
         transfer::freeze_object(order);
