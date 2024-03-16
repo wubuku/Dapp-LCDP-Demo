@@ -23,24 +23,25 @@ public class SuiPackageInitializer {
             @Value("#{'${sui.contract.package-publish-transactions.default}'?:'${sui.contract.package-publish-transaction:}'}")
             String defaultPackagePublishTransactionDigest
     ) {
-        defaultPackageInitializationService = null;
-        if (defaultPackagePublishTransactionDigest == null || defaultPackagePublishTransactionDigest.trim().isEmpty()) {
+        if (defaultPackagePublishTransactionDigest != null && !defaultPackagePublishTransactionDigest.trim().isEmpty()) {
+            defaultPackageInitializationService = new SuiPackageInitializationService(
+                    moveObjectIdGeneratorObjectRepository,
+                    suiPackageRepository,
+                    suiJsonRpcClient,
+                    defaultPackagePublishTransactionDigest,
+                    ContractConstants.DEFAULT_SUI_PACKAGE_NAME,
+                    ContractConstants::getDefaultPackageIdGeneratorObjectTypes
+            );
+        } else {
             //throw new IllegalArgumentException("defaultPackagePublishTransactionDigest is null");
-            return;
+            defaultPackageInitializationService = null;
         }
-        this.defaultPackageInitializationService = new SuiPackageInitializationService(
-                moveObjectIdGeneratorObjectRepository,
-                suiPackageRepository,
-                suiJsonRpcClient,
-                defaultPackagePublishTransactionDigest,
-                ContractConstants.DEFAULT_SUI_PACKAGE_NAME,
-                ContractConstants::getDefaultPackageIdGeneratorObjectTypes
-        );
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        if (defaultPackageInitializationService == null) { return; }
-        defaultPackageInitializationService.init();
+        if (defaultPackageInitializationService != null) {
+            defaultPackageInitializationService.init();
+        }
     }
 }
