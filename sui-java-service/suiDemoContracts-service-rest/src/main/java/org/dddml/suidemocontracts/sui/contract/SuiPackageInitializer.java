@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SuiPackageInitializer {
 
-    private SuiPackageInitializationService defaultPackageInitializationService;
+    private final SuiPackageInitializationService defaultPackageInitializationService;
 
     @Autowired
     public SuiPackageInitializer(
             MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository,
             SuiPackageRepository suiPackageRepository,
             SuiJsonRpcClient suiJsonRpcClient,
-            @Value("#{'${sui.contract.package-publish-transactions.default}'?:'${sui.contract.package-publish-transaction:}'}")
+            @Value("#{'${sui.contract.package-publish-transactions.default:}'?:'${sui.contract.package-publish-transaction:}'}")
             String defaultPackagePublishTransactionDigest
     ) {
         if (defaultPackagePublishTransactionDigest != null && !defaultPackagePublishTransactionDigest.trim().isEmpty()) {
