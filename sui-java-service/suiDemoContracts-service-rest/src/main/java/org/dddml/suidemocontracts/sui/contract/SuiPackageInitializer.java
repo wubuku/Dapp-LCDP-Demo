@@ -34,7 +34,7 @@ public class SuiPackageInitializer {
                 suiJsonRpcClient,
                 defaultPackagePublishTransactionDigest,
                 ContractConstants.DEFAULT_SUI_PACKAGE_NAME,
-                ContractConstants::getMoveObjectIdGeneratorObjectTypes
+                ContractConstants::getDefaultPackageIdGeneratorObjectTypes
         );
     }
 

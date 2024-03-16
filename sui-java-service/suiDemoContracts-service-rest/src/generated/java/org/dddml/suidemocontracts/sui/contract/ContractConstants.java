@@ -59,7 +59,7 @@ public class ContractConstants {
     public static final String DAY_SUMMARY_MODULE_DAY_SUMMARY_DELETED = "day_summary::DaySummaryDeleted";
 
 
-    public static String[] getMoveObjectIdGeneratorObjectTypes(String packageId) {
+    public static String[] getDefaultPackageIdGeneratorObjectTypes(String packageId) {
         return new String[]{
                 packageId + "::" + DOMAIN_NAME_MODULE_DOMAIN_NAME_ID_TABLE,
                 packageId + "::" + PRODUCT_MODULE_PRODUCT_ID_GENERATOR,
