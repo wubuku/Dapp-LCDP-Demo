@@ -4,35 +4,48 @@ import com.github.wubuku.sui.bean.ObjectChange;
 import com.github.wubuku.sui.bean.SuiTransactionBlockResponse;
 import com.github.wubuku.sui.bean.SuiTransactionBlockResponseOptions;
 import com.github.wubuku.sui.utils.SuiJsonRpcClient;
-import org.dddml.suidemocontracts.sui.contract.ContractConstants;
 import org.dddml.suidemocontracts.sui.contract.MoveObjectIdGeneratorObject;
 import org.dddml.suidemocontracts.sui.contract.SuiPackage;
 import org.dddml.suidemocontracts.sui.contract.repository.MoveObjectIdGeneratorObjectRepository;
 import org.dddml.suidemocontracts.sui.contract.repository.SuiPackageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
-@Service
-public class MoveObjectIdGeneratorObjectService {
-    @Autowired
+public class SuiPackageInitializationService {
+
     private MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository;
 
-    @Autowired
     private SuiPackageRepository suiPackageRepository;
 
-    @Autowired
     private SuiJsonRpcClient suiJsonRpcClient;
 
-    @Value("${sui.contract.package-publish-transaction}")
-    private String packagePublishTransaction;
+    private String packagePublishTransactionDigest;
+
+    private String suiPackageName;
+
+    private Function<String, String[]> moveObjectIdGeneratorObjectTypesGetter;
+
+    public SuiPackageInitializationService(
+            MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository,
+            SuiPackageRepository suiPackageRepository,
+            SuiJsonRpcClient suiJsonRpcClient,
+            String packagePublishTransactionDigest,
+            String suiPackageName,
+            Function<String, String[]> moveObjectIdGeneratorObjectTypesGetter
+    ) {
+        this.moveObjectIdGeneratorObjectRepository = moveObjectIdGeneratorObjectRepository;
+        this.suiPackageRepository = suiPackageRepository;
+        this.suiJsonRpcClient = suiJsonRpcClient;
+        this.packagePublishTransactionDigest = packagePublishTransactionDigest;
+        this.suiPackageName = suiPackageName;
+        this.moveObjectIdGeneratorObjectTypesGetter = moveObjectIdGeneratorObjectTypesGetter;
+    }
 
     @Transactional
-    public void initMoveObjectIdGeneratorObjects() {
+    public void init() {
         boolean showInput = false;
         boolean showRawInput = false;
         boolean showEffects = false;
@@ -40,7 +53,7 @@ public class MoveObjectIdGeneratorObjectService {
         boolean showObjectChanges = true;
         boolean showBalanceChanges = false;
         SuiTransactionBlockResponse suiTransactionBlockResponse = suiJsonRpcClient.getTransactionBlock(
-                packagePublishTransaction,
+                packagePublishTransactionDigest,
                 new SuiTransactionBlockResponseOptions(showInput, showRawInput, showEffects, showEvents, showObjectChanges, showBalanceChanges)
         );
 
@@ -58,20 +71,19 @@ public class MoveObjectIdGeneratorObjectService {
             packageIdRef.set(published.getPackageId());
             saveDefaultSuiPackageIfNotExists(
                     published.getPackageId(),
-                    null //todo publish.getDigest(),
+                    published.getDigest()
             );
         });
 
         //System.out.println("package Id: " + packageIdRef.get());
         String packageId = packageIdRef.get();
-        String[] idGeneratorDataObjTypes = ContractConstants.getMoveObjectIdGeneratorObjectTypes(packageId);
         Arrays.stream(objectChanges).filter(
                 c -> c instanceof ObjectChange.Created
         ).forEach(c -> {
             ObjectChange.Created objectCreated = (ObjectChange.Created) c;
             int idx = objectCreated.getObjectType().indexOf("::");
             if (objectCreated.getObjectType().substring(0, idx).equals(packageId)) {
-                if (Arrays.stream(idGeneratorDataObjTypes).anyMatch(t -> t.equals(objectCreated.getObjectType()))) {
+                if (Arrays.stream(moveObjectIdGeneratorObjectTypesGetter.apply(packageId)).anyMatch(t -> t.equals(objectCreated.getObjectType()))) {
                     saveMoveObjectIdGeneratorObjectIfNotExists(
                             objectCreated.getObjectType(), objectCreated.getObjectId());
                 }
@@ -80,11 +92,11 @@ public class MoveObjectIdGeneratorObjectService {
     }
 
     private void saveDefaultSuiPackageIfNotExists(String packageId, String publisher) {
-        if (suiPackageRepository.findById(ContractConstants.DEFAULT_SUI_PACKAGE_NAME).isPresent()) {
+        if (suiPackageRepository.findById(suiPackageName).isPresent()) {
             return;
         }
         SuiPackage suiPackage = new SuiPackage();
-        suiPackage.setName(ContractConstants.DEFAULT_SUI_PACKAGE_NAME);
+        suiPackage.setName(suiPackageName);
         suiPackage.setObjectId(packageId);
         suiPackage.setPublisher(publisher);
 

@@ -21,7 +21,7 @@ public class OrderV2EstimatedShipDateUpdated {
 
     private BigInteger version;
 
-    private Day estimatedShipDate;
+    private DayForEvent estimatedShipDate;
 
     public String getId() {
         return id;
@@ -47,11 +47,11 @@ public class OrderV2EstimatedShipDateUpdated {
         this.version = version;
     }
 
-    public Day getEstimatedShipDate() {
+    public DayForEvent getEstimatedShipDate() {
         return estimatedShipDate;
     }
 
-    public void setEstimatedShipDate(Day estimatedShipDate) {
+    public void setEstimatedShipDate(DayForEvent estimatedShipDate) {
         this.estimatedShipDate = estimatedShipDate;
     }
 
