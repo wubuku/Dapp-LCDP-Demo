@@ -13,21 +13,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class SuiPackageInitializer {
 
-    private final SuiPackageInitializationService defaultPackageInitializationService;
+    private SuiPackageInitializationService defaultPackageInitializationService;
 
     @Autowired
     public SuiPackageInitializer(
             MoveObjectIdGeneratorObjectRepository moveObjectIdGeneratorObjectRepository,
             SuiPackageRepository suiPackageRepository,
             SuiJsonRpcClient suiJsonRpcClient,
-            @Value("${sui.contract.package-publish-transaction}")
-            String packagePublishTransactionDigest
+            @Value("#{'${sui.contract.package-publish-transactions.default}'?:'${sui.contract.package-publish-transaction:}'}")
+            String defaultPackagePublishTransactionDigest
     ) {
+        defaultPackageInitializationService = null;
+        if (defaultPackagePublishTransactionDigest == null || defaultPackagePublishTransactionDigest.trim().isEmpty()) {
+            //throw new IllegalArgumentException("defaultPackagePublishTransactionDigest is null");
+            return;
+        }
         this.defaultPackageInitializationService = new SuiPackageInitializationService(
                 moveObjectIdGeneratorObjectRepository,
                 suiPackageRepository,
                 suiJsonRpcClient,
-                packagePublishTransactionDigest,
+                defaultPackagePublishTransactionDigest,
                 ContractConstants.DEFAULT_SUI_PACKAGE_NAME,
                 ContractConstants::getMoveObjectIdGeneratorObjectTypes
         );
@@ -35,6 +40,7 @@ public class SuiPackageInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
+        if (defaultPackageInitializationService == null) { return; }
         defaultPackageInitializationService.init();
     }
 }
