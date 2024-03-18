@@ -5,6 +5,7 @@
 
 module aptos_demo::month {
     use aptos_demo::year::Year;
+
     const EDataTooLong: u64 = 102;
 
     struct Month has store, drop, copy {

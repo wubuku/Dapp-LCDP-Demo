@@ -6,6 +6,7 @@
 module aptos_demo::day {
     use aptos_demo::month::Month;
     use std::string::String;
+
     const EDataTooLong: u64 = 102;
 
     struct Day has store, drop, copy {

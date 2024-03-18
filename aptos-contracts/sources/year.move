@@ -5,6 +5,7 @@
 
 module aptos_demo::year {
     use std::string::String;
+
     const EDataTooLong: u64 = 102;
 
     struct Year has store, drop, copy {

@@ -83,6 +83,14 @@ module aptos_demo::day_summary {
         day_summary.metadata = metadata;
     }
 
+    public fun borrow_array_data(day_summary: &DaySummary): &vector<String> {
+        &day_summary.array_data
+    }
+
+    public(friend) fun borrow_mut_array_data(day_summary: &mut DaySummary): &mut vector<String> {
+        &mut day_summary.array_data
+    }
+
     public fun array_data(day_summary: &DaySummary): vector<String> {
         day_summary.array_data
     }
@@ -99,12 +107,28 @@ module aptos_demo::day_summary {
         day_summary.optional_data = optional_data;
     }
 
+    public fun borrow_u16_array_data(day_summary: &DaySummary): &vector<u16> {
+        &day_summary.u16_array_data
+    }
+
+    public(friend) fun borrow_mut_u16_array_data(day_summary: &mut DaySummary): &mut vector<u16> {
+        &mut day_summary.u16_array_data
+    }
+
     public fun u16_array_data(day_summary: &DaySummary): vector<u16> {
         day_summary.u16_array_data
     }
 
     public(friend) fun set_u16_array_data(day_summary: &mut DaySummary, u16_array_data: vector<u16>) {
         day_summary.u16_array_data = u16_array_data;
+    }
+
+    public fun borrow_u32_array_data(day_summary: &DaySummary): &vector<u32> {
+        &day_summary.u32_array_data
+    }
+
+    public(friend) fun borrow_mut_u32_array_data(day_summary: &mut DaySummary): &mut vector<u32> {
+        &mut day_summary.u32_array_data
     }
 
     public fun u32_array_data(day_summary: &DaySummary): vector<u32> {
@@ -115,6 +139,14 @@ module aptos_demo::day_summary {
         day_summary.u32_array_data = u32_array_data;
     }
 
+    public fun borrow_u64_array_data(day_summary: &DaySummary): &vector<u64> {
+        &day_summary.u64_array_data
+    }
+
+    public(friend) fun borrow_mut_u64_array_data(day_summary: &mut DaySummary): &mut vector<u64> {
+        &mut day_summary.u64_array_data
+    }
+
     public fun u64_array_data(day_summary: &DaySummary): vector<u64> {
         day_summary.u64_array_data
     }
@@ -123,12 +155,28 @@ module aptos_demo::day_summary {
         day_summary.u64_array_data = u64_array_data;
     }
 
+    public fun borrow_u128_array_data(day_summary: &DaySummary): &vector<u128> {
+        &day_summary.u128_array_data
+    }
+
+    public(friend) fun borrow_mut_u128_array_data(day_summary: &mut DaySummary): &mut vector<u128> {
+        &mut day_summary.u128_array_data
+    }
+
     public fun u128_array_data(day_summary: &DaySummary): vector<u128> {
         day_summary.u128_array_data
     }
 
     public(friend) fun set_u128_array_data(day_summary: &mut DaySummary, u128_array_data: vector<u128>) {
         day_summary.u128_array_data = u128_array_data;
+    }
+
+    public fun borrow_u256_array_data(day_summary: &DaySummary): &vector<u256> {
+        &day_summary.u256_array_data
+    }
+
+    public(friend) fun borrow_mut_u256_array_data(day_summary: &mut DaySummary): &mut vector<u256> {
+        &mut day_summary.u256_array_data
     }
 
     public fun u256_array_data(day_summary: &DaySummary): vector<u256> {
@@ -197,6 +245,10 @@ module aptos_demo::day_summary {
 
     public fun day_summary_created_optional_data(day_summary_created: &DaySummaryCreated): Option<String> {
         day_summary_created.optional_data
+    }
+
+    public(friend) fun set_day_summary_created_optional_data(day_summary_created: &mut DaySummaryCreated, optional_data: Option<String>) {
+        day_summary_created.optional_data = optional_data;
     }
 
     public fun day_summary_created_u16_array_data(day_summary_created: &DaySummaryCreated): vector<u16> {

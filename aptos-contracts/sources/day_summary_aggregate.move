@@ -59,7 +59,7 @@ module aptos_demo::day_summary_aggregate {
         );
         let day_summary = day_summary_create_logic::mutate(
             account,
-            &day_summary_created,
+            &mut day_summary_created,
         );
         day_summary::add_day_summary(day_summary);
         day_summary::emit_day_summary_created(day_summary_created);
