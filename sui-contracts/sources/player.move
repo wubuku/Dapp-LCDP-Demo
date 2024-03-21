@@ -242,22 +242,6 @@ module sui_demo_contracts::player {
         transfer::transfer(player, recipient);
     }
 
-    #[lint_allow(share_owned)]
-    public(friend) fun share_object(player: Player) {
-        assert!(player.version == 0, EInappropriateVersion);
-        transfer::share_object(player);
-    }
-
-    public(friend) fun freeze_object(player: Player) {
-        assert!(player.version == 0, EInappropriateVersion);
-        transfer::freeze_object(player);
-    }
-
-    public(friend) fun update_version_and_freeze_object(player: Player) {
-        update_object_version(&mut player);
-        transfer::freeze_object(player);
-    }
-
     fun update_object_version(player: &mut Player) {
         player.version = player.version + 1;
         //assert!(player.version != 0, EInappropriateVersion);

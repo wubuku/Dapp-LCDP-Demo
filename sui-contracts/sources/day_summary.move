@@ -254,22 +254,6 @@ module sui_demo_contracts::day_summary {
         transfer::transfer(day_summary, recipient);
     }
 
-    #[lint_allow(share_owned)]
-    public(friend) fun share_object(day_summary: DaySummary) {
-        assert!(day_summary.version == 0, EInappropriateVersion);
-        transfer::share_object(day_summary);
-    }
-
-    public(friend) fun freeze_object(day_summary: DaySummary) {
-        assert!(day_summary.version == 0, EInappropriateVersion);
-        transfer::freeze_object(day_summary);
-    }
-
-    public(friend) fun update_version_and_freeze_object(day_summary: DaySummary) {
-        update_object_version(&mut day_summary);
-        transfer::freeze_object(day_summary);
-    }
-
     fun update_object_version(day_summary: &mut DaySummary) {
         day_summary.version = day_summary.version + 1;
         //assert!(day_summary.version != 0, EInappropriateVersion);

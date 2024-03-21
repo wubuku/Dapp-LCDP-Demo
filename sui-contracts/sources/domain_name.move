@@ -225,22 +225,6 @@ module sui_demo_contracts::domain_name {
         transfer::transfer(domain_name, recipient);
     }
 
-    #[lint_allow(share_owned)]
-    public(friend) fun share_object(domain_name: DomainName) {
-        assert!(domain_name.version == 0, EInappropriateVersion);
-        transfer::share_object(domain_name);
-    }
-
-    public(friend) fun freeze_object(domain_name: DomainName) {
-        assert!(domain_name.version == 0, EInappropriateVersion);
-        transfer::freeze_object(domain_name);
-    }
-
-    public(friend) fun update_version_and_freeze_object(domain_name: DomainName) {
-        update_object_version(&mut domain_name);
-        transfer::freeze_object(domain_name);
-    }
-
     fun update_object_version(domain_name: &mut DomainName) {
         domain_name.version = domain_name.version + 1;
         //assert!(domain_name.version != 0, EInappropriateVersion);

@@ -241,11 +241,6 @@ module sui_demo_contracts::product {
         current_product_id(product_id_generator)
     }
 
-    public(friend) fun transfer_object(product: Product, recipient: address) {
-        assert!(product.version == 0, EInappropriateVersion);
-        transfer::transfer(product, recipient);
-    }
-
     public(friend) fun update_version_and_transfer_object(product: Product, recipient: address) {
         update_object_version(&mut product);
         transfer::transfer(product, recipient);
@@ -255,16 +250,6 @@ module sui_demo_contracts::product {
     public(friend) fun share_object(product: Product) {
         assert!(product.version == 0, EInappropriateVersion);
         transfer::share_object(product);
-    }
-
-    public(friend) fun freeze_object(product: Product) {
-        assert!(product.version == 0, EInappropriateVersion);
-        transfer::freeze_object(product);
-    }
-
-    public(friend) fun update_version_and_freeze_object(product: Product) {
-        update_object_version(&mut product);
-        transfer::freeze_object(product);
     }
 
     public(friend) fun update_object_version(product: &mut Product) {
