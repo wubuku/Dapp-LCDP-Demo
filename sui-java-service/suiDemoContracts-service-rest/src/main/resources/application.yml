@@ -31,6 +31,9 @@ spring:
       path: /api
       #load-on-startup: -1
 
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 server:
 
   compression:
