@@ -16,7 +16,7 @@ configuration:
   #    type: UID
 
   mandatoryAggregateImplements: [ "VersionedAptosMoveObject" ]
-  mandatoryAggregateEventImplements: [ "AptosEvent", "HasStatus" ]
+  mandatoryAggregateEventImplements: [ "AptosEvent" ] #, "HasStatus" ]
   ignoreEntityImmutable: true
 
   metadata:

@@ -16,7 +16,7 @@ configuration:
   #    type: UID
 
   mandatoryAggregateImplements: [ "VersionedSolanaRustObject" ]
-  mandatoryAggregateEventImplements: [ "SolanaEvent", "HasStatus" ]
+  mandatoryAggregateEventImplements: [ "SolanaEvent" ] #, "HasStatus" ]
   ignoreEntityImmutable: true
 
   metadata:

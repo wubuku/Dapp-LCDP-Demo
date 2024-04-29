@@ -16,7 +16,7 @@ configuration:
     type: ObjectID
 
   mandatoryAggregateImplements: [ "VersionedRoochMoveObject" ]
-  mandatoryAggregateEventImplements: [ "RoochEvent", "HasStatus" ]
+  mandatoryAggregateEventImplements: [ "RoochEvent" ] #, "HasStatus" ]
   ignoreEntityImmutable: true
 
   rooch:

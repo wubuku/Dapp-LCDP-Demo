@@ -17,7 +17,7 @@ configuration:
     type: UID
 
   mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
+  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent"] #, "HasStatus"]
   # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
   ignoreEntityImmutable: true
 

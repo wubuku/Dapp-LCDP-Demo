@@ -23,7 +23,6 @@ configuration:
     type: u64
 
   #  mandatoryAggregateImplements: ["VersionedSuiMoveObject"]
-  #  mandatoryAggregateEventImplements: ["SuiEventEnvelope", "SuiMoveEvent", "HasStatus"]
   #  # "VersionedSuiMoveEvent", "HasSuiEventNextCursor"
   #  ignoreEntityImmutable: true
 
@@ -174,7 +173,11 @@ configuration:
     eventLobPropertiesName: "DynamicProperties"
     eventClobPropertiesPersistenceName: "DynamicPropertiesLob"
     eventClobPropertiesSqlType: VARCHAR(2000)
-    
+
+    eventProcessingInterfaceName: HasStatus
+    eventProcessingStatusPropertyName: Status
+    eventProcessingStatusPropertyType: indicator
+
     typeMappings:
       "bool": "Boolean"
       "bool?": "Boolean"

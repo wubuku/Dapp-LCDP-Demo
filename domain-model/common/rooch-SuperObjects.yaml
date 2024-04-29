@@ -23,10 +23,10 @@ superObjects:
       RoochEventIndex:
         type: u32
 
-  HasStatus:
-    properties:
-      Status:
-        type: indicator
+#  HasStatus:
+#    properties:
+#      Status:
+#        type: indicator
 
 
 valueObjects:

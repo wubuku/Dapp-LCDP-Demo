@@ -20,10 +20,10 @@ superObjects:
       AptosEventGuid:
         type: AptosEventGuid
 
-  HasStatus:
-    properties:
-      Status:
-        type: indicator
+#  HasStatus:
+#    properties:
+#      Status:
+#        type: indicator
 
 
 valueObjects:
