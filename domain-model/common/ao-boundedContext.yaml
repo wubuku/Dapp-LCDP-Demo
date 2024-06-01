@@ -1,0 +1,11 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 10
+  boundedContextName: "Dddml.AODemoContracts"
+  metadata:
+    EventTypeDiscriminatorName: "EventType"
+    ServiceMethodMessagingCommandNameFormat: "{0}_{1}" # {ServiceName}_{MethodName}
+  ao:
+    objectVersionPropertyName: version
