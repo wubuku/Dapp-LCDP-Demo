@@ -8,4 +8,4 @@ configuration:
     EventTypeDiscriminatorName: "EventType"
     ServiceMethodMessagingCommandNameFormat: "{0}_{1}" # {ServiceName}_{MethodName}
   ao:
-    objectVersionPropertyName: version
+    objectVersionPropertyName: Version
