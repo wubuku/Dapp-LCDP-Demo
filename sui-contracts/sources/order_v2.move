@@ -27,6 +27,7 @@ module sui_demo_contracts::order_v2 {
     const EIdAlreadyExists: u64 = 101;
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
+    #[allow(unused_const)]
     const EInappropriateVersion: u64 = 103;
     const EEmptyObjectID: u64 = 107;
     const EIdNotFound: u64 = 111;

@@ -369,7 +369,7 @@ public class OrderResource {
  
     public static class OrderResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String id, OrderCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String id, org.dddml.suidemocontracts.domain.order.OrderCommand value) {
             String idObj = id;
             if (value.getId() == null) {
                 value.setId(idObj);

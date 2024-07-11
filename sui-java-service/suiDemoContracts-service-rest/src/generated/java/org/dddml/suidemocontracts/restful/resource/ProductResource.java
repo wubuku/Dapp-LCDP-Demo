@@ -289,7 +289,7 @@ public class ProductResource {
  
     public static class ProductResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String productId, ProductCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String productId, org.dddml.suidemocontracts.domain.product.ProductCommand value) {
             String idObj = productId;
             if (value.getProductId() == null) {
                 value.setProductId(idObj);

@@ -276,7 +276,7 @@ public class DomainNameResource {
             return formatter.parse(idString);
         }
 
-        public static void setNullIdOrThrowOnInconsistentIds(String domainNameId, DomainNameCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String domainNameId, org.dddml.suidemocontracts.domain.domainname.DomainNameCommand value) {
             DomainNameId idObj = parseIdString(domainNameId);
             if (value.getDomainNameId() == null) {
                 value.setDomainNameId(idObj);

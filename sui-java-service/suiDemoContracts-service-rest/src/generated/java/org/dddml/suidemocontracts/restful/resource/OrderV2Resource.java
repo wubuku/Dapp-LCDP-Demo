@@ -632,7 +632,7 @@ public class OrderV2Resource {
  
     public static class OrderV2ResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String orderId, OrderV2Command value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String orderId, org.dddml.suidemocontracts.domain.orderv2.OrderV2Command value) {
             String idObj = orderId;
             if (value.getOrderId() == null) {
                 value.setOrderId(idObj);

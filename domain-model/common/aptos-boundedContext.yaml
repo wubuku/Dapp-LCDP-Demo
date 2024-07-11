@@ -39,3 +39,7 @@ configuration:
     aggregateIdWhenSingletonObjectAsAggregate:
       name: AccountAddress
       type: address
+
+  move:
+    typeMappings:
+      "AptosObjectID": "address"

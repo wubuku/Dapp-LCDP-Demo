@@ -18,6 +18,7 @@ module sui_demo_contracts::product {
 
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
+    #[allow(unused_const)]
     const EInappropriateVersion: u64 = 103;
     const EEmptyObjectID: u64 = 107;
     const PRODUCT_ID_LENGTH: u64 = 20;

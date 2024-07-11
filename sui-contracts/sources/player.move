@@ -19,6 +19,7 @@ module sui_demo_contracts::player {
     const EIdAlreadyExists: u64 = 101;
     #[allow(unused_const)]
     const EDataTooLong: u64 = 102;
+    #[allow(unused_const)]
     const EInappropriateVersion: u64 = 103;
     const EEmptyObjectID: u64 = 107;
 
