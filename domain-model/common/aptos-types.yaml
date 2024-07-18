@@ -4,7 +4,11 @@ typeDefinitions:
     sqlType: VARCHAR(66)
     cSharpType: string
     javaType: String
-
+  Object:
+    # Aptos Object
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
   address:
     sqlType: VARCHAR(66)
     cSharpType: string
