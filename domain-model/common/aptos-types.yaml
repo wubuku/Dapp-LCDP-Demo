@@ -46,3 +46,77 @@ typeDefinitions:
   APT:
     moveType: "aptos_framework::aptos_coin::AptosCoin"
 
+  FAMetadata:
+    moveType: "aptos_framework::fungible_asset::Metadata"
+    # has key, copy, drop
+    keyable: true
+    #nonDroppable: false
+    #nonCopyable: false
+    dataStruct:
+      properties:
+        Name:
+          type: String
+        Symbol:
+          type: String
+        Decimals:
+          type: u8
+        IconUri:
+          type: String
+        ProjectUri:
+          type: String
+
+  FungibleAsset:
+    moveType: "aptos_framework::fungible_asset::FungibleAsset"
+    nonDroppable: true
+    nonCopyable: true
+    #    dataStruct:
+    #      properties:
+    #        Metadata:
+    #          type: address #Object<Metadata>,
+    #        Amount:
+    #          type: u64
+
+  FungibleStore:
+    moveType: "aptos_framework::fungible_asset::FungibleStore"
+    keyable: true
+    nonDroppable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Metadata:
+          type: address #Object<Metadata>,
+        Balance:
+          type: u64
+        Frozen:
+          type: bool
+          # If true, owner transfer is disabled that only `TransferRef` can move in/out from this store.
+
+  ObjectExtendRef:
+    moveType: "aptos_framework::object::ExtendRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address
+
+  ObjectDeleteRef:
+    moveType: "aptos_framework::object::DeleteRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address
+
+  ObjectTransferRef:
+    moveType: "aptos_framework::object::TransferRef"
+    # has drop, store
+    storable: true
+    nonCopyable: true
+    dataStruct:
+      properties:
+        Self:
+          type: address
