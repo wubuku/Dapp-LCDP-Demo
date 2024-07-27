@@ -11,10 +11,13 @@ import java.util.*;
 
 public interface DomainNameEventRepository extends JpaRepository<AbstractDomainNameEvent, DomainNameEventId> {
 
+    AbstractDomainNameEvent findFirstByStatusIsNull();
+
     List<AbstractDomainNameEvent> findByStatusIsNull();
 
     AbstractDomainNameEvent.Registered findFirstRegisteredByOrderBySuiTimestampDesc();
 
     AbstractDomainNameEvent.Renewed findFirstRenewedByOrderBySuiTimestampDesc();
 
+    List<AbstractDomainNameEvent> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);
 }

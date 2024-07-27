@@ -5,6 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.domain.orderv2.AbstractOrderV2Event;
 import org.dddml.suidemocontracts.sui.contract.repository.*;
 import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,11 @@ public class UpdateOrderV2StateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-order-v2-states.fixed-delay:5000}")
     @Transactional
     public void updateOrderV2States() {
-        orderV2EventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractOrderV2Event e = orderV2EventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             String objectId = e.getId_();
             suiOrderV2Service.updateOrderV2State(objectId);
             orderV2EventService.updateStatusToProcessed(e);
-        });
+        }
     }
 }

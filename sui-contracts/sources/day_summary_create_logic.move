@@ -9,6 +9,7 @@ module sui_demo_contracts::day_summary_create_logic {
 
     friend sui_demo_contracts::day_summary_aggregate;
 
+    #[allow(unused_mut_parameter)]
     public(friend) fun verify(
         day: Day,
         description: String,

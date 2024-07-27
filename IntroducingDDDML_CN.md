@@ -684,7 +684,7 @@ singletonObjects:
           isObjectShared: true # Share the object after initialization.
 
       Donate:
-        shouldCallByReference: true
+        callObjectBy: Reference
         parameters:
           Amount:
             type: Balance<SUI>
@@ -694,7 +694,7 @@ singletonObjects:
             Amount:
               type: u64
       Withdraw:
-        shouldCallByReference: true
+        callObjectBy: Reference
         parameters:
           Amount:
             type: u64
@@ -716,7 +716,7 @@ singletonObjects:
 在上面的例子中，我们指示 `Blog` 单例对象创建之后即共享出去（`event/isObjectShared: true`），让其他人可以也可以使用它。
 
 我们使用 `Donate` 这个方法接受用户捐赠的 `SUI` 代币。
-`shouldCallByReference: true` 指出这个方法需要通过一个 `Blog` 对象的 Mutable 引用来调用。关键字 `shouldCallByReference` 目前只针对 Sui Move 平台有效。
+`callObjectBy: Reference` 指出这个方法需要通过一个 `Blog` 对象的 Mutable 引用来调用。关键字 `callObjectBy` 目前只针对 Sui Move 平台有效。
 参数 `Amount` 的类型是 `Balance<SUI>`，如上面所言，这是一个资源类型。
 这个方法执行后会触发一个名为“捐赠已收到”（`DonationReceived`）的事件。
 在 `event/properties` 这个键结点下描述了事件的属性。事件属性 `Amount` 的类型是 `u64`，表示捐赠的代币数量。显然，事件属性的类型不能使用资源类型。

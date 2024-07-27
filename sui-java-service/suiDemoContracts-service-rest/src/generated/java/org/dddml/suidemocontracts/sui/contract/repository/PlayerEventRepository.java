@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface PlayerEventRepository extends JpaRepository<AbstractPlayerEvent, PlayerEventId> {
 
+    AbstractPlayerEvent findFirstByStatusIsNull();
+
     List<AbstractPlayerEvent> findByStatusIsNull();
 
     AbstractPlayerEvent.PlayerCreated findFirstPlayerCreatedByOrderBySuiTimestampDesc();
@@ -19,4 +21,5 @@ public interface PlayerEventRepository extends JpaRepository<AbstractPlayerEvent
 
     AbstractPlayerEvent.PlayerDeleted findFirstPlayerDeletedByOrderBySuiTimestampDesc();
 
+    List<AbstractPlayerEvent> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);
 }

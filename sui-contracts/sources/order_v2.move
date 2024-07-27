@@ -97,11 +97,16 @@ module sui_demo_contracts::order_v2 {
         table::add(&mut order_v2.items, key, item);
     }
 
-    public(friend) fun remove_item(order_v2: &mut OrderV2, product_id: String) {
+    public(friend) fun remove_item(order_v2: &mut OrderV2, product_id: String): OrderV2Item {
         assert!(table::contains(&order_v2.items, product_id), EIdNotFound);
-        let item = table::remove(&mut order_v2.items, product_id);
+        table::remove(&mut order_v2.items, product_id)
+    }
+
+    public(friend) fun remove_and_drop_item(order_v2: &mut OrderV2, product_id: String) {
+        let item = remove_item(order_v2, product_id);
         order_v2_item::drop_order_v2_item(item);
     }
+
 
     public(friend) fun borrow_mut_item(order_v2: &mut OrderV2, product_id: String): &mut OrderV2Item {
         table::borrow_mut(&mut order_v2.items, product_id)
@@ -126,11 +131,16 @@ module sui_demo_contracts::order_v2 {
     }
 
     /*
-    public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
+    public(friend) fun remove_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8): OrderShipGroup {
         assert!(table::contains(&order_v2.order_ship_groups, ship_group_seq_id), EIdNotFound);
-        let order_ship_group = table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id);
+        table::remove(&mut order_v2.order_ship_groups, ship_group_seq_id)
+    }
+
+    public(friend) fun remove_and_drop_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8) {
+        let order_ship_group = remove_order_ship_group(order_v2, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }
+
     */
 
     public(friend) fun borrow_mut_order_ship_group(order_v2: &mut OrderV2, ship_group_seq_id: u8): &mut OrderShipGroup {

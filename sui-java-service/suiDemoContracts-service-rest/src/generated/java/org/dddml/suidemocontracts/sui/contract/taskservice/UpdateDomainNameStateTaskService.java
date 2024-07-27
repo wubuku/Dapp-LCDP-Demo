@@ -5,6 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.domain.domainname.AbstractDomainNameEvent;
 import org.dddml.suidemocontracts.sui.contract.repository.*;
 import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,11 @@ public class UpdateDomainNameStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-domain-name-states.fixed-delay:5000}")
     @Transactional
     public void updateDomainNameStates() {
-        domainNameEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractDomainNameEvent e = domainNameEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             String objectId = e.getId_();
             suiDomainNameService.updateDomainNameState(objectId);
             domainNameEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 }

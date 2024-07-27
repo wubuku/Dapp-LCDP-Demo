@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface OrderV2EventRepository extends JpaRepository<AbstractOrderV2Event, OrderV2EventId> {
 
+    AbstractOrderV2Event findFirstByStatusIsNull();
+
     List<AbstractOrderV2Event> findByStatusIsNull();
 
     AbstractOrderV2Event.OrderV2Created findFirstOrderV2CreatedByOrderBySuiTimestampDesc();
@@ -29,4 +31,5 @@ public interface OrderV2EventRepository extends JpaRepository<AbstractOrderV2Eve
 
     AbstractOrderV2Event.OrderShipGroupRemoved findFirstOrderShipGroupRemovedByOrderBySuiTimestampDesc();
 
+    List<AbstractOrderV2Event> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);
 }

@@ -11,10 +11,13 @@ import java.util.*;
 
 public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySummaryEvent, DaySummaryEventId> {
 
+    AbstractDaySummaryEvent findFirstByStatusIsNull();
+
     List<AbstractDaySummaryEvent> findByStatusIsNull();
 
     AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
 
     AbstractDaySummaryEvent.DaySummaryDeleted findFirstDaySummaryDeletedByOrderBySuiTimestampDesc();
 
+    List<AbstractDaySummaryEvent> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);
 }

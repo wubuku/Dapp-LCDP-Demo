@@ -10,6 +10,7 @@ module sui_demo_contracts::order_v2_create_logic {
 
     friend sui_demo_contracts::order_v2_aggregate;
 
+    #[allow(unused_mut_parameter)]
     public(friend) fun verify(
         order_id: String,
         product: &Product,

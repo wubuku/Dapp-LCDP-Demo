@@ -86,11 +86,16 @@ module sui_demo_contracts::order {
         table::add(&mut order.items, key, item);
     }
 
-    public(friend) fun remove_item(order: &mut Order, product_id: String) {
+    public(friend) fun remove_item(order: &mut Order, product_id: String): OrderItem {
         assert!(table::contains(&order.items, product_id), EIdNotFound);
-        let item = table::remove(&mut order.items, product_id);
+        table::remove(&mut order.items, product_id)
+    }
+
+    public(friend) fun remove_and_drop_item(order: &mut Order, product_id: String) {
+        let item = remove_item(order, product_id);
         order_item::drop_order_item(item);
     }
+
 
     public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
         table::borrow_mut(&mut order.items, product_id)

@@ -5,6 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.domain.player.AbstractPlayerEvent;
 import org.dddml.suidemocontracts.sui.contract.repository.*;
 import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class UpdatePlayerStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-player-states.fixed-delay:5000}")
     @Transactional
     public void updatePlayerStates() {
-        playerEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractPlayerEvent e = playerEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             String objectId = e.getId_();
             if (PlayerEventService.isDeletionCommand(e)) {
                 suiPlayerService.deletePlayer(e.getPlayerId());
@@ -35,6 +37,6 @@ public class UpdatePlayerStateTaskService {
                 suiPlayerService.updatePlayerState(objectId);
             }
             playerEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 }

@@ -14,6 +14,7 @@ module sui_demo_contracts::day_summary_aggregate {
     use sui_demo_contracts::month;
     use sui_demo_contracts::year;
 
+    #[allow(unused_mut_ref)]
     public entry fun create(
         day_month_year_number: u16,
         day_month_year_calendar: String,

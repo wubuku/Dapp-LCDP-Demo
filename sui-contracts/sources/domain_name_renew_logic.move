@@ -22,6 +22,7 @@ module sui_demo_contracts::domain_name_renew_logic {
         )
     }
 
+    #[allow(unused_mut_parameter)]
     public(friend) fun mutate(
         renewed: &domain_name::Renewed,
         domain_name: domain_name::DomainName,

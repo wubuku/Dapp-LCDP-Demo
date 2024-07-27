@@ -5,6 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.suidemocontracts.sui.contract.repository.*;
 import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class UpdateOrderStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-order-states.fixed-delay:5000}")
     @Transactional
     public void updateOrderStates() {
-        orderEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractOrderEvent e = orderEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             String objectId = e.getId();
             if (OrderEventService.isDeletionCommand(e)) {
                 suiOrderService.deleteOrder(objectId);
@@ -35,6 +37,6 @@ public class UpdateOrderStateTaskService {
                 suiOrderService.updateOrderState(objectId);
             }
             orderEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 }

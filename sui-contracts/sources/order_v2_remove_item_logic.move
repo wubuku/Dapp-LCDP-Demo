@@ -29,7 +29,7 @@ module sui_demo_contracts::order_v2_remove_item_logic {
         let product_id = order_v2_item_removed::product_id(order_v2_item_removed);
         let order_item = order_v2::borrow_item(&order_v2, product_id);
         let item_amount = order_v2_item::item_amount(order_item);
-        order_v2::remove_item(&mut order_v2, product_id);
+        order_v2::remove_and_drop_item(&mut order_v2, product_id);
         let total_amount = order_v2::total_amount(&order_v2);
         // debug::print(&total_amount);
         // debug::print(&item_amount);

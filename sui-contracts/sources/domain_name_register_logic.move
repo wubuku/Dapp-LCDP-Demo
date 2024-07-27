@@ -5,6 +5,7 @@ module sui_demo_contracts::domain_name_register_logic {
 
     friend sui_demo_contracts::domain_name_aggregate;
 
+    #[allow(unused_mut_parameter)]
     public(friend) fun verify(
         domain_name_id: DomainNameId,
         registration_period: u64,

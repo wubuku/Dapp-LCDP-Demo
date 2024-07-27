@@ -11,6 +11,7 @@ module sui_demo_contracts::order_create_logic {
 
     friend sui_demo_contracts::order_aggregate;
 
+    #[allow(unused_mut_parameter)]
     public(friend) fun verify(
         product: &Product,
         quantity: u64,

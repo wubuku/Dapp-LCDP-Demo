@@ -688,7 +688,7 @@ singletonObjects:
           isObjectShared: true # Share the object after initialization.
 
       Donate:
-        shouldCallByReference: true
+        callObjectBy: Reference
         parameters:
           Amount:
             type: Balance<SUI>
@@ -698,7 +698,7 @@ singletonObjects:
             Amount:
               type: u64
       Withdraw:
-        shouldCallByReference: true
+        callObjectBy: Reference
         parameters:
           Amount:
             type: u64
@@ -723,8 +723,8 @@ In the example above, we indicate that the `Blog` singleton object is shared aft
 so that others can also use it.
 
 We use the `Donate` method to accept `SUI` tokens donated by users.
-`shouldCallByReference: true` indicates that this method needs to be called by a mutable reference of a Blog object. 
-The keyword `shouldCallByReference` is currently only valid for the Sui Move platform.
+`callObjectBy: Reference` indicates that this method needs to be called by a mutable reference of a Blog object. 
+The keyword `callObjectBy` is currently only valid for the Sui Move platform.
 The type of parameter `Amount` is `Balance<SUI>`, as mentioned above, this is a resource type.
 This method will trigger an event named `DonationReceived` after execution.
 The properties of the event are described under the `event/properties` key node. 

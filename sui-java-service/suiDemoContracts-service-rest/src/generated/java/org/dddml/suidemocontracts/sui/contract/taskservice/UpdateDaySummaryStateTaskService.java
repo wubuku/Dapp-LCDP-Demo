@@ -5,6 +5,7 @@
 
 package org.dddml.suidemocontracts.sui.contract.taskservice;
 
+import org.dddml.suidemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.suidemocontracts.sui.contract.repository.*;
 import org.dddml.suidemocontracts.sui.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class UpdateDaySummaryStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-day-summary-states.fixed-delay:5000}")
     @Transactional
     public void updateDaySummaryStates() {
-        daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
+        AbstractDaySummaryEvent e = daySummaryEventRepository.findFirstByStatusIsNull();
+        if (e != null) {
             String objectId = e.getId_();
             if (DaySummaryEventService.isDeletionCommand(e)) {
                 suiDaySummaryService.deleteDaySummary(e.getDay());
@@ -35,6 +37,6 @@ public class UpdateDaySummaryStateTaskService {
                 suiDaySummaryService.updateDaySummaryState(objectId);
             }
             daySummaryEventService.updateStatusToProcessed(e);
-        });
+        }
     }
 }

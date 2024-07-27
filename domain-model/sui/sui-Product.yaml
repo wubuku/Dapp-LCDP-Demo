@@ -40,13 +40,13 @@ aggregates:
         event:
           type: ProductCrudEvent
           discriminatorValue: 1
-        #shouldCallByReference: true
+        callObjectBy: Reference #shouldCallByReference: true
 
       Delete:
         event:
           type: ProductCrudEvent
           discriminatorValue: 2
-        #shouldCallByReference: true
+        #callObjectBy: Reference #shouldCallByReference: true
 
     eventObjects:
       ProductCrudEvent:

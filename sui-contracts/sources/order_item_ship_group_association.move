@@ -57,11 +57,16 @@ module sui_demo_contracts::order_item_ship_group_association {
         table::add(&mut order_item_ship_group_association.subitems, key, subitem);
     }
 
-    public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {
+    public(friend) fun remove_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day): OrderItemShipGroupAssocSubitem {
         assert!(table::contains(&order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day), EIdNotFound);
-        let subitem = table::remove(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day);
+        table::remove(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day)
+    }
+
+    public(friend) fun remove_and_drop_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day) {
+        let subitem = remove_subitem(order_item_ship_group_association, order_item_ship_group_assoc_subitem_day);
         order_item_ship_group_assoc_subitem::drop_order_item_ship_group_assoc_subitem(subitem);
     }
+
 
     public(friend) fun borrow_mut_subitem(order_item_ship_group_association: &mut OrderItemShipGroupAssociation, order_item_ship_group_assoc_subitem_day: Day): &mut OrderItemShipGroupAssocSubitem {
         table::borrow_mut(&mut order_item_ship_group_association.subitems, order_item_ship_group_assoc_subitem_day)

@@ -32,7 +32,7 @@ module sui_demo_contracts::order_v2_remove_order_ship_group_item_logic {
             &mut order_v2,
             order_ship_group_item_removed::ship_group_seq_id(order_ship_group_item_removed),
         );
-        order_ship_group::remove_order_item_ship_group_association(
+        order_ship_group::remove_and_drop_order_item_ship_group_association(
             order_ship_group,
             order_ship_group_item_removed::product_id(order_ship_group_item_removed),
         );

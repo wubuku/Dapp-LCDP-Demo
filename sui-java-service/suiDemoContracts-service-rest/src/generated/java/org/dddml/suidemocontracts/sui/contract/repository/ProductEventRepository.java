@@ -11,8 +11,11 @@ import java.util.*;
 
 public interface ProductEventRepository extends JpaRepository<AbstractProductEvent, ProductEventId> {
 
+    AbstractProductEvent findFirstByStatusIsNull();
+
     List<AbstractProductEvent> findByStatusIsNull();
 
     AbstractProductEvent.ProductCrudEvent findFirstProductCrudEventByOrderBySuiTimestampDesc();
 
+    List<AbstractProductEvent> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);
 }
