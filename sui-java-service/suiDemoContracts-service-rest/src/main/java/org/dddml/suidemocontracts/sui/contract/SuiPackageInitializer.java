@@ -21,7 +21,9 @@ public class SuiPackageInitializer {
             SuiPackageRepository suiPackageRepository,
             SuiJsonRpcClient suiJsonRpcClient,
             @Value("#{'${sui.contract.package-publish-transactions.default:}'?:'${sui.contract.package-publish-transaction:}'}")
-            String defaultPackagePublishTransactionDigest
+            String defaultPackagePublishTransactionDigest,
+            @Value("#{'${sui.contract.event-type-patterns-for-extract-package-id.default:}'?:'${sui.contract.event-type-pattern-for-extract-package-id:}'}")
+            String defaultEventTypePatternForExtractPackageId
     ) {
         if (defaultPackagePublishTransactionDigest != null && !defaultPackagePublishTransactionDigest.trim().isEmpty()) {
             defaultPackageInitializationService = new SuiPackageInitializationService(
@@ -30,7 +32,8 @@ public class SuiPackageInitializer {
                     suiJsonRpcClient,
                     defaultPackagePublishTransactionDigest,
                     ContractConstants.DEFAULT_SUI_PACKAGE_NAME,
-                    ContractConstants::getDefaultPackageIdGeneratorObjectTypes
+                    ContractConstants::getDefaultPackageIdGeneratorObjectTypes,
+                    defaultEventTypePatternForExtractPackageId
             );
         } else {
             //throw new IllegalArgumentException("defaultPackagePublishTransactionDigest is null");
