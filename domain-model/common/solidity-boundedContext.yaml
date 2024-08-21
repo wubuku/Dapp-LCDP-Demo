@@ -1,0 +1,53 @@
+#%DDDML 0.1
+---
+
+configuration:
+  sequenceNumber: 10
+  boundedContextName: "Dddml.SolidityDemoContracts"
+  metadata:
+    EventTypeDiscriminatorName: "EventType"
+    ServiceMethodMessagingCommandNameFormat: "{0}_{1}" # {ServiceName}_{MethodName}
+
+  java:
+    boundedContextPackage: "org.dddml.soliditydemocontracts"
+    specializationPackage: "org.dddml.soliditydemocontracts.specialization"
+
+    typeMappings:
+      "vector<u8>": "String" # Mapped to Hex String?
+      #"Object": "String"
+
+    aggregateIdWhenSingletonObjectAsAggregate:
+      name: StoreAddress
+      type: address
+
+  solidity:
+    objectVersionPropertyName: Version
+
+    typeMappings:
+      "U8": "uint8"
+      "U16": "uint16"
+      "U32": "uint32"
+      "U64": "uint64"
+      "U128": "uint128"
+      "U256": "uint256"
+
+      "u8": "uint8"
+      "u16": "uint16"
+      "u32": "uint32"
+      "u64": "uint64"
+      "u128": "uint128"
+      "u256": "uint256"
+
+      "i8": "int8"
+      "i16": "int16"
+      "i32": "int32"
+      "i64": "int64"
+      "i128": "int128"
+      "i256": "int256"
+
+      "vector<u8>": "bytes"
+      #"string": "string"
+      "String": "string"
+      "Boolean": "bool"
+      "Bool": "bool"
+

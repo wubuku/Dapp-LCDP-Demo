@@ -1,0 +1,27 @@
+typeDefinitions:
+
+  address:
+    sqlType: VARCHAR(66)
+    cSharpType: string
+    javaType: String
+
+  u64:
+    sqlType: DECIMAL(20,0)
+  u128:
+    sqlType: DECIMAL(20,0)
+  u256:
+    sqlType: DECIMAL(50,0)
+
+  U64:
+    sqlType: DECIMAL(20,0)
+  U128:
+    sqlType: DECIMAL(20,0)
+  U256:
+    sqlType: DECIMAL(50,0)
+
+  i64:
+    sqlType: DECIMAL(20,0)
+  i128:
+    sqlType: DECIMAL(20,0)
+  i256:
+    sqlType: DECIMAL(50,0)
