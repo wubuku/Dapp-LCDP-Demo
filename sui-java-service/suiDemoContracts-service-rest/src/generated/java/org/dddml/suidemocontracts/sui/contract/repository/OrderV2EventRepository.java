@@ -15,6 +15,8 @@ public interface OrderV2EventRepository extends JpaRepository<AbstractOrderV2Eve
 
     List<AbstractOrderV2Event> findByStatusIsNull();
 
+    AbstractOrderV2Event findFirstByOrderBySuiTimestampDesc();
+
     AbstractOrderV2Event.OrderV2Created findFirstOrderV2CreatedByOrderBySuiTimestampDesc();
 
     AbstractOrderV2Event.OrderV2ItemRemoved findFirstOrderV2ItemRemovedByOrderBySuiTimestampDesc();

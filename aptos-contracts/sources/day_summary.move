@@ -367,6 +367,10 @@ module aptos_demo::day_summary {
         private_add_day_summary(day_summary);
     }
 
+    public(friend) fun borrow_mut(day_summary_pass_obj: &mut pass_object::PassObject<DaySummary>): &mut DaySummary {
+        pass_object::borrow_mut(day_summary_pass_obj)
+    }
+
     public(friend) fun drop_day_summary(day_summary: DaySummary) {
         let DaySummary {
             version: _version,

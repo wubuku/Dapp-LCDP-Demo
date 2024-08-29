@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface OrderEventRepository extends JpaRepository<AbstractOrderEvent, OrderEventId> {
 
+    AbstractOrderEvent findFirstByStatusIsNull();
+
     List<AbstractOrderEvent> findByStatusIsNull();
 
     AbstractOrderEvent.OrderCreated findFirstOrderCreatedByOrderByAptosEventSequenceNumber();

@@ -28,7 +28,8 @@ public class UpdateProductStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-product-states.fixed-delay:5000}")
     @Transactional
     public void updateProductStates() {
-        AbstractProductEvent e = productEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractProductEvent> es = productEventRepository.findByStatusIsNull();
+        AbstractProductEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId_();
             if (ProductEventService.isDeletionCommand(e)) {
@@ -36,7 +37,8 @@ public class UpdateProductStateTaskService {
             } else {
                 suiProductService.updateProductState(objectId);
             }
-            productEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId_().equals(objectId))
+                    .forEach(productEventService::updateStatusToProcessed);
         }
     }
 }

@@ -32,7 +32,7 @@ module aptos_demo::order_remove_item_logic {
         let product_id = order::order_item_removed_product_id(order_item_removed);
         let order_item = order::borrow_item(&order, product_id);
         let item_amount = order_item::item_amount(order_item);
-        order::remove_item(&mut order, product_id);
+        order::remove_and_drop_item(&mut order, product_id);
         let total_amount = order::total_amount(&order);
         // debug::print(&total_amount);
         // debug::print(&item_amount);

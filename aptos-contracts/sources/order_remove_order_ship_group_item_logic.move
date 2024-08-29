@@ -29,7 +29,7 @@ module aptos_demo::order_remove_order_ship_group_item_logic {
             &mut order,
             order::order_ship_group_item_removed_ship_group_seq_id(order_ship_group_item_removed),
         );
-        order_ship_group::remove_order_item_ship_group_association(
+        order_ship_group::remove_and_drop_order_item_ship_group_association(
             order_ship_group,
             order::order_ship_group_item_removed_product_id(order_ship_group_item_removed),
         );

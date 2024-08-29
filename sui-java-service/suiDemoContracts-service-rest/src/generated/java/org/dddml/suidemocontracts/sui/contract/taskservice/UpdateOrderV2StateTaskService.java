@@ -28,11 +28,13 @@ public class UpdateOrderV2StateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-order-v2-states.fixed-delay:5000}")
     @Transactional
     public void updateOrderV2States() {
-        AbstractOrderV2Event e = orderV2EventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractOrderV2Event> es = orderV2EventRepository.findByStatusIsNull();
+        AbstractOrderV2Event e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId_();
             suiOrderV2Service.updateOrderV2State(objectId);
-            orderV2EventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId_().equals(objectId))
+                    .forEach(orderV2EventService::updateStatusToProcessed);
         }
     }
 }

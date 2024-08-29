@@ -15,6 +15,8 @@ public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySumm
 
     List<AbstractDaySummaryEvent> findByStatusIsNull();
 
+    AbstractDaySummaryEvent findFirstByOrderBySuiTimestampDesc();
+
     AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderBySuiTimestampDesc();
 
     AbstractDaySummaryEvent.DaySummaryDeleted findFirstDaySummaryDeletedByOrderBySuiTimestampDesc();

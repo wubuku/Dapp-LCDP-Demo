@@ -104,3 +104,5 @@ aptos move run --function-id 'default::day_summary_aggregate::create' \
 --assume-yes
 ```
 
+## Register "friends" in dependency packages
+

@@ -140,11 +140,16 @@ module aptos_demo::order {
         });
     }
 
-    public(friend) fun remove_item(order: &mut Order, product_id: String) {
+    public(friend) fun remove_item(order: &mut Order, product_id: String): OrderItem {
         assert!(table_with_length::contains(&order.items, product_id), EIdNotFound);
-        let item = table_with_length::remove(&mut order.items, product_id);
+        table_with_length::remove(&mut order.items, product_id)
+    }
+
+    public(friend) fun remove_and_drop_item(order: &mut Order, product_id: String) {
+        let item = remove_item(order, product_id);
         order_item::drop_order_item(item);
     }
+
 
     public(friend) fun borrow_mut_item(order: &mut Order, product_id: String): &mut OrderItem {
         table_with_length::borrow_mut(&mut order.items, product_id)
@@ -173,11 +178,16 @@ module aptos_demo::order {
     }
 
     /*
-    public(friend) fun remove_order_ship_group(order: &mut Order, ship_group_seq_id: u8) {
+    public(friend) fun remove_order_ship_group(order: &mut Order, ship_group_seq_id: u8): OrderShipGroup {
         assert!(table_with_length::contains(&order.order_ship_groups, ship_group_seq_id), EIdNotFound);
-        let order_ship_group = table_with_length::remove(&mut order.order_ship_groups, ship_group_seq_id);
+        table_with_length::remove(&mut order.order_ship_groups, ship_group_seq_id)
+    }
+
+    public(friend) fun remove_and_drop_order_ship_group(order: &mut Order, ship_group_seq_id: u8) {
+        let order_ship_group = remove_order_ship_group(order, ship_group_seq_id);
         order_ship_group::drop_order_ship_group(order_ship_group);
     }
+
     */
 
     public(friend) fun borrow_mut_order_ship_group(order: &mut Order, ship_group_seq_id: u8): &mut OrderShipGroup {
@@ -541,6 +551,10 @@ module aptos_demo::order {
     public fun return_order(order_pass_obj: pass_object::PassObject<Order>) acquires Tables {
         let order = pass_object::extract(order_pass_obj);
         private_add_order(order);
+    }
+
+    public(friend) fun borrow_mut(order_pass_obj: &mut pass_object::PassObject<Order>): &mut Order {
+        pass_object::borrow_mut(order_pass_obj)
     }
 
     public fun contains_order(order_id: String): bool acquires Tables {

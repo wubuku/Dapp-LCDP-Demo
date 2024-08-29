@@ -15,6 +15,8 @@ public interface ProductEventRepository extends JpaRepository<AbstractProductEve
 
     List<AbstractProductEvent> findByStatusIsNull();
 
+    AbstractProductEvent findFirstByOrderBySuiTimestampDesc();
+
     AbstractProductEvent.ProductCrudEvent findFirstProductCrudEventByOrderBySuiTimestampDesc();
 
     List<AbstractProductEvent> findBySuiTimestampBetween(Long startSuiTimestamp, Long endSuiTimestamp);

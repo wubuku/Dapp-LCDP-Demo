@@ -11,10 +11,25 @@ module aptos_demo::genesis_account {
     use std::signer;
 
     friend aptos_demo::order;
+    friend aptos_demo::order_aggregate;
+    friend aptos_demo::order_create_logic;
+    friend aptos_demo::order_remove_item_logic;
+    friend aptos_demo::order_update_item_quantity_logic;
+    friend aptos_demo::order_update_estimated_ship_date_logic;
+    friend aptos_demo::order_add_order_ship_group_logic;
+    friend aptos_demo::order_cancel_order_ship_group_quantity_logic;
+    friend aptos_demo::order_remove_order_ship_group_item_logic;
+    friend aptos_demo::order_remove_order_ship_group_logic;
     friend aptos_demo::order_ship_group;
     friend aptos_demo::order_item_ship_group_association;
     friend aptos_demo::product;
+    friend aptos_demo::product_aggregate;
+    friend aptos_demo::product_create_logic;
+    friend aptos_demo::product_update_logic;
+    friend aptos_demo::product_delete_logic;
     friend aptos_demo::day_summary;
+    friend aptos_demo::day_summary_aggregate;
+    friend aptos_demo::day_summary_create_logic;
 
     const ENotGenesisAccount: u64 = 100;
 

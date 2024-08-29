@@ -5,6 +5,7 @@
 
 package org.dddml.aptosdemocontracts.aptos.contract.taskservice;
 
+import org.dddml.aptosdemocontracts.domain.order.AbstractOrderEvent;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.*;
 import org.dddml.aptosdemocontracts.aptos.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,13 @@ public class UpdateOrderStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-order-states.fixed-delay:5000}")
     @Transactional
     public void updateOrderStates() {
-        orderEventRepository.findByStatusIsNull().forEach(e -> {
+        java.util.List<AbstractOrderEvent> es = orderEventRepository.findByStatusIsNull();
+        AbstractOrderEvent e = es.stream().findFirst().orElse(null);
+        if (e != null) {
             aptosOrderService.updateOrderState(e.getOrderId());
-            orderEventService.updateStatusToProcessed(e);
-        });
+            es.stream().filter(ee -> ee.getOrderId().equals(e.getOrderId()))
+                    .forEach(orderEventService::updateStatusToProcessed);
+        }
     }
 
 }

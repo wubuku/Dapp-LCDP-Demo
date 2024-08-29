@@ -5,6 +5,7 @@
 
 package org.dddml.aptosdemocontracts.aptos.contract.taskservice;
 
+import org.dddml.aptosdemocontracts.domain.daysummary.AbstractDaySummaryEvent;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.*;
 import org.dddml.aptosdemocontracts.aptos.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,13 @@ public class UpdateDaySummaryStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-day-summary-states.fixed-delay:5000}")
     @Transactional
     public void updateDaySummaryStates() {
-        daySummaryEventRepository.findByStatusIsNull().forEach(e -> {
+        java.util.List<AbstractDaySummaryEvent> es = daySummaryEventRepository.findByStatusIsNull();
+        AbstractDaySummaryEvent e = es.stream().findFirst().orElse(null);
+        if (e != null) {
             aptosDaySummaryService.updateDaySummaryState(e.getDay());
-            daySummaryEventService.updateStatusToProcessed(e);
-        });
+            es.stream().filter(ee -> ee.getDay().equals(e.getDay()))
+                    .forEach(daySummaryEventService::updateStatusToProcessed);
+        }
     }
 
 }

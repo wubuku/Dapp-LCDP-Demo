@@ -247,6 +247,10 @@ module aptos_demo::product {
         private_add_product(product);
     }
 
+    public(friend) fun borrow_mut(product_pass_obj: &mut pass_object::PassObject<Product>): &mut Product {
+        pass_object::borrow_mut(product_pass_obj)
+    }
+
     public(friend) fun drop_product(product: Product) {
         let Product {
             version: _version,

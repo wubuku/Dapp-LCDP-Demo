@@ -28,7 +28,8 @@ public class UpdateOrderStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-order-states.fixed-delay:5000}")
     @Transactional
     public void updateOrderStates() {
-        AbstractOrderEvent e = orderEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractOrderEvent> es = orderEventRepository.findByStatusIsNull();
+        AbstractOrderEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId();
             if (OrderEventService.isDeletionCommand(e)) {
@@ -36,7 +37,8 @@ public class UpdateOrderStateTaskService {
             } else {
                 suiOrderService.updateOrderState(objectId);
             }
-            orderEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId().equals(objectId))
+                    .forEach(orderEventService::updateStatusToProcessed);
         }
     }
 }

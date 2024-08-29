@@ -5,6 +5,7 @@
 
 package org.dddml.aptosdemocontracts.aptos.contract.taskservice;
 
+import org.dddml.aptosdemocontracts.domain.product.AbstractProductEvent;
 import org.dddml.aptosdemocontracts.aptos.contract.repository.*;
 import org.dddml.aptosdemocontracts.aptos.contract.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,17 @@ public class UpdateProductStateTaskService {
     @Scheduled(fixedDelayString = "${aptos.contract.update-product-states.fixed-delay:5000}")
     @Transactional
     public void updateProductStates() {
-        productEventRepository.findByStatusIsNull().forEach(e -> {
+        java.util.List<AbstractProductEvent> es = productEventRepository.findByStatusIsNull();
+        AbstractProductEvent e = es.stream().findFirst().orElse(null);
+        if (e != null) {
             if (ProductEventService.isDeletionCommand(e)) {
                 aptosProductService.deleteProduct(e.getProductId());
             } else {
                 aptosProductService.updateProductState(e.getProductId());
             }
-            productEventService.updateStatusToProcessed(e);
-        });
+            es.stream().filter(ee -> ee.getProductId().equals(e.getProductId()))
+                    .forEach(productEventService::updateStatusToProcessed);
+        }
     }
 
 }

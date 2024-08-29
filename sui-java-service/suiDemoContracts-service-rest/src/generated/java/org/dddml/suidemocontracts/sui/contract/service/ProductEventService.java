@@ -52,7 +52,7 @@ public class ProductEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getProductCrudEventNextCursor();
         while (true) {
             PaginatedMoveEvents<ProductCrudEvent> eventPage = suiJsonRpcClient.queryMoveEvents(

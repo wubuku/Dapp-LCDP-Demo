@@ -258,7 +258,7 @@ public class DaySummaryResource {
             return formatter.parse(idString);
         }
 
-        public static void setNullIdOrThrowOnInconsistentIds(String day, DaySummaryCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String day, org.dddml.aptosdemocontracts.domain.daysummary.DaySummaryCommand value) {
             Day idObj = parseIdString(day);
             if (value.getDay() == null) {
                 value.setDay(idObj);

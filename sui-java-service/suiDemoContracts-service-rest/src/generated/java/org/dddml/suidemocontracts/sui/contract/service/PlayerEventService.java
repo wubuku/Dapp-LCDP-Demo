@@ -60,7 +60,7 @@ public class PlayerEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getPlayerCreatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<PlayerCreated> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -100,7 +100,7 @@ public class PlayerEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getPlayerUpdatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<PlayerUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -140,7 +140,7 @@ public class PlayerEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getPlayerDeletedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<PlayerDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(

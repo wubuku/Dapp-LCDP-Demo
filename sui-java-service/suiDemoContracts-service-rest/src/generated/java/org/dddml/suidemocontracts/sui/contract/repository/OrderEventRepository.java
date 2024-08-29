@@ -15,6 +15,8 @@ public interface OrderEventRepository extends JpaRepository<AbstractOrderEvent, 
 
     List<AbstractOrderEvent> findByStatusIsNull();
 
+    AbstractOrderEvent findFirstByOrderBySuiTimestampDesc();
+
     AbstractOrderEvent.OrderCreated findFirstOrderCreatedByOrderBySuiTimestampDesc();
 
     AbstractOrderEvent.OrderItemRemoved findFirstOrderItemRemovedByOrderBySuiTimestampDesc();

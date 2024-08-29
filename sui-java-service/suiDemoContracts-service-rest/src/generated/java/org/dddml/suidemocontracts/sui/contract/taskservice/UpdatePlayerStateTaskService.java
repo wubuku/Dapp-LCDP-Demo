@@ -28,7 +28,8 @@ public class UpdatePlayerStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-player-states.fixed-delay:5000}")
     @Transactional
     public void updatePlayerStates() {
-        AbstractPlayerEvent e = playerEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractPlayerEvent> es = playerEventRepository.findByStatusIsNull();
+        AbstractPlayerEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId_();
             if (PlayerEventService.isDeletionCommand(e)) {
@@ -36,7 +37,8 @@ public class UpdatePlayerStateTaskService {
             } else {
                 suiPlayerService.updatePlayerState(objectId);
             }
-            playerEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId_().equals(objectId))
+                    .forEach(playerEventService::updateStatusToProcessed);
         }
     }
 }

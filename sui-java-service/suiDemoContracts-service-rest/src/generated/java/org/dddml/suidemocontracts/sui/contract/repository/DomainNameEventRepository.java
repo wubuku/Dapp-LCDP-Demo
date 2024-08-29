@@ -15,6 +15,8 @@ public interface DomainNameEventRepository extends JpaRepository<AbstractDomainN
 
     List<AbstractDomainNameEvent> findByStatusIsNull();
 
+    AbstractDomainNameEvent findFirstByOrderBySuiTimestampDesc();
+
     AbstractDomainNameEvent.Registered findFirstRegisteredByOrderBySuiTimestampDesc();
 
     AbstractDomainNameEvent.Renewed findFirstRenewedByOrderBySuiTimestampDesc();

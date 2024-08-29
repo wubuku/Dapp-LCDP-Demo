@@ -28,11 +28,13 @@ public class UpdateDomainNameStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-domain-name-states.fixed-delay:5000}")
     @Transactional
     public void updateDomainNameStates() {
-        AbstractDomainNameEvent e = domainNameEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractDomainNameEvent> es = domainNameEventRepository.findByStatusIsNull();
+        AbstractDomainNameEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId_();
             suiDomainNameService.updateDomainNameState(objectId);
-            domainNameEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId_().equals(objectId))
+                    .forEach(domainNameEventService::updateStatusToProcessed);
         }
     }
 }

@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface ProductEventRepository extends JpaRepository<AbstractProductEvent, ProductEventId> {
 
+    AbstractProductEvent findFirstByStatusIsNull();
+
     List<AbstractProductEvent> findByStatusIsNull();
 
     AbstractProductEvent.ProductEvent findFirstProductEventByOrderByAptosEventSequenceNumber();

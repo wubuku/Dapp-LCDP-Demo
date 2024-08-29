@@ -632,7 +632,7 @@ public class OrderResource {
  
     public static class OrderResourceUtils {
 
-        public static void setNullIdOrThrowOnInconsistentIds(String orderId, OrderCommand value) {
+        public static void setNullIdOrThrowOnInconsistentIds(String orderId, org.dddml.aptosdemocontracts.domain.order.OrderCommand value) {
             String idObj = orderId;
             if (value.getOrderId() == null) {
                 value.setOrderId(idObj);

@@ -11,6 +11,8 @@ import java.util.*;
 
 public interface DaySummaryEventRepository extends JpaRepository<AbstractDaySummaryEvent, DaySummaryEventId> {
 
+    AbstractDaySummaryEvent findFirstByStatusIsNull();
+
     List<AbstractDaySummaryEvent> findByStatusIsNull();
 
     AbstractDaySummaryEvent.DaySummaryCreated findFirstDaySummaryCreatedByOrderByAptosEventSequenceNumber();

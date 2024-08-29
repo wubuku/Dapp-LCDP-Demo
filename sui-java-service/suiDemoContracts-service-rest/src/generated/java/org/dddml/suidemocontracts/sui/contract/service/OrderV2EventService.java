@@ -52,7 +52,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderV2CreatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderV2Created> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -92,7 +92,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderV2ItemRemovedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderV2ItemRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -132,7 +132,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderV2ItemQuantityUpdatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderV2ItemQuantityUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -172,7 +172,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderV2EstimatedShipDateUpdatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderV2EstimatedShipDateUpdated> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -212,7 +212,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderShipGroupAddedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderShipGroupAdded> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -252,7 +252,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderShipGroupQuantityCanceledEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderShipGroupQuantityCanceled> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -292,7 +292,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderShipGroupItemRemovedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderShipGroupItemRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -332,7 +332,7 @@ public class OrderV2EventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getOrderShipGroupRemovedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<OrderShipGroupRemoved> eventPage = suiJsonRpcClient.queryMoveEvents(

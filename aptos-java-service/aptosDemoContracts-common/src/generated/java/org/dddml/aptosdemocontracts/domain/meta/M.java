@@ -114,6 +114,7 @@ public class M {
         clsMap.put("id-long-ne", String.class);
         clsMap.put("id-vlong-ne", String.class);
         clsMap.put("tel-number", String.class);
+        clsMap.put("AptosObjectID", String.class);
         clsMap.put("address", String.class);
         CLASS_MAP = clsMap;
     }

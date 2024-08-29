@@ -28,7 +28,8 @@ public class UpdateDaySummaryStateTaskService {
     @Scheduled(fixedDelayString = "${sui.contract.update-day-summary-states.fixed-delay:5000}")
     @Transactional
     public void updateDaySummaryStates() {
-        AbstractDaySummaryEvent e = daySummaryEventRepository.findFirstByStatusIsNull();
+        java.util.List<AbstractDaySummaryEvent> es = daySummaryEventRepository.findByStatusIsNull();
+        AbstractDaySummaryEvent e = es.stream().findFirst().orElse(null);
         if (e != null) {
             String objectId = e.getId_();
             if (DaySummaryEventService.isDeletionCommand(e)) {
@@ -36,7 +37,8 @@ public class UpdateDaySummaryStateTaskService {
             } else {
                 suiDaySummaryService.updateDaySummaryState(objectId);
             }
-            daySummaryEventService.updateStatusToProcessed(e);
+            es.stream().filter(ee -> ee.getId_().equals(objectId))
+                    .forEach(daySummaryEventService::updateStatusToProcessed);
         }
     }
 }

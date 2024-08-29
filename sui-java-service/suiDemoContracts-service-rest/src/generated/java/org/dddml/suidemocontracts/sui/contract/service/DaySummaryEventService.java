@@ -59,7 +59,7 @@ public class DaySummaryEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getDaySummaryCreatedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<DaySummaryCreated> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -99,7 +99,7 @@ public class DaySummaryEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getDaySummaryDeletedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<DaySummaryDeleted> eventPage = suiJsonRpcClient.queryMoveEvents(

@@ -46,7 +46,7 @@ public class DomainNameEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getRegisteredEventNextCursor();
         while (true) {
             PaginatedMoveEvents<Registered> eventPage = suiJsonRpcClient.queryMoveEvents(
@@ -86,7 +86,7 @@ public class DomainNameEventService {
         if (packageId == null) {
             return;
         }
-        int limit = 1;
+        int limit = 10;
         EventId cursor = getRenewedEventNextCursor();
         while (true) {
             PaginatedMoveEvents<Renewed> eventPage = suiJsonRpcClient.queryMoveEvents(

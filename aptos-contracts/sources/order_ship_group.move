@@ -81,11 +81,16 @@ module aptos_demo::order_ship_group {
         });
     }
 
-    public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
+    public(friend) fun remove_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String): OrderItemShipGroupAssociation {
         assert!(table_with_length::contains(&order_ship_group.order_item_ship_group_associations, product_id), EIdNotFound);
-        let order_item_ship_group_association = table_with_length::remove(&mut order_ship_group.order_item_ship_group_associations, product_id);
+        table_with_length::remove(&mut order_ship_group.order_item_ship_group_associations, product_id)
+    }
+
+    public(friend) fun remove_and_drop_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String) {
+        let order_item_ship_group_association = remove_order_item_ship_group_association(order_ship_group, product_id);
         order_item_ship_group_association::drop_order_item_ship_group_association(order_item_ship_group_association);
     }
+
 
     public(friend) fun borrow_mut_order_item_ship_group_association(order_ship_group: &mut OrderShipGroup, product_id: String): &mut OrderItemShipGroupAssociation {
         table_with_length::borrow_mut(&mut order_ship_group.order_item_ship_group_associations, product_id)
