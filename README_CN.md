@@ -70,9 +70,29 @@ AI 辅助开发 AO 去中心化应用：https://github.com/dddappp/AI-Assisted-A
 
 https://github.com/dddappp/sui-crowdfunding-example
 
+### Move Forms
+
+我们在 Aptos 新加坡黑客马拉松中开发了一个基于 dddappp 的无代码工具侧项目，名为 [Move Forms](https://github.com/dddappp/aptos-forms-demo)，并获得了第二名。
+
+基于我们当前的 Solana PoC 版本，我们已经使社区合作伙伴能够构建一个名为 Solana Forms 的 Web3 原生表单工具。详见：https://github.com/dddappp/solana-forms-demo
+
 
 ### 复杂的 Sui 演示
 
 如果你有进一步了解的兴趣，可以在这里找到一个更复杂的 Sui 演示：["A Sui Demo"](https://github.com/dddappp/A-Sui-Demo)。
 我们使用了各种“生造”的场景，来展示 dddappp 的各种能力。
 
+### 低代码开发 AO 应用的 PoC
+
+见：https://github.com/dddappp/A-AO-Demo
+
+### 低代码开发 Solana 应用的 PoC
+
+见：https://github.com/dddappp/A-Solana-Demo
+
+### The Key to AO Ecosystem's Success: Microservices Architecture in the Web3 Era
+
+文章分两部分：
+
+1. https://x.com/ArweaveOasis/status/1808788659828584751
+2. https://x.com/ArweaveOasis/status/1815207753654452414

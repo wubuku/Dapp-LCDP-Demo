@@ -76,7 +76,30 @@ A crowdfunding dapp for educational demonstration purposes:
 
 https://github.com/dddappp/sui-crowdfunding-example
 
+
+### Move Forms
+
+We built a side-project in Aptos' Singapore Hackathon, called [Move Forms](https://github.com/dddappp/aptos-forms-demo), which is a no-code tool based on dddappp, and won second place.
+
+Based on our current  Solana PoC version, we have already enabled community partners to build a Web3 native form tool called Solana Forms. See: https://github.com/dddappp/solana-forms-demo
+
+
 ### A More Complex Sui Demo
 
 If you are interested, you can find a more complex Sui Demo here: ["A Sui Demo"](https://github.com/dddappp/A-Sui-Demo).
 We have used a variety of "made-up" scenarios to demonstrate the versatility of dddappp.
+
+### Low-code Development AO Application PoC
+
+See: https://github.com/dddappp/A-AO-Demo
+
+### Low-code Development Solana Application PoC
+
+See: https://github.com/dddappp/A-Solana-Demo
+
+### The Key to AO Ecosystem's Success: Microservices Architecture in the Web3 Era
+
+The article is divided into two parts:
+
+1. https://x.com/ArweaveOasis/status/1808788659828584751
+2. https://x.com/ArweaveOasis/status/1815207753654452414
