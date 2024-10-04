@@ -31,3 +31,4 @@ rooch-java-service/scripts/hbm2ddl_create_fix.sql
 rooch-java-service/scripts/hbm2ddl_drop.sql
 Move.lock
 aptos-java-service/scripts
+docs/_*.md
