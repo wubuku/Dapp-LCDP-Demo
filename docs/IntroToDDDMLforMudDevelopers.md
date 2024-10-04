@@ -119,6 +119,7 @@ wubuku/dddappp-mud:master \
 > ```
 
 This operation will modify the MUD configuration file: `packages/contracts/mud.config.ts`, and generate the Solidity scaffold code for the business logic implementation corresponding to the method defined in the above model (`Counter.Increase`), located here: `packages/contracts/src/systems/CounterIncreaseLogic.sol`.
+You may have noticed the naming pattern of this file, which consists of the name of the entity + the name of the method + `Logic.sol`
 
 At this point, the code in this file might look like [this](https://gist.github.com/wubuku/d7a45b868cb8f21b74e41127baf3b28e).
 
@@ -212,7 +213,7 @@ Please generate a model that conforms to the DDDML specification based on these 
 
 With such a prompt, we can expect AI to generate the `blog.yaml` file above for us. I believe that by combining this prompt with that file, you should be able to better understand the meaning it expresses.
 
-Now, run the `docker run` command again, and you can see what `.sol` files have been generated. If the generation is successful, it should include:
+Now, run the `docker run` command again, and you can see what files with the `Logic.sol` name suffix have been generated. If the generation is successful, it should include:
 * `ArticleCreateLogic.sol`
 * `ArticleUpdateLogic.sol`
 * `ArticleAddCommentLogic.sol`

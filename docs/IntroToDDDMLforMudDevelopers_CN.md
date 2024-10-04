@@ -119,6 +119,7 @@ wubuku/dddappp-mud:master \
 > ```
 
 这个操作会修改 MUD 配置文件：`packages/contracts/mud.config.ts`，以及生成上面的模型中定义的方法（`Counter.Increase`）对应的业务逻辑实现的 Solidity 脚手架代码，就在这里：`packages/contracts/src/systems/CounterIncreaseLogic.sol`。
+你可能已经发现了这个文件的命名规律，它是由实体的名称 + 方法的名称 + `Logic.sol` 组成的。
 
 此时，这个文件的代码可能像[这样](https://gist.github.com/wubuku/d7a45b868cb8f21b74e41127baf3b28e)。
 
@@ -211,7 +212,7 @@ aggregates:
 
 有了这样的提示词，我们就可以期待 AI 为我们生成上面的 `blog.yaml` 文件。我相信，结合这段提示词再看看那个文件，你应该能更好地理解它所表达的含义了。
 
-现在，再次执行 `docker run` 命令，你可以看看都生成了什么哪些以 `.sol` 结尾的文件。如果生成成功，那么应该包含：
+现在，再次执行 `docker run` 命令，你可以看看都生成了什么哪些以 `Logic.sol` 为名字后缀的文件。如果生成成功，那么应该包含：
 * `ArticleCreateLogic.sol`
 * `ArticleUpdateLogic.sol`
 * `ArticleAddCommentLogic.sol`
