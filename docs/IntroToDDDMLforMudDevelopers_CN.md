@@ -111,7 +111,7 @@ wubuku/dddappp-mud:master \
 
 > **Hint**
 >
-> 如果你之前运行过 `dddappp-mud`，那么你需要删除旧的容器和镜像，以确保使用的是最新的镜像：
+> 如果你之前运行过 `dddappp-mud`，现在碰到了什么奇怪的问题，那么你可以尝试先删除旧的容器和镜像，以确保使用的是最新的镜像：
 >
 > ```shell
 > docker rm $(docker ps -aq --filter "ancestor=wubuku/dddappp-mud:master")
