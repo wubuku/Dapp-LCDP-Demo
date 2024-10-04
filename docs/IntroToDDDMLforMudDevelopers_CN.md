@@ -211,6 +211,15 @@ aggregates:
 
 有了这样的提示词，我们就可以期待 AI 为我们生成上面的 `blog.yaml` 文件。我相信，结合这段提示词再看看那个文件，你应该能更好地理解它所表达的含义了。
 
+现在，再次执行 `docker run` 命令，你可以看看都生成了什么哪些以 `.sol` 结尾的文件。如果生成成功，那么应该包含：
+* `ArticleCreateLogic.sol`
+* `ArticleUpdateLogic.sol`
+* `ArticleAddCommentLogic.sol`
+* `ArticleUpdateCommentLogic.sol`
+* `ArticleRemoveCommentLogic.sol`
+
+这一次 AI 甚至没有用武之地，所有的函数工具都帮你写好了。就像我们前文说过的，如果对实体的 CRUD 操作就是应用想要的业务逻辑，那么你不用再自己再去写什么了。
+
 
 #### 让我们初步谈一下“数据类型”
 
@@ -255,6 +264,40 @@ aggregates:
 - `uint32[]`
 - `uint64[]`
 - `uint256[]`
+
+
+##### 7. 枚举类型
+
+下面的 DDDML 文档描述了一个枚举对象 `Weekday`：
+
+```yaml
+enumObjects:
+  Weekday:
+    baseType: u8
+    values:
+      Monday:
+        value: 1
+      Tuesday:
+        value: 2
+      Wednesday:
+        value: 3
+      Thursday:
+        value: 4
+      Friday:
+        value: 5
+      Saturday:
+        value: 6
+      Sunday:
+        value: 7
+```
+
+这个枚举的基类型是 `u8`，即无符号 8 位整数。它的值从 1 到 7 对应星期一到星期日。这通常意味着生成的代码会用一个数字来代表一个星期的某天，例如 `3` 就是星期三。
+
+我们的 DDDML 代码生成工具的 MUD 版本目前只是简单地为这样的枚举生成一个 Solidity `library`，里面包含了使用类似 `uint8 constant MONDAY = 1;` 这样的常量定义。
+
+> 按照 DDDML 规范，枚举对象的 `baseType` 并不是必须指定的。代码生成工具可以视不同语言能够提供的特性，以及开发团队的编码规范等因素，为 DDDML 定义的枚举对象生成合适的代码。
+>
+> 有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 `baseType`，有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 
 
 

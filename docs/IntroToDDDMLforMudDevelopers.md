@@ -212,6 +212,15 @@ Please generate a model that conforms to the DDDML specification based on these 
 
 With such a prompt, we can expect AI to generate the `blog.yaml` file above for us. I believe that by combining this prompt with that file, you should be able to better understand the meaning it expresses.
 
+Now, run the `docker run` command again, and you can see what `.sol` files have been generated. If the generation is successful, it should include:
+* `ArticleCreateLogic.sol`
+* `ArticleUpdateLogic.sol`
+* `ArticleAddCommentLogic.sol`
+* `ArticleUpdateCommentLogic.sol`
+* `ArticleRemoveCommentLogic.sol`
+
+This time, AI doesn't even have a chance to show off. All the function implementations have been written for you. As we mentioned earlier, if the CRUD operations on entities are exactly the business logic your application needs, then you don't need to write anything else yourself.
+
 
 #### Let's Talk About "Data Types" Briefly
 
@@ -256,4 +265,38 @@ For example:
 - `uint32[]`
 - `uint64[]`
 - `uint256[]`
+
+
+##### 7. Enumeration Types
+
+The following DDDML document describes an enumeration object `Weekday`:
+
+```yaml
+enumObjects:
+  Weekday:
+    baseType: u8
+    values:
+      Monday:
+        value: 1
+      Tuesday:
+        value: 2
+      Wednesday:
+        value: 3
+      Thursday:
+        value: 4
+      Friday:
+        value: 5
+      Saturday:
+        value: 6
+      Sunday:
+        value: 7
+```
+
+The base type of this enumeration is `u8`, which is an unsigned 8-bit integer. Its values from 1 to 7 correspond to Monday through Sunday. This typically means that the generated code will use a number to represent a day of the week, for example, `3` represents Wednesday.
+
+Our DDDML code generation tool's MUD version currently simply generates a Solidity `library` for such enumerations, containing constant definitions like `uint8 constant MONDAY = 1;`.
+
+> According to the DDDML specification, it's not mandatory to specify the `baseType` for enumeration objects. The code generation tool can generate appropriate code for DDDML-defined enumeration objects based on the features provided by different languages and the coding standards of the development team.
+>
+> Some languages, like Java and C#, have the `enum` keyword, while others don't. In such cases, the DDDML tool might replace the enumeration object (type) with the `baseType` declared in the enumeration object definition. Sometimes this is **not** a bad choice, as it may bring convenience in terms of serialization and persistence handling.
 
