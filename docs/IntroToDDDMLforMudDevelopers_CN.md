@@ -120,6 +120,47 @@ AI 第一次为我生成的代码就通过了编译，而且，我没有看出�
 
 【待完成】
 
+```yaml
+aggregates:
+  Article:
+    metadata:
+      Preprocessors: ["CRUD_IT"]
+    id:
+      name: Id
+      type: u64
+      generator:
+        class: sequence
+        tableName: ArticleIdGenerator
+    properties:
+      Author:
+        type: address
+      Title:
+        type: String
+      Body:
+        type: String
+      Comments:
+        itemType: Comment
+
+    entities:
+      Comment:
+        metadata:
+          Preprocessors: [ "CRUD_IT" ]
+        id:
+          name: CommentSeqId
+          type: u64
+          generator:
+            class: sequence
+            tableName: CommentSeqIdGenerator
+        globalId:
+          columnNames:
+            - ArticleId
+            - CommentSeqId
+        properties:
+          Commenter:
+            type: String
+          Body:
+            type: String
+```
 
 ## 延伸阅读
 
