@@ -34,7 +34,8 @@ The core of DDDML is an abstract data structure we call the DDDML DOM (Document 
 
 In the following examples, we will use YAML-based DDDML to describe domain models, demonstrating its advantages in practical applications.
 
-## How Does Our Low-Code Development Approach Change the Dapp Development Process?
+
+## How Does Our Low-Code Approach Change the Development Process?
 
 After adopting our low-code development approach, Dapp developers' work will primarily focus on two aspects:
 
@@ -210,4 +211,49 @@ Please generate a model that conforms to the DDDML specification based on these 
 ```
 
 With such a prompt, we can expect AI to generate the `blog.yaml` file above for us. I believe that by combining this prompt with that file, you should be able to better understand the meaning it expresses.
+
+
+#### Let's Talk About "Data Types" Briefly
+
+In DDDML, you can use all [field types supported by the MUD data model](https://mud.dev/store/data-model#field-types) to declare property and parameter types.
+Moreover, DDDML supports even more data types. This is because DDDML's type system is a higher-level abstraction that can map abstract types in the "domain model" to specific implementation types when generating code.
+
+Specifically, we use the following "basic data types" in DDDML models:
+
+##### 1. Integer Types
+
+For example:
+
+- `u8` (can also be written as `uint8`)
+- `u16` (can also be written as `uint16`)
+- `u32` (can also be written as `uint32`)
+- `u64` (can also be written as `uint64`)
+- `u256` (can also be written as `uint256`)
+- `int32` (can also be written as `i32`)
+- `uint32` (equivalent to `u32`)
+
+##### 2. Boolean Type
+
+- `bool`
+
+##### 3. String Type
+
+- `string` (can also be written as `String`)
+
+##### 4. Address Type
+
+- `address`
+
+##### 5. Bytes Type
+
+- `bytes`
+
+##### 6. Array Types
+
+For example:
+
+- `uint8[]`
+- `uint32[]`
+- `uint64[]`
+- `uint256[]`
 
