@@ -23,6 +23,7 @@ MUD 无疑是一个优秀的开发框架，但它也存在一些局限性。比�
 
 因此，我们的低代码开发方法不仅能加速整个开发过程，还能提高软件的整体质量。
 
+
 ## 什么是 DDDML
 
 DDDML（Domain-Driven Design Modeling Language，领域驱动设计建模语言）是我们开发的一门 DSL（Domain-Specific Language，领域专用语言），用于描述 DDD（领域驱动设计）风格的领域模型。
@@ -32,7 +33,6 @@ DDDML 允许我们在一个集中的地方记录和展示领域模型中的关�
 DDDML 的核心是一个抽象的数据结构，我们称之为 DDDML DOM（Document Object Model，文档对象模型）。它是一个由不同类型节点组成的树形结构。我们规定，这个数据结构必须可以用 JSON（JavaScript Object Notation，JavaScript 对象表示法）表示。JSON 是一种轻量级的数据交换格式，由值、对象和数组等元素组成。我们也可以使用 YAML（YAML Ain't Markup Language），它是 JSON 的超集，对人类来说更易读。
 
 在接下来的示例中，我们将使用基于 YAML 的 DDDML 来描述领域模型，展示其在实际应用中的优势。
-
 
 ## 我们的低代码开发方法如何改变 Dapp 开发流程？
 
