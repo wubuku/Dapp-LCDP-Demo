@@ -301,3 +301,128 @@ Our DDDML code generation tool's MUD version currently simply generates a Solidi
 >
 > Some languages, like Java and C#, have the `enum` keyword, while others don't. In such cases, the DDDML tool might replace the enumeration object (type) with the `baseType` declared in the enumeration object definition. Sometimes this is **not** a bad choice, as it may bring convenience in terms of serialization and persistence handling.
 
+
+### Example from the Game Infinite Seas
+
+The following example model is extracted from our fully on-chain game [Infinite Seas](http://infiniteseas.io), 
+primarily retaining the `SkillProcess` entity and related value objects. 
+The definition of `SkillProcess` has been simplified here, showing its properties and the `Create` method for creating this entity.
+
+
+```yaml
+enumObjects:
+  SkillType:
+    baseType: u8
+    values:
+      Farming:
+        value: 0
+      Woodcutting:
+        value: 1
+      Crafting:
+        value: 6
+
+valueObjects:
+  SkillProcessId:
+    properties:
+      SkillType:
+        type: SkillType
+      PlayerId:
+        type: u256
+      SequenceNumber:
+        type: u8
+
+  ItemIdQuantityPair:
+    properties:
+      ItemId:
+        type: u32 # ID of the item
+      Quantity:
+        type: u32 # Quantity of the item
+
+aggregates:
+  SkillProcess:
+    id:
+      name: SkillProcessId
+      type: SkillProcessId
+    properties:
+      ItemId: # ID of the item produced by the process
+        type: u32
+      StartedAt: # Time when the process started
+        type: u64
+      CreationTime: # Time required to produce the product
+        type: u64
+      Completed: # Whether the process is completed
+        type: bool
+      EndedAt: # Time when the process ended
+        type: u64
+      BatchSize: # Batch size of the product produced
+        type: u32
+      Existing: # Whether the process already exists
+        type: bool
+        # When all other properties of a legally existing object may have default values,
+        # we need a specialized property to identify whether it exists or not
+      ProductionMaterials: # Input materials for production
+        itemType: ItemIdQuantityPair
+        tableName: SkillPrcMtrl 
+        # Here we give a short name to the table that stores the state of this property.
+        # If we don't set it, the code generation tool will also give this table a default name, but it might be longer.
+        # And MUD will truncate overly long table names, which may cause naming conflicts.
+        description: "Actual input materials for production"
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+        event:
+          name: SkillProcessCreated
+```
+
+In Infinite Seas, players can engage in various skill production activities, such as farming, woodcutting, mining, and crafting. However, the number of production processes a player can execute simultaneously is not unlimited; for example, a player can execute at most two farming processes, one woodcutting process, one mining process, and one crafting process at the same time. The `SkillProcess` entity is used to manage these processes.
+
+You can see that the "domain ID" of `SkillProcess` is a value object we defined named `SkillProcessId`, which consists of three parts:
+
+1. `SkillType`: The type of skill, such as farming, woodcutting, mining, crafting, etc.
+2. `PlayerId`: The ID of the player executing the process.
+3. `SequenceNumber`: The sequence number of the process. For example, the first farming process of a player has a `SequenceNumber` of `0`, the second is `1`. The maximum value this sequence number can take may increase as the player's level increases.
+
+Unlike the `Article` entity in the blog example above, the `id` property of the `SkillProcess` entity does not include `generator` information. This means that when creating this entity, the ID needs to be provided by the frontend.
+
+We also defined a value object `ItemIdQuantityPair`, which contains two properties: `ItemId` and `Quantity`. In the game's model, many places (object properties, method parameters) require the combination of "item ID and quantity." We can directly use the `ItemIdQuantityPair` type in these places, making the model expression more concise and clear.
+
+This time, we did not use the `CRUD_IT` preprocessor to automatically add CRUD (Create/Update/Delete) methods to the `SkillProcess` entity; instead, we defined a `Create` method and declared this method as a "creation command" (`isCreationCommand: true`). 
+When calling this method, the frontend needs to provide the value of the entity's ID (`SkillProcessId`), which does not need to be explicitly specified through `parameters`. 
+The other information required to create a `SkillProcess` instance is determined by the backend (contract) and does not need to be specified by the frontend. 
+Therefore, we did not explicitly define any parameters for the `Create` method here.
+
+The explanation for other parts of the model has already been included in the YAML comments above, so we won't repeat it here.
+
+Do you feel that this model is much more complex than the previous ones? 
+Are you excited (or perhaps skeptical) about how AI will perform this time?
+
+Open the file `SkillProcessCreateLogic.sol` using Cursor. Before AI works its magic, the file might look like [this](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e) now. You should see that the tool has generated a lot of comments in the file, which you might find a bit excessive. However, our main goal is to allow AI (and of course, you) to refer to these comments to complete the business logic code.
+
+I used the following prompt to guide AI in completing the code:
+
+> Read the comments of the current file, and the file I referenced @SkillType.sol, and complete the functions.
+
+The files to reference (such as `SkillType.sol` in the prompt above) are actually hinted at in the comments of the code we generated.
+
+This time, the code AI completed for me looks like [this](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10). It passed compilation on the first try, with no obvious logical issues. 
+Surprised? Unexpected? 😄
+
+
+### More Examples
+
+In the [`dddml`](https://github.com/wubuku/hello-mud/tree/main/dddml) directory of this [repository](https://github.com/wubuku/hello-mud), you can find more examples of DDDML models.
+
+Most of these examples come from actual development projects and have been used in production environments.
+
+### Conclusion
+
+In this article, we explored the basic concepts of DDDML, its application in Dapp development, and how AI can assist in simplifying the development process. Through practical examples, we demonstrated how DDDML helps developers quickly build complex domain models and generate corresponding business logic code.
+
+DDDML provides MUD developers with a powerful tool that significantly enhances development efficiency in domain modeling and business logic implementation. By introducing domain-specific languages and low-code development methods, development teams can focus more on system analysis and high-level design. The combination of DDDML and AI makes the coding phase extremely efficient and ensures consistency between the implemented code and the domain model, which is crucial for the development of complex applications.
+
+Looking ahead, as AI technology continues to advance, we can expect the application of DDDML and the low-code tools built on it to become more widespread and in-depth in software development. Whether through automated code generation or intelligent domain modeling, developers will be able to realize their ideas and concepts more efficiently.
+
+We can certainly have high expectations for the combination of DSL and AI.
+

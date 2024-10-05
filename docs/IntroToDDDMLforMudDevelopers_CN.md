@@ -304,7 +304,10 @@ enumObjects:
 当然，我们还可以使用这些基本类型构造复合类型（Value Object），我们在下面的示例中会看到。
 
 
-### 示例：Skill Process
+### 来自全链游戏 Infinite Seas 的示例
+
+下面的示例模型是从我们开发的全链游戏 [Infinite Seas](http://infiniteseas.io) 中摘取出来的，主要是保留了 `SkillProcess` 实体和相关的值对象。
+`SkillProcess` 定义也有所简化，这里展示了它的属性，以及创建这个实体的 `Create` 方法。
 
 ```yaml
 enumObjects:
@@ -331,9 +334,9 @@ valueObjects:
   ItemIdQuantityPair:
     properties:
       ItemId:
-        type: u32
+        type: u32 # 物品的 ID
       Quantity:
-        type: u32
+        type: u32 # 物品的数量
 
 aggregates:
   SkillProcess:
@@ -341,23 +344,27 @@ aggregates:
       name: SkillProcessId
       type: SkillProcessId
     properties:
-      ItemId:
+      ItemId: # 进程所生产的物品的 ID
         type: u32
-      StartedAt:
+      StartedAt: # 进程开始的时间   
         type: u64
-      CreationTime:
+      CreationTime: # 生产产品所需要的时间
         type: u64
-      Completed:
+      Completed: # 进程是否已完成
         type: bool
-      EndedAt:
+      EndedAt: # 进程结束的时间
         type: u64
-      BatchSize:
+      BatchSize: # 生产产品的批次大小
         type: u32
-      Existing:
+      Existing: # 进程是否已存在
         type: bool
-      ProductionMaterials:
+        # 当一个合法存在的对象的所有其他属性都可能为“默认值”时，我们需要一个专门的属性来识别它是否存在
+      ProductionMaterials: # 生产所投入的原材料
         itemType: ItemIdQuantityPair
-        tableName: SkillPrcMtrl
+        tableName: SkillPrcMtrl 
+        # 这里我们给保存这个属性的状态的 Table 取了一个短名字。
+        # 如果我们不设置它，代码生成工具也会给这个 Table 取一个默认的名字，但是这个名字可能比较长。
+        # 而 MUD 会对过长的表名进行截断，这可能会造成命名冲突
         description: "Actual input materials for production"
 
     methods:
@@ -368,11 +375,60 @@ aggregates:
           name: SkillProcessCreated
 ```
 
+在 Infinite Seas 中，玩家可以进行多种技能的生产活动，例如务农、伐木、采矿、建造等。
+但是玩家同一时间可以执行的生产进程并不是无限的；比如说，一个玩家同一时间最多只能执行两个务农进程，一个伐木进程，一个采矿进程，一个建造进程等。
+`SkillProcess` 就是用来管理这些进程的实体。
 
-## 延伸阅读
+你可以看到 `SkillProcess` 的“领域 ID”的类型是我们定义了一个名为 `SkillProcessId` 的值对象，它由三个部分组成：
 
-【待完成】
+1. `SkillType`：技能的类型，例如务农、伐木、采矿、建造等。
+2. `PlayerId`：执行该进程的玩家的 ID。
+3. `SequenceNumber`：该进程的序列号。比如玩家的第一个务农进程，其 `SequenceNumber` 就是 `0`，第二个是 `1`。这个序列号可取的最大值，可能会随着玩家等级的提升而增加。
+
+和上面博客示例中的 `Article` 实体不同，实体 `SkillProcess` 的 `id` 属性没有包含 `generator` 的信息。
+这意味着在创建这个实体时，ID 需要由前端传入的。
+
+我们还定义了一个值对象 `ItemIdQuantityPair`，它包含两个属性 `ItemId` 和 `Quantity`。
+在游戏的模型中，很多地方（对象的属性、方法的参数）都需要用到“物品的 ID 和数量”这样的组合。
+我们在这些地方可以直接使用 `ItemIdQuantityPair` 这个类型，这让模型的表述更加简洁明了。
+
+这一次，我们没有使用 `CRUD_IT` 预处理器来给实体 `SkillProcess` 自动添加 CrUD（Create/Update/Delete）方法；
+我们给它定义了一个 `Create` 方法，并声明这个方法是个“创建命令”（`isCreationCommand: true`）。
+调用这个方法时，前端需要传入实体的 ID（`SkillProcessId`）的值，这个不需要通过参数显式地说明；
+创建 `SkillProcess` 实例所需要的其他信息，都不要前端指定，而是由后端（合约）决定的。
+所以这里我们没有给 `Create` 方法显式地定义任何参数。
+
+对模型的其他部分的解释，我们已经放在了上面的 YAML 注释中，这里不再赘述。
+
+是不是觉得这个模型比之前的一下子复杂了很多？有没有很期待（或者很怀疑）这一次 AI 的表现？
+
+使用 Cursor 打开文件 `SkillProcessCreateLogic.sol`，~~在 AI 开发发功前，~~现在文件看起来可能像[这样子](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e)。
+你应该看到工具在文件中生成了大量的注释，你可能觉得这注释量有点“过分”了；
+不过，我们的主要目的是让 AI 可以（当然，你也可以）参考这些注释来完成业务逻辑代码的编写。
+
+我使用了这样的提示词来引导 AI 完成代码的编写：
+
+> Read the comments of the current file, and the file I referenced @SkillType.sol , and complete the functions.
+
+要引用哪些文件（比如上面提示词中的 `SkillType.sol`），其实在我们生成的代码的注释中也给出了提示。
+
+这一次，AI 为我完成的代码是[这样](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10)的。同样，一次就通过了编译，没有明显的逻辑问题。惊不惊喜，意不意外？
 
 
+### 更多的例子
 
+在这个[代码库](https://github.com/wubuku/hello-mud)的 [`dddml`](https://github.com/wubuku/hello-mud/tree/main/dddml) 目录下，你可以找到更多 DDDML 模型的例子。
+
+这些例子大多数都来自于实际的开发项目，并且已经被用于生产环境。
+
+
+### 总结
+
+在这篇文章中，我们探讨了 DDDML 的基本概念、其在 Dapp 开发中的应用，以及如何通过 AI 辅助来简化开发过程。通过实际的示例，我们展示了 DDDML 如何帮助开发者快速构建复杂的领域模型，并生成相应的业务逻辑代码。
+
+DDDML 为 MUD 开发者提供了一种强大的工具，能够在领域建模和业务逻辑实现方面显著提高开发效率。通过引入领域专用语言和低代码开发方法，开发团队可以将更多精力投入到软件的系统分析和高层次设计上。DDDML 和 AI 的结合使得编码阶段的工作变得极其高效，并确保实现代码与领域模型的一致性——这对于复杂应用的开发至关重要。
+
+展望未来，随着 AI 技术的不断进步，我们可以期待 DDDML 和基于它构建的低代码工具在软件开发中的应用将更加广泛和深入。无论是通过自动化代码生成，还是通过智能化的领域建模，开发者都将能够更高效地实现他们的创意和想法。
+
+我们完全可以对 DSL 与 AI 的结合抱有更多期待。
 
