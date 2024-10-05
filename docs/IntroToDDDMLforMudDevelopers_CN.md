@@ -109,7 +109,7 @@ wubuku/dddappp-mud:master \
 --enableMultipleMoveProjects
 ```
 
-> **Hint**
+> **提示**
 >
 > 如果你之前运行过 `dddappp-mud`，现在碰到了什么奇怪的问题，那么你可以尝试先删除旧的容器和镜像，以确保使用的是最新的镜像：
 >
@@ -301,6 +301,8 @@ enumObjects:
 > 有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 `baseType`，有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 
 
+##### 8. 复合类型（Value Object）
+
 当然，我们还可以使用这些基本类型构造复合类型（Value Object），我们在下面的示例中会看到。
 
 
@@ -370,7 +372,7 @@ aggregates:
     methods:
       Create:
         isCreationCommand: true
-        parameters:
+        # parameters:
         event:
           name: SkillProcessCreated
 ```
@@ -392,27 +394,33 @@ aggregates:
 在游戏的模型中，很多地方（对象的属性、方法的参数）都需要用到“物品的 ID 和数量”这样的组合。
 我们在这些地方可以直接使用 `ItemIdQuantityPair` 这个类型，这让模型的表述更加简洁明了。
 
-这一次，我们没有使用 `CRUD_IT` 预处理器来给实体 `SkillProcess` 自动添加 CrUD（Create/Update/Delete）方法；
-我们给它定义了一个 `Create` 方法，并声明这个方法是个“创建命令”（`isCreationCommand: true`）。
-调用这个方法时，前端需要传入实体的 ID（`SkillProcessId`）的值，这个不需要通过参数显式地说明；
-创建 `SkillProcess` 实例所需要的其他信息，都不要前端指定，而是由后端（合约）决定的。
-所以这里我们没有给 `Create` 方法显式地定义任何参数。
+这一次，我们没有使用 `CRUD_IT` 预处理器为实体 `SkillProcess` 自动添加 CRUD（Create/Update/Delete）方法；
+而是为其定义了一个 `Create` 方法，并声明该方法是一个“创建命令”（`isCreationCommand: true`）。
+调用此方法时，前端需要传入实体的 ID（`SkillProcessId`），无需通过参数显式说明；
+创建 `SkillProcess` 实例所需的其他信息由后端（合约）决定，而非前端指定。
+因此，我们没有为 `Create` 方法显式定义任何参数。
 
-对模型的其他部分的解释，我们已经放在了上面的 YAML 注释中，这里不再赘述。
+关于模型的其他部分解释，我们已在上面的 YAML 注释中详细说明，这里不再赘述。
 
-是不是觉得这个模型比之前的一下子复杂了很多？有没有很期待（或者很怀疑）这一次 AI 的表现？
+是否觉得这个模型比之前的复杂了许多？是否期待（或怀疑）这次 AI 的表现？
 
-使用 Cursor 打开文件 `SkillProcessCreateLogic.sol`，~~在 AI 开发发功前，~~现在文件看起来可能像[这样子](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e)。
-你应该看到工具在文件中生成了大量的注释，你可能觉得这注释量有点“过分”了；
-不过，我们的主要目的是让 AI 可以（当然，你也可以）参考这些注释来完成业务逻辑代码的编写。
+使用 Cursor 打开文件 `SkillProcessCreateLogic.sol`，在 AI 开始工作前，文件可能看起来像[这样](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e)。
+你会发现工具在文件中生成了大量注释，可能觉得注释有些“过多”；
+但我们的主要目的是让 AI（当然，你也可以）参考这些注释来完成业务逻辑代码的编写。
 
-我使用了这样的提示词来引导 AI 完成代码的编写：
+我使用了以下提示词来引导 AI 完成代码编写：
 
-> Read the comments of the current file, and the file I referenced @SkillType.sol , and complete the functions.
+> Read the comments of the current file, and the file I referenced @SkillType.sol, and complete the functions.
 
-要引用哪些文件（比如上面提示词中的 `SkillType.sol`），其实在我们生成的代码的注释中也给出了提示。
+需要引用哪些文件（如提示词中的 `SkillType.sol`），在我们生成的代码注释中也有提示。
 
-这一次，AI 为我完成的代码是[这样](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10)的。同样，一次就通过了编译，没有明显的逻辑问题。惊不惊喜，意不意外？
+这次，AI 为我完成的代码是[这样](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10)的。同样，一次就通过了编译，没有明显的逻辑问题。惊不惊喜，意不意外？
+
+> **提示**
+> 
+> 在 DDDML 工具生成的代码注释中可能提到了一些不需要使用的文件，或遗漏了一些应该使用的文件，
+> 但一般来说，开发者应该能够判断实现当前业务逻辑需要哪些文件。
+> DDD 主张整个开发团队维护同一个领域模型，如果团队遵循这一最佳实践，开发者就能为 AI 提供更好的提示。
 
 
 ### 更多的例子

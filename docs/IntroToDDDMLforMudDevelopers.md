@@ -4,35 +4,36 @@ English | [中文](IntroToDDDMLforMudDevelopers_CN.md)
 
 ## Why You Might Need a Domain-Specific Language
 
-As a MUD developer, you might ask: Since we're already using the MUD framework, why do we need to introduce another tool?
+As a MUD developer, you might wonder: Why introduce another tool when we're already using the MUD framework?
 
-The simple answer: To improve development efficiency and software quality.
+The simple answer: To enhance development efficiency and software quality.
 
-MUD is undoubtedly an excellent development framework, but it also has some limitations. For instance, although MUD claims to be a general-purpose application development framework, not just for on-chain game development, in reality, most developers still view it as a fully on-chain game engine. In terms of on-chain game development, MUD hasn't introduced any off-chain hybrid solutions to improve game tickrate. MUD may want to maintain its "on-chain" characteristics as much as possible, but this can sometimes be a limitation rather than an advantage.
+While MUD is an excellent development framework, it has limitations. Although it claims to be a general-purpose application development framework, most developers still see it as a fully on-chain game engine. MUD hasn't introduced off-chain hybrid solutions to improve game tickrate, which can be a limitation rather than an advantage.
 
-To address these limitations and further enhance development efficiency, we propose a model-driven low-code development approach.
+To overcome these limitations and boost development efficiency, we propose a model-driven low-code development approach.
 
-We believe that adopting a model-driven low-code development approach can not only provide higher development efficiency but also compensate for these shortcomings of MUD.
+This approach not only increases development efficiency but also addresses MUD's shortcomings.
 
-Speaking of "models," you may have noticed that MUD also has the concept of "data models," but these are at a different level of abstraction from the domain models used in our low-code approach. The models defined in MUD configuration files are lower-level "physical data models," essentially part of the program implementation code.
+Speaking of "models," we all know that MUD includes "data models," but these are lower-level "physical data models," which can basically be seen as part of the implementation code. In contrast, our low-code approach uses domain models at a higher level of abstraction.
 
-However, we all know that software development is far more than just programming implementation. Especially for complex software projects, coding is often not the most time-consuming part of the development process. To develop high-quality software, we need to invest significant effort in the analysis and design phases. More importantly, we must ensure that the implemented code accurately reflects the results of analysis and high-level design, thus ensuring good maintainability of the code.
+Software development involves more than just coding. For complex projects, analysis and design are crucial. We must ensure that the implemented code accurately reflects the analysis and design, ensuring maintainability.
 
-Our low-code development approach adopts a DDD (Domain-Driven Design) style domain model. This model is an organic combination of Object-Oriented Analysis (OOA) and Object-Oriented Design (OOD). To describe this domain model, we designed an expressive DSL (Domain-Specific Language) - DDDML.
+Our low-code approach uses a DDD (Domain-Driven Design) style domain model, combining Object-Oriented Analysis (OOA) and Object-Oriented Design (OOD). We designed an expressive DSL (Domain-Specific Language) called DDDML to describe this model.
 
-The advantage of this approach is that we can start building conceptual domain models in the requirements analysis phase of software development; in the subsequent design and coding phases, we can continuously refine based on the same model, ensuring that the value of the early work is fully utilized.
+This approach allows us to build conceptual domain models during the requirements analysis phase and refine them throughout the design and coding phases, maximizing the value of early work.
 
-Therefore, our low-code development approach not only accelerates the entire development process but also improves the overall quality of the software.
+Thus, our low-code development approach not only speeds up the development process but also enhances software quality.
+
 
 ## What is DDDML
 
-DDDML (Domain-Driven Design Modeling Language) is a DSL (Domain-Specific Language) we developed to describe DDD (Domain-Driven Design) style domain models.
+DDDML (Domain-Driven Design Modeling Language) is a Domain-Specific Language (DSL) we developed to describe domain models in the style of Domain-Driven Design (DDD).
 
-DDDML allows us to document and showcase key elements of the domain model in one centralized place. It can describe the domain model at a conceptual level and allows us to add implementation-level details. Through DDDML, we can support code generation tools to create software code that closely maps to the domain model. Additionally, we can use DDDML to automatically generate software documentation, database schemas, state machine diagrams, API specifications, and more.
+DDDML centralizes the documentation and presentation of key domain model elements. It describes domain models conceptually and allows for the addition of implementation details. With DDDML, we can support code generation tools to produce software code that closely aligns with the domain model. Additionally, DDDML can automatically generate software documentation, database schemas, state machine diagrams, API specifications, and more.
 
-The core of DDDML is an abstract data structure we call the DDDML DOM (Document Object Model). It's a tree structure composed of different types of nodes. We stipulate that this data structure must be representable in JSON (JavaScript Object Notation). JSON is a lightweight data exchange format composed of elements such as values, objects, and arrays. We can also use YAML (YAML Ain't Markup Language), which is a superset of JSON and more human-readable.
+At its core, DDDML uses an abstract data structure called the DDDML DOM (Document Object Model), a tree structure composed of various node types. This structure must be representable in JSON (JavaScript Object Notation), a lightweight data exchange format. We can also use YAML (YAML Ain't Markup Language), a more human-readable superset of JSON.
 
-In the following examples, we will use YAML-based DDDML to describe domain models, demonstrating its advantages in practical applications.
+In the examples that follow, we will use YAML-based DDDML to describe domain models, highlighting its practical advantages.
 
 
 ## How Does Our Low-Code Approach Change the Development Process?
@@ -295,21 +296,22 @@ enumObjects:
         value: 7
 ```
 
-The base type of this enumeration is `u8`, which is an unsigned 8-bit integer. Its values from 1 to 7 correspond to Monday through Sunday. This typically means that the generated code will use a number to represent a day of the week, for example, `3` represents Wednesday.
+The base type of this enumeration is `u8`, an unsigned 8-bit integer. Values from 1 to 7 represent Monday through Sunday, with `3` indicating Wednesday.
 
-Our DDDML code generation tool's MUD version currently simply generates a Solidity `library` for such enumerations, containing constant definitions like `uint8 constant MONDAY = 1;`.
+In the MUD version of our DDDML code generation tool, such enumerations are converted into a Solidity `library` with constant definitions like `uint8 constant MONDAY = 1;`.
 
-> According to the DDDML specification, it's not mandatory to specify the `baseType` for enumeration objects. The code generation tool can generate appropriate code for DDDML-defined enumeration objects based on the features provided by different languages and the coding standards of the development team.
+> According to the DDDML specification, specifying a `baseType` for enumeration objects is optional. The code generation tool can produce suitable code for DDDML-defined enumerations based on language features and team coding standards.
 >
-> Some languages, like Java and C#, have the `enum` keyword, while others don't. In such cases, the DDDML tool might replace the enumeration object (type) with the `baseType` declared in the enumeration object definition. Sometimes this is **not** a bad choice, as it may bring convenience in terms of serialization and persistence handling.
+> Languages like Java and C# have the `enum` keyword, while some others do not. In these cases, the DDDML tool might substitute the enumeration object with the declared `baseType`. 
+> Sometimes this is **not** a bad choice, as it may bring convenience in terms of serialization and persistence handling.
 
+##### 8. Composite Types (Value Objects)
+
+We can also construct composite types (Value Objects) using these basic types, as demonstrated in the example below.
 
 ### Example from the Game Infinite Seas
 
-The following example model is extracted from our fully on-chain game [Infinite Seas](http://infiniteseas.io), 
-primarily retaining the `SkillProcess` entity and related value objects. 
-The definition of `SkillProcess` has been simplified here, showing its properties and the `Create` method for creating this entity.
-
+The following model is from our fully on-chain game [Infinite Seas](http://infiniteseas.io), focusing on the `SkillProcess` entity and related value objects. The `SkillProcess` definition is simplified here, highlighting its properties and the `Create` method.
 
 ```yaml
 enumObjects:
@@ -373,43 +375,55 @@ aggregates:
     methods:
       Create:
         isCreationCommand: true
-        parameters:
+        # parameters:
         event:
           name: SkillProcessCreated
 ```
 
-In Infinite Seas, players can engage in various skill production activities, such as farming, woodcutting, mining, and crafting. However, the number of production processes a player can execute simultaneously is not unlimited; for example, a player can execute at most two farming processes, one woodcutting process, one mining process, and one crafting process at the same time. The `SkillProcess` entity is used to manage these processes.
+In Infinite Seas, players can participate in various skill-based activities like farming, woodcutting, mining, and crafting. 
+However, the number of concurrent production processes is limited. 
+For instance, a player can manage up to two farming processes, one woodcutting process, one mining process, and one crafting process simultaneously. 
+The `SkillProcess` entity is designed to manage these activities.
 
-You can see that the "domain ID" of `SkillProcess` is a value object we defined named `SkillProcessId`, which consists of three parts:
+The "domain ID" of `SkillProcess` is a value object called `SkillProcessId`, comprising three components:
 
-1. `SkillType`: The type of skill, such as farming, woodcutting, mining, crafting, etc.
+1. `SkillType`: The type of skill, such as farming or crafting.
 2. `PlayerId`: The ID of the player executing the process.
-3. `SequenceNumber`: The sequence number of the process. For example, the first farming process of a player has a `SequenceNumber` of `0`, the second is `1`. The maximum value this sequence number can take may increase as the player's level increases.
+3. `SequenceNumber`: The sequence number of the process, starting at `0` for the first process and increasing with the player's level.
 
-Unlike the `Article` entity in the blog example above, the `id` property of the `SkillProcess` entity does not include `generator` information. This means that when creating this entity, the ID needs to be provided by the frontend.
+Unlike the `Article` entity in the previous example, the `SkillProcess` entity's `id` property lacks `generator` information, meaning the ID must be provided by the frontend during creation.
 
-We also defined a value object `ItemIdQuantityPair`, which contains two properties: `ItemId` and `Quantity`. In the game's model, many places (object properties, method parameters) require the combination of "item ID and quantity." We can directly use the `ItemIdQuantityPair` type in these places, making the model expression more concise and clear.
+We also defined a value object `ItemIdQuantityPair`, which includes `ItemId` and `Quantity`. 
+This type is used throughout the game's model to represent item ID and quantity combinations, simplifying the model's expression.
 
-This time, we did not use the `CRUD_IT` preprocessor to automatically add CRUD (Create/Update/Delete) methods to the `SkillProcess` entity; instead, we defined a `Create` method and declared this method as a "creation command" (`isCreationCommand: true`). 
-When calling this method, the frontend needs to provide the value of the entity's ID (`SkillProcessId`), which does not need to be explicitly specified through `parameters`. 
-The other information required to create a `SkillProcess` instance is determined by the backend (contract) and does not need to be specified by the frontend. 
-Therefore, we did not explicitly define any parameters for the `Create` method here.
+For the `SkillProcess` entity, we opted not to use the `CRUD_IT` preprocessor to automatically add CRUD methods. 
+Instead, we defined a `Create` method, marked as a "creation command" (`isCreationCommand: true`). 
+The frontend provides the entity's ID (`SkillProcessId`), while the backend determines other necessary information, eliminating the need for explicit parameters in the `Create` method.
 
-The explanation for other parts of the model has already been included in the YAML comments above, so we won't repeat it here.
+Further explanations of the model are included in the YAML comments above.
 
-Do you feel that this model is much more complex than the previous ones? 
-Are you excited (or perhaps skeptical) about how AI will perform this time?
+Does this model seem more complex than the previous ones? Are you curious about how AI will handle it?
 
-Open the file `SkillProcessCreateLogic.sol` using Cursor. Before AI works its magic, the file might look like [this](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e) now. You should see that the tool has generated a lot of comments in the file, which you might find a bit excessive. However, our main goal is to allow AI (and of course, you) to refer to these comments to complete the business logic code.
+Open the `SkillProcessCreateLogic.sol` file using Cursor. 
+Before AI steps in, the file might look like [this](https://gist.github.com/wubuku/ac4f965f5c467190e89cf2128fe0ef7e). 
+The tool generates numerous comments, which might seem excessive, but they are intended to guide AI (and you) in completing the business logic code.
 
-I used the following prompt to guide AI in completing the code:
+I used this prompt to guide AI:
 
 > Read the comments of the current file, and the file I referenced @SkillType.sol, and complete the functions.
 
-The files to reference (such as `SkillType.sol` in the prompt above) are actually hinted at in the comments of the code we generated.
+The necessary files, like `SkillType.sol`, are hinted at in the generated code's comments.
 
-This time, the code AI completed for me looks like [this](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10). It passed compilation on the first try, with no obvious logical issues. 
+The AI-generated code looked like [this](https://gist.github.com/wubuku/f1b71f20d448edb2e10f53232fa7cb10) and compiled successfully on the first try, with no apparent logical issues. 
 Surprised? Unexpected? 😄
+
+> **Hint**
+> 
+> The comments might mention some files that are not used, or omit some that should be used. 
+> However, generally speaking, 
+> developers should be able to judge which files are needed to implement the current business logic. 
+> DDD advocates for the entire development team to maintain the same domain model. 
+> If the team follows this best practice, developers can provide better guidance to AI.
 
 
 ### More Examples
@@ -418,13 +432,14 @@ In the [`dddml`](https://github.com/wubuku/hello-mud/tree/main/dddml) directory 
 
 Most of these examples come from actual development projects and have been used in production environments.
 
+
 ### Conclusion
 
-In this article, we explored the basic concepts of DDDML, its application in Dapp development, and how AI can assist in simplifying the development process. Through practical examples, we demonstrated how DDDML helps developers quickly build complex domain models and generate corresponding business logic code.
+This article delved into the fundamentals of DDDML, its role in Dapp development, and the ways AI can streamline the development process. Through practical examples, we showed how DDDML enables developers to swiftly construct complex domain models and generate corresponding business logic code.
 
-DDDML provides MUD developers with a powerful tool that significantly enhances development efficiency in domain modeling and business logic implementation. By introducing domain-specific languages and low-code development methods, development teams can focus more on system analysis and high-level design. The combination of DDDML and AI makes the coding phase extremely efficient and ensures consistency between the implemented code and the domain model, which is crucial for the development of complex applications.
+For MUD developers, DDDML is a powerful tool that significantly boosts efficiency in domain modeling and business logic implementation. By leveraging domain-specific languages and low-code development methods, teams can concentrate more on system analysis and high-level design. The synergy between DDDML and AI not only makes coding more efficient but also ensures that the implemented code aligns with the domain model, which is vital for developing complex applications.
 
-Looking ahead, as AI technology continues to advance, we can expect the application of DDDML and the low-code tools built on it to become more widespread and in-depth in software development. Whether through automated code generation or intelligent domain modeling, developers will be able to realize their ideas and concepts more efficiently.
+As AI technology continues to evolve, we anticipate that DDDML and its associated low-code tools will become more prevalent and deeply integrated into software development. Whether through automated code generation or intelligent domain modeling, developers will be able to bring their ideas to life more effectively.
 
-We can certainly have high expectations for the combination of DSL and AI.
+The future of combining DSL and AI holds great promise.
 
