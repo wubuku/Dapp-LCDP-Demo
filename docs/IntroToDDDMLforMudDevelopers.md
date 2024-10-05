@@ -127,6 +127,7 @@ At this point, the code in this file might look like [this](https://gist.github.
 You'll find that there are already two functions in this file, with their signatures already written. You only need to fill in the function bodies.
 
 You don't even have to write this code yourself; you can let AI complete this "fill-in-the-blank" task. For example, in [Cursor IDE](https://www.cursor.com), you can do this:
+
 * Use the shortcut Cmd + A to select all the code in the current file. (I'm using macOS; for Windows systems, replace Cmd with Ctrl.)
 * Use the shortcut Cmd + L to open Cursor's CHAT window (I tested using the claude-3.5-sonnet model).
 * Enter `complete the functions` and press Enter.
@@ -214,9 +215,11 @@ Please design a DDDML model for a Dapp using the MUD framework. This is a blog a
 Please generate a model that conforms to the DDDML specification based on these requirements.
 ```
 
-With such a prompt, we can expect AI to generate the `blog.yaml` file above for us. I believe that by combining this prompt with that file, you should be able to better understand the meaning it expresses.
+With such a prompt, we can expect AI to generate the `blog.yaml` file above for us. 
+By reviewing the prompt alongside the YAML file, you should gain a clearer understanding of its meaning—so I won't elaborate further.
 
 Now, run the `docker run` command again, and you can see what files with the `Logic.sol` name suffix have been generated. If the generation is successful, it should include:
+
 * `ArticleCreateLogic.sol`
 * `ArticleUpdateLogic.sol`
 * `ArticleAddCommentLogic.sol`
@@ -308,6 +311,7 @@ In the MUD version of our DDDML code generation tool, such enumerations are conv
 ##### 8. Composite Types (Value Objects)
 
 We can also construct composite types (Value Objects) using these basic types, as demonstrated in the example below.
+
 
 ### Example from the Game Infinite Seas
 
