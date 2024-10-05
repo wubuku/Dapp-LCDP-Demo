@@ -301,6 +301,73 @@ enumObjects:
 > 有些语言中，如 Java 和 C#，有 enum 关键字，而有些语言中则没有枚举类型。在这种情况下，DDDML 工具可能会把枚举对象（类型）替换为枚举对象定义中声明的 `baseType`，有时候这也**不算**一个太糟糕的选择，毕竟这可能带来序列化、持久化处理方面的便利。
 
 
+当然，我们还可以使用这些基本类型构造复合类型（Value Object），我们在下面的示例中会看到。
+
+
+### 示例：Skill Process
+
+```yaml
+enumObjects:
+  SkillType:
+    baseType: u8
+    values:
+      Farming:
+        value: 0
+      Woodcutting:
+        value: 1
+      Crafting:
+        value: 6
+
+valueObjects:
+  SkillProcessId:
+    properties:
+      SkillType:
+        type: SkillType
+      PlayerId:
+        type: u256
+      SequenceNumber:
+        type: u8
+
+  ItemIdQuantityPair:
+    properties:
+      ItemId:
+        type: u32
+      Quantity:
+        type: u32
+
+aggregates:
+  SkillProcess:
+    id:
+      name: SkillProcessId
+      type: SkillProcessId
+    properties:
+      ItemId:
+        type: u32
+      StartedAt:
+        type: u64
+      CreationTime:
+        type: u64
+      Completed:
+        type: bool
+      EndedAt:
+        type: u64
+      BatchSize:
+        type: u32
+      Existing:
+        type: bool
+      ProductionMaterials:
+        itemType: ItemIdQuantityPair
+        tableName: SkillPrcMtrl
+        description: "Actual input materials for production"
+
+    methods:
+      Create:
+        isCreationCommand: true
+        parameters:
+        event:
+          name: SkillProcessCreated
+```
+
 
 ## 延伸阅读
 
