@@ -143,13 +143,13 @@ In the `dddml` directory, create a `blog.yaml` file with the following content:
 aggregates:
   Article:
     metadata:
-      Preprocessors: ["CRUD_IT"]
-      CRUD_IT_NO_DELETE: true
+      Preprocessors: ["CRUD_IT"] # Automatically generate Create/Update methods for articles
+      CRUD_IT_NO_DELETE: true # But do not generate Delete methods
     id:
       name: Id
       type: u64
       generator:
-        class: sequence
+        class: sequence # We want to use an auto-generated sequence number as the article ID
         #tableName: ArticleIdGenerator # Default value
     properties:
       Author:
@@ -169,9 +169,11 @@ aggregates:
           name: CommentSeqId
           type: u64
           generator:
-            class: sequence
+            class: sequence # Similarly, use an auto-generated sequence number as the comment ID
             # tableName: CommentSeqIdGenerator # Default value
         globalId:
+          # Here we explicitly specify the two column names corresponding to the ID in the comment table, 
+          # instead of using default values
           columnNames:
             - ArticleId
             - CommentSeqId
@@ -184,7 +186,7 @@ aggregates:
 
 For developers with some object-oriented programming (OOP) experience, understanding the content expressed by the DDDML model shouldn't be too difficult.
 However, you might still find writing DSL by hand a bit cumbersome.
-To address this, we plan to implement a graphical user interface (GUI) DDDML modeler in the future. At the same time, we are also exploring the possibilities of AI-assisted modeling.
+To address this, we plan to implement a GUI DDDML modeler in the future. At the same time, we are also exploring the possibilities of AI-assisted modeling.
 Perhaps in the near future, you'll only need to use prompts similar to the one below to get a `blog.yaml` file like the one above:
 
 

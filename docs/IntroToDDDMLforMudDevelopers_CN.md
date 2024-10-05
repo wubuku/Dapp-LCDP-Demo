@@ -143,13 +143,13 @@ AI 第一次为我生成的代码就通过了编译，而且，我没有看出�
 aggregates:
   Article:
     metadata:
-      Preprocessors: ["CRUD_IT"]
-      CRUD_IT_NO_DELETE: true
+      Preprocessors: ["CRUD_IT"] # 自动生成文章的 Create/Update 方法
+      CRUD_IT_NO_DELETE: true # 但是不要生成 Delete 方法
     id:
       name: Id
       type: u64
       generator:
-        class: sequence
+        class: sequence # 我们希望使用一个自动生成的序号来作为文章的 ID
         #tableName: ArticleIdGenerator # Default value
     properties:
       Author:
@@ -169,10 +169,10 @@ aggregates:
           name: CommentSeqId
           type: u64
           generator:
-            class: sequence
+            class: sequence # 同样，使用自动生成的序号来作为评论的 ID
             # tableName: CommentSeqIdGenerator # Default value
         globalId:
-          columnNames:
+          columnNames: # 这里我们显式地指定了评论表的 ID 对应的两个列名，而没有使用默认值
             - ArticleId
             - CommentSeqId
         properties:
