@@ -22,9 +22,13 @@ Kindly note: we're not making a "no-code" app for end-users, we're building a lo
 
 ## Articles and Demonstrations
 
-### Introduction
+### DDDML Introduction
 
 An introductory article about DDDML: ["Introducing DDDML: The Key to Low-Code Development for Decentralized Applications"](https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/IntroducingDDDML.md).
+
+### DDDML Introduction for MUD Developers
+
+If you want to develop decentralized applications based on EVM, especially using [MUD](https://mud.dev) framework, it might be more appropriate to start understanding DDDML from this introductory guide: https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers_CN.md
 
 ### DDDML x AI
 

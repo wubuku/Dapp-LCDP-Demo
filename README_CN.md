@@ -23,9 +23,13 @@
 
 ## 文章与演示
 
-### 入门介绍
+### DDDML 介绍
 
 关于 DDDML 的入门介绍：["Introducing DDDML: The Key to Low-Code Development for Decentralized Applications"](https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/IntroducingDDDML.md).
+
+### 面向 MUD 开发者的 DDDML 介绍
+
+如果你想要基于 EVM，特别是 [MUD](https://mud.dev) 框架，开发去中心化应用，可能从这个入门介绍开始了解 DDDML 会更合适：https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers_CN.md
 
 ### DDDML x AI
 
