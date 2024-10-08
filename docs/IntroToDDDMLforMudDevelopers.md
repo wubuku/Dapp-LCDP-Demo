@@ -8,38 +8,25 @@ The simple answer: To enhance development efficiency and software quality.
 
 MUD is an excellent development framework with a strong focus on fully on-chain game development. While it's designed as a general-purpose application development framework, its current strengths lie primarily in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others. For instance, implementing off-chain hybrid solutions to improve game tickrate could be more complex within MUD's current framework.
 
-To complement MUD's strengths and further enhance development efficiency, we propose a model-driven low-code development approach. This approach leverages MUD's robust data model design, allowing for a higher level of abstraction and flexibility through Domain-Specific Language (DSL) integration.
+To complement MUD's strengths, we propose a model-driven low-code development approach. This method leverages MUD's robust data model design while introducing domain models at a higher abstraction level through Domain-Specific Language (DSL) integration.
 
-Our proposed method not only increases development efficiency but also expands upon MUD's capabilities, offering developers more options in their Web3 development toolkit.
-
-Speaking of "models," MUD's robust data model design provides an excellent foundation for on-chain game development. Our low-code approach builds upon this strength, introducing domain models at a higher level of abstraction. This combination allows developers to leverage MUD's powerful implementation-level models while benefiting from the conceptual clarity of domain-driven design.
-
-Software development is a multifaceted process, especially for complex projects where analysis and design play crucial roles. By integrating MUD's solid implementation framework with our domain-driven approach, we can ensure that the final code accurately reflects both the low-level efficiency and the high-level design principles. This synergy enhances maintainability and scalability, opening up new possibilities for Web3 development.
+Our approach not only increases efficiency but also expands MUD's capabilities, offering developers more options in their Web3 toolkit. By integrating MUD's implementation framework with our domain-driven approach, we ensure the final code reflects both low-level efficiency and high-level design principles, enhancing maintainability and scalability.
 
 
 ## Empowering On-Chain Game Creators: DSL and Low-Code Solutions
 
-Our low-code approach leverages a Domain-Driven Design (DDD) style model, which aligns **particularly well with game development processes**. Game design typically involves a comprehensive planning phase, making it easier to translate high-level concepts into software design compared to MVP-focused products in other domains. This synergy is especially beneficial for on-chain games, where precise modeling is crucial.
+Our low-code approach, using Domain-Driven Design (DDD), aligns **particularly well with game development processes**. Game design's comprehensive planning phase makes it easier to translate high-level concepts into software design, especially beneficial for on-chain games requiring precise modeling.
 
-To facilitate this process, we've developed DDDML, an expressive Domain-Specific Language. DDDML allows developers to describe complex game mechanics and interactions in a format that's both human-readable and machine-processable. At a high level, DDDML models can represent game entities, their attributes, relationships, and behaviors, which can then be translated into smart contract code.
+We've developed DDDML, an expressive Domain-Specific Language, to facilitate this process. DDDML allows developers to describe complex game mechanics in a human-readable and machine-processable format, representing game entities, attributes, relationships, and behaviors.
 
-This approach enables us to create conceptual domain models during the initial game design phase and iteratively refine them throughout development. By bridging the gap between game design and on-chain implementation, our low-code method not only accelerates the development process but also enhances the overall quality and consistency of the final product. For technical readers eager to dive deeper, we'll explore more specific examples and implementation details in the following sections.
+This approach bridges the gap between game design and on-chain implementation, accelerating development and enhancing the final product's quality and consistency.
 
 
 ## AI-Powered DSL and Low-Code: The Future of Dapp Innovation
 
-If you've been wondering about the buzz around Domain-Specific Languages (DSL) and Low-Code Development in the Web3 space, you're not alone. Let's demystify these concepts and introduce you to DDDML - a powerful tool that's changing the game for Dapp developers.
+DDDML (Domain-Driven Design Modeling Language) centralizes the documentation of key domain model elements, supporting code generation tools and automating various aspects of software development.
 
-DDDML (Domain-Driven Design Modeling Language) is a Domain-Specific Language we developed to describe domain models in the style of Domain-Driven Design (DDD). But what does this mean for you as a developer, and how can it supercharge your workflow? Let's dive in.
-
-DDDML centralizes the documentation and presentation of key domain model elements. It describes domain models conceptually and allows for the addition of implementation details. With DDDML, we can support code generation tools to produce software code that closely aligns with the domain model. Additionally, DDDML can automatically generate software documentation, database schemas, state machine diagrams, API specifications, and more.
-
-DDDML uses an abstract data structure called the DDDML DOM (Document Object Model), a tree structure of various node types. This structure is representable in JSON (JavaScript Object Notation) or YAML (YAML Ain't Markup Language), a more human-readable superset of JSON.
-
-In the following examples, we'll use YAML-based DDDML to describe domain models, showcasing its practical advantages.
-
-How does our low-code approach transform the development process? After adoption, Dapp developers will primarily focus on two key aspects:
-
+Our low-code approach transforms the development process, focusing on two key aspects:
 
 1. Domain Modeling
    * Create model files using DDDML (our domain-specific language).
@@ -50,14 +37,21 @@ How does our low-code approach transform the development process? After adoption
    * For more complex business logic, developers need to write code using the language specific to the smart contract platform (for example, Solidity is commonly used on EVM platforms).
    * Our long-term goal is to develop a platform-independent expression language that allows developers to write cross-platform business logic more easily.
 
-We firmly believe that AI technology can provide powerful support for developers in both these aspects. This article will focus on introducing some of our attempts in implementing business logic. To be frank, AI's performance in this area has been impressive.
+We firmly believe that AI technology can powerfully support both domain modeling and business logic implementation. This article will focus on our attempts in implementing business logic, where AI's performance has been truly impressive.
 
-As for AI assistance in domain modeling, although it's not the focus of this article, we already have some very specific and feasible ideas and are conducting experimental explorations. The initial results are promising, and these advancements make us excited about the future of AI-assisted domain modeling.
-
+As for AI assistance in domain modeling, while not the focus here, we have developed specific, feasible ideas and are actively conducting experimental research. The initial results are promising, and these advancements make us excited about the future of AI-assisted domain modeling. We're committed to pushing boundaries in both areas, with tangible progress already evident in business logic implementation.
 
 ## Understanding DDDML Through Examples
 
+DDDML centralizes the documentation and presentation of key domain model elements. It describes domain models conceptually and allows for the addition of implementation details.
+
+DDDML uses an abstract data structure called the DDDML DOM (Document Object Model), a tree structure of various node types. This structure is representable in JSON (JavaScript Object Notation) or YAML (YAML Ain't Markup Language), a more human-readable superset of JSON.
+
+In the following examples, we'll use YAML-based DDDML to describe domain models.
+
 ### Preparation You Might Need
+
+With DDDML, we can support code generation tools to produce software code that closely aligns with the domain model. Additionally, DDDML can automatically generate software documentation, database schemas, state machine diagrams, API specifications, and more.
 
 If you don't want to just read the documentation, but want to get hands-on and see what DDDML can do for you, you might need to prepare the following tools:
 
