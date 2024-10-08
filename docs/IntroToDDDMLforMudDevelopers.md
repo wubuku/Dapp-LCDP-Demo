@@ -1,18 +1,16 @@
 # Introduction to DDDML for MUD Developers
 
-English | [中文](IntroToDDDMLforMudDevelopers_CN.md)
-
 ## Why You Might Need a Domain-Specific Language
 
 As a MUD developer, you might wonder: Why introduce another tool when we're already using the MUD framework?
 
 The simple answer: To enhance development efficiency and software quality.
 
-While MUD is an excellent development framework, it has limitations. Although it claims to be a general-purpose application development framework, most developers still see it as a fully on-chain game engine. MUD hasn't introduced off-chain hybrid solutions to improve game tickrate, which can be a limitation rather than an advantage.
+MUD is an excellent development framework with a strong focus on fully on-chain game development. While it's designed as a general-purpose application development framework, its current strengths lie primarily in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others. For instance, implementing off-chain hybrid solutions to improve game tickrate could be more complex within MUD's current framework.
 
-To overcome these limitations and boost development efficiency, we propose a model-driven low-code development approach.
+To complement MUD's strengths and further enhance development efficiency, we propose a model-driven low-code development approach. This approach leverages MUD's robust data model design, allowing for a higher level of abstraction and flexibility through Domain-Specific Language (DSL) integration.
 
-This approach not only increases development efficiency but also addresses MUD's shortcomings.
+Our proposed method not only increases development efficiency but also expands upon MUD's capabilities, offering developers more options in their Web3 development toolkit.
 
 Speaking of "models," we all know that MUD includes "data models," but these are lower-level "physical data models," which can basically be seen as part of the implementation code. In contrast, our low-code approach uses domain models at a higher level of abstraction.
 
