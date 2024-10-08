@@ -8,7 +8,7 @@ As a MUD developer, you might wonder: Why introduce another tool when we're alre
 
 The simple answer: To enhance development efficiency and software quality.
 
-While MUD is an excellent development framework, it has limitations. Although it claims to be a general-purpose application development framework, most developers still see it as a fully on-chain game engine. MUD hasn't introduced off-chain hybrid solutions to improve game tickrate, which can be a limitation rather than an advantage.
+While MUD is an excellent development framework, it has limitations. Although it is a general-purpose application development framework, a lot of developers still see it as a fully on-chain game engine. MUD hasn't introduced off-chain hybrid solutions to improve game tickrate, which can be a limitation rather than an advantage.
 
 To overcome these limitations and boost development efficiency, we propose a model-driven low-code development approach.
 
