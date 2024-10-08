@@ -12,18 +12,21 @@ To complement MUD's strengths and further enhance development efficiency, we pro
 
 Our proposed method not only increases development efficiency but also expands upon MUD's capabilities, offering developers more options in their Web3 development toolkit.
 
-Speaking of "models," we all know that MUD includes "data models," but these are lower-level "physical data models," which can basically be seen as part of the implementation code. In contrast, our low-code approach uses domain models at a higher level of abstraction.
+Speaking of "models," MUD's robust data model design provides an excellent foundation for on-chain game development. Our low-code approach builds upon this strength, introducing domain models at a higher level of abstraction. This combination allows developers to leverage MUD's powerful implementation-level models while benefiting from the conceptual clarity of domain-driven design.
 
-Software development involves more than just coding. For complex projects, analysis and design are crucial. We must ensure that the implemented code accurately reflects the analysis and design, ensuring maintainability.
-
-Our low-code approach uses a DDD (Domain-Driven Design) style domain model, combining Object-Oriented Analysis (OOA) and Object-Oriented Design (OOD). We designed an expressive DSL (Domain-Specific Language) called DDDML to describe this model.
-
-This approach allows us to build conceptual domain models during the requirements analysis phase and refine them throughout the design and coding phases, maximizing the value of early work.
-
-Thus, our low-code development approach not only speeds up the development process but also enhances software quality.
+Software development is a multifaceted process, especially for complex projects where analysis and design play crucial roles. By integrating MUD's solid implementation framework with our domain-driven approach, we can ensure that the final code accurately reflects both the low-level efficiency and the high-level design principles. This synergy enhances maintainability and scalability, opening up new possibilities for Web3 development.
 
 
-## DSL and Low-Code: Revolutionizing Dapp Development
+## Empowering On-Chain Game Creators: DSL and Low-Code Solutions
+
+Our low-code approach leverages a Domain-Driven Design (DDD) style model, which aligns **particularly well with game development processes**. Game design typically involves a comprehensive planning phase, making it easier to translate high-level concepts into software design compared to MVP-focused products in other domains. This synergy is especially beneficial for on-chain games, where precise modeling is crucial.
+
+To facilitate this process, we've developed DDDML, an expressive Domain-Specific Language. DDDML allows developers to describe complex game mechanics and interactions in a format that's both human-readable and machine-processable. At a high level, DDDML models can represent game entities, their attributes, relationships, and behaviors, which can then be translated into smart contract code.
+
+This approach enables us to create conceptual domain models during the initial game design phase and iteratively refine them throughout development. By bridging the gap between game design and on-chain implementation, our low-code method not only accelerates the development process but also enhances the overall quality and consistency of the final product. For technical readers eager to dive deeper, we'll explore more specific examples and implementation details in the following sections.
+
+
+## AI-Powered DSL and Low-Code: The Future of Dapp Innovation
 
 If you've been wondering about the buzz around Domain-Specific Languages (DSL) and Low-Code Development in the Web3 space, you're not alone. Let's demystify these concepts and introduce you to DDDML - a powerful tool that's changing the game for Dapp developers.
 
