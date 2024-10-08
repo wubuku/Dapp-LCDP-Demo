@@ -6,11 +6,11 @@ As a MUD developer, you might wonder: Why introduce another tool when we're alre
 
 The simple answer: To enhance development efficiency and software quality.
 
-MUD is an excellent development framework with a strong focus on fully on-chain game development. While it's designed as a general-purpose application development framework, its current strengths lie primarily in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others. For instance, implementing off-chain hybrid solutions to improve game tickrate could be more complex within MUD's current framework.
+MUD is an excellent development framework with a strong focus on fully on-chain game development. While it's designed as a general-purpose application development framework, its current strengths lie primarily in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others, such as implementing off-chain hybrid solutions to improve game tickrate.
 
 To complement MUD's strengths, we propose a model-driven low-code development approach. This method leverages MUD's robust data model design while introducing domain models at a higher abstraction level through our innovative, AI-native Language. This Domain-Specific Language is designed from the ground up to seamlessly integrate with AI technologies, enhancing the development process and opening new possibilities for Web3 creators.
 
-Our approach not only increases efficiency but also expands MUD's capabilities, offering developers more options in their Web3 toolkit. By integrating MUD's implementation framework with our domain-driven approach, we ensure the final code reflects both low-level efficiency and high-level design principles, enhancing maintainability and scalability.
+Our approach not only increases development efficiency but also expands upon MUD's capabilities. By combining MUD's implementation framework with our domain-driven approach, we enhance both low-level efficiency and high-level design principles in the final code.
 
 
 ## Empowering On-Chain Game Creators: DSL and Low-Code Solutions
