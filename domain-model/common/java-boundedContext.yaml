@@ -1,0 +1,41 @@
+configuration:
+  sequenceNumber: 1
+  boundedContextName: "Dddml.AJavaDemo"
+  defaultModule:
+    name: "Dddml.AJavaDemo"
+
+  metadata:
+    # Disable automatically generating Create, Update, Delete commands for the backend service
+    AutoGeneratingCrUDCommandsDisabled: false
+    AlwaysGeneratingEventClobProperties: false
+    AlwaysGeneratingClobEventProperties: false
+
+  isSurrogateIdMandatory: false
+
+  java:
+    eventProcessing: {}
+    eventLobPropertiesEnabled: true
+    eventLobPropertiesSqlType: json
+    #stateLobPropertiesEnabled: true
+    typeMappings:
+      OffsetDateTime: OffsetDateTime
+    typePackages:
+      OffsetDateTime: java.time
+    boundedContextPackage: "org.dddml.ajavademo"
+    specializationPackage: "org.dddml.ajavademo.specialization"
+
+  aggregateEventVersionProperty:
+    name: Version
+    type: long
+  defaultReservedProperties:
+    active: Active
+    createdBy: CreatedBy
+    createdAt: CreatedAt
+    updatedBy: UpdatedBy
+    updatedAt: UpdatedAt
+    deleted: Deleted
+    version: Version
+  defaultUserIdType: string
+  defaultTimestampType: OffsetDateTime
+
+
