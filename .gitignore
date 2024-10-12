@@ -32,3 +32,9 @@ rooch-java-service/scripts/hbm2ddl_drop.sql
 Move.lock
 aptos-java-service/scripts
 docs/_*.md
+aptos-java-service/aptosDemoContracts-common/target
+rooch-java-service/roochDemoContracts-service/target
+rooch-java-service/roochDemoContracts-common/target
+aptos-java-service/aptosDemoContracts-service-rest/target
+aptos-java-service/aptosDemoContracts-service/target
+rooch-java-service/roochDemoContracts-service-rest/target
