@@ -6,28 +6,25 @@ As a MUD developer, you might wonder: Why introduce another tool when we're alre
 
 The simple answer: To enhance development efficiency and software quality.
 
-MUD is an excellent development framework with a strong focus on fully on-chain game development. While it's designed as a general-purpose application development framework, its current strengths lie primarily in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others, such as implementing off-chain hybrid solutions to improve game tickrate.
+MUD is an excellent development framework, particularly strong in fully on-chain game development. While designed as a general-purpose application development framework, its current strengths primarily lie in creating on-chain games. MUD's architecture prioritizes on-chain integrity, which aligns perfectly with certain use cases but may present challenges for others, such as implementing off-chain hybrid solutions to improve game tickrate.
 
-To complement MUD's strengths, we've developed an innovative, AI-native Language. This Domain-Specific Language is designed from the ground up to seamlessly integrate with AI technologies, enhancing the development process and opening new possibilities for Web3 creators.
+To complement MUD's strengths, we've developed an innovative, AI-native Domain-Specific Language (DSL). This language introduces domain models at a higher abstraction level while benefiting from MUD's robust data model design.
 
-Our approach leverages this AI-native DSL to introduce domain models at a higher abstraction level, while still benefiting from MUD's robust data model design. This model-driven, low-code development method aims to further improve efficiency and expand capabilities in Web3 development.
-
-By combining MUD's implementation framework with our domain-driven approach, we enhance both low-level efficiency and high-level design principles in the final code. This synergy not only increases development efficiency but also expands upon MUD's capabilities, offering developers a more comprehensive toolkit for Web3 creation.
+By combining MUD's implementation framework with our approach, we enhance both development efficiency and ensure that the implemented code reflects high-level design—crucial for software quality and maintainability. This offers developers a more comprehensive toolkit for Web3 creation.
 
 ## Empowering On-Chain Game Creators: DSL and Low-Code Solutions
 
-Our low-code approach, using Domain-Driven Design (DDD), aligns **particularly well with game development processes**. Game design's comprehensive planning phase makes it easier to translate high-level concepts into software design, especially beneficial for on-chain games requiring precise modeling.
+Our low-code approach, using Domain-Driven Design (DDD), aligns **particularly well with game development processes**. The comprehensive planning phase in game design (especially for "big games") makes it easier to translate high-level concepts into software design through DSL, particularly beneficial for on-chain games requiring precise modeling.
 
 We've developed DDDML, an expressive Domain-Specific Language, to facilitate this process. DDDML allows developers to describe complex game mechanics in a human-readable and machine-processable format, representing game entities, attributes, relationships, and behaviors.
 
 This approach bridges the gap between game design and on-chain implementation, accelerating development and enhancing the final product's quality and consistency.
 
-
 ## AI-Powered DSL and Low-Code: The Future of Dapp Innovation
 
 DDDML (Domain-Driven Design Modeling Language) centralizes the documentation of key domain model elements, supporting code generation tools and automating various aspects of software development.
 
-Our low-code approach transforms the development process, focusing on two key aspects:
+Our low-code approach transforms the development process, allowing developers to focus on two key aspects:
 
 1. Domain Modeling
    * Create model files using DDDML (our domain-specific language).
@@ -38,9 +35,9 @@ Our low-code approach transforms the development process, focusing on two key as
    * For more complex business logic, developers need to write code using the language specific to the smart contract platform (for example, Solidity is commonly used on EVM platforms).
    * Our long-term goal is to develop a platform-independent expression language that allows developers to write cross-platform business logic more easily.
 
-We firmly believe that AI technology can powerfully support both domain modeling and business logic implementation. This article will focus on our attempts in implementing business logic, where AI's performance has been truly impressive.
+We firmly believe that AI technology can powerfully support both domain modeling and business logic implementation. We're committed to pushing boundaries in both areas, with tangible progress already evident in business logic implementation.
 
-As for AI assistance in domain modeling, while not the focus here, we have developed specific, feasible ideas and are actively conducting experimental research. The initial results are promising, and these advancements make us excited about the future of AI-assisted domain modeling. We're committed to pushing boundaries in both areas, with tangible progress already evident in business logic implementation.
+This article will focus on our attempts in implementing business logic, where AI's performance has been truly impressive. As for AI assistance in domain modeling, while not the focus here, we have developed specific, feasible ideas and are actively conducting experimental research. The initial results are promising, making us excited about the future of AI-assisted domain modeling.
 
 ## Understanding DDDML Through Examples
 
