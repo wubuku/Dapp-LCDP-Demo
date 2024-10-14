@@ -30,6 +30,11 @@ An introductory article about DDDML: ["Introducing DDDML: The Key to Low-Code De
 
 If you want to develop decentralized applications based on EVM, especially using [MUD](https://mud.dev) framework, it might be more appropriate to start understanding DDDML from this introductory guide: https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers_CN.md
 
+* Case study 1, Less Code, More Output: https://gist.github.com/wubuku/4315a6b99e62e985a8001ffebe2c1487
+
+* Case study 2, DDDML + AI vs. AI Alone: https://github.com/wubuku/CaseStudy-DDDML-plus-AI-vs-AI-Alone
+
+
 ### DDDML x AI
 
 AI-assisted development of EVM/MUD-based decentralized applications: https://github.com/wubuku/hello-mud?tab=readme-ov-file#leveraging-ai

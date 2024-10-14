@@ -31,6 +31,10 @@
 
 如果你想要基于 EVM，特别是 [MUD](https://mud.dev) 框架，开发去中心化应用，可能从这个入门介绍开始了解 DDDML 会更合适：https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers_CN.md
 
+* 案例研究 1, 更少的代码，更多的输出: https://gist.github.com/wubuku/4315a6b99e62e985a8001ffebe2c1487
+
+* 案例研究 2, DDDML + AI vs. AI Alone: https://github.com/wubuku/CaseStudy-DDDML-plus-AI-vs-AI-Alone
+
 ### DDDML x AI
 
 AI 辅助开发基于 EVM/MUD 的去中心化应用：https://github.com/wubuku/hello-mud?tab=readme-ov-file#leveraging-ai
