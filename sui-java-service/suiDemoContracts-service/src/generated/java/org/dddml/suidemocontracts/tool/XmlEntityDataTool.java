@@ -224,7 +224,7 @@ public class XmlEntityDataTool {
                     public void invoke(Object b, Object pVal) throws InvocationTargetException, IllegalAccessException {
                         Object pref = propertyDescriptor.getReadMethod().invoke(b);
                         if (pref == null) {
-                            //throw new RuntimeException(String.format("The parent proeprty '%1$s' is null.", propertyDescriptor.getName()));
+                            //throw new RuntimeException(String.format("The parent property '%1$s' is null.", propertyDescriptor.getName()));
                             try {
                                 pref = propertyType.newInstance();
                                 propertyDescriptor.getWriteMethod().invoke(b, pref);
@@ -233,7 +233,7 @@ public class XmlEntityDataTool {
                             }
                         }
                         if (ppDescriptor.getWriteMethod() == null) {
-                            throw new RuntimeException(String.format("CANNOT get WriteMethod for proeprty '%1$s'.", ppDescriptor.getName()));
+                            throw new RuntimeException(String.format("CANNOT get WriteMethod for property '%1$s'.", ppDescriptor.getName()));
                         }
                         ppDescriptor.getWriteMethod().invoke(pref, pVal);
                     }

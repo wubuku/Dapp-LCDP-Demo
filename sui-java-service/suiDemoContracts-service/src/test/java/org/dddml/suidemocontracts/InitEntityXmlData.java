@@ -17,7 +17,7 @@ public class InitEntityXmlData {
 
 
     public static void _main(final String[] args) throws Exception {
-        //todo 为了支持 DDDML Builder 的调用的 main 代码……
+        //TODO: Create a simple CLI tool to support DDDML Builder?
         //static
         org.springframework.context.ApplicationContext springFrameworkApplicationContext;
         //static {
@@ -35,7 +35,7 @@ public class InitEntityXmlData {
     }
 
     // ///////////////////////////////////////////////////////////////////////////
-    // 使用 data 目录中的数据（xml）文件初始化
+    // Initialize data using XML files in the data directory
     // ///////////////////////////////////////////////////////////////////////////
     public static void createEntitiesFromXmlData(String xmlDataLocationPattern) {
         String pathPattern = XmlEntityDataTool.DEFAULT_XML_DATA_LOCATION_PATTERN;
