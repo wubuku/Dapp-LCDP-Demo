@@ -316,12 +316,11 @@ configuration:
         propertyNames: [ "Amount", "Currency" ]
         propertyTypes: [ "decimal", "string" ]
 
-  aggregates:
-
-    AttributeSetInstance:
-      metadata:
-        PersistingStateEventRemovedPropertiesAsSet: true
-        CreationWithoutIdEnabled: true
-        HttpPostCreationEnabled: true
-        GeneratingAbstractIdGenerator: true
+#  aggregates:
+#    AttributeSetInstance:
+#      metadata:
+#        PersistingStateEventRemovedPropertiesAsSet: true
+#        CreationWithoutIdEnabled: true
+#        HttpPostCreationEnabled: true
+#        GeneratingAbstractIdGenerator: true
 
