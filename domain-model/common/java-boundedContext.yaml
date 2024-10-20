@@ -27,14 +27,21 @@ configuration:
   aggregateEventVersionProperty:
     name: Version
     type: long
-  defaultReservedProperties:
-    active: Active
-    createdBy: CreatedBy
-    createdAt: CreatedAt
-    updatedBy: UpdatedBy
-    updatedAt: UpdatedAt
-    deleted: Deleted
-    version: Version
+  defaultReservedPropertyMetadata:
+    version:
+      name: Version
+    active:
+      name: Active
+    createdBy:
+      name: CreatedBy
+    createdAt:
+      name: CreatedAt
+    updatedBy:
+      name: UpdatedBy
+    updatedAt:
+      name: UpdatedAt
+    deleted:
+      name: Deleted
   defaultUserIdType: string
   defaultTimestampType: OffsetDateTime
 

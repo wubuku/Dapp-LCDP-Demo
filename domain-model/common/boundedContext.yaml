@@ -36,20 +36,21 @@ configuration:
   valueObjectBaseTypes:
     "Email": "string"
 
-  defaultReservedProperties:
-    version: OffChainVersion
-    #or
-    #version:
-    #  name: OffChainVersion
-#    active: Active
-#    createdBy: CreatedBy
-#    createdAt: CreatedAt
-#    updatedBy: UpdatedBy
-#    #or
-#    #updatedBy:
-#    #  name: UpdatedBy
-#    updatedAt: UpdatedAt
-#    deleted: Deleted
+  defaultReservedPropertyMetadata:
+    version:
+      name: OffChainVersion
+    active:
+      name: Active
+    createdBy:
+      name: CreatedBy
+    createdAt:
+      name: CreatedAt
+    updatedBy:
+      name: UpdatedBy
+    updatedAt:
+      name: UpdatedAt
+    deleted:
+      name: Deleted
 
   sqlTypes:
     DateTime: DATETIME
