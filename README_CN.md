@@ -43,9 +43,15 @@ AI 辅助开发 AO 去中心化应用：https://github.com/dddappp/AI-Assisted-A
 
 ### 将 dddappp 作为全链游戏引擎使用
 
-#### 使用 dddappp 开发 Sui 全链游戏
 
-这个一个生产级的实际案例：https://github.com/wubuku/infinite-sea
+#### 同一个模型，驱动不同的基础设施上的全链游戏的开发
+
+这个一个生产级的实际案例。
+
+* Sui 版本：https://github.com/wubuku/infinite-sea
+* Aptos 版本：https://github.com/wubuku/aptos-infinite-seas
+* EVM 版本：https://github.com/wubuku/hello-mud
+
 
 #### 用于开发 Aptos 全链游戏的示例
 

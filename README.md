@@ -44,9 +44,17 @@ AI-assisted development of AO decentralized applications: https://github.com/ddd
 
 ### Using dddappp as a fully on-chain game engine
 
-#### Developing Sui fully on-chain game using dddappp
+#### Same model, developing Dapps on different infrastructures
 
-This is a production-level real-world example: https://github.com/wubuku/infinite-sea
+This is a production-level real-world example.
+
+Based on our DSL, we have developed low-code tools that can already support Sui Move, Aptos Move,
+and EVM/Solidity Dapp development at product grade.
+See the three versions of the fully on-chain game [Infinite Seas](https://infiniteseas.io):
+* Sui Move verison: https://github.com/wubuku/infinite-sea
+* Aptos Move version: https://github.com/wubuku/aptos-infinite-seas
+* EVM version: https://github.com/wubuku/hello-mud
+
 
 #### Example of developing an Aptos fully on-chain game
 
