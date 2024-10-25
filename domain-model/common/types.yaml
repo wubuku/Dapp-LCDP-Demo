@@ -109,11 +109,10 @@ typeDefinitions:
     sqlType: VARCHAR(100)
     cSharpType: string
     javaType: String
-  value:
-    #name: value
-    sqlType: VARCHAR(255)
-    cSharpType: string
-    javaType: String
+#  value:
+#    sqlType: VARCHAR(255)
+#    cSharpType: string
+#    javaType: String
   credit-card-number:
     #name: credit-card-number
     sqlType: VARCHAR(255)
