@@ -9,6 +9,7 @@ configuration:
     AutoGeneratingCrUDCommandsDisabled: false
     AlwaysGeneratingEventClobProperties: false
     AlwaysGeneratingClobEventProperties: false
+    IsOffChainIndexer: false
 
   isSurrogateIdMandatory: false
 
