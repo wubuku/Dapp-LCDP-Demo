@@ -28,7 +28,9 @@ An introductory article about DDDML: ["Introducing DDDML: The Key to Low-Code De
 
 ### DDDML Introduction for MUD Developers
 
-If you want to develop decentralized applications based on EVM, especially using [MUD](https://mud.dev) framework, it might be more appropriate to start understanding DDDML from this introductory guide: https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers_CN.md
+If you want to develop decentralized applications based on EVM, especially using [MUD](https://mud.dev) framework, 
+it might be more appropriate to start understanding DDDML from this introductory guide: 
+https://github.com/wubuku/Dapp-LCDP-Demo/blob/main/docs/IntroToDDDMLforMudDevelopers.md
 
 * Case study 1, Less Code, More Output: https://gist.github.com/wubuku/4315a6b99e62e985a8001ffebe2c1487
 
@@ -37,7 +39,7 @@ If you want to develop decentralized applications based on EVM, especially using
 
 ### DDDML x AI
 
-AI-assisted development of EVM/MUD-based decentralized applications: https://github.com/wubuku/hello-mud?tab=readme-ov-file#leveraging-ai
+AI-assisted development of EVM/MUD-based decentralized applications, in real-world case: https://github.com/wubuku/hello-mud?tab=readme-ov-file#leveraging-ai
 
 AI-assisted development of AO decentralized applications: https://github.com/dddappp/AI-Assisted-AO-Dapp-Example
 
@@ -46,7 +48,7 @@ AI-assisted development of AO decentralized applications: https://github.com/ddd
 
 #### Same model, developing Dapps on different infrastructures
 
-This is a production-level real-world example.
+This is a production-level real-world case.
 
 Based on our DSL, we have developed low-code tools that can already support Sui Move, Aptos Move,
 and EVM/Solidity Dapp development at product grade.
@@ -60,7 +62,7 @@ See the three versions of the fully on-chain game [Infinite Seas](https://infini
 
 The original [constantinople](https://github.com/0xobelisk/constantinople) is a game based on the fully on-chain game engine [obelisk](https://obelisk.build) running on Sui. (Note: obelisk is not a project of ours.)
 
-Here we tried to implement the Aptos Move version of this game using the dddappp low-code tool: https://github.com/wubuku/aptos-constantinople/blob/main/README_CN.md
+Here we tried to implement the Aptos Move version of this game using the dddappp low-code tool: https://github.com/wubuku/aptos-constantinople
 
 The developer can follow the README to reproduce the entire development and testing process of the game's contract and indexer.
 The model file is written, code is generated, business logic is filled in the three files, and the development is done.
@@ -114,7 +116,8 @@ See: https://github.com/dddappp/A-AO-Demo
 
 See: https://github.com/dddappp/A-Solana-Demo
 
-### The Key to AO Ecosystem's Success: Microservices Architecture in the Web3 Era
+
+### Article: The Key to AO Ecosystem's Success: Microservices Architecture in the Web3 Era
 
 The article is divided into two parts:
 
