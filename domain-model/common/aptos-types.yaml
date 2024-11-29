@@ -84,7 +84,7 @@ typeDefinitions:
     dataStruct:
       properties:
         Metadata:
-          type: address #Object<Metadata>,
+          type: Object<FAMetadata> #Object<Metadata>,
         Balance:
           type: u64
         Frozen:
