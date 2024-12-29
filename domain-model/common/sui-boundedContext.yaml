@@ -9,6 +9,9 @@ configuration:
   defaultModule:
     name: "Dddml.SuiDemoContracts"
 
+  metadata:
+    IsJavaOffChainIndexer: true
+
   isSurrogateIdMandatory: true
   isSingletonObjectSurrogateIdMandatory: true
 

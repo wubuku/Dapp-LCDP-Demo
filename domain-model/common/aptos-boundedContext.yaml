@@ -21,6 +21,7 @@ configuration:
 
   metadata:
     EventTypeDiscriminatorName: "EventClass"
+    IsJavaOffChainIndexer: true
 
   aptos:
     boundedContextPackage: "AptosDemo"

@@ -7,5 +7,6 @@ configuration:
   metadata:
     EventTypeDiscriminatorName: "EventType"
     ServiceMethodMessagingCommandNameFormat: "{0}_{1}" # {ServiceName}_{MethodName}
+    IsJavaOffChainIndexer: true
   ao:
     objectVersionPropertyName: Version

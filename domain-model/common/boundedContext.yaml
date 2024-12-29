@@ -127,7 +127,7 @@ configuration:
     # OptimisticLockingVersionDisabled: true
     # JavaSuiContractPackage: "com.github.wubuku.sui.tests"
 
-    IsOffChainIndexer: true
+    IsJavaOffChainIndexer: true
 
   move:
 

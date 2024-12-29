@@ -9,6 +9,9 @@ configuration:
   defaultModule:
     name: "Dddml.RoochDemoContracts"
 
+  metadata:
+    IsJavaOffChainIndexer: true
+
   isSurrogateIdMandatory: true
 
   defaultSurrogateId:
