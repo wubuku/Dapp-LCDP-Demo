@@ -1,5 +1,7 @@
 # Awesome DDDML
 
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-Docs-blue?logo=read-the-docs)](https://deepwiku.com/wubuku/Dapp-LCDP-Demo)
+
 English | [中文版](./README_CN.md)
 
 Efficiency in the development of software, especially complex software, has always been a big issue.
